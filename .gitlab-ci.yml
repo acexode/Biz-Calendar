@@ -16,7 +16,6 @@ BUILD-testing:
   script:
     - ls
     - npm install
-    - ng lint
     - npm run build
 
 devENV-deploy:
