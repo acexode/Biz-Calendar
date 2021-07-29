@@ -15,6 +15,7 @@ BUILD-testing:
     BUILD_DIRECTORY: $CI_PROJECT_DIR
   script:
     - ls
+    - npm cache clean --force
     - npm install
     - npm run build
 
