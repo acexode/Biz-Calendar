@@ -14,7 +14,6 @@ BUILD-testing:
   variables:
     BUILD_DIRECTORY: $CI_PROJECT_DIR
   script:
-    - cd omn
     - ls
     - npm install
     - ng lint
@@ -25,14 +24,14 @@ devENV-deploy:
   tags:
     - docker-runner
   only:
-    - tablet-web
+    - develop
   variables:
     ENV_USER: $DEV_USER
     ENV_URL: $DEV_URL
     NG_PARAM_1: $DEV_NG_PARAM_1
     NG_PARAM_2: $DEV_NG_PARAM_2
     NG_PARAM_3: $DEV_NG_PARAM_3
-    BUILD_DIRECTORY: /home/${DEV_USER}/repo/omn
+    BUILD_DIRECTORY: /home/${DEV_USER}/repo/
   script:
     - eval $(ssh-agent -s)
     ### Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
