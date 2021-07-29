@@ -1,4 +1,4 @@
-image: softescu/centos:node:14.17.0
+image: softescu/centos: node:14.17.0
 stages:
   - BUILD-testing
   - devENV-deploy
