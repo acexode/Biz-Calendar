@@ -1,4 +1,4 @@
-image: softescu/centos:node14
+image: softescu/centos:node--version
 stages:
   - BUILD-testing
   - devENV-deploy
