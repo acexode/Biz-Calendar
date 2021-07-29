@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "biz-calendar",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
