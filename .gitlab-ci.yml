@@ -14,7 +14,6 @@ BUILD-testing:
   variables:
     BUILD_DIRECTORY: $CI_PROJECT_DIR
   script:
-    - /bin/bash --login
     - ls
     - node --version
     - npm --version
@@ -36,7 +35,6 @@ devENV-deploy:
     NG_PARAM_3: $DEV_NG_PARAM_3
     BUILD_DIRECTORY: /home/${DEV_USER}/repo/
   script:
-    - /bin/bash --login
     - eval $(ssh-agent -s)
     ### Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
     - ssh-add <(echo "${SSH_PRIVATE_KEY}")
