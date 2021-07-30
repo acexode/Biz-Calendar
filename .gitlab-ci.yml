@@ -19,6 +19,7 @@ BUILD-testing:
     - npm --version
     - npm cache clean --force
     - npm install
+    - ng lint
     - npm run build
 
 devENV-deploy:
