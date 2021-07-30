@@ -2,15 +2,7 @@
 @import '../mixins/mixins';
 
 $font-size-base: 1rem;
-$font-family-base: var(--ion-font-family);
-
-.alt-font {
-  font-family: $alt-font !important;
-}
-
-.custom-password {
-  font-family: $pass-font !important;
-}
+$font-family-base: var(--ion-font-roboto-family);
 
 .text-weight-medium {
   font-weight: 500 !important;
@@ -75,41 +67,60 @@ h3,
   line-height: rem(24);
 }
 
+.s11-h13 {
+  font-size: rem(11) !important;
+  line-height: rem(13) !important;
+}
+
+.s12.8-h16 {
+  font-size: rem(12.6) !important;
+  line-height: rem(16) !important;
+}
+
 .s13-h16 {
   font-size: rem(13) !important;
   line-height: rem(16) !important;
 }
-
 .s14-h16 {
   font-size: rem(14) !important;
   line-height: rem(16) !important;
 }
-
-.s20-h24 {
-  font-size: rem(20) !important;
+.s14.8-h16 {
+  font-size: rem(14.6) !important;
+  line-height: rem(16) !important;
+}
+.s16-h22 {
+  font-size: rem(16) !important;
+  line-height: rem(22) !important;
+}
+.s16-h24 {
+  font-size: rem(16) !important;
   line-height: rem(24) !important;
 }
-
-.s24-h32 {
-  font-size: rem(24) !important;
-  line-height: rem(32) !important;
-}
-
-.s32-h38 {
-  font-size: rem(32) !important;
-  line-height: rem(38) !important;
-}
-
-.s42-h48 {
-  font-size: rem(42) !important;
-  line-height: rem(48) !important;
-}
-
 .s18-h24 {
   font-size: rem(18) !important;
   line-height: rem(24) !important;
 }
-
+.s20-h24 {
+  font-size: rem(20) !important;
+  line-height: rem(24) !important;
+}
+.s24-h32 {
+  font-size: rem(24) !important;
+  line-height: rem(32) !important;
+}
+.s25-h32 {
+  font-size: rem(25) !important;
+  line-height: rem(32) !important;
+}
+.s32-h38 {
+  font-size: rem(32) !important;
+  line-height: rem(38) !important;
+}
+.s42-h48 {
+  font-size: rem(42) !important;
+  line-height: rem(48) !important;
+}
 .s32-h38 {
   font-size: rem(32) !important;
   line-height: rem(38) !important;
@@ -119,35 +130,13 @@ h3,
   font-size: rem(13) !important;
   line-height: rem(15) !important;
 }
-
-.s13-h16 {
-  font-size: rem(13) !important;
-  line-height: rem(16) !important;
-}
-
-.s16-h22 {
-  font-size: rem(16) !important;
-  line-height: rem(22) !important;
-}
-
 .s32-h38 {
   font-size: rem(32) !important;
   line-height: rem(38) !important;
 }
-
-.s18-h21 {
-  font-size: rem(18) !important;
-  line-height: rem(24) !important;
-}
-
-.s24-h25 {
-  font-size: rem(24);
-  line-height: rem(25);
-}
-
-.s17-h16 {
-  font-size: rem(17);
-  line-height: rem(16);
+.s40-h40 {
+  font-size: rem(40) !important;
+  line-height: rem(40) !important;
 }
 
 .white-space-normal {
