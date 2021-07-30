@@ -15,8 +15,8 @@ BUILD-testing:
     BUILD_DIRECTORY: $CI_PROJECT_DIR
   script:
     - ls
+    - npm cache clean --force
     - npm install
-    - ng lint
     - npm run build
 
 devENV-deploy:
