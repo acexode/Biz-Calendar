@@ -78,7 +78,7 @@
   --ion-color-light-tint: #f5f6f9;
 
   /** app color **/
-  
+
   // primary app colors
   --ion-primary-color-step-100: #1EA5C7;
   --ion-primary-color-step-110: #198CA9;
@@ -346,3 +346,74 @@ $spacers: map-merge((0: 0,
     116: rem(116),
   ),
   $spacers);
+
+/** Custom colors **/
+
+// Colors
+$white: #ffffff;
+$blue: #0087ea;
+$danger: #ef6d53;
+$warning: #ef6d53;
+//Primary
+$green: #008641;
+$red: #e1261c;
+$black: #191a1a;
+$blue: #0087ea;
+//Secondary
+$secondary-grey: #747c78;
+$secondary-blue: #0077cc;
+$grey: #636463;
+$grey3: #8b8b8b;
+$grey-4: #4c4f51;
+$grey-5: #4a4f4c;
+$grey-6: #343439;
+$medium-grey: #a7aaac;
+$medium-grey-2: #d1d4d2;
+$medium-grey-3: #d1d4d2;
+$medium-grey-4: #6e6e6e;
+$light-grey: #d1d3d4;
+$light-grey-2: #f7f8f7;
+$light-green-5: #bfe2d0;
+$ultra-light-grey: #f2f9f5;
+$ultra-light-grey-2: #f2f2f3;
+$dark-grey: #454545;
+//Tertiary
+$dark-green: #006330;
+$dark-green-b: #004220;
+$medium-green: #bfe2ce;
+$medium-green-2: #a7aca9;
+$medium-green-3: #bfe2d0;
+$light-green: #e5f2ec;
+$light-green-3: #2d7d43;
+$ultra-light-green: #f2f9f5;
+$light-red: #c32328;
+$alt-bg: #f5f9fc;
+$deep-blue: #1c5393;
+$light-blue: #236faa;
+$yellow: #f7ce23;
+$yellow-2: #f5d800;
+$bg-dark: #1a1919;
+$light-green-2: #5fb63d;
+$light-green-5: #bfe2d0;
+$box-shadow-1: 0 3px 10px -2px rgba(0, 0, 0, 0.2),
+0 1px 2px 0 rgba(0, 0, 0, 0.15);
+$box-shadow-2: 0 14px 10px -6px rgba(0, 99, 48, 0.25);
+$box-shadow-31: 0 2px 5px 0 rgba(0, 0, 0, 0.12);
+$box-shadow-32: 0 10px 20px 0 rgba(0, 0, 0, 0.12);
+$box-shadow-3: 0 2px 5px 0 rgba(0, 0, 0, 0.12),
+0 10px 20px 0 rgba(0, 0, 0, 0.12);
+$box-shadow-4: 0 0 2px 1px rgba(0, 0, 0, 0.08);
+$box-shadow-5: 0 0 10px -6px rgba(99, 0, 0, 0.25);
+$alert-shadow-1: 0 15px 10px -6px rgba(0, 0, 0, 0.25);
+$green-gradient: linear-gradient(135deg, $green 0%, $dark-green 100%);
+$green-gradient-45: linear-gradient(135deg,
+  rgba($green, 0.45) 0%,
+  rgba($dark-green, 0.45) 100%);
+$red-gradient: linear-gradient(135deg, $green 0%, $dark-green 100%);
+$white-layer-gradient: linear-gradient(180deg,
+  #ffffff 0%,
+  rgba(255, 255, 255, 0.67) 30.25%,
+  rgba(255, 255, 255, 0) 100%);
+$backdrop-opacity: 0.8;
+$backdrop-color: rgba($medium-green-2, $backdrop-opacity);
+$desktop-width: 820px;

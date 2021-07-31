@@ -3,6 +3,11 @@
 
 $font-size-base: 1rem;
 $font-family-base: var(--ion-font-roboto-family);
+$poppins-family-font: var(--ion-font-poppins-font);
+
+.poppings-family-font {
+  font-family: $poppins-family-font;
+}
 
 .text-weight-medium {
   font-weight: 500 !important;
@@ -72,7 +77,7 @@ h3,
   line-height: rem(13) !important;
 }
 
-.s12.8-h16 {
+.s12pt8-h16 {
   font-size: rem(12.6) !important;
   line-height: rem(16) !important;
 }
@@ -81,46 +86,57 @@ h3,
   font-size: rem(13) !important;
   line-height: rem(16) !important;
 }
+
 .s14-h16 {
   font-size: rem(14) !important;
   line-height: rem(16) !important;
 }
-.s14.8-h16 {
+
+.s14pt8-h16 {
   font-size: rem(14.6) !important;
   line-height: rem(16) !important;
 }
+
 .s16-h22 {
   font-size: rem(16) !important;
   line-height: rem(22) !important;
 }
+
 .s16-h24 {
   font-size: rem(16) !important;
   line-height: rem(24) !important;
 }
+
 .s18-h24 {
   font-size: rem(18) !important;
   line-height: rem(24) !important;
 }
+
 .s20-h24 {
   font-size: rem(20) !important;
   line-height: rem(24) !important;
 }
+
 .s24-h32 {
   font-size: rem(24) !important;
   line-height: rem(32) !important;
 }
+
 .s25-h32 {
   font-size: rem(25) !important;
   line-height: rem(32) !important;
 }
+
 .s32-h38 {
   font-size: rem(32) !important;
   line-height: rem(38) !important;
 }
+
 .s42-h48 {
   font-size: rem(42) !important;
   line-height: rem(48) !important;
 }
+
 .s32-h38 {
   font-size: rem(32) !important;
   line-height: rem(38) !important;
@@ -130,10 +146,12 @@ h3,
   font-size: rem(13) !important;
   line-height: rem(15) !important;
 }
+
 .s32-h38 {
   font-size: rem(32) !important;
   line-height: rem(38) !important;
 }
+
 .s40-h40 {
   font-size: rem(40) !important;
   line-height: rem(40) !important;
@@ -269,23 +287,6 @@ ion-label.input-label-2,
   pointer-events: none;
 }
 
-.certificat {
-  height: rem(120) !important;
-
-  span {
-    ion-icon {
-      margin-right: 0 !important;
-      font-size: rem(130) !important;
-    }
-  }
-}
-
-.atentie {
-  font-size: rem(24) !important;
-  font-weight: 600;
-  color: var(--app-red-color) !important;
-}
-
 .font-reset {
   font: inherit !important;
 }
@@ -320,31 +321,4 @@ a.no-decoration {
 
 .is-not-visible {
   visibility: hidden !important;
-}
-
-@media (min-width: $desktop-width) {
-  .web-alt-font {
-    font-family: $alt-font !important;
-  }
-
-  .shadow-lg-none {
-    box-shadow: none;
-  }
-
-  .text-lg-center {
-    text-align: center;
-  }
-
-  .shadow-lg-3 {
-    box-shadow: $box-shadow-3;
-  }
-
-  .text-lg-normal {
-    font-size: rem(16);
-    line-height: rem(22);
-  }
-
-  .text-lg-weight-medium {
-    font-weight: 500 !important;
-  }
 }
