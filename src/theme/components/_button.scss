@@ -1,0 +1,222 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-button {
+    text-transform: none;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+
+    &.button-large {
+      border-radius: rem(28);
+      min-height: rem(48);
+      height: rem(48);
+      font-size: rem(18);
+      line-height: rem(24);
+      white-space: normal;
+      border: 0;
+      box-shadow: $box-shadow-2;
+      --box-shadow: $box-shadow-2;
+      --border-radius: 28px;
+
+      .button {
+        --padding-top: rem(12);
+        --padding-bottom: rem(12);
+        padding-top: rem(12);
+        min-height: rem(48);
+        padding-bottom: rem(12);
+        border-width: 0;
+        border: none;
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+
+    &.button-space {
+      --padding-start: 32px;
+      --padding-end: 32px;
+    }
+
+    &.button-small {
+      font-size: rem(13);
+      line-height: rem(16);
+      font-weight: 500;
+      letter-spacing: rem(-0.2);
+      --padding-top: 4px;
+      --padding-bottom: 4px;
+
+      .button {
+        min-height: rem(24);
+        --min-height: 24px;
+        height: auto;
+        padding-top: rem(4);
+        padding-bottom: rem(4);
+        border-width: 0;
+        line-height: rem(16);
+      }
+
+      &.h-24 {
+        height: rem(24);
+      }
+    }
+
+    &.button-icon-button {
+      height: auto;
+
+      .button {
+        min-height: rem(24);
+        height: auto;
+      }
+    }
+
+    &.mh-40 {
+      min-height: rem(40);
+    }
+
+    &.no-shadow {
+      box-shadow: none;
+      --box-shadow: none;
+    }
+
+    &.text-weight-normal {
+      font-weight: 400;
+    }
+
+    &.ion-color-danger,
+    .ion-color-danger {
+      //--background: var(--danger-gradient);
+      background-color: var(--danger-gradient) !important;
+      --ion-color-danger: var(--danger-gradient);
+      --ion-color-shade: var(--danger-gradient) !important;
+      --ion-color-tint: var(--danger-gradient) !important;
+
+      &.flat {
+        // background-color: $danger;
+        --ion-color-danger: var(--app-color-danger);
+        --background: var(--app-color-danger);
+        --background-color: var(--app-color-danger);
+        --ion-color-shade: var(--app-color-danger) !important;
+        --ion-color-tint: var(--app-color-danger) !important;
+      }
+    }
+
+    &.ion-color-danger-2,
+    .ion-color-danger-2 {
+      --background: var(--danger-gradient);
+      background-color: var(--danger-gradient);
+      --ion-color-danger-2: var(--danger-gradient);
+      --ion-color-shade: var(--danger-gradient) !important;
+      --ion-color-tint: var(--danger-gradient) !important;
+
+      &.flat {
+        // background-color: $danger;
+        --ion-color-danger-2: var(--app-color-danger-2);
+        --background: var(--app-color-danger-2);
+        --background-color: var(--app-color-danger-2);
+        --ion-color-shade: var(--app-color-danger-2) !important;
+        --ion-color-tint: var(--app-color-danger-2) !important;
+      }
+    }
+
+    &.ion-color-success,
+    .ion-color-success {
+      --background: var(--success-gradient);
+      --ion-color-success: var(--success-gradient);
+      --ion-color-shade: var(--success-gradient) !important;
+      --ion-color-tint: var(--success-gradient) !important;
+
+      &.flat {
+        --background: var(--app-green-color-light) !important;
+        --ion-color-success: var(--app-green-color-light);
+        --ion-color-shade: var(--app-green-color-light) !important;
+        --ion-color-tint: var(--app-green-color-light) !important;
+      }
+    }
+
+    &.ion-color-secondary,
+    .ion-color-secondary {
+      --background: var(--app-secondary-bg);
+      --ion-color-secondary-contrast: var(--app-secondary-color);
+      --ion-color-secondary: var(--app-secondary-bg);
+      --ion-color-shade: var(--app-secondary-bg) !important;
+      --ion-color-tint: var(--app-secondary-bg) !important;
+    }
+
+    &.transparent-bg {
+      --background: transparent;
+      --background-focused: transparent;
+      --background-hover: transparent;
+      --background-activated: transparent;
+      --box-shadow: none;
+    }
+
+    &.modal-button {
+      @extend .ion-color-omn-green !optional;
+      color: var(--ion-color-base);
+      font-size: rem(16);
+      line-height: rem(22);
+      min-height: rem(40);
+      text-transform: none;
+      font-weight: normal;
+      margin-inline-end: 0;
+      padding-top: rem(12);
+      padding-bottom: rem(10);
+
+      .button {
+        font-size: rem(16);
+        line-height: rem(22);
+      }
+    }
+  }
+
+  .transparent-bg {
+    --background: transparent;
+    --background-focused: transparent;
+    --background-hover: transparent;
+    --background-activated: transparent;
+    --box-shadow: none;
+    background: transparent !important;
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .omn {
+    ion-button:hover {
+      box-shadow: $box-shadow-3;
+      filter: brightness(1.1) contrast(1.05);
+      transform: scale(0.98);
+      transition: 0.14s;
+      transition-timing-function: ease-in;
+
+      &.hover-success {
+        border-radius: rem(28);
+        --border-radius: rem(28);
+        background: var(--success-gradient);
+        --background: var(--success-gradient);
+      }
+
+      &.hover-warning {
+        border-radius: rem(28);
+        --border-radius: rem(28);
+        background: var(--danger-gradient);
+        --background: var(--danger-gradient);
+      }
+    }
+
+    a:hover {
+      &.hover-success {
+        box-shadow: $box-shadow-3;
+        filter: brightness(1.1) contrast(1.05);
+        transform: scale(0.98);
+        transition: 0.14s;
+        transition-timing-function: ease-in;
+        border-radius: rem(28);
+        --border-radius: rem(28);
+        background: var(--success-gradient);
+        --background: var(--success-gradient);
+      }
+    }
+  }
+}
