@@ -44,8 +44,6 @@ devENV-deploy:
     - git clone git@gitlab.softescu.com:DevOps/DeployServiceAngular.git
     - if [ -n "${DEV_USER}" ]; then echo "DEV_USER exists. Continue..."; else exit 1;fi
     - if [ -n "${DEV_URL}" ]; then echo "DEV_URL exists. Continue..."; else exit 1;fi
-    - node --version
-    - npm --version
     - make develop --directory=$CI_PROJECT_DIR/DeployServiceAngular/develop
     ###
     # Customizations
