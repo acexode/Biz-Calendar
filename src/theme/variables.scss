@@ -10,7 +10,9 @@
 
   // primary app colors
   --ion-primary-color-step-100: #1EA5C7;
+  --ion-primary-color-step-100-rgb: rgb(30, 165, 199);
   --ion-primary-color-step-110: #198CA9;
+  --ion-primary-color-step-110-rgb: rgb(25, 140, 169);
   --ion-primary-color-step-70: #5CCAE6;
   --ion-primary-color-step-30: #ABE8F7;
   --ion-primary-color-step-10: #E3F9FF;
@@ -48,9 +50,8 @@
   --ion-tiny-box-shadow: 0 1px 4px 0.5px rgba(0, 0, 0, 0.1), 0 5px 14px -9px rgba(20, 24, 26, 0.3), 0 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);
   --ion-diffuse-box-shadow: 0 23px 24px -15px rgba(0, 0, 0, 0.1), 0 30px 64px -15px rgba(0, 0, 0, 0.27);
   /* ---------- */
-
   /** primary **/
-  --ion-color-primary: var(--ion-primary-color-step-100);
+  --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
