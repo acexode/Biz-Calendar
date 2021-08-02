@@ -40,19 +40,19 @@
     }
 
     &.button-small {
-      font-size: rem(13);
+      font-size: rem(14);
       line-height: rem(16);
       font-weight: 500;
-      letter-spacing: rem(-0.2);
-      --padding-top: 4px;
-      --padding-bottom: 4px;
+      letter-spacing: rem(0);
+      --padding-top: 8px;
+      --padding-bottom: 8px;
 
       .button {
-        min-height: rem(24);
-        --min-height: 24px;
+        min-height: rem(32);
+        --min-height: 32px;
         height: auto;
-        padding-top: rem(4);
-        padding-bottom: rem(4);
+        padding-top: rem(8);
+        padding-bottom: rem(8);
         border-width: 0;
         line-height: rem(16);
       }
@@ -153,7 +153,7 @@
     }
 
     &.modal-button {
-      @extend .ion-color-omn-green !optional;
+      @extend .ion-color-biz-green !optional;
       color: var(--ion-color-base);
       font-size: rem(16);
       line-height: rem(22);
@@ -182,7 +182,7 @@
 }
 
 @media (min-width: $desktop-width) {
-  .omn {
+  .biz {
     ion-button:hover {
       box-shadow: $box-shadow-3;
       filter: brightness(1.1) contrast(1.05);
