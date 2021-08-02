@@ -395,25 +395,7 @@ $yellow-2: #f5d800;
 $bg-dark: #1a1919;
 $light-green-2: #5fb63d;
 $light-green-5: #bfe2d0;
-$box-shadow-1: 0 3px 10px -2px rgba(0, 0, 0, 0.2),
-0 1px 2px 0 rgba(0, 0, 0, 0.15);
-$box-shadow-2: 0 14px 10px -6px rgba(0, 99, 48, 0.25);
-$box-shadow-31: 0 2px 5px 0 rgba(0, 0, 0, 0.12);
-$box-shadow-32: 0 10px 20px 0 rgba(0, 0, 0, 0.12);
-$box-shadow-3: 0 2px 5px 0 rgba(0, 0, 0, 0.12),
-0 10px 20px 0 rgba(0, 0, 0, 0.12);
-$box-shadow-4: 0 0 2px 1px rgba(0, 0, 0, 0.08);
-$box-shadow-5: 0 0 10px -6px rgba(99, 0, 0, 0.25);
-$alert-shadow-1: 0 15px 10px -6px rgba(0, 0, 0, 0.25);
-$green-gradient: linear-gradient(135deg, $green 0%, $dark-green 100%);
-$green-gradient-45: linear-gradient(135deg,
-  rgba($green, 0.45) 0%,
-  rgba($dark-green, 0.45) 100%);
-$red-gradient: linear-gradient(135deg, $green 0%, $dark-green 100%);
-$white-layer-gradient: linear-gradient(180deg,
-  #ffffff 0%,
-  rgba(255, 255, 255, 0.67) 30.25%,
-  rgba(255, 255, 255, 0) 100%);
-$backdrop-opacity: 0.8;
-$backdrop-color: rgba($medium-green-2, $backdrop-opacity);
-$desktop-width: 820px;
+
+$box-shadow-1: var(--ion-light-box-shadow);
+$box-shadow-2: var(--ion-tiny-box-shadow);
+$box-shadow-3: var(--ion-diffuse-box-shadow);
