@@ -5,8 +5,52 @@
 :root {
   --ion-font-roboto-family: 'Roboto', sans-serif;
   --ion-font-poppins-font: 'Poppins', Arial, sans-serif;
+
+  /** app color **/
+
+  // primary app colors
+  --ion-primary-color-step-100: #1EA5C7;
+  --ion-primary-color-step-110: #198CA9;
+  --ion-primary-color-step-70: #5CCAE6;
+  --ion-primary-color-step-30: #ABE8F7;
+  --ion-primary-color-step-10: #E3F9FF;
+  --ion-primary-color-step-5: #F5FCFF;
+
+  // status colors
+  --ion-status-green-color-step-100: #2EA81B;
+  --ion-status-green-color-step-20: #D5EED1;
+  --ion-status-green-color-step-10: #EAF6E8;
+
+  --ion-status-yellow-color-step-100: #FFC715;
+  --ion-status-yellow-color-step-40: #FFE9A1;
+
+  --ion-status-blue-color-step-100: #3093F8;
+  --ion-status-blue-color-step-20: #D6E9FE;
+  --ion-status-blue-color-step-10: #EAF4FE;
+
+  --ion-status-orange-color-step-100: #F77C00;
+  --ion-status-orange-color-step-20: #FDE5CC;
+  --ion-status-orange-color-step-15: #FEECD9;
+
+  // neutral colors
+  --ion-neutral-black-color: #000000;
+  --ion-neutral-grey-default-color: #97A1A6;
+  --ion-neutral-grey-medium-color: #D5DBDE;
+
+  --ion-neutral-grey-light-color: #E3E9EC;
+  --ion-neutral-grey-light-b-color: #F2F8FA;
+
+  --ion-neutral-grey-ultralight-color: #F8FBFD;
+  --ion-neutral-white-color: #FFFFFF;
+
+  // shadow
+  --ion-light-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 6px 14px -8px rgba(20, 24, 26, 0.3);
+  --ion-tiny-box-shadow: 0 1px 4px 0.5px rgba(0, 0, 0, 0.1), 0 5px 14px -9px rgba(20, 24, 26, 0.3), 0 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);
+  --ion-diffuse-box-shadow: 0 23px 24px -15px rgba(0, 0, 0, 0.1), 0 30px 64px -15px rgba(0, 0, 0, 0.27);
+  /* ---------- */
+
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: var(--ion-primary-color-step-100);
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
@@ -77,48 +121,6 @@
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  /** app color **/
-
-  // primary app colors
-  --ion-primary-color-step-100: #1EA5C7;
-  --ion-primary-color-step-110: #198CA9;
-  --ion-primary-color-step-70: #5CCAE6;
-  --ion-primary-color-step-30: #ABE8F7;
-  --ion-primary-color-step-10: #E3F9FF;
-  --ion-primary-color-step-5: #F5FCFF;
-
-  // status colors
-  --ion-status-green-color-step-100: #2EA81B;
-  --ion-status-green-color-step-20: #D5EED1;
-  --ion-status-green-color-step-10: #EAF6E8;
-
-  --ion-status-yellow-color-step-100: #FFC715;
-  --ion-status-yellow-color-step-40: #FFE9A1;
-
-  --ion-status-blue-color-step-100: #3093F8;
-  --ion-status-blue-color-step-20: #D6E9FE;
-  --ion-status-blue-color-step-10: #EAF4FE;
-
-  --ion-status-orange-color-step-100: #F77C00;
-  --ion-status-orange-color-step-20: #FDE5CC;
-  --ion-status-orange-color-step-15: #FEECD9;
-
-  // neutral colors
-  --ion-neutral-black-color: #000000;
-  --ion-neutral-grey-default-color: #97A1A6;
-  --ion-neutral-grey-medium-color: #D5DBDE;
-
-  --ion-neutral-grey-light-color: #E3E9EC;
-  --ion-neutral-grey-light-b-color: #F2F8FA;
-
-  --ion-neutral-grey-ultralight-color: #F8FBFD;
-  --ion-neutral-white-color: #FFFFFF;
-
-  // shadow
-  --ion-light-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1), 0 6px 14px -8px rgba(20, 24, 26, 0.3);
-  --ion-tiny-box-shadow: 0 1px 4px 0.5px rgba(0, 0, 0, 0.1), 0 5px 14px -9px rgba(20, 24, 26, 0.3), 0 0.5px 0.5px 0 rgba(0, 0, 0, 0.3);
-  --ion-diffuse-box-shadow: 0 23px 24px -15px rgba(0, 0, 0, 0.1), 0 30px 64px -15px rgba(0, 0, 0, 0.27);
-  /* ---------- */
 }
 
 @media (prefers-color-scheme: dark) {
