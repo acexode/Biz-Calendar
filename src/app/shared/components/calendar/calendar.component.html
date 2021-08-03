@@ -1,21 +1,21 @@
 
-<ion-grid class="pt-32">
-  <ion-row>
+<ion-grid class="pt-32" *ngIf="display === 'list'" >
+  <ion-row *ngFor="let cal of calendarList" class="pb-8">
     <ion-col class="flex flex-column pl-16 pt-16 ion-text-center" size="2">
       <ion-text>LUN</ion-text>
       <ion-text>8</ion-text>
     </ion-col>
-    <ion-col class="p-16 bg-card flex flex-column" size="10">
-      <ion-row>
+    <ion-col class="p-16 bg-card flex flex-column"  [style.background-color]="cal.bgColor" [style.borderColor]="cal.borderColor" size="10">
+      <ion-row >
         <ion-col size="11">
           <div class="info">
-            <ion-text class="hour">09:00 - 09:30</ion-text> • <ion-text class="location">Buc. Aviatori</ion-text>
+            <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
           </div>
           <ion-text class="title">
-            Angela Ghica Protopopescu
+            {{cal.title}}
           </ion-text>
           <ion-text class="desc">
-            Consult control gastroenterologie, Ecografie abdominală
+            {{cal.desc | slice:0:90}}
           </ion-text>
         </ion-col>
         <ion-col size="1">
@@ -24,6 +24,19 @@
       </ion-row>
       
     </ion-col>
+  </ion-row>
+</ion-grid>
+<ion-grid>
+  <ion-row *ngIf="display === 'day'" class="pt-32">
+    <calendar [eventSource]="eventSource"
+      [calendarMode]="calendar.mode"
+      [currentDate]="calendar.currentDate"
+      (onCurrentDateChanged)="onCurrentDateChanged($event)"
+      (onEventSelected)="onEventSelected($event)"
+      (onTitleChanged)="onViewTitleChanged($event)"
+      (onTimeSelected)="onTimeSelected($event)"
+      [step]="calendar.step">
+      </calendar>
   </ion-row>
   <!-- <ion-buttons end>
     <ion-button [disabled]="isToday" (click)="today()">Today</ion-button>

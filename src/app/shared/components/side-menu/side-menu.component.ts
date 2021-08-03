@@ -7,12 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SideMenuComponent implements OnInit {
   public appPages = [
-    { title: 'Inbox', url: '/home/Inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/home/Outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/home/Favorites', icon: 'heart' },
-    { title: 'Archived', url: '/home/Archived', icon: 'archive' },
-    { title: 'Trash', url: '/home/Trash', icon: 'trash' },
-    { title: 'Spam', url: '/home/Spam', icon: 'warning' },
+    { title: 'Listă', url: '/home/list', icon: 'mail' },
+    { title: 'Zi', url: '/home/day', icon: 'paper-plane' },
+    { title: '3 zile', url: '/home/3-day', icon: 'heart' },
+    { title: 'Săptămână', url: '/home/week', icon: 'archive' },
+    { title: 'Lună', url: '/home/month', icon: 'trash' },
+    { title: 'Comparativ', url: '/home/comparative', icon: 'warning' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor() { }
