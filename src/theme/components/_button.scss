@@ -23,8 +23,8 @@
       --border-radius: 12px;
 
       .button {
-        --padding-top: rem(12);
-        --padding-bottom: rem(12);
+        --padding-top: rem(8);
+        --padding-bottom: rem(8);
         --padding-start: rem(16);
         --padding-end: rem(12);
         padding-top: rem(16);
@@ -33,12 +33,16 @@
         border-width: 0;
         border: none;
       }
+
+      &.button-has-icon-only {
+        --padding-start: 8px !important;
+        --padding-end: 8px !important;
+      }
     }
 
     &.button-large {
       border-radius: rem(16);
-      min-height: rem(56);
-      height: rem(56);
+      max-height: rem(56);
       font-size: rem(18);
       line-height: rem(24);
       white-space: normal;
@@ -48,8 +52,8 @@
       --border-radius: 16px;
 
       .button {
-        --padding-top: rem(12);
-        --padding-bottom: rem(12);
+        --padding-top: rem(16);
+        --padding-bottom: rem(16);
         --padding-start: rem(24);
         --padding-end: rem(24);
         padding-top: rem(16);
@@ -61,6 +65,11 @@
         &:after {
           display: none;
         }
+      }
+
+      &.button-has-icon-only {
+        --padding-start: 16px !important;
+        --padding-end: 16px !important;
       }
     }
 
@@ -76,6 +85,8 @@
       letter-spacing: rem(0);
       --padding-top: 8px;
       --padding-bottom: 8px;
+      --padding-start: 8px;
+      --padding-end: 8px;
       --border-radius: 8px !important;
 
       .button {
@@ -86,6 +97,11 @@
         padding-bottom: rem(8);
         border-width: 0;
         line-height: rem(16);
+      }
+
+      &.button-has-icon-only {
+        --padding-start: 4px !important;
+        --padding-end: 4px !important;
       }
 
       &.h-24 {
