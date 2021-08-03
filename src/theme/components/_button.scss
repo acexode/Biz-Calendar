@@ -8,24 +8,53 @@
     padding-inline-start: 0;
     padding-inline-end: 0;
 
-    &.button-large {
-      border-radius: rem(28);
-      min-height: rem(48);
-      height: rem(48);
-      font-size: rem(18);
-      line-height: rem(24);
+    font-family: var(--ion-font-roboto-family) !important;
+
+    &.button-default {
+      border-radius: rem(12);
+      min-height: rem(40);
+      height: rem(40);
+      font-size: rem(14);
+      line-height: rem(16);
       white-space: normal;
       border: 0;
-      box-shadow: $box-shadow-2;
-      --box-shadow: $box-shadow-2;
-      --border-radius: 28px;
+      box-shadow: none;
+      --box-shadow: none;
+      --border-radius: 16px;
 
       .button {
         --padding-top: rem(12);
         --padding-bottom: rem(12);
-        padding-top: rem(12);
-        min-height: rem(48);
-        padding-bottom: rem(12);
+        --padding-start: rem(16);
+        --padding-end: rem(12);
+        padding-top: rem(16);
+        min-height: rem(40);
+        padding-bottom: rem(16);
+        border-width: 0;
+        border: none;
+      }
+    }
+
+    &.button-large {
+      border-radius: rem(16);
+      min-height: rem(56);
+      height: rem(56);
+      font-size: rem(18);
+      line-height: rem(24);
+      white-space: normal;
+      border: 0;
+      box-shadow: none;
+      --box-shadow: none;
+      --border-radius: 16px;
+
+      .button {
+        --padding-top: rem(12);
+        --padding-bottom: rem(12);
+        --padding-start: rem(24);
+        --padding-end: rem(24);
+        padding-top: rem(16);
+        min-height: rem(56);
+        padding-bottom: rem(16);
         border-width: 0;
         border: none;
 
@@ -47,6 +76,7 @@
       letter-spacing: rem(0);
       --padding-top: 8px;
       --padding-bottom: 8px;
+      --border-radius: 8px !important;
 
       .button {
         min-height: rem(32);

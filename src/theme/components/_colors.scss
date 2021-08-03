@@ -8,17 +8,28 @@
   --ion-color-contrast-rgb: rgb(--ion-color-primary-contrast-rgb) !important;
   --ion-color-shade: var(--ion-primary-color-step-70) !important;
   --ion-color-tint: var(--ion-primary-color-step-30) !important;
+  --background-hover-opacity: 0.2 !important;
+  --box-shadow: none !important;
 }
 
-.ion-color-biz-secondary {
-  --ion-color-base: var(--ion-primary-color-step-100) !important;
-  --ion-color-base-rgb: var(--ion-primary-color-step-100-rgb) !important;
-  --ion-color-contrast: var(--ion-color-primary-contrast);
+.ion-color-biz-disabled {
+  --ion-color-base: var(--ion-neutral-grey-light-b-color) !important;
+  --ion-color-base-rgb: var(--ion-neutral-grey-light-b-color-rgb) !important;
+  --ion-color-contrast: var(--ion-neutral-grey-default-color);
   --ion-color-contrast-rgb: rgb(--ion-color-primary-contrast-rgb) !important;
   --ion-color-shade: var(--ion-primary-color-step-70) !important;
   --ion-color-tint: var(--ion-primary-color-step-30) !important;
+  --background-hover-opacity: 0.2 !important;
+  --box-shadow: none !important;
+  /* --background-focused: var(--ion-color-primary-contrast, #fff);
+    --background-activated-opacity: 0;
+    --background-focused-opacity: 0.24; */
 }
 
 .white {
   color: #fff !important;
+}
+
+.biz-neutral-gray-default-color {
+  color: var(--ion-neutral-grey-default-color) !important;
 }
