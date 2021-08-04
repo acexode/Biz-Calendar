@@ -1,3 +1,24 @@
+.cal-header{
+  padding: 20px 24px 0 48px;
+}
+.header-date{
+  color: #198CA9;
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 28px;
+}
+.header-events{
+  color: #198CA9;
+  font-family: Roboto;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+.icon, ion-menu-button{
+  color: #1EA5C7;
+}
 .bg-card{
     height: 137px;
     width: 307px;
@@ -32,3 +53,6 @@
   .small{
     font-size: 10px;
   }
+  .cal-month-view .cal-header .cal-cell {
+    text-transform: uppercase !important;
+}

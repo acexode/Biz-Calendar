@@ -1,3 +1,4 @@
+import { FormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -7,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/ro';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 registerLocaleData(localeDe);
 
 
@@ -18,7 +21,12 @@ registerLocaleData(localeDe);
   imports: [
     CommonModule,
     IonicModule,
+    FormsModule,
     RouterModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
     NgCalendarModule,
   ],
   exports: [
