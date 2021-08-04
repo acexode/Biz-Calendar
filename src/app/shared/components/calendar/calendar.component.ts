@@ -24,17 +24,21 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     CalendarView,
   } from 'angular-calendar';
   const colors: any = {
-    red: {
-      primary: '#ad2121',
-      secondary: '#FAE3E3',
+    green: {
+      primary: '#2EA81B',
+      secondary: '#D5EED1',
     },
     blue: {
-      primary: '#1e90ff',
-      secondary: '#D1E8FF',
+      primary: '#3093F8',
+      secondary: '#D6E9FE',
     },
     yellow: {
-      primary: '#e3bc08',
-      secondary: '#FDF1BA',
+      primary: '#FFC715',
+      secondary: '#e7d597',
+    },
+    orange: {
+      primary: '#F77C00',
+      secondary: '#ecb986',
     },
   };
 @Component({
@@ -80,23 +84,23 @@ export class CalendarComponent implements OnInit {
     ];
     refresh: Subject<any> = new Subject();
     events: CalendarEvent[] = [
-        {
-        start: subDays(startOfDay(new Date()), 1),
-        end: addDays(new Date(), 1),
-        title: 'A 3 day event',
-        color: colors.red,
-        actions: this.actions,
-        allDay: true,
-        resizable: {
-            beforeStart: true,
-            afterEnd: true,
-        },
-        draggable: true,
-        },
+        // {
+        // start: subDays(startOfDay(new Date()), 1),
+        // end: addDays(new Date(), 1),
+        // title: 'A 3 day event',
+        // color: colors.red,
+        // actions: this.actions,
+        // allDay: true,
+        // resizable: {
+        //     beforeStart: true,
+        //     afterEnd: true,
+        // },
+        // draggable: true,
+        // },
         {
         start: startOfDay(new Date()),
         title: 'An event with no end date',
-        color: colors.yellow,
+        color: colors.red,
         actions: this.actions,
         },
         {

@@ -26,17 +26,7 @@
 @import "~@ionic/angular/css/flex-utils.css";
 @import './theme/theme';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
-.weekview-container, .dayview-container{
-    --height: 500px !important;
-    height: 500px !important;
-}
-.cal-month-view .cal-header .cal-cell {
-    text-transform: uppercase !important;
-    color: #97A1A6;
-    font-size: 12.8px;
-    letter-spacing: 0;
-    line-height: 16px;
-}
-.cal-today{
-    color: #1EA5C7;
-}
+@import './theme/calendarStyle';
+
+
+

@@ -1,5 +1,15 @@
 .cal-header{
   padding: 20px 24px 0 48px;
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  height: 80px;
+  background: white;
+  border-bottom: 1px solid  #D5DBDE;
+  margin-bottom: 75px;
+}
+.calendar-m {
+  margin-top: 70px !important;
 }
 .header-date{
   color: #198CA9;

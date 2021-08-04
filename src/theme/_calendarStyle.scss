@@ -1,0 +1,36 @@
+.weekview-container, .dayview-container{
+    --height: 500px !important;
+    height: 500px !important;
+}
+.cal-month-view .cal-header .cal-cell {
+    text-transform: uppercase !important;
+    color: #97A1A6;
+    font-size: 12.8px;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+.cal-today{
+    color: #1EA5C7;
+}
+.cal-header{
+    border: none;
+}
+.cal-time {
+    font-weight: normal;
+}
+.cal-event {
+    width: 100% !important;
+    height: 10px;
+    border-radius: 10px !important;
+    display: inline-block;
+    margin: 2px;
+    font-size: 11px;
+    letter-spacing: -0.3px;
+    line-height: 13px;
+}
+.cal-month-view .cal-day-cell:not(:last-child) {
+    border-right-color: #D5DBDE;
+}
+.cal-month-view .cal-days .cal-cell-row {
+    border-bottom-color: #D5DBDE;
+}
