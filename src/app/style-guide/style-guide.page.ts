@@ -15,7 +15,7 @@ export class StyleGuidePage implements OnInit {
     slot: 'end',
   };
   config: IonInputConfig = {
-    placeholder: '',
+    placeholder: 'Placeholder',
     type: 'tel',
     inputMode: 'tel',
     size: 100,
@@ -25,7 +25,7 @@ export class StyleGuidePage implements OnInit {
     minLength: 10,
     maxLength: 10,
     bgwhite: true,
-    disabled: false,
+    disabled: true,
   };
   styleForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -34,6 +34,7 @@ export class StyleGuidePage implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.styleForm.disable();
   }
 
 }

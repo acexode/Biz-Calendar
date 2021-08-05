@@ -2,11 +2,26 @@
 @import '../mixins/mixins';
 
 .biz {
-  ion-items {
-    --padding-start: 0 !important;
-  }
-
   ion-input {
-    --padding-start: 0 !important;
+    --padding-start: 0;
+    font-family: var(--ion-font-roboto-family);
+    font-size: rem(16);
+    line-height: rem(24);
+    letter-spacing: 0;
+
+    --placeholder-color: var(--ion-neutral-grey-default-color);
+    --placeholder-opacity: 1;
+
+    /* --background: red; */
+    &:focus-within {
+      --padding-start: 8px !important;
+      --background: var(--ion-primary-color-step-5);
+      --placeholder-opacity: 0;
+    }
+
+    input[disabled] {
+      background: var(--ion-neutral-grey-light-b-color);
+      color: var(--ion-neutral-grey-medium-color);
+    }
   }
 }

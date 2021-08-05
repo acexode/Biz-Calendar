@@ -4,5 +4,24 @@
 .biz {
   ion-item {
     --padding-start: 0;
+    --inner-padding-end: 0;
+    --inner-border-width: 0;
+    --ion-safe-area-left: 0;
+    --ion-border-color: var(--ion-neutral-grey-medium-color);
+
+    &.item-interactive-disabled {
+      &:not(.item-has-focus) {
+        .input-label {
+          --color: var(--ion-neutral-grey-default-color);
+          color: var(--color);
+          opacity: 1 !important;
+        }
+
+        &:not(.ion-invalid) {
+          --ion-border-color: var(--ion-neutral-white-color) !important;
+          --border-color: var(--ion-neutral-white-color) !important;
+        }
+      }
+    }
   }
 }

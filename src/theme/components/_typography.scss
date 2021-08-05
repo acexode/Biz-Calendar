@@ -8,6 +8,9 @@ $poppins-family-font: var(--ion-font-poppins-font);
 .poppings-family-font {
   font-family: $poppins-family-font;
 }
+.roboto-family-font {
+  font-family: $font-family-base;
+}
 
 .text-weight-medium {
   font-weight: 500 !important;
@@ -78,7 +81,7 @@ h3,
 }
 
 .s12pt8-h16 {
-  font-size: rem(12.6) !important;
+  font-size: rem(12.8) !important;
   line-height: rem(16) !important;
 }
 

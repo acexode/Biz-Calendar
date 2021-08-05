@@ -1,9 +1,9 @@
-<ion-item class="form-group w-100" [formGroup]="formGroup" lines="full" [ngClass]="{
+<ion-item class="form-group w-100 p-0" [formGroup]="formGroup" lines="full" [ngClass]="{
     'item-mh-40': !config?.inputLabel?.text,
     'disabled-border': config?.disabled || inputReadonly,
     'bg-white': config?.bgwhite
   }">
-    <ion-label class="mb-8" position="stacked" [ngClass]="
+    <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
       config?.disabled || inputReadonly || formGroup?.disabled
         ? 'input-label'
         : 'input-label-2'
