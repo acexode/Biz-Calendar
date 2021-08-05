@@ -25,20 +25,20 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
   } from 'angular-calendar';
   const colors: any = {
     green: {
-      primary: '#2EA81B',
-      secondary: '#D5EED1',
+      primary: '#D5EED1',
+      secondary: '#2EA81B',
     },
     blue: {
-      primary: '#3093F8',
-      secondary: '#D6E9FE',
+      primary: '#D6E9FE',
+      secondary: '#3093F8',
     },
     yellow: {
-      primary: '#FFC715',
-      secondary: '#e7d597',
+      primary: '#e7d597',
+      secondary: '#FFC715',
     },
     orange: {
-      primary: '#F77C00',
-      secondary: '#ecb986',
+      primary: '#ecb986',
+      secondary: '#F77C00',
     },
   };
 @Component({
@@ -98,9 +98,16 @@ export class CalendarComponent implements OnInit {
         // draggable: true,
         // },
         {
-        start: startOfDay(new Date()),
-        title: 'An event with no end date',
-        color: colors.red,
+        start: startOfDay(2),
+        end: addHours(new Date(), 2),
+        title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
+        color: colors.green,
+        actions: this.actions,
+        },
+        {
+        start: new Date(),
+        title: 'An event with no end dated',
+        color: colors.yellow,
         actions: this.actions,
         },
         {
@@ -111,7 +118,7 @@ export class CalendarComponent implements OnInit {
         allDay: true,
         },
         {
-        start: addHours(startOfDay(new Date()), 2),
+        start: addHours(new Date(), 2),
         end: addHours(new Date(), 2),
         title: 'A draggable and resizable event',
         color: colors.yellow,

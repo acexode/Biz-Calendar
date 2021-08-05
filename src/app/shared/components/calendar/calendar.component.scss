@@ -3,7 +3,7 @@
   position: fixed;
   width: 100%;
   z-index: 10;
-  height: 80px;
+  // height: 80px;
   background: white;
   border-bottom: 1px solid  #D5DBDE;
   margin-bottom: 75px;
@@ -65,4 +65,9 @@
   }
   .cal-month-view .cal-header .cal-cell {
     text-transform: uppercase !important;
+}
+.day-info{
+  color: #198CA9;
+  height: 60px;
+
 }

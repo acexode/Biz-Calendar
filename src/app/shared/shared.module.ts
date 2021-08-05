@@ -1,3 +1,4 @@
+import { CalendarListComponent } from './components/calendar-list/calendar-list.component';
 import { FormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
@@ -16,7 +17,8 @@ registerLocaleData(localeDe);
 @NgModule({
   declarations: [
     CalendarComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    CalendarListComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ registerLocaleData(localeDe);
   ],
   exports: [
     CalendarComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    CalendarListComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
