@@ -1,0 +1,12 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-items {
+    --padding-start: 0 !important;
+  }
+
+  ion-input {
+    --padding-start: 0 !important;
+  }
+}
