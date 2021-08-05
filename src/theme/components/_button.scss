@@ -1,0 +1,284 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+
+  ion-button {
+    text-transform: none;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+
+    font-family: var(--ion-font-roboto-family) !important;
+
+    &.button-default {
+      border-radius: rem(12);
+      min-height: rem(40);
+      height: rem(40);
+      font-size: rem(14);
+      line-height: rem(16);
+      white-space: normal;
+      border: 0;
+      box-shadow: none;
+      --box-shadow: none;
+      --border-radius: 12px;
+
+      .button {
+        --padding-top: rem(8);
+        --padding-bottom: rem(8);
+        --padding-start: rem(16);
+        --padding-end: rem(12);
+        padding-top: rem(16);
+        min-height: rem(40);
+        padding-bottom: rem(16);
+        border-width: 0;
+        border: none;
+      }
+
+      &.button-has-icon-only {
+        min-width: rem(40) !important;
+        width: rem(40) !important;
+        --padding-start: 8px !important;
+        --padding-end: 8px !important;
+        --padding-start: 8px !important;
+        --padding-end: 8px !important;
+      }
+    }
+
+    &.button-large {
+      border-radius: rem(16);
+      min-height: rem(56);
+      height: rem(56);
+      font-size: rem(18);
+      line-height: rem(24);
+      white-space: normal;
+      border: 0;
+      box-shadow: none;
+      --box-shadow: none;
+      --border-radius: 16px;
+
+      .button {
+        --padding-top: rem(16) !important;
+        --padding-bottom: rem(16) !important;
+        --padding-start: rem(24) !important;
+        --padding-end: rem(24) !important;
+        padding-top: rem(16);
+        max-height: rem(56);
+        padding-bottom: rem(16);
+        border-width: 0;
+        border: none;
+
+        &:after {
+          display: none;
+        }
+      }
+
+      &.button-has-icon-only {
+        min-width: rem(56) !important;
+        width: rem(56) !important;
+        --padding-start: 16px !important;
+        --padding-end: 16px !important;
+        --padding-start: 16px !important;
+        --padding-end: 16px !important;
+      }
+    }
+
+    &.button-space {
+      --padding-start: 32px;
+      --padding-end: 32px;
+    }
+
+    &.button-small {
+      font-size: rem(14);
+      min-height: rem(32);
+      height: rem(32);
+      line-height: rem(16);
+      font-weight: 500;
+      letter-spacing: rem(0);
+      --padding-top: 8px;
+      --padding-bottom: 8px;
+      --padding-start: 8px;
+      --padding-end: 8px;
+      --border-radius: 8px;
+
+      .button {
+        min-height: rem(32);
+        --max-height: 32px;
+        height: auto;
+        padding-top: rem(8);
+        padding-bottom: rem(8);
+        border-width: 0;
+        line-height: rem(16);
+      }
+
+      &.button-has-icon-only {
+        min-width: rem(32) !important;
+        width: rem(32) !important;
+        --padding-top: 4px !important;
+        --padding-bottom: 4px !important;
+        --padding-start: 4px !important;
+        --padding-end: 4px !important;
+      }
+
+      &.h-24 {
+        height: rem(24);
+      }
+    }
+
+    &.button-icon-button {
+      height: auto;
+
+      .button {
+        min-height: rem(24);
+        height: auto;
+      }
+    }
+
+    &.mh-40 {
+      min-height: rem(40);
+    }
+
+    &.no-shadow {
+      box-shadow: none;
+      --box-shadow: none;
+    }
+
+    &.text-weight-normal {
+      font-weight: 400;
+    }
+
+    &.ion-color-danger,
+    .ion-color-danger {
+      //--background: var(--danger-gradient);
+      background-color: var(--danger-gradient) !important;
+      --ion-color-danger: var(--danger-gradient);
+      --ion-color-shade: var(--danger-gradient) !important;
+      --ion-color-tint: var(--danger-gradient) !important;
+
+      &.flat {
+        // background-color: $danger;
+        --ion-color-danger: var(--app-color-danger);
+        --background: var(--app-color-danger);
+        --background-color: var(--app-color-danger);
+        --ion-color-shade: var(--app-color-danger) !important;
+        --ion-color-tint: var(--app-color-danger) !important;
+      }
+    }
+
+    &.ion-color-danger-2,
+    .ion-color-danger-2 {
+      --background: var(--danger-gradient);
+      background-color: var(--danger-gradient);
+      --ion-color-danger-2: var(--danger-gradient);
+      --ion-color-shade: var(--danger-gradient) !important;
+      --ion-color-tint: var(--danger-gradient) !important;
+
+      &.flat {
+        // background-color: $danger;
+        --ion-color-danger-2: var(--app-color-danger-2);
+        --background: var(--app-color-danger-2);
+        --background-color: var(--app-color-danger-2);
+        --ion-color-shade: var(--app-color-danger-2) !important;
+        --ion-color-tint: var(--app-color-danger-2) !important;
+      }
+    }
+
+    &.ion-color-success,
+    .ion-color-success {
+      --background: var(--success-gradient);
+      --ion-color-success: var(--success-gradient);
+      --ion-color-shade: var(--success-gradient) !important;
+      --ion-color-tint: var(--success-gradient) !important;
+
+      &.flat {
+        --background: var(--app-green-color-light) !important;
+        --ion-color-success: var(--app-green-color-light);
+        --ion-color-shade: var(--app-green-color-light) !important;
+        --ion-color-tint: var(--app-green-color-light) !important;
+      }
+    }
+
+    &.ion-color-secondary,
+    .ion-color-secondary {
+      --background: var(--app-secondary-bg);
+      --ion-color-secondary-contrast: var(--app-secondary-color);
+      --ion-color-secondary: var(--app-secondary-bg);
+      --ion-color-shade: var(--app-secondary-bg) !important;
+      --ion-color-tint: var(--app-secondary-bg) !important;
+    }
+
+    &.transparent-bg {
+      --background: transparent;
+      --background-focused: transparent;
+      --background-hover: transparent;
+      --background-activated: transparent;
+      --box-shadow: none;
+    }
+
+    &.modal-button {
+      @extend .ion-color-biz-green !optional;
+      color: var(--ion-color-base);
+      font-size: rem(16);
+      line-height: rem(22);
+      min-height: rem(40);
+      text-transform: none;
+      font-weight: normal;
+      margin-inline-end: 0;
+      padding-top: rem(12);
+      padding-bottom: rem(10);
+
+      .button {
+        font-size: rem(16);
+        line-height: rem(22);
+      }
+    }
+  }
+
+  .transparent-bg {
+    --background: transparent;
+    --background-focused: transparent;
+    --background-hover: transparent;
+    --background-activated: transparent;
+    --box-shadow: none;
+    background: transparent !important;
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .biz {
+    ion-button:hover {
+      box-shadow: $box-shadow-3;
+      filter: brightness(1.1) contrast(1.05);
+      transform: scale(0.98);
+      transition: 0.14s;
+      transition-timing-function: ease-in;
+
+      &.hover-success {
+        border-radius: rem(28);
+        --border-radius: rem(28);
+        background: var(--success-gradient);
+        --background: var(--success-gradient);
+      }
+
+      &.hover-warning {
+        border-radius: rem(28);
+        --border-radius: rem(28);
+        background: var(--danger-gradient);
+        --background: var(--danger-gradient);
+      }
+    }
+
+    a:hover {
+      &.hover-success {
+        box-shadow: $box-shadow-3;
+        filter: brightness(1.1) contrast(1.05);
+        transform: scale(0.98);
+        transition: 0.14s;
+        transition-timing-function: ease-in;
+        border-radius: rem(28);
+        --border-radius: rem(28);
+        background: var(--success-gradient);
+        --background: var(--success-gradient);
+      }
+    }
+  }
+}

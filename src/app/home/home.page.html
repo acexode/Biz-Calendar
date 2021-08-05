@@ -1,0 +1,12 @@
+<ion-header class="ion-no-border" [translucent]="true">
+  <ion-toolbar>
+    <ion-title>{{ page }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  
+  <app-calendar [calendarList]="calendarList" [display]="page"></app-calendar>
+ 
+</ion-content>
+

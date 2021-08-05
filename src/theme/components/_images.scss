@@ -1,0 +1,127 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+ion-icon {
+  &.lg-document-error {
+    height: rem(219);
+    width: rem(157);
+  }
+
+  &.icon-40 {
+    height: rem(40);
+    width: rem(40);
+  }
+
+  &.icon-60 {
+    height: rem(60);
+    width: rem(60);
+  }
+
+  &.icon-72 {
+    height: rem(72);
+    width: rem(72);
+  }
+
+  &.icon-80 {
+    height: rem(80);
+    width: rem(80);
+  }
+
+  &.icon-32 {
+    height: rem(32);
+    width: rem(32);
+  }
+
+  &.icon-24 {
+    height: rem(24);
+    width: rem(24);
+  }
+
+  &.icon-20 {
+    font-size: rem(20);
+    height: rem(20);
+    max-width: rem(20);
+    line-height: rem(20);
+  }
+
+  &.icon-22 {
+    font-size: rem(22);
+    height: rem(22);
+    max-width: rem(22);
+    line-height: rem(22);
+  }
+
+  &.icon-16 {
+    font-size: rem(16);
+    height: rem(16);
+    max-width: rem(20);
+  }
+
+  &.icon-8 {
+    font-size: rem(8);
+    height: rem(8);
+    max-width: rem(8);
+  }
+
+  // Custom icon
+  &.phone-icon {
+    height: rem(120);
+    width: rem(70);
+  }
+
+  &.plic-icon-lg {
+    height: rem(224);
+    width: rem(254);
+  }
+
+  &.check-icon-lg {
+    height: rem(166);
+    width: rem(160);
+  }
+
+  &.svg-absolute-right {
+    > {
+      position: relative;
+
+      >svg {
+        position: absolute;
+        right: 0;
+        margin: 0;
+      }
+    }
+  }
+
+  &.lg-casa-il {
+    height: rem(135);
+  }
+
+  &.lg-case-12-sm {
+    height: rem(112);
+  }
+
+  &.lg-case-12 {
+    height: rem(128);
+  }
+
+  &.lg-card {
+    height: rem(200);
+    width: rem(254);
+  }
+
+  &.lg-logo {
+    height: rem(59);
+    width: rem(200);
+  }
+
+  &.xl-logo {
+    height: rem(225px);
+    width: rem(483px);
+  }
+}
+
+ion-img {
+  &.img-notification {
+    height: rem(70);
+    width: rem(138);
+  }
+}

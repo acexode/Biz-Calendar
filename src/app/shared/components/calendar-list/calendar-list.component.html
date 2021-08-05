@@ -1,0 +1,25 @@
+<ion-row *ngFor="let cal of eventList" class="pb-8 mt-32">
+  <ion-col class="flex flex-column pl-16 pt-16 ion-text-center" size="2">
+    <ion-text>LUN</ion-text>
+    <ion-text>8</ion-text>
+  </ion-col>
+  <ion-col class="p-16 bg-card flex flex-column"  [style.background-color]="cal.bgColor" [style.borderColor]="cal.borderColor" size="10">
+    <ion-row >
+      <ion-col size="11">
+        <div class="info">
+          <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
+        </div>
+        <h5 class="title">
+          {{cal.title}}
+        </h5>
+        <ion-text class="desc">
+          {{cal.desc | slice:0:90}}
+        </ion-text>
+      </ion-col>
+      <ion-col size="1">
+          <ion-text class="small">CNAS</ion-text>
+      </ion-col>
+    </ion-row>
+    
+  </ion-col>
+</ion-row>

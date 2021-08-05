@@ -1,0 +1,43 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.ion-color-biz-primary {
+  --ion-color-base: var(--ion-primary-color-step-100) !important;
+  --ion-color-base-rgb: var(--ion-primary-color-step-100-rgb) !important;
+  --ion-color-contrast: var(--ion-color-primary-contrast);
+  --ion-color-contrast-rgb: rgb(--ion-color-primary-contrast-rgb) !important;
+  --ion-color-shade: var(--ion-primary-color-step-70) !important;
+  --ion-color-tint: var(--ion-primary-color-step-30) !important;
+  --background-hover-opacity: 0.2 !important;
+  --box-shadow: none !important;
+}
+
+.ion-color-biz-disabled-primary {
+  --ion-color-base: var(--ion-neutral-grey-light-b-color) !important;
+  --ion-color-base-rgb: var(--ion-neutral-grey-light-b-color-rgb) !important;
+  --ion-color-contrast: var(--ion-neutral-grey-default-color);
+  --ion-color-contrast-rgb: rgb(--ion-neutral-grey-default-color-rgb) !important;
+  --ion-color-shade: var(--ion-neutral-grey-medium-color) !important;
+  --ion-color-tint: var(--ion-neutral-grey-medium-color) !important;
+  --background-hover-opacity: 0.2 !important;
+  --box-shadow: none !important;
+}
+
+.ion-color-biz-disabled-secondary {
+  --ion-color-base: var(--ion-neutral-grey-default-color) !important;
+  --ion-color-base-rgb: var(--ion-neutral-grey-default-color-rgb) !important;
+  --ion-color-contrast: var(--ion-neutral-grey-light-b-color);
+  --ion-color-contrast-rgb: rgb(--ion-neutral-grey-light-b-color-rgb) !important;
+  --ion-color-shade: var(--ion-neutral-grey-medium-color) !important;
+  --ion-color-tint: var(--ion-neutral-grey-medium-color) !important;
+  --background-hover-opacity: 0.08 !important;
+  --box-shadow: none !important;
+}
+
+.white {
+  color: #fff !important;
+}
+
+.biz-neutral-gray-default-color {
+  color: var(--ion-neutral-grey-default-color) !important;
+}
