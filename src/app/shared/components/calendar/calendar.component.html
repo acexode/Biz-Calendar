@@ -1,0 +1,98 @@
+<ion-row class="cal-header flex">
+  <ion-col size="8" class="flex flex-column">
+    <ion-text class="header-date">
+      martie
+    </ion-text>
+    <ion-text class="header-events">
+      123 programări
+    </ion-text>
+  </ion-col>
+  <ion-col size="4" class="flex">
+    <ion-buttons >
+      <ion-icon size="large"  name="today-v2" class="icon mr-32"></ion-icon>
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    
+  </ion-col >
+  <ion-col *ngIf="display === 'Day'" class="day-info" size="2">
+    LUN <b>8</b>
+  </ion-col>
+</ion-row>
+
+<ion-grid class="calendar-m" *ngIf="display === 'list'" >
+  <app-calendar-list [eventList]="calendarList" ></app-calendar-list>
+</ion-grid>
+<ion-grid class="calendar-m">
+  <ion-row *ngIf="display === 'day'" class="pt-32">
+    <ion-col size="6">
+      <ion-buttons>
+        <ion-button
+          class="btn btn-primary"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+          [excludeDays]="excludeDays"
+        >Previous</ion-button>
+        <ion-button
+        class="btn btn-outline-secondary"
+        mwlCalendarToday
+        [(viewDate)]="viewDate"
+      >
+        Today
+      </ion-button>
+      <ion-button
+        class="btn btn-primary"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()"
+        [excludeDays]="excludeDays"
+      >
+        Next
+      </ion-button>
+      </ion-buttons>
+    </ion-col>
+    <ion-col size="4">
+      <ion-text class="pt-20">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col class="w-100" [ngSwitch]="view" size="12">
+     <mwl-calendar-month-view
+     *ngSwitchCase="CalendarView.Month"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen"
+      (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      [excludeDays]="excludeDays"
+    ></mwl-calendar-month-view> 
+      <mwl-calendar-week-view
+      *ngSwitchCase="CalendarView.Week"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+      [excludeDays]="excludeDays"
+    ></mwl-calendar-week-view>
+      <mwl-calendar-day-view
+      *ngSwitchCase="CalendarView.Day"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)"
+     
+    >
+    </mwl-calendar-day-view>
+
+    </ion-col>
+  </ion-row>
+
+
+  
+</ion-grid>
