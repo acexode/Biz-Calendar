@@ -16,8 +16,8 @@ export class StyleGuidePage implements OnInit {
   };
   config: IonInputConfig = {
     placeholder: 'Placeholder',
-    type: 'tel',
-    inputMode: 'tel',
+    type: 'email',
+    inputMode: 'email',
     size: 100,
     inputLabel: this.label,
     clearable: true,

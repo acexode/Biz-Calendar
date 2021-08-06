@@ -24,5 +24,23 @@
         }
       }
     }
+
+    &.item-has-focus {
+      --border-color: var(--ion-primary-color-step-30) !important;
+
+      ion-label {
+        color: var(--color) !important;
+        --color: var(--color);
+      }
+
+    }
+
+    &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
+      --border-color: var(--ion-primary-color-step-30) !important;
+    }
+
+    &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid {
+      --border-color: var(--ion-primary-error-color) !important;
+    }
   }
 }

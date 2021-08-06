@@ -26,7 +26,7 @@ export interface IonInputConfig {
   autoComplete?: boolean;
   autoCorrect?: boolean;
   autoCapitalize?: string;
-  inputMode?: string;
+  inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url';
   readonly?: string;
   bgwhite?: boolean;
 }
