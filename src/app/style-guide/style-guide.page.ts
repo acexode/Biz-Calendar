@@ -25,7 +25,7 @@ export class StyleGuidePage implements OnInit {
     minLength: 10,
     maxLength: 10,
     bgwhite: true,
-    disabled: true,
+    disabled: false,
   };
   styleForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -34,7 +34,7 @@ export class StyleGuidePage implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.styleForm.disable();
+    // this.styleForm.disable();
   }
 
 }

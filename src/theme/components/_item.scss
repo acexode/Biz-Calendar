@@ -15,6 +15,7 @@
           --color: var(--ion-neutral-grey-default-color);
           color: var(--color);
           opacity: 1 !important;
+          --ion-border-color: var(--ion-primary-color-step-30);
         }
 
         &:not(.ion-invalid) {
