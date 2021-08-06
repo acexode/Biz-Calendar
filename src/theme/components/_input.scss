@@ -12,7 +12,6 @@
     --placeholder-color: var(--ion-neutral-grey-default-color);
     --placeholder-opacity: 1;
 
-    /* --background: red; */
     &:focus-within {
       --padding-start: 8px !important;
       --background: var(--ion-primary-color-step-5);
@@ -22,6 +21,27 @@
     input[disabled] {
       background: var(--ion-neutral-grey-light-b-color);
       color: var(--ion-neutral-grey-medium-color);
+    }
+  }
+
+  .biz-custom-form-group {
+    @include flexbox;
+    width: 100%;
+    @include justify-content(flex-start);
+    @include align-items(center);
+    @include flex-wrap(wrap);
+
+    ion-input {
+      input {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        width: 1%;
+      }
+    }
+
+    ion-icon {
+      height: rem(24);
+      width: rem(24);
     }
   }
 }

@@ -34,10 +34,18 @@
   --box-shadow: none !important;
 }
 
+.error {
+  color: var(--ion-primary-error-color);
+}
+
 .white {
   color: #fff !important;
 }
 
 .biz-neutral-gray-default-color {
   color: var(--ion-neutral-grey-default-color) !important;
+}
+
+.primary-color-step-100 {
+  color: var(--ion-primary-color-step-100);
 }
