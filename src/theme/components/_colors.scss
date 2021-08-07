@@ -49,3 +49,7 @@
 .primary-color-step-100 {
   color: var(--ion-primary-color-step-100);
 }
+
+.isFocused {
+  background: var(--ion-primary-color-step-5) !important;
+}

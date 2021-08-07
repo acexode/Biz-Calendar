@@ -46,6 +46,7 @@
         color: var(--ion-primary-color-step-30) !important;
       }
 
+      // for focused
       ion-row {
         background: var(--ion-primary-color-step-5) !important;
       }
@@ -59,6 +60,10 @@
     &.hasError,
     &.error {
       --border-color: var(--ion-primary-error-color) !important;
+
+      ion-icon {
+        color: var(--ion-primary-error-color) !important;
+      }
     }
   }
 }

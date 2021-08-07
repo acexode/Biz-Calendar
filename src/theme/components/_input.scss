@@ -13,9 +13,8 @@
     --placeholder-opacity: 1;
 
     &:focus-within,
-    &.isFocused {
+    &.isInputFocused {
       --padding-start: 8px !important;
-     /*  --background: var(--ion-primary-color-step-5); */
       --placeholder-opacity: 0;
     }
 

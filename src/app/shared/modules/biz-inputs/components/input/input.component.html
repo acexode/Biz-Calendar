@@ -9,7 +9,12 @@
         ? 'input-label'
         : 'input-label-2'
     " [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
-    <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative">
+    <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
+    [ngClass]="{
+                  ' isFocused':
+                  config?.isInputFocused || false
+              }"
+              >
         <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group">
             <ion-input
               appInputMask
@@ -35,7 +40,7 @@
                 'has-spinners ion-text-center': config?.spinnerConfig,
                 'disabled':
                   config?.disabled || inputReadonly || formGroup?.disabled,
-                  'isFocused':
+                  'isInputFocused':
                   config?.isInputFocused || false
               }"
               (ionFocus)="onMouseDown($event)"></ion-input>
