@@ -9,6 +9,11 @@
     --ion-safe-area-left: 0;
     --ion-border-color: var(--ion-neutral-grey-medium-color);
 
+
+    ion-icon {
+      color: var(--ion-neutral-grey-default-color);
+    }
+
     &.item-interactive-disabled {
       &:not(.item-has-focus) {
         .input-label {
@@ -22,6 +27,10 @@
           --ion-border-color: var(--ion-neutral-white-color) !important;
           --border-color: var(--ion-neutral-white-color) !important;
         }
+
+        ion-icon {
+          color: var(--ion-neutral-grey-default-color) !important;
+        }
       }
     }
 
@@ -30,16 +39,25 @@
 
       ion-label {
         color: var(--color) !important;
-        --color: var(--color);
+        color: var(--color);
       }
 
+      ion-icon {
+        color: var(--ion-primary-color-step-30) !important;
+      }
+
+      ion-row {
+        background: var(--ion-primary-color-step-5) !important;
+      }
     }
 
     &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
       --border-color: var(--ion-primary-color-step-30) !important;
     }
 
-    &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid {
+    &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid,
+    &.hasError,
+    &.error {
       --border-color: var(--ion-primary-error-color) !important;
     }
   }

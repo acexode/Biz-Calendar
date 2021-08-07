@@ -30,6 +30,7 @@ export interface IonInputConfig {
   inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url';
   readonly?: string;
   bgwhite?: boolean;
-  inputIcon?: IonInputIcon;
+  useIcon?: IonInputIcon;
   isInputFocused?: boolean;
+  inputHasError?: boolean;
 }

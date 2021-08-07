@@ -36,13 +36,28 @@
           formControlName="filled"
         ></app-input>
       </div>
-      <div>
+      <div class="mb-20">
         <app-input
           [config]="inputStyleGuide.focusedConfig"
           formControlName="focused"
         ></app-input>
       </div>
+      <div class="mb-40">
+        <app-input
+          [config]="inputStyleGuide.errorConfig"
+          formControlName="focused"
+        ></app-input>
+      </div>
 
+      <!-- with icons -->
+      <ion-text class="s20-h28 poppings-family-font ls-0">with Icons</ion-text>
+      <div class="mt-12 mb-20">
+        <app-input
+          [config]="inputStyleGuide.defaultWithIcon"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <!--  -->
     </form>
     <!--  -->
   </div>

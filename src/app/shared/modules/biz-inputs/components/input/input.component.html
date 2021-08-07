@@ -1,7 +1,8 @@
 <ion-item class="form-group w-100 p-0" [formGroup]="formGroup" lines="full" [ngClass]="{
     'item-mh-40': !config?.inputLabel?.text,
     'disabled-border': config?.disabled || inputReadonly,
-    'bg-white': config?.bgwhite
+    'bg-white': config?.bgwhite,
+    'hasError': config?.inputHasError || false
   }">
     <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
       config?.disabled || inputReadonly || formGroup?.disabled
@@ -10,19 +11,38 @@
     " [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
     <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative">
         <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group">
-            <ion-input appInputMask [maskActive]="config?.maskActive" [type]="config?.type" #input formControlName="input" [placeholder]="config?.placeholder" [maxlength]="config?.maxLength" [minlength]="config?.minLength" [size]="config?.size" [step]="config?.spinnerConfig?.step"
-                      [min]="config?.min" [max]="config?.max" [readonly]="inputReadonly" [clearInput]="config?.clearable" [autocorrect]="config?.autoCorrect" [autocomplete]="config?.autoComplete" [autocapitalize]="
-                config?.autoCapitalize !== '' ? config?.autoCapitalize : 'none'
-              " [inputmode]="config?.inputMode" [class]="config?.inputClasses" [ngClass]="{
+            <ion-input
+              appInputMask
+              [maskActive]="config?.maskActive"
+              [type]="config?.type"
+              #input
+              formControlName="input"
+              [placeholder]="config?.placeholder"
+              [maxlength]="config?.maxLength"
+              [minlength]="config?.minLength"
+              [size]="config?.size"
+              [step]="config?.spinnerConfig?.step"
+              [min]="config?.min"
+              [max]="config?.max"
+              [readonly]="inputReadonly"
+              [clearInput]="config?.clearable"
+              [autocorrect]="config?.autoCorrect"
+              [autocomplete]="config?.autoComplete"
+              [autocapitalize]="
+                config?.autoCapitalize !== '' ? config?.autoCapitalize : 'none'"
+              [inputmode]="config?.inputMode" [class]="config?.inputClasses"
+              [ngClass]="{
                 'has-spinners ion-text-center': config?.spinnerConfig,
                 'disabled':
                   config?.disabled || inputReadonly || formGroup?.disabled,
                   'isFocused':
                   config?.isInputFocused || false
-              }" (ionFocus)="onMouseDown($event)"></ion-input>
+              }"
+              (ionFocus)="onMouseDown($event)"></ion-input>
+
               <ion-icon *ngIf="useIcon"
-                  [name]="config?.inputIcon?.name"
-                  class="error">
+                  [name]="config?.useIcon?.name"
+                  [class]="config?.useIcon?.classes">
                 </ion-icon>
         </ion-col>
     </ion-row>

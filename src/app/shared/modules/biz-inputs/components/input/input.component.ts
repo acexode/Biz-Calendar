@@ -182,6 +182,6 @@ export class InputComponent implements OnInit {
   }
 
   get useIcon(): boolean {
-    return this.config.hasOwnProperty('inputIcon') ? true : false;
+    return this.config.hasOwnProperty('useIcon') ? true : false;
   }
 }

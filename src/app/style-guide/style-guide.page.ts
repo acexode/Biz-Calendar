@@ -21,7 +21,7 @@ export class StyleGuidePage implements OnInit {
     inputMode: 'text',
     size: 100,
     inputLabel: this.label,
-    clearable: true,
+    clearable: false,
     inputClasses: '',
     minLength: 10,
     maxLength: 10,
