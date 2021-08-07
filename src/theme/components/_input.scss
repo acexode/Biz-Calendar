@@ -12,13 +12,15 @@
     --placeholder-color: var(--ion-neutral-grey-default-color);
     --placeholder-opacity: 1;
 
-    &:focus-within {
+    &:focus-within,
+    &.isFocused {
       --padding-start: 8px !important;
       --background: var(--ion-primary-color-step-5);
       --placeholder-opacity: 0;
     }
 
-    input[disabled] {
+    input[disabled],
+    .disabled {
       background: var(--ion-neutral-grey-light-b-color);
       color: var(--ion-neutral-grey-medium-color);
     }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInputConfig } from '../shared/models/components/ion-input-config';
 import { IonTextItem } from '../shared/models/components/ion-text-item';
+import { inputStyleGuideConfigurations } from './input-config-data/input-config-data';
 
 @Component({
   selector: 'app-style-guide',
@@ -16,8 +17,8 @@ export class StyleGuidePage implements OnInit {
   };
   config: IonInputConfig = {
     placeholder: 'Placeholder',
-    type: 'email',
-    inputMode: 'email',
+    type: 'text',
+    inputMode: 'text',
     size: 100,
     inputLabel: this.label,
     clearable: true,
@@ -27,8 +28,12 @@ export class StyleGuidePage implements OnInit {
     bgwhite: true,
     disabled: false,
   };
+  inputStyleGuide = inputStyleGuideConfigurations;
   styleForm: FormGroup = this.fb.group({
+    text: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
+    filled: 'Lorem ipsum',
+    focused: 'Type here',
     password: ['', Validators.required],
   });
   constructor(private fb: FormBuilder) { }

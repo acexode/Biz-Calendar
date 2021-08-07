@@ -15,11 +15,13 @@
                 config?.autoCapitalize !== '' ? config?.autoCapitalize : 'none'
               " [inputmode]="config?.inputMode" [class]="config?.inputClasses" [ngClass]="{
                 'has-spinners ion-text-center': config?.spinnerConfig,
-                'disabled-input-ph':
-                  config?.disabled || inputReadonly || formGroup?.disabled
+                'disabled':
+                  config?.disabled || inputReadonly || formGroup?.disabled,
+                  'isFocused':
+                  config?.isInputFocused || false
               }" (ionFocus)="onMouseDown($event)"></ion-input>
-              <ion-icon
-                  name="warning-custom"
+              <ion-icon *ngIf="useIcon"
+                  [name]="config?.inputIcon?.name"
                   class="error">
                 </ion-icon>
         </ion-col>

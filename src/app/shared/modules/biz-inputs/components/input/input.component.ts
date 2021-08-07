@@ -7,6 +7,7 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { distinctCheckObj } from 'src/app/core/helpers/distinct-check.helper';
 import { get } from 'lodash';
 import { removeMask } from 'src/app/shared/data/input-mask-remover';
+
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
@@ -180,4 +181,7 @@ export class InputComponent implements OnInit {
     return get(this.config, 'disabled', false);
   }
 
+  get useIcon(): boolean {
+    return this.config.hasOwnProperty('inputIcon') ? true : false;
+  }
 }

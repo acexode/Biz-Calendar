@@ -1,3 +1,4 @@
+import { IonInputIcon } from './ion-input-icon-option';
 import { IonTextItem } from './ion-text-item';
 
 export interface IonInputConfig {
@@ -29,4 +30,6 @@ export interface IonInputConfig {
   inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url';
   readonly?: string;
   bgwhite?: boolean;
+  inputIcon?: IonInputIcon;
+  isInputFocused?: boolean;
 }

@@ -14,18 +14,40 @@
     </ion-toolbar>
   </ion-header>
 
-  <div id="container forInputs px-20">
+  <div id="container" class="forInputs px-32 mt-20">
+    <ion-text class="s40-h40 poppings-family-font ls-0">Input fields</ion-text>
     <!-- inputs -->
-    <form class="mt-32 mb-90 p-32" [formGroup]="styleForm">
-      <app-input
-        [config]="config"
-        formControlName="email"
-      ></app-input>
+    <form class="mt-32 mb-90" [formGroup]="styleForm">
+      <div class="mb-20">
+        <app-input
+          [config]="config"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <div>
+        <app-input
+          [config]="inputStyleGuide.disabledConfig"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <div class="mb-20">
+        <app-input
+          [config]="inputStyleGuide.filledConfig"
+          formControlName="filled"
+        ></app-input>
+      </div>
+      <div>
+        <app-input
+          [config]="inputStyleGuide.focusedConfig"
+          formControlName="focused"
+        ></app-input>
+      </div>
+
     </form>
     <!--  -->
   </div>
 
-  <div class="mt-32 px-20">
+  <div class="mt-32 px-32">
     <ion-text class="s40-h40 poppings-family-font ls-0">Typography</ion-text>
     <h4 class="mt-56 mb-24">
       H4 - Poppins Reg., 25 pt. <br>
@@ -38,7 +60,7 @@
       Line height 28 / Letter spacing 0 <br>
       Știm cât de importantă este pentru
     </h5>
-    <div class="pb-24">
+    <div class="mb-24">
       <ion-text class="s18-h24 roboto-family-font text-weight-400 ls-02">
         Body - Roboto, 18 pt. <br>
         Line height 24 / Letter spacing - 0.2 <br>
@@ -89,8 +111,8 @@
 
 
 
-  <div id="container forButtons">
-
+  <div id="container" class="forButtons mt-60 px-32">
+    <ion-text class="s40-h40 poppings-family-font ls-0">Buttons</ion-text>
 
     <!-- small btns -->
     <div class="mt-32">
