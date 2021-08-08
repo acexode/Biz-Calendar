@@ -23,6 +23,11 @@
           --ion-border-color: var(--ion-primary-color-step-30);
         }
 
+        // for disble
+        ion-row {
+          background: var(--ion-neutral-grey-light-b-color) !important;
+        }
+
         &:not(.ion-invalid) {
           --ion-border-color: var(--ion-neutral-white-color) !important;
           --border-color: var(--ion-neutral-white-color) !important;

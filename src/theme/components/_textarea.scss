@@ -2,12 +2,13 @@
 @import '../mixins/mixins';
 
 .biz {
-  ion-input {
+  ion-textarea {
     --padding-start: 0;
     font-family: var(--ion-font-roboto-family);
     font-size: rem(16);
     line-height: rem(24);
     letter-spacing: 0;
+    min-height: rem(80);
 
     --placeholder-color: var(--ion-neutral-grey-default-color);
     --placeholder-opacity: 1;
@@ -18,32 +19,26 @@
       --placeholder-opacity: 0;
     }
 
-    input[disabled],
+    textArea[disabled],
     .disabled {
       background: var(--ion-neutral-grey-light-b-color);
       color: var(--ion-neutral-grey-medium-color);
       --padding-start: 8px !important;
     }
-  }
 
-  .biz-custom-form-group {
-    @include flexbox;
-    width: 100%;
-    @include justify-content(flex-start);
-    @include align-items(center);
-    @include flex-wrap(wrap);
+    textarea,
+    .native-textarea {
+      min-height: rem(80);
 
-    ion-input {
-      input {
-        -ms-flex: 1 1 auto;
-        flex: 1 1 auto;
-        width: 1%;
+      &::-webkit-resizer {
+        width: 12px;
+        height: 12px;
+        background-image: url('~src/assets/custom-icons/textarea-resize-icon.svg');
+        background-repeat: no-repeat;
+        background-size: 100%;
       }
-    }
 
-    ion-icon {
-      height: rem(24);
-      width: rem(24);
+      resize: vertical;
     }
   }
 }

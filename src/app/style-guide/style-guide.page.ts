@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInputConfig } from '../shared/models/components/ion-input-config';
 import { IonTextItem } from '../shared/models/components/ion-text-item';
+import { TextAreaConfig } from '../shared/models/components/ion-textarea-config';
 import { inputStyleGuideConfigurations } from './input-config-data/input-config-data';
+import { ionTextAreaConfigData } from './input-config-data/textarea-cofig-data';
 
 @Component({
   selector: 'app-style-guide',
@@ -29,6 +31,7 @@ export class StyleGuidePage implements OnInit {
     disabled: false,
   };
   inputStyleGuide = inputStyleGuideConfigurations;
+  textAreaConfig = ionTextAreaConfigData;
   styleForm: FormGroup = this.fb.group({
     text: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],

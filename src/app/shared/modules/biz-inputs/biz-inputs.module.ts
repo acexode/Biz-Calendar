@@ -5,16 +5,17 @@ import { IonicModule } from '@ionic/angular';
 import { InputComponent } from './components/input/input.component';
 import { BizInputsService } from './services/biz-inputs.service';
 import { InputMaskDirective } from './directives/input-mask.directive';
+import { TextareaComponent } from './components/textarea/textarea.component';
 
 @NgModule({
-  declarations: [InputComponent, InputMaskDirective],
+  declarations: [InputComponent, InputMaskDirective, TextareaComponent],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
     FormsModule
   ],
-  exports: [InputComponent],
+  exports: [InputComponent, TextareaComponent],
   providers: [BizInputsService],
 })
 export class BizInputsModule { }

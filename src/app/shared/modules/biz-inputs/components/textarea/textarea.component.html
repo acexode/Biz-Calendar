@@ -1,0 +1,34 @@
+<ion-item [formGroup]="formGroup" lines="full" class="form-group w-100 p-0" [ngClass]="{
+    'hasError': config?.hasError || false
+  }">
+ <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
+      config?.disabled || inputReadonly || formGroup?.disabled
+        ? 'input-label'
+        : 'input-label-2'
+    " [color]="config?.textAreaLabel?.color" *ngIf="config?.textAreaLabel?.text">{{ config?.textAreaLabel?.text }}</ion-label>
+   <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
+    [ngClass]="{
+                  ' isFocused':
+                  config?.isInputFocused || false
+              }"
+              >
+        <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group">
+          <ion-textarea
+            formControlName="textarea"
+            rows="4"
+            cols="20"
+            class="bg-grey-medium bottom-1px-solid px-5 w-100 top-radius-4"
+            [autoGrow]="config?.autoGrow || false"
+            placeholder="Completează"
+            [inputmode]="config?.inputMode"
+            [class]="config?.textAreaClasses"
+            [placeholder]="config?.placeholder"
+            [maxlength]="config?.maxLength"
+            [minlength]="config?.minLength"
+            [readonly]="inputReadonly"
+            >
+          </ion-textarea>
+        </ion-col>
+    </ion-row>
+
+</ion-item>

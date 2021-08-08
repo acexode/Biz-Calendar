@@ -13,11 +13,26 @@
       <ion-title size="large">Style Guide</ion-title>
     </ion-toolbar>
   </ion-header>
-
   <div id="container" class="forInputs px-32 mt-20">
-    <ion-text class="s40-h40 poppings-family-font ls-0">Input fields</ion-text>
     <!-- inputs -->
     <form class="mt-32 mb-90" [formGroup]="styleForm">
+      <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.default" formControlName="text"></app-textarea>
+      </div>
+       <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.disabledConfig" formControlName="text"></app-textarea>
+      </div>
+       <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.filledConfig" formControlName="filled"></app-textarea>
+      </div>
+       <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.focusedConfig" formControlName="filled"></app-textarea>
+      </div>
+      <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.errorConfig" formControlName="filled"></app-textarea>
+      </div>
+      <!-- inputs -->
+      <ion-text class="s40-h40 poppings-family-font ls-0">Input fields</ion-text>
       <div class="mb-20">
         <app-input
           [config]="config"
