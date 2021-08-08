@@ -6,7 +6,7 @@
         ? 'input-label'
         : 'input-label-2'
     " [color]="config?.textAreaLabel?.color" *ngIf="config?.textAreaLabel?.text">{{ config?.textAreaLabel?.text }}</ion-label>
-   <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
+   <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative biz-custom-form-group"
     [ngClass]="{
                   ' isFocused':
                   config?.isInputFocused || false
