@@ -36,6 +36,10 @@
         ion-icon {
           color: var(--ion-neutral-grey-default-color) !important;
         }
+
+        .pull-tab {
+          display: none !important;
+        }
       }
     }
 
@@ -54,6 +58,12 @@
       // for focused
       ion-row {
         background: var(--ion-primary-color-step-5) !important;
+
+        ion-col {
+          .pull-tab {
+            border-top: 10px solid #1EA5C7 !important;
+          }
+        }
       }
     }
 
@@ -68,6 +78,10 @@
 
       ion-icon {
         color: var(--ion-primary-error-color) !important;
+      }
+
+      .pull-tab {
+        border-top: 10px solid #D5DBDE !important;
       }
     }
   }

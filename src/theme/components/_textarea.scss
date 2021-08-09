@@ -2,8 +2,30 @@
 @import '../mixins/mixins';
 
 .biz {
-  .biz-custom-form-group {
-    padding-bottom: 5px;
+  .biz-custom-form-group-textarea {
+    padding-bottom: 4px;
+
+    .wrap {
+      position: relative;
+    }
+
+    .pull-tab {
+      height: 0px;
+      width: 0px;
+      border-top: 10px solid #97A1A6;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      -webkit-transform: rotate(-45deg);
+      position: absolute;
+      bottom: 0;
+      right: -1px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .pull-tab:hover {
+      cursor: pointer;
+    }
   }
 
   ion-textarea {
@@ -13,12 +35,13 @@
     line-height: rem(24);
     letter-spacing: 0;
     min-height: rem(80);
+    position: relative;
 
     --placeholder-color: var(--ion-neutral-grey-default-color);
     --placeholder-opacity: 1;
 
     &:focus-within,
-    &.isInputFocused {
+    &.isFocused {
       --padding-start: 8px !important;
       --placeholder-opacity: 0;
     }
@@ -34,12 +57,15 @@
     .native-textarea {
       min-height: rem(80);
 
-      &::-webkit-resizer {
-        width: 12px;
-        height: 12px;
-        background-image: url('~src/assets/custom-icons/textarea-resize-icon.svg');
+      /* &::-webkit-resizer {
+        width: 12px !important;
+        height: 12px !important;
+        background-image: url('~src/assets/custom-icons/textarea-resize-icon.svg') !important;
         background-repeat: no-repeat;
-        background-size: 100%;
+        background-size: contain !important;
+      } */
+      &::-webkit-resizer {
+        display: none !important;
       }
 
       resize: vertical;

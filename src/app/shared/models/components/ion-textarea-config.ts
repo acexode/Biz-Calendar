@@ -10,6 +10,6 @@ export interface TextAreaConfig {
   minLength?: number;
   disabled?: boolean;
   readonly?: boolean;
-  isInputFocused?: boolean;
+  isFocused?: boolean;
   hasError?: boolean;
 }

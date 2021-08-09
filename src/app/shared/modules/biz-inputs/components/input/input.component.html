@@ -2,7 +2,8 @@
     'item-mh-40': !config?.inputLabel?.text,
     'disabled-border': config?.disabled || inputReadonly,
     'bg-white': config?.bgwhite,
-    'hasError': config?.inputHasError || false
+    'hasError': config?.inputHasError || false,
+    'item-has-focus': config?.isInputFocused || false
   }">
     <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
       config?.disabled || inputReadonly || formGroup?.disabled

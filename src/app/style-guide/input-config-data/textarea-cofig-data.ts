@@ -43,7 +43,7 @@ export const ionTextAreaConfigData: TextAreaStyleGuideCong =
     },
     placeholder: 'Type Here',
     disabled: false,
-    isInputFocused: true
+    isFocused: true
   },
   errorConfig: {
     textAreaLabel: {
