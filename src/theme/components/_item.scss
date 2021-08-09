@@ -46,6 +46,7 @@
     &.item-has-focus {
       --border-color: var(--ion-primary-color-step-30) !important;
 
+      // --highlight-color-focused
       ion-label {
         color: var(--color) !important;
         color: var(--color);
@@ -61,7 +62,7 @@
 
         ion-col {
           .pull-tab {
-            border-top: 10px solid #1EA5C7 !important;
+            border-top: 10px solid #ABE8F7 !important;
           }
         }
       }
