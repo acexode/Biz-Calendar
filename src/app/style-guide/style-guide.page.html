@@ -13,95 +13,8 @@
       <ion-title size="large">Style Guide</ion-title>
     </ion-toolbar>
   </ion-header>
-  <div id="container" class="forInputs px-32 mt-20">
-    <!-- inputs -->
-    <form class="mt-32 mb-90" [formGroup]="styleForm">
-      <div class="mb-20">
-        <app-textarea [config]="textAreaConfig.default" formControlName="text"></app-textarea>
-      </div>
-       <div class="mb-20">
-        <app-textarea [config]="textAreaConfig.disabledConfig" formControlName="text"></app-textarea>
-      </div>
-       <div class="mb-20">
-        <app-textarea [config]="textAreaConfig.filledConfig" formControlName="filled"></app-textarea>
-      </div>
-       <div class="mb-20">
-        <app-textarea [config]="textAreaConfig.focusedConfig" formControlName="filled"></app-textarea>
-      </div>
-      <div class="mb-52">
-        <app-textarea [config]="textAreaConfig.errorConfig" formControlName="filled"></app-textarea>
-      </div>
-      <!-- inputs -->
-      <ion-text class="s40-h40 poppings-family-font ls-0">Input fields</ion-text>
-      <div class="mt-32 mb-20">
-        <app-input
-          [config]="config"
-          formControlName="text"
-        ></app-input>
-      </div>
-      <div>
-        <app-input
-          [config]="inputStyleGuide.disabledConfig"
-          formControlName="text"
-        ></app-input>
-      </div>
-      <div class="mb-20">
-        <app-input
-          [config]="inputStyleGuide.filledConfig"
-          formControlName="filled"
-        ></app-input>
-      </div>
-      <div class="mb-20">
-        <app-input
-          [config]="inputStyleGuide.focusedConfig"
-          formControlName="focused"
-        ></app-input>
-      </div>
-      <div class="mb-40">
-        <app-input
-          [config]="inputStyleGuide.errorConfig"
-          formControlName="focused"
-        ></app-input>
-      </div>
-
-      <!-- with icons -->
-      <ion-text class="s20-h28 poppings-family-font ls-0">with Icons</ion-text>
-      <div class="mt-12 mb-20">
-        <app-input
-          [config]="inputStyleGuide.defaultWithIcon"
-          formControlName="text"
-        ></app-input>
-      </div>
-      <div class="mb-20">
-        <app-input
-          [config]="inputStyleGuide.disabledConfigWithIcon"
-          formControlName="text"
-        ></app-input>
-      </div>
-      <div class="mb-20">
-        <app-input
-          [config]="inputStyleGuide.filledWithIcon"
-          formControlName="filled"
-        ></app-input>
-      </div>
-      <div class="mb-20">
-        <app-input
-          [config]="inputStyleGuide.focusedConfigWithIcon"
-          formControlName="focused"
-        ></app-input>
-      </div>
-      <div class="mb-20">
-        <app-input
-          [config]="inputStyleGuide.errorConfigWithIcon"
-          formControlName="text"
-        ></app-input>
-      </div>
-      <!--  -->
-    </form>
-    <!--  -->
-  </div>
-
-  <div class="mt-32 px-32">
+  <div class="px-32 mt-20">
+    <div class="mt-32 mb-52">
     <ion-text class="s40-h40 poppings-family-font ls-0">Typography</ion-text>
     <h4 class="mt-56 mb-24">
       H4 - Poppins Reg., 25 pt. <br>
@@ -161,6 +74,95 @@
         All caps / Letter spacing 0
       </ion-text>
     </div>
+  </div>
+  <!--  -->
+    <!-- form -->
+    <form class="mt-32 mb-90" [formGroup]="styleForm">
+      <!-- inputs -->
+      <ion-text class="s40-h40 poppings-family-font ls-0">Input fields</ion-text>
+      <div class="mt-32 mb-20">
+        <app-input
+          [config]="config"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <div>
+        <app-input
+          [config]="inputStyleGuide.disabledConfig"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <div class="mb-20">
+        <app-input
+          [config]="inputStyleGuide.filledConfig"
+          formControlName="filled"
+        ></app-input>
+      </div>
+      <div class="mb-20">
+        <app-input
+          [config]="inputStyleGuide.focusedConfig"
+          formControlName="focused"
+        ></app-input>
+      </div>
+      <div class="mb-40">
+        <app-input
+          [config]="inputStyleGuide.errorConfig"
+          formControlName="focused"
+        ></app-input>
+      </div>
+
+      <!-- with icons -->
+      <ion-text class="s20-h28 poppings-family-font ls-0">with Icons</ion-text>
+      <div class="mt-12 mb-20">
+        <app-input
+          [config]="inputStyleGuide.defaultWithIcon"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <div class="mb-20">
+        <app-input
+          [config]="inputStyleGuide.disabledConfigWithIcon"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <div class="mb-20">
+        <app-input
+          [config]="inputStyleGuide.filledWithIcon"
+          formControlName="filled"
+        ></app-input>
+      </div>
+      <div class="mb-20">
+        <app-input
+          [config]="inputStyleGuide.focusedConfigWithIcon"
+          formControlName="focused"
+        ></app-input>
+      </div>
+      <div class="mb-20 mb-40">
+        <app-input
+          [config]="inputStyleGuide.errorConfigWithIcon"
+          formControlName="text"
+        ></app-input>
+      </div>
+      <!--  -->
+      <!-- textarea -->
+      <ion-text class="s20-h28 poppings-family-font ls-0">Text area</ion-text>
+      <div class="mt-24 mb-20">
+        <app-textarea [config]="textAreaConfig.default" formControlName="text"></app-textarea>
+      </div>
+       <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.disabledConfig" formControlName="text"></app-textarea>
+      </div>
+       <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.filledConfig" formControlName="filled"></app-textarea>
+      </div>
+       <div class="mb-20">
+        <app-textarea [config]="textAreaConfig.focusedConfig" formControlName="filled"></app-textarea>
+      </div>
+      <div class="">
+        <app-textarea [config]="textAreaConfig.errorConfig" formControlName="filled"></app-textarea>
+      </div>
+    </form>
+    <!--  -->
   </div>
 
 
