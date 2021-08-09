@@ -1,4 +1,4 @@
-<ion-split-pane contentId="main-content">
+<ion-split-pane *ngIf="!isTablet" contentId="main-content">
   <ion-menu contentId="main-content" type="overlay">
     <ion-content>
       <ion-list id="inbox-list">
@@ -26,3 +26,7 @@
   </ion-menu>
   <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-split-pane>
+<div *ngIf="isTablet">
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+
+</div>
