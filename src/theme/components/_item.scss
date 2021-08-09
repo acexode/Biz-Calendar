@@ -16,7 +16,9 @@
 
     &.item-interactive {
       &.item-has-value {
-        --border-color: var(--ion-primary-color-step-30) !important;
+        &:not(.ion-invalid.ng-invalid) {
+          --border-color: var(--ion-primary-color-step-30);
+        }
       }
     }
 
@@ -32,26 +34,26 @@
 
         // for disble
         ion-row {
-          background: var(--ion-neutral-grey-light-b-color) !important;
+          background: var(--ion-neutral-grey-light-b-color);
         }
 
         &:not(.ion-invalid) {
-          --ion-border-color: var(--ion-neutral-white-color) !important;
-          --border-color: var(--ion-neutral-white-color) !important;
+          --ion-border-color: var(--ion-neutral-white-color);
+          --border-color: var(--ion-neutral-white-color);
         }
 
         ion-icon {
-          color: var(--ion-neutral-grey-default-color) !important;
+          color: var(--ion-neutral-grey-default-color);
         }
 
         .pull-tab {
-          display: none !important;
+          display: none;
         }
       }
     }
 
     &.item-has-focus {
-      --border-color: var(--ion-primary-color-step-30) !important;
+      --border-color: var(--ion-primary-color-step-30);
 
       // --highlight-color-focused
       ion-label {
@@ -76,7 +78,7 @@
     }
 
     &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
-      --border-color: var(--ion-primary-color-step-30) !important;
+      --border-color: var(--ion-primary-color-step-30);
     }
 
     &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid,
@@ -89,7 +91,7 @@
       }
 
       .pull-tab {
-        border-top: 10px solid #D5DBDE !important;
+        border-top: 10px solid #F23D3D !important;
       }
     }
   }

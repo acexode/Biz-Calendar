@@ -15,8 +15,11 @@
                   ' isFocused':
                   config?.isInputFocused || false
               }"
-              >
-        <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group">
+      >
+        <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group" [ngClass]="{
+                  ' useIcon':
+                  config?.useIcon || false
+              }">
             <ion-input
               appInputMask
               [maskActive]="config?.maskActive"
