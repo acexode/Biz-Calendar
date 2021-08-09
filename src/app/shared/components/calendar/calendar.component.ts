@@ -14,7 +14,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     isSameMonth,
     addHours,
   } from 'date-fns';
-  import { Subject } from 'rxjs';
+  import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   import {
       CalendarDateFormatter,
@@ -23,6 +23,8 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     CalendarEventTimesChangedEvent,
     CalendarView,
   } from 'angular-calendar';
+import { ActivatedRoute, Router } from '@angular/router';
+import {map} from 'rxjs/operators';
   const colors: any = {
     green: {
       primary: '#D5EED1',
@@ -57,6 +59,15 @@ export class CalendarComponent implements OnInit {
     @Input() display;
     @Input() calendarList;
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+    activatedPath  = '';
+    isTablet = false;
+    public calendarPages = [
+      { title: 'Listă', url: '/list', icon: '1-day' },
+      { title: 'Zi', url: '/Day', icon: 'schedule' },
+      { title: 'Săptămână', url: '/Week', icon: '5-days' },
+      { title: 'Lună', url: '/Month', icon: 'Month' },
+      { title: 'Comparativ', url: '/comparative', icon: 'coparativ' },
+    ];
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
@@ -135,9 +146,16 @@ export class CalendarComponent implements OnInit {
     eventSource;
     viewTitle;
     isToday: boolean;
-    constructor() {}
+    constructor(route: ActivatedRoute, private router: Router) {
+      this.activatedPath = '/' + route.snapshot.paramMap.get('id');
+      console.log(this.activatedPath);
+    }
 
     ngOnInit() {
+      this.isTablet = window.innerWidth >= 768 ? true : false;
+      window.addEventListener('resize', ()=>{
+        this.isTablet = window.innerWidth >= 768 ? true : false;
+      });
         console.log(this.display);
         if(this.display === '3-day'){
             const day = new Date().getDay();
@@ -147,6 +165,9 @@ export class CalendarComponent implements OnInit {
 
             this.setView(this.CalendarView[this.display]);
         }
+    }
+    navigate(path){
+      this.router.navigate(['/home' +path]);
     }
     // angular calendar
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

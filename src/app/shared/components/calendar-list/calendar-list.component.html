@@ -5,9 +5,16 @@
   </ion-col>
   <ion-col class="p-16 bg-card flex flex-column"  [style.background-color]="cal.bgColor" [style.borderColor]="cal.borderColor" size="10">
     <ion-row >
-      <ion-col size="11">
-        <div class="info">
-          <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
+      <ion-col size="12">
+        <div class="info flex">
+          <div>
+            <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
+          </div>
+          <div class="pt-4">
+            
+            <ion-icon name="today-v2" ></ion-icon>
+            <ion-icon color="success" name="cnas" ></ion-icon>            
+          </div>
         </div>
         <h5 class="title">
           {{cal.title}}
@@ -16,9 +23,7 @@
           {{cal.desc | slice:0:90}}
         </ion-text>
       </ion-col>
-      <ion-col size="1">
-          <ion-text class="small">CNAS</ion-text>
-      </ion-col>
+     
     </ion-row>
     
   </ion-col>
