@@ -14,6 +14,11 @@
       color: var(--ion-neutral-grey-default-color);
     }
 
+    &.item-interactive,
+    &.item-has-value {
+      --border-color: var(--ion-primary-color-step-30) !important;
+    }
+
     &.item-interactive-disabled {
       &:not(.item-has-focus) {
         .input-label {
