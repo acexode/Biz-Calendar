@@ -109,7 +109,7 @@ export class CalendarComponent implements OnInit {
         // draggable: true,
         // },
         {
-        start: startOfDay(2),
+        start: new Date(2021,7,10,10,30),
         end: addHours(new Date(), 2),
         title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
         color: colors.green,
@@ -119,6 +119,12 @@ export class CalendarComponent implements OnInit {
         start: new Date(),
         title: 'An event with no end dated',
         color: colors.yellow,
+        actions: this.actions,
+        },
+        {
+        start: addHours(new Date(), 1),
+        title: 'An event with no end dated',
+        color: colors.blue,
         actions: this.actions,
         },
         {
@@ -149,6 +155,7 @@ export class CalendarComponent implements OnInit {
     constructor(route: ActivatedRoute, private router: Router) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       console.log(this.activatedPath);
+      console.log(startOfDay(10));
     }
 
     ngOnInit() {
