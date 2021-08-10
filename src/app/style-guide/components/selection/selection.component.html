@@ -14,12 +14,22 @@
     </ion-toolbar>
   </ion-header>
   <div class="w-100 p-32" [formGroup]="selectionForm">
-    <app-select
-    formControlName="select"
-    [config]="config"
-    formControlName="select"
-    [options]="options"
-    class="w-100"
-    ></app-select>
+    <div class="w-100">
+      <app-select
+      formControlName="select"
+      [config]="config"
+      formControlName="select"
+      [options]="options"
+      class="w-100"
+      ></app-select>
+    </div>
+    <div class="w-100 my-20">
+      <ion-list>
+        <ion-item *ngFor="let entry of form">
+          <ion-label>{{entry.val}}</ion-label>
+          <ion-checkbox slot="start" color="biz-primary" class="margin-inline-end-12" mode="md"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    </div>
   </div>
 </ion-content>

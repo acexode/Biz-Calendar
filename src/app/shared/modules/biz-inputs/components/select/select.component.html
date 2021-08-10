@@ -4,6 +4,7 @@
     'disabled-border': config?.disabled || inputReadonly || formGroup?.disabled
   }"
   [formGroup]="formGroup"
+  lines="none"
 >
   <ion-label
     class="s12pt8-h16 roboto-family-font text-weight-medium mb-16"
@@ -26,7 +27,7 @@
       cancelText="Renunță"
       [compareWith]="compareWithFn"
       formControlName="select"
-      [multiple]="config?.multiple"
+      [multiple]="config?.multiple || true"
       [disabled]="config?.disabled"
       class="mw-100 w-100"
       [ngClass]="{

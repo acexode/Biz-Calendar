@@ -4,6 +4,13 @@
 .biz {
   ion-alert {
     .alert-wrapper {
+      border-radius: 16px !important;
+      font-family: var(--ion-font-roboto-family) !important;
+
+      h2 {
+        font-size: rem(20) !important;
+        line-height: rem(28) !important;
+      }
 
       .alert-checkbox-group,
       .alert-radio-group {

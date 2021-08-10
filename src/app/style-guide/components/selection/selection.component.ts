@@ -40,6 +40,11 @@ export class SelectionComponent implements OnInit {
     focused: 'Type here',
     password: ['', Validators.required],
   });
+  public form = [
+    { val: 'Pepperoni', isChecked: true },
+    { val: 'Sausage', isChecked: false },
+    { val: 'Mushroom', isChecked: false }
+  ];
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() { }

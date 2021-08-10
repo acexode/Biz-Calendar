@@ -2,7 +2,7 @@
 @import '../mixins/mixins';
 
 ion-select {
-  font-family: var(--ion-font-roboto-family);
+  font-family: var(--ion-font-roboto-family) !important;
   --app-select-placeholder-font-size: 16px;
   --app-select-placeholder-line-height: 22px;
   /* --border-radius: 4px 4px 0 0; */
