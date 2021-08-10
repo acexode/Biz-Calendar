@@ -1,58 +1,63 @@
-<ion-item class="form-group w-100 p-0" [formGroup]="formGroup" lines="full" [ngClass]="{
-    'item-mh-40': !config?.inputLabel?.text,
-    'disabled-border': config?.disabled || inputReadonly,
-    'bg-white': config?.bgwhite,
-    'hasError': config?.inputHasError || false,
-    'item-has-focus': config?.isInputFocused || false
-  }">
-    <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
-      config?.disabled || inputReadonly || formGroup?.disabled
-        ? 'input-label'
-        : 'input-label-2'
-    " [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
-    <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
-    [ngClass]="{
-                  ' isFocused':
-                  config?.isInputFocused || false
-              }"
-      >
-        <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group" [ngClass]="{
-                  ' useIcon':
-                  config?.useIcon || false
-              }">
-            <ion-input
-              appInputMask
-              [maskActive]="config?.maskActive"
-              [type]="config?.type"
-              #input
-              formControlName="input"
-              [placeholder]="config?.placeholder"
-              [maxlength]="config?.maxLength"
-              [minlength]="config?.minLength"
-              [size]="config?.size"
-              [step]="config?.spinnerConfig?.step"
-              [min]="config?.min"
-              [max]="config?.max"
-              [readonly]="inputReadonly"
-              [clearInput]="config?.clearable"
-              [autocorrect]="config?.autoCorrect"
-              [autocomplete]="config?.autoComplete"
-              [autocapitalize]="
-                config?.autoCapitalize !== '' ? config?.autoCapitalize : 'none'"
-              [inputmode]="config?.inputMode" [class]="config?.inputClasses"
-              [ngClass]="{
-                'has-spinners ion-text-center': config?.spinnerConfig,
-                'disabled':
-                  config?.disabled || inputReadonly || formGroup?.disabled,
-                  'isInputFocused':
-                  config?.isInputFocused || false
-              }"
-              (ionFocus)="onMouseDown($event)"></ion-input>
+<div class="w-100 p-0 flex flex-column">
+  <ion-item class="form-group w-100 p-0" [formGroup]="formGroup" lines="full" [ngClass]="{
+      'item-mh-40': !config?.inputLabel?.text,
+      'disabled-border': config?.disabled || inputReadonly,
+      'bg-white': config?.bgwhite,
+      'hasError': config?.inputHasError || false,
+      'item-has-focus': config?.isInputFocused || false
+    }">
+      <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
+        config?.disabled || inputReadonly || formGroup?.disabled
+          ? 'input-label'
+          : 'input-label-2'
+      " [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
+      <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
+      [ngClass]="{
+                    ' isFocused':
+                    config?.isInputFocused || false
+                }"
+        >
+          <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group" [ngClass]="{
+                    ' useIcon':
+                    config?.useIcon || false
+                }">
+              <ion-input
+                appInputMask
+                [maskActive]="config?.maskActive"
+                [type]="config?.type"
+                #input
+                formControlName="input"
+                [placeholder]="config?.placeholder"
+                [maxlength]="config?.maxLength"
+                [minlength]="config?.minLength"
+                [size]="config?.size"
+                [step]="config?.spinnerConfig?.step"
+                [min]="config?.min"
+                [max]="config?.max"
+                [readonly]="inputReadonly"
+                [clearInput]="config?.clearable"
+                [autocorrect]="config?.autoCorrect"
+                [autocomplete]="config?.autoComplete"
+                [autocapitalize]="
+                  config?.autoCapitalize !== '' ? config?.autoCapitalize : 'none'"
+                [inputmode]="config?.inputMode" [class]="config?.inputClasses"
+                [ngClass]="{
+                  'has-spinners ion-text-center': config?.spinnerConfig,
+                  'disabled':
+                    config?.disabled || inputReadonly || formGroup?.disabled,
+                    'isInputFocused':
+                    config?.isInputFocused || false
+                }"
+                (ionFocus)="onMouseDown($event)"></ion-input>
 
-              <ion-icon *ngIf="useIcon"
-                  [name]="config?.useIcon?.name"
-                  [class]="config?.useIcon?.classes">
-                </ion-icon>
-        </ion-col>
-    </ion-row>
-</ion-item>
+                <ion-icon *ngIf="useIcon"
+                    [name]="config?.useIcon?.name"
+                    [class]="config?.useIcon?.classes">
+                  </ion-icon>
+          </ion-col>
+      </ion-row>
+  </ion-item>
+  <div class="w-100 flex flex-end">
+    <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right">Assistive text</ion-text>
+  </div>
+</div>

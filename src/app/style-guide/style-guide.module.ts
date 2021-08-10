@@ -8,6 +8,7 @@ import { StyleGuidePageRoutingModule } from './style-guide-routing.module';
 
 import { StyleGuidePage } from './style-guide.page';
 import { BizInputsModule } from '../shared/modules/biz-inputs/biz-inputs.module';
+import { SelectionComponent } from './components/selection/selection.component';
 
 @NgModule({
   imports: [
@@ -18,6 +19,6 @@ import { BizInputsModule } from '../shared/modules/biz-inputs/biz-inputs.module'
     StyleGuidePageRoutingModule,
     BizInputsModule
   ],
-  declarations: [StyleGuidePage]
+  declarations: [StyleGuidePage, SelectionComponent]
 })
 export class StyleGuidePageModule {}
