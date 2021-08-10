@@ -2,10 +2,11 @@
 @import '../mixins/mixins';
 
 ion-select {
+  font-family: var(--ion-font-roboto-family);
   --app-select-placeholder-font-size: 16px;
   --app-select-placeholder-line-height: 22px;
-  --border-radius: 4px 4px 0 0;
-  border-radius: 4px 4px 0 0;
+  /* --border-radius: 4px 4px 0 0; */
+  /* border-radius: 4px 4px 0 0; */
   max-width: 100%;
   position: relative;
 
@@ -18,16 +19,15 @@ ion-select {
   }
 
   --placeholder-opacity: 1;
-  --placeholder-color: var(--app-select-placeholder-color);
+  --placeholder-color: var(--ion-neutral-grey-medium-color);
   --ion-border-color: var(--app-secondary-text-color);
   --border-color: var(--app-secondary-text-color);
   background: var(--background);
-  --border-radius: 4px 4px 0 0;
   /* --background: var(--app-input-bg); */
   --padding-start: 8px;
-  --padding-end: 40px;
-  --highlight-height: 1px;
-  --padding-top: 12px;
+  --padding-end: 8px;
+  /* --highlight-height: 1px; */
+  --padding-top: 8px;
   --padding-bottom: 8px;
 
   &:disabled,
@@ -41,7 +41,8 @@ ion-select {
 .select-wrapper {
   min-height: rem(39);
   position: relative;
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid var(--ion-neutral-grey-medium-color);
+  width: 100%;
 
   .custom-select-icon {
     z-index: 2;

@@ -29,8 +29,8 @@ export class SelectionComponent implements OnInit {
       label: 'szrdxtfcyguvhbjn'
     },
     {
-      id: 'fcghhjhk',
-      label: 'szrdxtfcyguvhbjn'
+      id: 'fcghhjhkss',
+      label: 'szrdxtfcyguvhbjns'
     }
   ];
   selectionForm: FormGroup = this.fb.group({

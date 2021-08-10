@@ -12,6 +12,7 @@ import {
   FormControl,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { AlertController } from '@ionic/angular';
 import { get, has } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
@@ -84,7 +85,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   constructor(
     private fb: FormBuilder,
     private cdRef: ChangeDetectorRef,
-    public controlContainer: ControlContainer
+    public controlContainer: ControlContainer,
+    public alertController: AlertController
   ) { }
 
   compareWithFn = (o1, o2) => {
@@ -231,4 +233,5 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   get selectField() {
     return this.formGroup.get('select');
   }
+
 }
