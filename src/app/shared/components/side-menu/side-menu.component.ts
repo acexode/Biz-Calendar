@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { MenuController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-side-menu',
@@ -13,14 +13,14 @@ export class SideMenuComponent implements OnInit {
     { title: 'Zi', url: '/home/Day', icon: 'schedule' },
     { title: '3 zile', url: '/home/3-day', icon: '3-days' },
     { title: 'Săptămână', url: '/home/Week', icon: '5-days' },
-    { title: 'Lună', url: '/home/Month', icon: 'Month' },
+    { title: 'Lună', url: '/home/Month', icon: 'month' },
     { title: 'Comparativ', url: '/home/comparative', icon: 'coparativ' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor(platform: Platform) {
+  constructor(platform: Platform, private menu: MenuController) {
     console.log(window.innerWidth);
     if(window.innerWidth >= 768){
-      this.isTablet = true;
+      this.menu.close();
     }else{
       this.isTablet = false;
     }

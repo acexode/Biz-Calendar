@@ -9,6 +9,14 @@ $poppins-family-font: var(--ion-font-poppins-font);
   font-family: $poppins-family-font;
 }
 
+.roboto-family-font {
+  font-family: $font-family-base;
+}
+
+.text-weight-400 {
+  font-weight: 400 !important;
+}
+
 .text-weight-medium {
   font-weight: 500 !important;
 }
@@ -39,7 +47,6 @@ h1,
 h2,
 h3,
 h4,
-h5,
 h6 {
   margin: 0;
   letter-spacing: 0;
@@ -62,6 +69,21 @@ h3,
   font-size: rem(20) !important;
 }
 
+h4,
+.h4 {
+  font-family: var(--ion-font-poppins-font);
+  font-size: rem(25) !important;
+  line-height: rem(32) !important;
+}
+
+h5,
+.h5 {
+  font-family: var(--ion-font-roboto-family);
+  font-size: rem(20) !important;
+  line-height: rem(28) !important;
+  font-weight: 400 !important;
+}
+
 .link-small {
   font-size: rem(14);
   line-height: rem(16);
@@ -78,7 +100,7 @@ h3,
 }
 
 .s12pt8-h16 {
-  font-size: rem(12.6) !important;
+  font-size: 12.8px !important;
   line-height: rem(16) !important;
 }
 
@@ -115,6 +137,11 @@ h3,
 .s20-h24 {
   font-size: rem(20) !important;
   line-height: rem(24) !important;
+}
+
+.s20-h28 {
+  font-size: rem(20) !important;
+  line-height: rem(28) !important;
 }
 
 .s24-h32 {
@@ -247,6 +274,11 @@ ion-label.input-label-2,
 .ls-02 {
   letter-spacing: -0.2px;
 }
+
+.ls-03 {
+  letter-spacing: -0.3px;
+}
+
 
 .ls-05 {
   letter-spacing: -0.5px;
