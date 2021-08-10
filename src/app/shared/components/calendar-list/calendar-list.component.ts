@@ -9,6 +9,8 @@ export class CalendarListComponent implements OnInit {
   @Input() eventList;
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.eventList);
+  }
 
 }

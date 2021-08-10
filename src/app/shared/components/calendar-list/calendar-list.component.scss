@@ -8,6 +8,15 @@
     border-bottom: 1px solid  #D5DBDE;
     margin-bottom: 75px;
   }
+  .ev-date {
+    color: #1EA5C7;
+    font-family: Roboto;
+    text-align: center;
+    font-size: 12.8px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+  }
   .info{
     justify-content: space-between
   }
@@ -47,7 +56,7 @@
       margin-top: 8px;
     }
   .title {
-      height: 28px;
+      text-align: justify;
       color: #000000;
       font-size: 20px;
       font-weight: 500;
@@ -56,7 +65,7 @@
       margin-bottom: 4px;
     }
     .desc {
-      height: 40px;
+      text-align: justify;
       color: #000000;
       font-size: 16px;
       letter-spacing: 0;

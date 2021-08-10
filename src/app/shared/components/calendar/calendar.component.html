@@ -16,11 +16,11 @@
     </ion-button>
     
   </ion-col >
-  <ion-col sizeSm="4" sizeMd="2" class="flex">
+  <ion-col sizeSm="4" sizeMd="2" class="flex ion-justify-content-end">
     <ion-buttons class="pb-5"  >
-      <ion-icon size="large"  name="search" class="icon mr-16"></ion-icon>
+      <ion-icon *ngIf="isTablet" size="large"  name="search" class="icon mr-16"></ion-icon>
       <ion-icon size="large"  name="today-v2" class="icon mr-16"></ion-icon>
-      <ion-icon size="large"  name="menu-hamburger" class="icon mr-16"></ion-icon>
+      <ion-icon *ngIf="isTablet" size="large"  name="menu-Hamburger" class="icon "></ion-icon>
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     
