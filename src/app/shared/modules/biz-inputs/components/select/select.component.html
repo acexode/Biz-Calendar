@@ -26,7 +26,7 @@
       cancelText="Renunță"
       [compareWith]="compareWithFn"
       formControlName="select"
-      [multiple]="config?.multiple || true"
+      [multiple]="config?.multiple"
       [disabled]="config?.disabled"
       class="mw-100 w-100"
       [ngClass]="{
@@ -36,7 +36,9 @@
       [placeholder]="config?.placeholder"
       (ionChange)="selectChange()"
     >
-      <ion-select-option *ngFor="let item of items | async" [value]="item.id"
+      <ion-select-option
+      *ngFor="let item of items | async"
+        [value]="item.id"
         >
     {{ item.label }}
       </ion-select-option>

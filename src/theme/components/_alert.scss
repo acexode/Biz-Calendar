@@ -4,7 +4,9 @@
 .biz {
   ion-alert {
     .alert-wrapper {
-      .alert-checkbox-group {
+
+      .alert-checkbox-group,
+      .alert-radio-group {
         border: none !important;
       }
     }
@@ -42,15 +44,26 @@
   border-color: var(--ion-color-primary-contrast, #fff);
 }
 
-alert-head.sc-ion-alert-md {
-  padding-left: 16px;
+.alert-head.sc-ion-alert-md {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  -webkit-padding-start: 0 !important;
+  padding-inline-start: 0 !important;
+  -webkit-padding-end: 0 !important;
+  padding-inline-end: 0 !important;
+
+  padding-left: 16px !important;
+  padding-top: 20px !important;
+  padding-bottom: 16px !important;
 }
 
-.alert-checkbox-icon.sc-ion-alert-md {
-  left: 24px;
+.alert-checkbox-icon.sc-ion-alert-md,
+.alert-radio-icon.sc-ion-alert-md {
+  left: 24px !important;
 }
 
-.alert-checkbox-label.sc-ion-alert-md {
+.alert-checkbox-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-md {
   -webkit-padding-start: 36x;
   padding-inline-start: 36px;
 }
@@ -68,4 +81,17 @@ alert-head.sc-ion-alert-md {
   margin-inline-start: 0 !important;
   -webkit-margin-end: 0 !important;
   margin-inline-end: 0 !important;
+}
+
+.alert-header {
+  border: none !important;
+}
+
+// radio button
+.alert-radio-inner.sc-ion-alert-md {
+  background-color: var(--ion-primary-color-step-100, #1EA5C7);
+}
+
+[aria-checked="true"].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+  border-color: var(--ion-primary-color-step-100, #1EA5C7);
 }
