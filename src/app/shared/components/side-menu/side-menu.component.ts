@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MenuController, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-side-menu',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./side-menu.component.scss'],
 })
 export class SideMenuComponent implements OnInit {
+  isTablet = false;
   public appPages = [
     { title: 'Listă', url: '/home/list', icon: '1-day' },
     { title: 'Zi', url: '/home/Day', icon: 'schedule' },
@@ -15,7 +17,15 @@ export class SideMenuComponent implements OnInit {
     { title: 'Comparativ', url: '/home/comparative', icon: 'coparativ' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
-  constructor() { }
+  constructor(platform: Platform, private menu: MenuController) {
+    console.log(window.innerWidth);
+    if(window.innerWidth >= 768){
+      this.menu.close();
+    }else{
+      this.isTablet = false;
+    }
+
+  }
 
   ngOnInit() {}
 
