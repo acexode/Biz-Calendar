@@ -1,0 +1,74 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  .biz-custom-form-group-textarea {
+    padding-bottom: 4px;
+
+    .wrap {
+      position: relative;
+    }
+
+    .pull-tab {
+      height: 0px;
+      width: 0px;
+      border-top: 10px solid #D5DBDE;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      -webkit-transform: rotate(-45deg);
+      position: absolute;
+      bottom: 0;
+      right: -1px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .pull-tab:hover {
+      cursor: pointer;
+    }
+  }
+
+  ion-textarea {
+    --padding-start: 0;
+    font-family: var(--ion-font-roboto-family);
+    font-size: rem(16);
+    line-height: rem(24);
+    letter-spacing: 0;
+    min-height: rem(80);
+    position: relative;
+
+    --placeholder-color: var(--ion-neutral-grey-default-color);
+    --placeholder-opacity: 1;
+
+    &:focus-within,
+    &.isFocused {
+      --padding-start: 8px !important;
+      --placeholder-opacity: 0;
+    }
+
+    textArea[disabled],
+    .disabled {
+      background: var(--ion-neutral-grey-light-b-color);
+      color: var(--ion-neutral-grey-medium-color);
+      --padding-start: 8px !important;
+    }
+
+    textarea,
+    .native-textarea {
+      min-height: rem(80);
+
+      /* &::-webkit-resizer {
+        width: 12px !important;
+        height: 12px !important;
+        background-image: url('~src/assets/custom-icons/textarea-resize-icon.svg') !important;
+        background-repeat: no-repeat;
+        background-size: contain !important;
+      } */
+      &::-webkit-resizer {
+        display: none !important;
+      }
+
+      resize: vertical;
+    }
+  }
+}

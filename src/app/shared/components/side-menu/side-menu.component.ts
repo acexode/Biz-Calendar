@@ -13,7 +13,7 @@ export class SideMenuComponent implements OnInit {
     { title: 'Zi', url: '/home/Day', icon: 'schedule' },
     { title: '3 zile', url: '/home/3-day', icon: '3-days' },
     { title: 'Săptămână', url: '/home/Week', icon: '5-days' },
-    { title: 'Lună', url: '/home/Month', icon: 'Month' },
+    { title: 'Lună', url: '/home/Month', icon: 'month' },
     { title: 'Comparativ', url: '/home/comparative', icon: 'coparativ' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];

@@ -1,0 +1,89 @@
+@import '../variables';
+@import '../mixins/mixins';
+
+.biz {
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --inner-border-width: 0;
+    --ion-safe-area-left: 0;
+    --ion-border-color: var(--ion-neutral-grey-medium-color);
+
+
+    ion-icon {
+      color: var(--ion-neutral-grey-default-color);
+    }
+
+    &.item-interactive-disabled {
+      &:not(.item-has-focus) {
+        .input-label {
+          --color: var(--ion-neutral-grey-default-color);
+          color: var(--color);
+          opacity: 1 !important;
+          --ion-border-color: var(--ion-primary-color-step-30);
+        }
+
+        // for disble
+        ion-row {
+          background: var(--ion-neutral-grey-light-b-color) !important;
+        }
+
+        &:not(.ion-invalid) {
+          --ion-border-color: var(--ion-neutral-white-color) !important;
+          --border-color: var(--ion-neutral-white-color) !important;
+        }
+
+        ion-icon {
+          color: var(--ion-neutral-grey-default-color) !important;
+        }
+
+        .pull-tab {
+          display: none !important;
+        }
+      }
+    }
+
+    &.item-has-focus {
+      --border-color: var(--ion-primary-color-step-30) !important;
+
+      // --highlight-color-focused
+      ion-label {
+        color: var(--color) !important;
+        color: var(--color);
+      }
+
+      ion-icon {
+        color: var(--ion-primary-color-step-30) !important;
+      }
+
+      // for focused
+      ion-row {
+        background: var(--ion-primary-color-step-5) !important;
+
+        ion-col {
+          .pull-tab {
+            border-top: 10px solid #ABE8F7 !important;
+          }
+        }
+      }
+    }
+
+    &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
+      --border-color: var(--ion-primary-color-step-30) !important;
+    }
+
+    &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid,
+    &.hasError,
+    &.error {
+      --border-color: var(--ion-primary-error-color) !important;
+
+      ion-icon {
+        color: var(--ion-primary-error-color) !important;
+      }
+
+      .pull-tab {
+        border-top: 10px solid #D5DBDE !important;
+      }
+    }
+  }
+}

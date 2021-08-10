@@ -11,6 +11,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/ro';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { BizInputsModule } from './modules/biz-inputs/biz-inputs.module';
 registerLocaleData(localeDe);
 
 
@@ -30,6 +31,7 @@ registerLocaleData(localeDe);
       useFactory: adapterFactory,
     }),
     NgCalendarModule,
+    BizInputsModule
   ],
   exports: [
     CalendarComponent,
