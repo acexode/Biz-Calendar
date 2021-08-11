@@ -1,0 +1,22 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-toggle {
+    height: 24px;
+    --background: white;
+    --handle-background: #97A1A6;
+    --handle-spacing: 2px;
+
+    &::part(track) {
+      border: 2px solid #97A1A6 !important;
+    }
+
+
+    &.toggle-checked {
+      &::part(track) {
+        border: 2px solid #1EA5C7 !important;
+      }
+    }
+  }
+}
