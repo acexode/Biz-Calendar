@@ -1,17 +1,17 @@
 <ion-row *ngFor="let ev of eventList" class="mt-40">
-  <ion-col class="flex flex-column  ion-text-center" size="12">
-    <ion-text class="ev-date">MAR 15 - 21, 19 programari</ion-text>
+  <ion-col class="flex flex-column pl-64 " size="12">
+    <ion-text class="ev-day pl-8">MAR 15 - 21, 19 programari</ion-text>
 
   </ion-col>
-  <ion-col class="flex flex-column pl-16  ion-text-center" size="12">
+  <ion-col class="flex flex-column px-0 ion-text-center" size="12">
     <ion-row>
       <ion-col class="flex flex-column" size="2">
-        <ion-text>{{ev.day}}</ion-text>
-        <ion-text>8</ion-text>
+        <ion-text class="ev-day">{{ev.day}}</ion-text>
+        <ion-text class="ev-date">8</ion-text>
 
       </ion-col>
       <ion-col size="10" style="width: 100%;" >
-          <ion-row *ngFor="let cal of ev.events" class=" mb-8 bg-card flex flex-column"  [style.background-color]="cal.bgColor" [style.borderColor]="cal.borderColor" size="10" >
+          <ion-row *ngFor="let cal of ev.events" class=" mb-8 bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
             <ion-col size="12">
               <div class="info flex">
                 <div>
@@ -19,8 +19,8 @@
                 </div>
                 <div class="pt-4">
                   
-                  <ion-icon name="today-v2" ></ion-icon>
-                  <ion-icon color="success" name="cnas" ></ion-icon>            
+                  <ion-icon name="today-v2" class="mr-8" ></ion-icon>
+                  <ion-icon color="success" name="cnas-custom" ></ion-icon>            
                 </div>
               </div>
               <h5 class="title">
@@ -39,4 +39,7 @@
     </ion-row>
   </ion-col>
   
+</ion-row>
+<ion-row class="ev-month    text-white">
+  <ion-text>Aprilie 2021</ion-text>
 </ion-row>

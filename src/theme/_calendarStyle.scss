@@ -46,6 +46,11 @@
 .cal-event-title{
     color: #fff;
 }
+.cal-week-view .cal-event{
+    background: none;
+    border: none;
+    
+}
 .cal-week-view .cal-ends-within-day .cal-event {
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
