@@ -2,7 +2,7 @@
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>B088D979-3329-45F2-B8A1-CEC4A80A18C6</title>
     <g id="🎛-Styleguide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icons" transform="translate(-224.000000, -992.000000)" fill="#97A1A6">
+        <g id="Icons" transform="translate(-224.000000, -992.000000)" fill="currentColor">
             <g id="Icon" transform="translate(224.000000, 992.000000)">
                 <path d="M20.1492623,6.00548574 C21.1841222,6.08183488 22,6.9456382 22,8 L22,8 L22,19 C22,20.1045695 21.1045695,21 20,21 L20,21 L4,21 C2.8954305,21 2,20.1045695 2,19 L2,19 L2,5 C2,3.8954305 2.8954305,3 4,3 L4,3 L8.46481624,3 C9.13352262,3 9.75798527,3.33420227 10.1289168,3.89059961 L10.1289168,3.89059961 L11.5351838,6 L20,6 Z M4,8 L4,19 L20,19 L20,8 L4,8 Z M8.46481624,5 L4,5 L4,6 L9.131,6 L8.46481624,5 Z" id="★-Icon"></path>
             </g>
