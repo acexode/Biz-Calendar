@@ -16,6 +16,16 @@
       color: var(--ion-neutral-grey-default-color);
     }
 
+    &+.assative-text {
+      color: var(--ion-neutral-grey-default-color);
+    }
+
+    &.isFocused {
+      --border-color: var(--ion-primary-color-step-30) !important;
+      --highlight-color-invalid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+      --highlight-color-valid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+    }
+
     &.item-interactive {
       &.item-has-value {
         &:not(.ion-invalid.ng-invalid) {
@@ -51,11 +61,15 @@
         .pull-tab {
           display: none;
         }
+
+        &+.assative-text {
+          color: var(--ion-neutral-grey-default-color) !important;
+        }
       }
     }
 
     &.item-has-focus {
-      --border-color: var(--ion-primary-color-step-30);
+      --border-color: var(--ion-primary-color-step-30) !important;
 
       // --highlight-color-focused
       ion-label {
@@ -73,14 +87,22 @@
 
         ion-col {
           .pull-tab {
-            border-top: 10px solid #ABE8F7 !important;
+            border-top: 10px solid #1EA5C7 !important;
           }
         }
+      }
+
+      &+.assative-text {
+        color: var(--ion-primary-color-step-30) !important;
       }
     }
 
     &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
       --border-color: var(--ion-primary-color-step-30);
+
+      &+.assative-text {
+        color: var(--ion-primary-color-step-30) !important;
+      }
     }
 
     &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid,
@@ -94,6 +116,10 @@
 
       .pull-tab {
         border-top: 10px solid #F23D3D !important;
+      }
+
+      &+.assative-text {
+        color: var(--ion-primary-error-color) !important;
       }
     }
   }

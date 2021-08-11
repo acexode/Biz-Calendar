@@ -4,7 +4,7 @@
       'disabled-border': config?.disabled || inputReadonly,
       'bg-white': config?.bgwhite,
       'hasError': config?.inputHasError || false,
-      'item-has-focus': config?.isInputFocused || false
+      'item-has-focus isFocused': config?.isInputFocused || false
     }">
       <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
         config?.disabled || inputReadonly || formGroup?.disabled
@@ -57,7 +57,7 @@
           </ion-col>
       </ion-row>
   </ion-item>
-  <div class="w-100 flex ion-justify-content-end">
+  <div class="w-100 flex ion-justify-content-end assative-text">
     <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right">Assistive text</ion-text>
   </div>
 </div>
