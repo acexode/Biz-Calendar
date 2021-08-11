@@ -1,0 +1,10 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-radio-group {
+    ion-radio {
+      margin-inline-end: 12px !important;
+    }
+  }
+}

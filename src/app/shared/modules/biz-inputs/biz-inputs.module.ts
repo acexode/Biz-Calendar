@@ -7,16 +7,28 @@ import { BizInputsService } from './services/biz-inputs.service';
 import { InputMaskDirective } from './directives/input-mask.directive';
 import { TextareaComponent } from './components/textarea/textarea.component';
 import { SelectComponent } from './components/select/select.component';
+import { ChipsComponent } from './chips/chips.component';
 
 @NgModule({
-  declarations: [InputComponent, InputMaskDirective, TextareaComponent, SelectComponent],
+  declarations: [
+    InputComponent,
+    InputMaskDirective,
+    TextareaComponent,
+    SelectComponent,
+    ChipsComponent
+  ],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
     FormsModule
   ],
-  exports: [InputComponent, TextareaComponent, SelectComponent],
+  exports: [
+    InputComponent,
+    TextareaComponent,
+    SelectComponent,
+    ChipsComponent
+  ],
   providers: [BizInputsService],
 })
 export class BizInputsModule { }
