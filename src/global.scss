@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,9 +24,50 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
-@import './theme/theme';
+@import "./theme/theme";
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
-@import './theme/calendarStyle';
+@import "./theme/calendarStyle";
 
+.green-bg {
+  border-left: 4px solid #2ea81b;
+  background-color: #eaf6e8;
+  border-radius: 4px 0 0 4px;
+}
+.blue-bg {
+  width: 100%;
+  border-left: 4px solid #3093f8 !important;
+  background-color: #eaf4fe !important;
+  border-radius: 4px 0 0 4px;
+  z-index: 100;
+}
 
-
+.yellow-bg {
+  border-radius: 4px 0 0 4px;
+  border-left: 4px solid #f77c00;
+  background-color: #feecd9;
+}
+.green-pattern, .green-pattern   *, .green-pattern .cal-week-view .cal-event  {
+  border-left: 4px solid #d5eed1;
+  border-radius: 4px 0 0 4px;
+  background: repeating-linear-gradient(
+    135deg,
+    transparent,
+    transparent 10px,
+    #d5eed1 10px,
+    #d5eed1 calc(2 * 9px)
+  );
+}
+.blue-pattern {
+  border-left: 4px solid #D6E9FE;
+  border-radius: 4px 0 0 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    #D6E9FE 10px,
+    #D6E9FE calc(2 * 9px)
+  );
+}
+.border-none{
+    border: none;
+}
