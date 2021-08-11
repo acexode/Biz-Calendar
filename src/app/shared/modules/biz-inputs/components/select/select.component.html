@@ -28,7 +28,6 @@
       [compareWith]="compareWithFn"
       formControlName="select"
       [multiple]="config?.multiple || true"
-      [disabled]="config?.disabled"
       class="mw-100 w-100"
       [ngClass]="{
         'disabled-input-ph': config?.disabled || inputReadonly || formGroup?.disabled

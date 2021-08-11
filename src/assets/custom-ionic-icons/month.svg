@@ -2,7 +2,7 @@
 <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>EE6BADB7-455A-401A-A9AC-D507BF1AFF16</title>
     <g id="🎛-Styleguide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Icons" transform="translate(-320.000000, -656.000000)" fill="#97A1A6">
+        <g id="Icons" transform="translate(-320.000000, -656.000000)" fill="currentColor">
             <g id="Icon" transform="translate(320.000000, 656.000000)">
                 <path d="M3,22 C2.44771525,22 2,21.5522847 2,21 L2,3 C2,2.44771525 2.44771525,2 3,2 L21,2 L21,2 C21.5522847,2 22,2.44771525 22,3 L22,21 L22,21 C22,21.5128358 21.6139598,21.9355072 21.1166211,21.9932723 L21,22 L21,22 L3,22 L3,22 Z M7.999,16 L4,16 L4,20 L7.999,20 L7.999,16 Z M14,16 L9.999,16 L9.999,20 L14,20 L14,16 Z M20,16 L16,16 L16,20 L20,20 L20,16 Z M7.999,9.999 L4,9.999 L4,14 L7.999,14 L7.999,9.999 Z M14,9.999 L9.999,9.999 L9.999,14 L14,14 L14,9.999 Z M20,9.999 L16,9.999 L16,14 L20,14 L20,9.999 Z M7.999,4 L4,4 L4,7.999 L7.999,7.999 L7.999,4 Z M14,4 L9.999,4 L9.999,7.999 L14,7.999 L14,4 Z M20,4 L16,4 L16,7.999 L20,7.999 L20,4 Z" id="★-Icon"></path>
             </g>

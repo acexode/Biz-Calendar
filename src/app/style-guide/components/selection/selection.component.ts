@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
+import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 
 @Component({
@@ -26,11 +28,11 @@ export class SelectionComponent implements OnInit {
   options = [
     {
       id: 'fcghhjhk',
-      label: 'szrdxtfcyguvhbjn'
+      label: 'Option 1'
     },
     {
       id: 'fcghhjhkss',
-      label: 'szrdxtfcyguvhbjns'
+      label: 'Option 2'
     }
   ];
   selectionForm: FormGroup = this.fb.group({
@@ -40,11 +42,24 @@ export class SelectionComponent implements OnInit {
     focused: 'Type here',
     password: ['', Validators.required],
   });
-  public form = [
-    { val: 'Pepperoni', isChecked: true },
-    { val: 'Sausage', isChecked: false },
-    { val: 'Mushroom', isChecked: false }
+  public checkBoxes = [
+    { val: 'Checkbox off', isChecked: false, indeterminate: false, disable: false },
+    { val: 'Checkbox off disabled', isChecked: false, indeterminate: false, disable: true },
+    { val: 'Checkbox on', isChecked: true, indeterminate: false, disable: false },
+    { val: 'Checkbox on disabled', isChecked: true, indeterminate: false, disable: true },
+    { val: 'Checkbox indecised', isChecked: false, indeterminate: true, disable: false },
+    { val: 'Checkbox indecised disabled', isChecked: false, indeterminate: true, disable: true }
   ];
+  radioOptions: Array<IonRadioInputOption> = [
+    { label: 'Sunt de acord', id: true },
+    { label: 'Nu sunt de acord', id: false },
+  ];
+  radioConfig: IonRadiosConfig = {
+    mode: 'item',
+    inputLabel: {
+      text: 'Radio button off',
+    },
+  };
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() { }
