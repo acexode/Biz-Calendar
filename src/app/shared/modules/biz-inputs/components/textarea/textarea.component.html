@@ -1,6 +1,6 @@
 <ion-item [formGroup]="formGroup" lines="full" class="form-group w-100 p-0" [ngClass]="{
     'hasError': config?.hasError || false,
-    'item-has-focus': config?.isFocused || false
+    'item-has-focus isFocused': config?.isFocused || false
   }">
  <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
       config?.disabled || inputReadonly || formGroup?.disabled

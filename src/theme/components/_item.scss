@@ -24,6 +24,10 @@
       --border-color: var(--ion-primary-color-step-30) !important;
       --highlight-color-invalid: var(--ion-primary-color-step-30, #ABE8F7) !important;
       --highlight-color-valid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+
+      &+.assative-text {
+        color: var(--ion-neutral-grey-default-color) !important;
+      }
     }
 
     &.item-interactive {
@@ -93,15 +97,16 @@
       }
 
       &+.assative-text {
-        color: var(--ion-primary-color-step-30) !important;
+        color: var(--ion-neutral-grey-default-color) !important;
       }
     }
 
+    &.item-has-value,
     &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
       --border-color: var(--ion-primary-color-step-30);
 
       &+.assative-text {
-        color: var(--ion-primary-color-step-30) !important;
+        color: #000000;
       }
     }
 
@@ -115,7 +120,7 @@
       }
 
       .pull-tab {
-        border-top: 10px solid #F23D3D !important;
+        border-top: 10px solid #D5DBDE !important;
       }
 
       &+.assative-text {
