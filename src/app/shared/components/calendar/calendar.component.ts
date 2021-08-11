@@ -25,6 +25,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
   } from 'angular-calendar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
+import { CalendarPages } from './calendarPages';
   const colors: any = {
     green: {
       primary: '#D5EED1',
@@ -59,15 +60,10 @@ export class CalendarComponent implements OnInit {
     @Input() display;
     @Input() calendarList;
     @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+    currentDate = new Date().getDate();
     activatedPath  = '';
     isTablet = false;
-    public calendarPages = [
-      { title: 'Listă', url: '/list', icon: '1-day' },
-      { title: 'Zi', url: '/Day', icon: 'schedule' },
-      { title: 'Săptămână', url: '/Week', icon: '5-days' },
-      { title: 'Lună', url: '/Month', icon: 'Month' },
-      { title: 'Comparativ', url: '/comparative', icon: 'coparativ' },
-    ];
+    public calendarPages = CalendarPages;
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
@@ -109,15 +105,35 @@ export class CalendarComponent implements OnInit {
         // draggable: true,
         // },
         {
-        start: new Date(2021,7,10,10,30),
-        end: addHours(new Date(), 2),
+          title: 'An all day event',
+          color: colors.yellow,
+          start: new Date(),
+          allDay: true,
+        },
+        {
+        start: new Date(2021,7,this.currentDate,8),
+        end: new Date(2021,7,this.currentDate,10),
+        title: null,
+        cssClass: 'green-pattern border-none',
+        actions: null,
+        },
+        {
+        start: new Date(2021,7,this.currentDate,10),
+        end: new Date(2021,7,this.currentDate,10,30),
         title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
         color: colors.green,
         actions: this.actions,
         },
         {
-        start: new Date(),
-        title: 'An event with no end dated',
+        start: new Date(2021,7,this.currentDate,10,30),
+        end: new Date(2021,7,this.currentDate,11,30),
+        title: 'Meeting with Mr A',
+        color: colors.blue,
+        actions: this.actions,
+        },
+        {
+        start: addHours(new Date(), .4),
+        title: 'Birthday event for Mr B',
         color: colors.yellow,
         actions: this.actions,
         },
@@ -178,6 +194,8 @@ export class CalendarComponent implements OnInit {
     }
     // angular calendar
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+      this.viewDate = date;
+    this.view = CalendarView.Day;
         if (isSameMonth(date, this.viewDate)) {
           if (
             (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -210,7 +228,10 @@ export class CalendarComponent implements OnInit {
       }
 
       handleEvent(action: string, event: CalendarEvent): void {
-        this.modalData = { event, action };
+          console.log(event);
+          this.viewDate = new Date(event.start);
+          this.view = CalendarView.Day;
+          this.modalData = { event, action };
         //this.modal.open(this.modalContent, { size: 'lg' });
       }
 
@@ -242,5 +263,7 @@ export class CalendarComponent implements OnInit {
       closeOpenMonthViewDay() {
         this.activeDayIsOpen = false;
       }
-
+      logSegment(segment){
+        console.log(segment);
+      }
 }

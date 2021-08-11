@@ -8,8 +8,7 @@ export const EVENTLIST = [
                     time: '09:00 - 09:30',
                     desc: 'Consult control gastroenterologie, Ecografie abdominală',
                     location: 'Buc. Aviatori',
-                    borderColor: '#2EA81B',
-                    bgColor: '#EAF6E8'
+                    class: 'green-bg'
                   },
                   {
                     id: 2,
@@ -17,8 +16,7 @@ export const EVENTLIST = [
                     time: '07:00 - 09:30',
                     desc: 'Evaluare nivel sănătate emoțională • Donec nisi nisi, ultricies luctus massa non, commodo ultricies lectus...',
                     location: 'Buc. Aviatori',
-                    borderColor: '#3093F8',
-                    bgColor: '#EAF4FE'
+                    class: 'blue-bg'
                   },
                   {
                     id: 3,
@@ -26,8 +24,7 @@ export const EVENTLIST = [
                     time: '14:00 - 14:20',
                     desc: 'Nunc scelerisque, nulla vel vehicula malesuada, dui nunc mattis erat, eu cursus orci urna vel mauris. ',
                     location: 'Buc. Aviatori',
-                    borderColor: '#F77C00',
-                    bgColor: '#FEECD9'
+                    class: 'yellow-bg'
                   },
             ],
 
@@ -41,8 +38,7 @@ export const EVENTLIST = [
                     time: '09:00 - 09:30',
                     desc: 'Consult control gastroenterologie, Ecografie abdominală',
                     location: 'Buc. Aviatori',
-                    borderColor: '#2EA81B',
-                    bgColor: '#EAF6E8'
+                    class: 'green-pattern'
                   },
                   {
                     id: 2,
@@ -50,8 +46,7 @@ export const EVENTLIST = [
                     time: '07:00 - 09:30',
                     desc: 'Evaluare nivel sănătate emoțională • Donec nisi nisi, ultricies luctus massa non, commodo ultricies lectus...',
                     location: 'Buc. Aviatori',
-                    borderColor: '#3093F8',
-                    bgColor: '#EAF4FE'
+                    class: 'yellow-bg'
                   },
             ],
 
@@ -65,8 +60,15 @@ export const EVENTLIST = [
                     time: '09:00 - 09:30',
                     desc: 'Consult control gastroenterologie, Ecografie abdominală',
                     location: 'Buc. Aviatori',
-                    borderColor: '#2EA81B',
-                    bgColor: '#EAF6E8'
+                    class: 'blue-bg'
+                  },
+                {
+                    id: 1,
+                    title: 'Angela Ghica Protopopescu',
+                    time: '09:00 - 09:30',
+                    desc: 'Consult control gastroenterologie, Ecografie abdominală',
+                    location: 'Buc. Aviatori',
+                    class: 'blue-pattern'
                   },
             ],
 

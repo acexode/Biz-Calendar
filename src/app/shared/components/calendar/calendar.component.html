@@ -1,4 +1,4 @@
-<ion-row class="cal-header flex">
+<!-- <ion-row class="cal-header flex">
   <ion-col sizeSm="8" sizeMd="3" class="flex flex-column">
     <ion-text class="header-date">
       martie
@@ -28,12 +28,12 @@
   <ion-col *ngIf="display === 'Day'" class="day-info" size="12">
     LUN <b>8</b>
   </ion-col>
-</ion-row>
+</ion-row> -->
 
-<ion-grid class="calendar-m" *ngIf="display === 'list'" >
+<ion-grid class="calendar-m px-0" *ngIf="display === 'list'" >
   <app-calendar-list [eventList]="calendarList" ></app-calendar-list>
 </ion-grid>
-<ion-grid class="calendar-m">
+<ion-grid class="calendar-m px-0">
   <ion-row *ngIf="display === 'day'" class="pt-32">
     <ion-col size="6">
       <ion-buttons>
@@ -95,6 +95,8 @@
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
+      [dayStartHour]="7"
+      [dayEndHour]="23"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
      
