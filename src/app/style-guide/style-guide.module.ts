@@ -9,6 +9,7 @@ import { StyleGuidePageRoutingModule } from './style-guide-routing.module';
 import { StyleGuidePage } from './style-guide.page';
 import { BizInputsModule } from '../shared/modules/biz-inputs/biz-inputs.module';
 import { SelectionComponent } from './components/selection/selection.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -17,8 +18,8 @@ import { SelectionComponent } from './components/selection/selection.component';
     ReactiveFormsModule,
     IonicModule,
     StyleGuidePageRoutingModule,
-    BizInputsModule
+    SharedModule
   ],
   declarations: [StyleGuidePage, SelectionComponent]
 })
-export class StyleGuidePageModule {}
+export class StyleGuidePageModule { }

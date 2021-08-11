@@ -1,5 +1,23 @@
 
   <div class="w-100 pt-32">
+     <div class="w-100 mb-56">
+        <ion-text class="s40-h40 poppings-family-font ls-0">Icons & <br> miscellaneous</ion-text>
+    </div>
+
+    <div class="mb-32">
+        <ion-label class="s25-h32 poppings-family-font ls-0">Icons</ion-label>
+    </div>
+
+    <div class="mb-24">
+      <ion-text class="s18-h24 roboto-family-font text-weight-400 ls-02">
+        Icons are used to improve readability <br>
+        and help users identify fields more <br>
+        quickly. Their size is 24x24 pixes; an <br>
+        48x48 touch target area should be used <br>
+        for those that are interactive.
+      </ion-text>
+    </div>
+
     <div class="mb-24 defaultGrayColor flex flex-row ion-justify-content-between">
       <ion-icon
         name="plus"
@@ -386,7 +404,23 @@
 
   </div>
 
-  <div class="w-100 my-20 mt-32 mb-20">
+  <div class="w-100 mt-32">
+    <div class="my-20">
+      <ion-label class="s25-h32 poppings-family-font ls-0">Tooltips</ion-label>
+    </div>
+    <app-icons></app-icons>
+  </div>
+
+  <div class="w-100 my-56">
+      <ion-text class="s40-h40 poppings-family-font ls-0">Selection</ion-text>
+  </div>
+
+  <div class="w-100 mb-20">
+    <div class="w-100">
+      <div class="mb-32">
+          <ion-label class="s25-h32 poppings-family-font ls-0">Checkboxes</ion-label>
+      </div>
+    </div>
       <ion-list>
         <ion-item *ngFor="let entry of checkBoxes">
           <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">{{entry.val}}</ion-label>
@@ -411,7 +445,7 @@
         </ion-list-header>
 
         <ion-item>
-          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Radio button off</ion-label>
+          <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button off</ion-label>
           <ion-radio
             slot="start"
             value="off"
@@ -420,7 +454,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Radio button off disabled</ion-label>
+          <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button off disabled</ion-label>
           <ion-radio
           slot="start"
           value="offD"
@@ -430,7 +464,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Radio button on</ion-label>
+          <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button on</ion-label>
           <ion-radio
           slot="start"
           value="buford"
@@ -439,7 +473,7 @@
         </ion-item>
 
          <ion-item>
-          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Radio button on disabled</ion-label>
+          <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button on disabled</ion-label>
           <ion-radio
           slot="start"
           value="buford"
@@ -459,18 +493,18 @@
       <ion-list>
       <ion-item>
         <ion-toggle color="biz-primary" mode="md"></ion-toggle>
-        <ion-label>Switch off</ion-label>
+        <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Switch off</ion-label>
       </ion-item>
 
       <ion-item>
 
         <ion-toggle disabled="true" color="biz-primary" mode="md"></ion-toggle>
-        <ion-label>Switch off disabled</ion-label>
+        <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Switch off disabled</ion-label>
       </ion-item>
 
       <ion-item>
         <ion-toggle color="biz-primary" mode="md"></ion-toggle>
-        <ion-label>Switch on</ion-label>
+        <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Switch on</ion-label>
       </ion-item>
     </ion-list>
     </div>
@@ -488,10 +522,19 @@
 
     </div>
 
-    <div class="w-100">
+    <div class="w-100 my-32">
       <app-select
       formControlName="select"
       [config]="config"
+      formControlName="select"
+      [options]="options"
+      class="w-100"
+      ></app-select>
+    </div>
+    <div class="w-100 mt-32 mb-60">
+      <app-select
+      formControlName="select"
+      [config]="configB"
       formControlName="select"
       [options]="options"
       class="w-100"
