@@ -5,6 +5,26 @@
   ion-radio-group {
     ion-radio {
       margin-inline-end: 12px !important;
+      --size: 24px;
+      --border-color: var(--ion-neutral-grey-default-color) !important;
+      margin-inline: 0 12px !important; // 4px 36px
+
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      --inner-border-width: 0;
+      --ion-safe-area-left: 0;
+      --inner-padding-top: 0;
+      --inner-padding-bottom: 0;
+      --inner-padding-left: 0;
+      --inner-padding-right: 0;
+      --inner-padding-start: 0;
+      --padding-right: 0;
+      --padding-left: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+      --min-height: 24px;
+      width: 24px;
+      height: 24px;
     }
   }
 }
