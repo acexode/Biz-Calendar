@@ -518,9 +518,9 @@
     </ion-list>
     </div>
 
-    <div class="w-100 my-20">
+    <div class="w-100 my-20" [formGroup]="radioFormA">
 
-      <div class="mb-8">
+      <!-- <div class="mb-8">
         <label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Tip servicii</label>
       </div>
       <ion-chip outline="true" class="selected mr-8">
@@ -528,33 +528,26 @@
       </ion-chip>
       <ion-chip outline="true" class="default">
         <ion-label>C.N.A.S.</ion-label>
-      </ion-chip>
+      </ion-chip> -->
+      <app-radios
+        [config]="radioConfigA"
+        [options]="radioOptionA"
+        formControlName="radio"
+        class="w-100"
+      >
+    </app-radios>
 
     </div>
 
-    <div class="w-100 my-52">
+    <div class="w-100 my-52" [formGroup]="radioForm">
 
-      <div class="mb-8">
-        <label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Durata (minute)</label>
-      </div>
-      <ion-chip outline="true" class="default mr-12">
-        <ion-label>15</ion-label>
-      </ion-chip>
-      <ion-chip outline="true" class="default mr-12">
-        <ion-label>20</ion-label>
-      </ion-chip>
-      <ion-chip outline="true" class="default mr-12">
-        <ion-label>30</ion-label>
-      </ion-chip>
-      <ion-chip outline="true" class="default mr-12">
-        <ion-label>45</ion-label>
-      </ion-chip>
-      <ion-chip outline="true" class="default mr-12">
-        <ion-label>60</ion-label>
-      </ion-chip>
-      <ion-chip outline="true" class="default mr-12">
-        <ion-label>Alta</ion-label>
-      </ion-chip>
+      <app-radios
+        [config]="radioConfigB"
+        [options]="radioOptionB"
+        formControlName="radio"
+        class="w-100"
+      >
+    </app-radios>
 
     </div>
 

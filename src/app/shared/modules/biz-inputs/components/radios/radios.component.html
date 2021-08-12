@@ -3,7 +3,7 @@
   [formGroup]="formGroup"
 >
   <ion-label
-    class="mb-8 input-label mw-100"
+    class="s12pt8-h16 roboto-family-font text-weight-medium ls-0 mb-8"
     position="stacked"
     [ngClass]="config?.inputLabel?.classes"
     [color]="config?.inputLabel?.color"
@@ -20,7 +20,7 @@
         [ngClass]="config?.itemRefWrapperClasses"
         *ngIf="config?.itemTemplateRef"
       >
-        <ion-radio slot="start" value="item?.id"></ion-radio>
+        <ion-radio slot="start" value="item?.id" mode="md"></ion-radio>
         <ng-container
           [ngTemplateOutlet]="config?.itemTemplateRef"
           [ngTemplateOutletContext]="{
@@ -64,12 +64,18 @@
       first: first
     }"
   >
-    <ion-label class="radio-label">{{ item?.label }}</ion-label>
+    <ion-label class="s18-h24 roboto-family-font ls-0" 
+    [ngClass]="{
+      'text-weight-400': controlValue !== item?.id,
+      'text-weight-medium': controlValue === item?.id
+    }"
+    >{{ item?.label }}</ion-label>
     <ion-radio
       slot="start"
       [disabled]="item.disabledStatus"
       [value]="item?.id"
-      class="radio-btn"
+      color="biz-primary"
+      mode="md"
     ></ion-radio>
   </ion-item>
 </ng-template>
@@ -87,12 +93,13 @@
       class="ion-hide"
       [value]="item?.id"
       #rD
+      mode="md"
     ></ion-radio>
     <ion-label
       [color]="
         controlValue !== item?.id ? 'default' : 'selected'
       "
-      class="chip-radio-label text-weight-medium"
+      class="text-weight-medium"
       >{{ item?.label }}</ion-label
     >
   </ion-chip>
