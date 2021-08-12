@@ -27,7 +27,8 @@ import { ChipsComponent } from './chips/chips.component';
     InputComponent,
     TextareaComponent,
     SelectComponent,
-    ChipsComponent
+    ChipsComponent,
+    ReactiveFormsModule
   ],
   providers: [BizInputsService],
 })
