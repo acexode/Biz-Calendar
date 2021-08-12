@@ -70,11 +70,14 @@ export class SelectionComponent implements OnInit {
     { label: 'Nu sunt de acord', id: false },
   ];
   radioConfig: IonRadiosConfig = {
-    mode: 'item',
+    mode: 'chip',
     inputLabel: {
-      text: 'Radio button off',
+      text: 'Radio button',
     },
   };
+  radioForm: FormGroup = this.fb.group({
+    radio: ['', [Validators.required]],
+  });
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() { }

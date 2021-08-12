@@ -1,5 +1,14 @@
 
-  <div class="w-100 pt-32">
+ <div class="w-100" [formGroup]="radioForm">
+   <app-radios
+      [config]="radioConfig"
+      [options]="radioOptions"
+      formControlName="radio"
+      class="w-100"
+    >
+    </app-radios>
+ </div>
+ <div class="w-100 pt-32">
      <div class="w-100 mb-56">
         <ion-text class="s40-h40 poppings-family-font ls-0">Icons & <br> miscellaneous</ion-text>
     </div>
