@@ -8,11 +8,36 @@
     --inner-border-width: 0;
     --ion-safe-area-left: 0;
     --ion-border-color: var(--ion-neutral-grey-medium-color);
-
+    --highlight-color-focused: var(--ion-primary-color-step-30, #ABE8F7);
+    --highlight-color-valid: var(--ion-neutral-grey-medium-color, #D5DBDE);
+    --highlight-color-invalid: var(--ion-primary-error-color, #F23D3D);
 
     ion-icon {
       color: var(--ion-neutral-grey-default-color);
     }
+
+    &+.assative-text {
+      color: var(--ion-neutral-grey-default-color);
+    }
+
+    &.isFocused {
+      --border-color: var(--ion-primary-color-step-30) !important;
+      --highlight-color-invalid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+      --highlight-color-valid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+
+      &+.assative-text {
+        color: var(--ion-neutral-grey-default-color) !important;
+      }
+    }
+
+    &.item-interactive {
+      &.item-has-value {
+        &:not(.ion-invalid.ng-invalid) {
+          --border-color: var(--ion-primary-color-step-30);
+        }
+      }
+    }
+
 
     &.item-interactive-disabled {
       &:not(.item-has-focus) {
@@ -25,20 +50,24 @@
 
         // for disble
         ion-row {
-          background: var(--ion-neutral-grey-light-b-color) !important;
+          background: var(--ion-neutral-grey-light-b-color);
         }
 
         &:not(.ion-invalid) {
-          --ion-border-color: var(--ion-neutral-white-color) !important;
-          --border-color: var(--ion-neutral-white-color) !important;
+          --ion-border-color: var(--ion-neutral-white-color);
+          --border-color: var(--ion-neutral-white-color);
         }
 
         ion-icon {
-          color: var(--ion-neutral-grey-default-color) !important;
+          color: var(--ion-neutral-grey-default-color);
         }
 
         .pull-tab {
-          display: none !important;
+          display: none;
+        }
+
+        &+.assative-text {
+          color: var(--ion-neutral-grey-default-color) !important;
         }
       }
     }
@@ -62,14 +91,23 @@
 
         ion-col {
           .pull-tab {
-            border-top: 10px solid #ABE8F7 !important;
+            border-top: 10px solid #1EA5C7 !important;
           }
         }
       }
+
+      &+.assative-text {
+        color: var(--ion-neutral-grey-default-color) !important;
+      }
     }
 
+    &.item-has-value,
     &.item-has-value.ng-touched.ng-dirty.ng-valid.ion-touched.ion-dirty.ion-valid {
-      --border-color: var(--ion-primary-color-step-30) !important;
+      --border-color: var(--ion-primary-color-step-30);
+
+      &+.assative-text {
+        color: #000000;
+      }
     }
 
     &.ng-touched.item-has-value.ng-dirty.ion-invalid.ion-touched.ion-dirty.ng-invalid,
@@ -83,6 +121,10 @@
 
       .pull-tab {
         border-top: 10px solid #D5DBDE !important;
+      }
+
+      &+.assative-text {
+        color: var(--ion-primary-error-color) !important;
       }
     }
   }

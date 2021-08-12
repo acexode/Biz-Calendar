@@ -1,0 +1,104 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-alert {
+    .alert-wrapper {
+      border-radius: 16px !important;
+      font-family: var(--ion-font-roboto-family) !important;
+
+      h2 {
+        font-size: rem(20) !important;
+        line-height: rem(28) !important;
+      }
+
+      .alert-checkbox-group,
+      .alert-radio-group {
+        border: none !important;
+      }
+    }
+  }
+}
+
+.alert-checkbox-icon.sc-ion-alert-md {
+  width: 18px;
+  height: 18px;
+}
+
+.biz ion-alert .alert-wrapper .alert-checkbox-group button .alert-checkbox-icon {
+  border-color: #97A1A6;
+}
+
+[aria-checked="true"].sc-ion-alert-md .alert-checkbox-icon.sc-ion-alert-md {
+  border-color: var(--ion-primary-color-step-100, #1EA5C7) !important;
+  background-color: var(--ion-primary-color-step-100, #1EA5C7);
+}
+
+[aria-checked="true"].sc-ion-alert-md .alert-checkbox-inner.sc-ion-alert-md {
+  left: 4px;
+  top: 0px;
+  position: absolute;
+  width: 6px;
+  height: 12px;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  border-width: 2px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+  border-top-width: 0;
+  border-left-width: 0;
+  border-style: solid;
+  border-color: var(--ion-color-primary-contrast, #fff);
+}
+
+.alert-head.sc-ion-alert-md {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  -webkit-padding-start: 0 !important;
+  padding-inline-start: 0 !important;
+  -webkit-padding-end: 0 !important;
+  padding-inline-end: 0 !important;
+
+  padding-left: 16px !important;
+  padding-top: 20px !important;
+  padding-bottom: 16px !important;
+}
+
+.alert-checkbox-icon.sc-ion-alert-md,
+.alert-radio-icon.sc-ion-alert-md {
+  left: 24px !important;
+}
+
+.alert-checkbox-label.sc-ion-alert-md,
+.alert-radio-label.sc-ion-alert-md {
+  -webkit-padding-start: 36x;
+  padding-inline-start: 36px;
+}
+
+.alert-button-group.sc-ion-alert-md {
+  padding-inline-end: 0 !important;
+}
+
+.alert-button.sc-ion-alert-md {
+  color: #1EA5C7 !important;
+  font-size: 14px;
+  line-height: 16px;
+  padding-inline-end: 16px !important;
+  -webkit-margin-start: 0 !important;
+  margin-inline-start: 0 !important;
+  -webkit-margin-end: 0 !important;
+  margin-inline-end: 0 !important;
+}
+
+.alert-header {
+  border: none !important;
+}
+
+// radio button
+.alert-radio-inner.sc-ion-alert-md {
+  background-color: var(--ion-primary-color-step-100, #1EA5C7);
+}
+
+[aria-checked="true"].sc-ion-alert-md .alert-radio-icon.sc-ion-alert-md {
+  border-color: var(--ion-primary-color-step-100, #1EA5C7);
+}

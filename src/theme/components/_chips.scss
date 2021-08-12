@@ -1,0 +1,40 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  .chips {
+    &.selected {
+      box-sizing: border-box;
+      height: 40px;
+      width: 82px;
+      border: 2px solid #5CCAE6;
+      border-radius: 8px;
+      background-color: #E3F9FF;
+
+      font-family: var(--ion-font-roboto-family);
+      color: #198CA9;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 24px;
+      text-align: center;
+    }
+
+    &.default {
+      box-sizing: border-box;
+      height: 40px;
+      width: 82px;
+      border: 2px solid #97A1A6;
+      border-radius: 8px;
+      background-color: #FFFFFF;
+
+      font-family: var(--ion-font-roboto-family);
+      color: #000000;
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 24px;
+      text-align: center;
+    }
+  }
+}

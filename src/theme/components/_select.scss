@@ -1,0 +1,54 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+ion-select {
+  font-family: var(--ion-font-roboto-family) !important;
+  --app-select-placeholder-font-size: 16px;
+  --app-select-placeholder-line-height: 22px;
+  /* --border-radius: 4px 4px 0 0; */
+  /* border-radius: 4px 4px 0 0; */
+  max-width: 100%;
+  position: relative;
+
+  &::part(icon) {
+    display: none !important;
+  }
+
+  button {
+    @extend .text-normal;
+  }
+
+  --placeholder-opacity: 1;
+  --placeholder-color: var(--ion-neutral-grey-medium-color);
+  --ion-border-color: var(--app-secondary-text-color);
+  --border-color: var(--app-secondary-text-color);
+  background: var(--background);
+  /* --background: var(--app-input-bg); */
+  --padding-start: 8px;
+  --padding-end: 8px;
+  /* --highlight-height: 1px; */
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+
+  &:disabled,
+  &.select-disabled {
+    --color: var(--app-input-label-color);
+    color: $medium-grey-4;
+    opacity: 1;
+  }
+}
+
+.select-wrapper {
+  min-height: rem(39);
+  position: relative;
+  border-bottom: 2px solid var(--ion-neutral-grey-medium-color);
+  width: 100%;
+
+  .custom-select-icon {
+    z-index: 2;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+  }
+}

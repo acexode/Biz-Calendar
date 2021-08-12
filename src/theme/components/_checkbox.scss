@@ -1,0 +1,8 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-checkbox {
+    margin-inline-end: 12px !important;
+  }
+}
