@@ -2,12 +2,12 @@
 @import '../mixins/mixins';
 
 .ion-color-biz-primary {
-  --ion-color-base: var(--ion-primary-color-step-100) !important;
-  --ion-color-base-rgb: var(--ion-primary-color-step-100-rgb) !important;
+  --ion-color-base: var(--ion-primary-color-step-100);
+  --ion-color-base-rgb: var(--ion-primary-color-step-100-rgb);
   --ion-color-contrast: var(--ion-color-primary-contrast);
-  --ion-color-contrast-rgb: rgb(--ion-color-primary-contrast-rgb) !important;
-  --ion-color-shade: var(--ion-primary-color-step-70) !important;
-  --ion-color-tint: var(--ion-primary-color-step-30) !important;
+  --ion-color-contrast-rgb: rgb(--ion-color-primary-contrast-rgb);
+  --ion-color-shade: var(--ion-primary-color-step-70);
+  --ion-color-tint: var(--ion-primary-color-step-30);
   --background-hover-opacity: 0.2 !important;
   --box-shadow: none !important;
 }

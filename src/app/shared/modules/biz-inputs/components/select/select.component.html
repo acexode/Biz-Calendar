@@ -27,7 +27,7 @@
       cancelText="Renunță"
       [compareWith]="compareWithFn"
       formControlName="select"
-      [multiple]="config?.multiple || true"
+      [multiple]="config?.multiple"
       class="mw-100 w-100"
       [ngClass]="{
         'disabled-input-ph': config?.disabled || inputReadonly || formGroup?.disabled

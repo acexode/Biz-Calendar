@@ -1,5 +1,5 @@
 import { CalendarListComponent } from './components/calendar-list/calendar-list.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -12,6 +12,7 @@ import localeDe from '@angular/common/locales/ro';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BizInputsModule } from './modules/biz-inputs/biz-inputs.module';
+import { IconsComponent } from './components/icons/icons.component';
 registerLocaleData(localeDe);
 
 
@@ -19,13 +20,15 @@ registerLocaleData(localeDe);
   declarations: [
     CalendarComponent,
     SideMenuComponent,
-    CalendarListComponent
+    CalendarListComponent,
+    IconsComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     FormsModule,
     RouterModule,
+    ReactiveFormsModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
@@ -36,7 +39,10 @@ registerLocaleData(localeDe);
   exports: [
     CalendarComponent,
     SideMenuComponent,
-    CalendarListComponent
+    CalendarListComponent,
+    IconsComponent,
+    ReactiveFormsModule,
+    BizInputsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
