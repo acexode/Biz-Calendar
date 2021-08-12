@@ -132,5 +132,17 @@
         color: var(--ion-primary-error-color) !important;
       }
     }
+
+    // checkbox
+    &.item-checkbox, 
+    &.item-radio {
+      --min-height: 40px;
+      padding-top: 16px !important;
+      padding-bottom: 16px !important;
+
+      ion-label {
+        margin: 0px 8px 0px 0px !important;
+      }
+    }
   }
 }

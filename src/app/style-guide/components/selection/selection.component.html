@@ -431,7 +431,7 @@
       </div>
     </div>
       <ion-list>
-        <ion-item *ngFor="let entry of checkBoxes">
+        <ion-item *ngFor="let entry of checkBoxes" class="item-checkbox">
           <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">{{entry.val}}</ion-label>
           <ion-checkbox
           slot="start"
@@ -453,8 +453,8 @@
           <ion-label class="s25-h32 poppings-family-font ls-0">Radio buttons</ion-label>
         </ion-list-header>
 
-        <ion-item>
-          <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button off</ion-label>
+        <ion-item class="item-radio">
+          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-0">Radio button off</ion-label>
           <ion-radio
             slot="start"
             value="off"
@@ -462,8 +462,8 @@
             ></ion-radio>
         </ion-item>
 
-        <ion-item>
-          <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button off disabled</ion-label>
+        <ion-item class="item-radio">
+          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-0">Radio button off disabled</ion-label>
           <ion-radio
           slot="start"
           value="offD"
@@ -472,7 +472,7 @@
           ></ion-radio>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="item-radio">
           <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button on</ion-label>
           <ion-radio
           slot="start"
@@ -481,7 +481,7 @@
           ></ion-radio>
         </ion-item>
 
-         <ion-item>
+         <ion-item class="item-radio">
           <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Radio button on disabled</ion-label>
           <ion-radio
           slot="start"
