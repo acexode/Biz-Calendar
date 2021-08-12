@@ -66,17 +66,19 @@ export class SelectionComponent implements OnInit {
     { val: 'Checkbox indecised disabled', isChecked: false, indeterminate: true, disable: true }
   ];
   radioOptions: Array<IonRadioInputOption> = [
-    { label: 'Sunt de acord', id: true },
-    { label: 'Nu sunt de acord', id: false },
+    { label: 'Sunt de acord', id: 1 },
+    { label: 'Nu sunt de acord', id: 2 },
+    { label: 'Nu de acord', id: 3 },
   ];
   radioConfig: IonRadiosConfig = {
     mode: 'chip',
     inputLabel: {
       text: 'Radio button',
     },
+    itemClasses: 'mr-12'
   };
   radioForm: FormGroup = this.fb.group({
-    radio: ['', [Validators.required]],
+    radio: [2, [Validators.required]],
   });
   constructor(private fb: FormBuilder) { }
 

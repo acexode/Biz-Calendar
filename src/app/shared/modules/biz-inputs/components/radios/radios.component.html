@@ -76,18 +76,15 @@
 
 <ng-template #radioChipRef let-item="item" let-last="last" let-first="first">
   <ion-chip
-    [class]= "
-      controlValue !== item?.id ? 'default' : 'selected'
+    [class]="config?.itemClasses"
+    [color]="
+      controlValue !== item?.id ? 'biz-radio-chip-default' : 'biz-radio-chip-active'
     "
-    [ngClass]="{
-      'ml-0': first,
-      'mr-0': last
-    }"
     [outline]="true"
     (click)="toggleRadio(item)"
   >
     <ion-radio
-      class="chip-radio-element ion-hide"
+      class="ion-hide"
       [value]="item?.id"
       #rD
     ></ion-radio>

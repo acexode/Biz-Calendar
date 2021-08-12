@@ -12,8 +12,7 @@
     align-items: center;
     height: 40px;
     font-family: var(--ion-font-family, inherit);
-    font-size: 14px;
-    line-height: 1;
+  
     cursor: pointer;
     overflow: hidden;
     vertical-align: middle;
@@ -25,6 +24,7 @@
     letter-spacing: 0;
     line-height: 24px;
     text-align: center;
+
 
     &.selected {
       border: 2px solid #5CCAE6;
@@ -38,4 +38,23 @@
       color: #000000;
     }
   }
+}
+
+.ion-color-biz-radio-chip-active {
+  --ion-color-base: #198CA9;
+  background: #E3F9FF;
+  /* border-color: #5CCAE6; */
+  border: 2px solid #5CCAE6;
+  --background: #E3F9FF;
+  --color: var(--ion-color-base);
+  --ion-color-base-rgb: rgb(25, 140, 169);
+}
+
+.ion-color-biz-radio-chip-default {
+  --ion-color-base: #000;
+  background: #FFFFFF;
+  border: 2px solid #97A1A6;
+  --background: #FFFFFF;
+  --color: var(--ion-color-base);
+  --ion-color-base-rgb: rgb(25, 140, 169);
 }
