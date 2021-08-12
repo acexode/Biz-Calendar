@@ -14,7 +14,10 @@
 
     --background-hover: none !important;
 
-  git  ion-icon {
+    --ripple-color: transparent;
+    --background-activated: transparent;
+
+    ion-icon {
       color: var(--ion-neutral-grey-default-color);
     }
 
