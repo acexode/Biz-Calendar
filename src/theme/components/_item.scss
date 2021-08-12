@@ -12,7 +12,9 @@
     --highlight-color-valid: var(--ion-neutral-grey-medium-color, #D5DBDE);
     --highlight-color-invalid: var(--ion-primary-error-color, #F23D3D);
 
-    ion-icon {
+    --background-hover: none !important;
+
+  git  ion-icon {
       color: var(--ion-neutral-grey-default-color);
     }
 
