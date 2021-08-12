@@ -76,9 +76,8 @@
 
 <ng-template #radioChipRef let-item="item" let-last="last" let-first="first">
   <ion-chip
-    class="chip-radio"
-    [color]="
-      controlValue !== item?.id ? 'omn-radio-chip' : 'omn-radio-chip-active'
+    [class]= "
+      controlValue !== item?.id ? 'default' : 'selected'
     "
     [ngClass]="{
       'ml-0': first,
@@ -94,7 +93,7 @@
     ></ion-radio>
     <ion-label
       [color]="
-        controlValue !== item?.id ? 'omn-radio-chip' : 'omn-radio-chip-active'
+        controlValue !== item?.id ? 'default' : 'selected'
       "
       class="chip-radio-label text-weight-medium"
       >{{ item?.label }}</ion-label

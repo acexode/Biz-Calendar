@@ -91,10 +91,10 @@ export class RadiosComponent implements OnInit, ControlValueAccessor {
     const disabledKey = get(this.config, 'disabledKey', 'disabledStatus');
     this.items = this.opts
       .map((v) => ({
-          id: get(v, idK, null),
-          label: get(v, labelK, null),
-          disabledStatus: get(v, disabledKey, null),
-        }))
+        id: get(v, idK, null),
+        label: get(v, labelK, null),
+        disabledStatus: get(v, disabledKey, null),
+      }))
       .filter((vv) => get(vv, 'id', null) !== null);
     this.cdRef.markForCheck();
   }
@@ -134,6 +134,7 @@ export class RadiosComponent implements OnInit, ControlValueAccessor {
   }
 
   toggleRadio(item) {
+    console.log(item);
     if (this.controlI.disabled) {
       return;
     }
