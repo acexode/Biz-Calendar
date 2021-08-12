@@ -1,6 +1,7 @@
 export const EVENTLIST = [
         {
             day: 'LUN',
+            current: true,
             events: [
                 {
                     id: 1,
@@ -8,7 +9,7 @@ export const EVENTLIST = [
                     time: '09:00 - 09:30',
                     desc: 'Consult control gastroenterologie, Ecografie abdominală',
                     location: 'Buc. Aviatori',
-                    class: 'green-bg'
+                    class: 'green-bg',
                   },
                   {
                     id: 2,
@@ -31,6 +32,7 @@ export const EVENTLIST = [
         },
         {
             day: 'MIE',
+            current: false,
             events: [
                 {
                     id: 1,
@@ -53,6 +55,7 @@ export const EVENTLIST = [
         },
         {
             day: 'VIN',
+            current: false,
             events: [
                 {
                     id: 1,

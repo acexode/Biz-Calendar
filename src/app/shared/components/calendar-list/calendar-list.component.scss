@@ -8,8 +8,10 @@
     border-bottom: 1px solid  #D5DBDE;
     margin-bottom: 75px;
   }
+  .card-row:not(last-child){
+    margin-bottom: 40px;
+  }
   .ev-date {
-    color: #1EA5C7;
     font-family: Roboto;
     text-align: center;
     font-size: 12.8px;
@@ -41,10 +43,19 @@
   .icon, ion-menu-button{
     color: #1EA5C7;
   }
-  .bg-card{
+  .bg-card:not(:last-child){
+    margin-bottom: 8px;
       // background-color: #EAF6E8;
       // border-radius: 4px 0 0 4px;
       // border-left: 4px solid;
+  }
+  .day-nr{
+    color: #97A1A6;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    line-height: 28px;
   }
   .hour, .location {
       height: 24px;
@@ -77,14 +88,17 @@
       text-transform: uppercase !important;
   }
   .ev-day{
-    color: #1EA5C7;
+    color: #97A1A6;
     font-family: Roboto;
     font-size: 12.8px;
+    font-weight: 500;
     letter-spacing: 0;
     line-height: 16px;
   }
+  .current-day{
+    color: #1EA5C7;
+  }
   .ev-date{
-    color: #198CA9;
     font-family: Roboto;
     font-size: 20px;
     font-weight: 500;
