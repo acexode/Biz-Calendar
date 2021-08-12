@@ -25,6 +25,21 @@
       --min-height: 24px;
       width: 24px;
       height: 24px;
+
+      &.radio-disabled {
+
+        // &.item-radio-checked
+        // --ion-color-base => this could be changed to effect ...
+        &::part(container) {
+          border-color: var(--ion-neutral-grey-default-color) !important;
+
+
+        }
+
+        &::part(mark) {
+          background: var(--ion-neutral-grey-default-color) !important;
+        }
+      }
     }
   }
 }
