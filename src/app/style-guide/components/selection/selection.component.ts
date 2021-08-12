@@ -13,10 +13,25 @@ export class SelectionComponent implements OnInit {
   config: IonSelectConfig = {
     inputLabel: {
       classes: '',
-      text: 'label',
+      text: 'label - radio',
     },
     forceListItems: false,
     multiple: false,
+    disabled: false,
+    placeholder: 'Selection',
+    alertOptions: {
+      cssClass: '',
+    },
+    idKey: 'id',
+    labelKey: 'label',
+  };
+  configB: IonSelectConfig = {
+    inputLabel: {
+      classes: '',
+      text: 'label - checkbox',
+    },
+    forceListItems: false,
+    multiple: true,
     disabled: false,
     placeholder: 'Selection',
     alertOptions: {
