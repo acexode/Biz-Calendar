@@ -7,9 +7,14 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CalendarListComponent implements OnInit {
   @Input() eventList;
+  isTablet: boolean;
   constructor() { }
 
   ngOnInit() {
+    this.isTablet = window.innerWidth >= 768 ? true : false;
+    window.addEventListener('resize', ()=>{
+      this.isTablet = window.innerWidth >= 768 ? true : false;
+    });
     console.log(this.eventList);
   }
 
