@@ -1,3 +1,4 @@
+import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { CalendarListComponent } from './components/calendar-list/calendar-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
@@ -21,6 +22,7 @@ registerLocaleData(localeDe);
     CalendarComponent,
     SideMenuComponent,
     CalendarListComponent,
+    CalendarHeaderComponent,
     IconsComponent
   ],
   imports: [
@@ -40,6 +42,7 @@ registerLocaleData(localeDe);
     CalendarComponent,
     SideMenuComponent,
     CalendarListComponent,
+    CalendarHeaderComponent,
     IconsComponent,
     ReactiveFormsModule,
     BizInputsModule

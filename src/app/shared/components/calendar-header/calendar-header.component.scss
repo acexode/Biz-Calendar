@@ -1,0 +1,132 @@
+ion-toolbar{
+  
+    ion-title {
+      color: #000000;
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 24px;
+    }
+  }
+  .bg-blue{
+    --background: #ABE8F7;
+    background: #ABE8F7;
+  }
+  ion-menu-button {
+      color: var(--ion-color-primary);
+    }
+    
+    #container {
+      text-align: center;
+     
+    }
+    
+    #container strong {
+      font-size: 20px;
+      line-height: 26px;
+    }
+    
+    #container p {
+      font-size: 16px;
+      line-height: 22px;
+      color: #8c8c8c;
+      margin: 0;
+    }
+    
+    #container a {
+      text-decoration: none;
+    }
+    .cal-header{
+      padding: 20px 24px 0 48px;
+      width: 100%;
+      height: auto;
+      z-index: 10;
+      // height: 80px;
+      background: white;
+      border-bottom: 1px solid  #D5DBDE;
+    }
+    .calendar-m {
+      // margin-top: 70px !important;
+      padding-top: 13;
+    }
+    .header-date{
+      color: #198CA9;
+      font-family: Roboto;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 28px;
+    }
+    .header-events{
+      color: #198CA9;
+      font-family: Roboto;
+      font-size: 16px;
+      letter-spacing: 0;
+      line-height: 24px;
+    }
+    .icon, ion-menu-button{
+      color: #1EA5C7;
+    }
+    .bg-card{
+        height: 137px;
+        width: 307px;
+        background-color: #EAF6E8;
+        border-radius: 4px 0 0 4px;
+        border-left: 4px solid #2EA81B;
+    }
+    .hour, .location {
+        height: 24px;
+        color: #000000;
+        font-size: 16px;
+        letter-spacing: 0;
+        line-height: 24px;
+        margin-top: 8px;
+      }
+    .title {
+        height: 28px;
+        color: #000000;
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 28px;
+        margin-bottom: 4px;
+      }
+      .desc {
+        height: 40px;
+        color: #000000;
+        font-size: 16px;
+        letter-spacing: 0;
+        line-height: 20px;
+      }
+      .small{
+        font-size: 10px;
+      }
+      .cal-month-view .cal-header .cal-cell {
+        text-transform: uppercase !important;
+    }
+    .day-info{
+      display: flex;
+      flex-direction: column;
+      color: #198CA9;
+      height: 60px;
+    
+    }
+    .nav-btn{
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 24px;
+      ion-text {
+        color: #198CA9;
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 24px;
+      }
+    }
+    
+    .active, .nav-btn:hover {
+      border-radius: 4px;
+      background-color: #E3F9FF;
+      height: 40px;
+    }
+    
