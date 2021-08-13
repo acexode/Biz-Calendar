@@ -51,6 +51,7 @@ import { CalendarPages } from './calendarPages';
   };
 @Component({
   selector: 'app-calendar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   providers: [

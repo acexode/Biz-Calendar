@@ -53,6 +53,7 @@
     ></mwl-calendar-month-view> 
       <mwl-calendar-week-view
       *ngSwitchCase="CalendarView.Week"
+      [headerTemplate]="customHeaderTemplate"
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
@@ -92,5 +93,36 @@
       >{{ day.events.length }} programări</small
     >
   </ng-template>
+  <ng-template #customHeaderTemplate 
+  let-days="days"
+  let-locale="locale"
+  let-dayHeaderClicked="dayHeaderClicked"
+  let-eventDropped="eventDropped"
+  let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate"
+  let-dragEnter="dragEnter"
+  >
+  <div class="cal-day-headers" role="row">
+    <div
+      class="cal-header"
+      *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
+      [class.cal-past]="day.isPast"
+      [class.cal-today]="day.isToday"
+      [class.cal-future]="day.isFuture"
+      [class.cal-weekend]="day.isWeekend"
+      [ngClass]="day.cssClass"
+      dragOverClass="cal-drag-over"
+      
+      tabindex="0"
+      role="columnheader"
+    >
+      <span [ngClass]="day.isToday ? '' : 'caps'">{{ day.date | calendarDate: 'weekViewColumnHeader':locale | uppercase  }}</span
+      ><br />
+      <span [ngClass]="day.isToday ? 'bold' : ''" class="day-nr">{{
+        day.date  | date : 'd'
+      }}</span> 
+    </div>
+  </div>
+  </ng-template>
+  
   
 </ion-grid>
