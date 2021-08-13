@@ -9,6 +9,7 @@ import { TextareaComponent } from './components/textarea/textarea.component';
 import { SelectComponent } from './components/select/select.component';
 import { ChipsComponent } from './chips/chips.component';
 import { RadiosComponent } from './components/radios/radios.component';
+import { BizCustomSelectionComponent } from './components/biz-custom-selection/biz-custom-selection.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RadiosComponent } from './components/radios/radios.component';
     TextareaComponent,
     SelectComponent,
     ChipsComponent,
-    RadiosComponent
+    RadiosComponent,
+    BizCustomSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ import { RadiosComponent } from './components/radios/radios.component';
     SelectComponent,
     ChipsComponent,
     ReactiveFormsModule,
-    RadiosComponent
+    RadiosComponent,
+    BizCustomSelectionComponent
   ],
   providers: [BizInputsService],
 })

@@ -64,7 +64,7 @@
       first: first
     }"
   >
-    <ion-label class="s18-h24 roboto-family-font ls-0" 
+    <ion-label class="s18-h24 roboto-family-font ls-0"
     [ngClass]="{
       'text-weight-400': controlValue !== item?.id,
       'text-weight-medium': controlValue === item?.id
@@ -82,7 +82,7 @@
 
 <ng-template #radioChipRef let-item="item" let-last="last" let-first="first">
   <ion-chip
-    [class]="config?.itemClasses"
+    [class]="config?.itemClasses + ' chip-radio'"
     [color]="
       controlValue !== item?.id ? 'biz-radio-chip-default' : 'biz-radio-chip-active'
     "
