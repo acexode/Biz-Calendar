@@ -8,6 +8,8 @@ import { InputMaskDirective } from './directives/input-mask.directive';
 import { TextareaComponent } from './components/textarea/textarea.component';
 import { SelectComponent } from './components/select/select.component';
 import { ChipsComponent } from './chips/chips.component';
+import { RadiosComponent } from './components/radios/radios.component';
+import { BizCustomSelectionComponent } from './components/biz-custom-selection/biz-custom-selection.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,9 @@ import { ChipsComponent } from './chips/chips.component';
     InputMaskDirective,
     TextareaComponent,
     SelectComponent,
-    ChipsComponent
+    ChipsComponent,
+    RadiosComponent,
+    BizCustomSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +32,9 @@ import { ChipsComponent } from './chips/chips.component';
     TextareaComponent,
     SelectComponent,
     ChipsComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RadiosComponent,
+    BizCustomSelectionComponent
   ],
   providers: [BizInputsService],
 })

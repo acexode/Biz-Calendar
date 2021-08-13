@@ -1,0 +1,47 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+
+.biz-custom-select-div {
+  &>ion-label {
+    font-family: var(--ion-font-roboto-family);
+    font-weight: 500;
+    letter-spacing: 0;
+
+    font-size: 12.8px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 16px;
+    margin-bottom: 8px;
+  }
+
+  .biz-custom-select {
+    @include flexbox;
+    @include flex-direction(row);
+    width: 100%;
+    @include justify-content(flex-start);
+    @include align-items(center);
+    /* @include flex-wrap(wrap); */
+
+    border-bottom: 1px solid #ABE8F7;
+
+    .select-display {
+      -ms-flex: 1 1 auto;
+      flex: 1 1 auto;
+      width: 1%;
+      padding: 8px 24px 8px 8px;
+    }
+
+    .icon {
+      @include flexbox;
+      @include justify-content(center);
+      @include align-items(center);
+      padding: 12px 8px 12px 0px;
+
+      ion-icon {
+        height: rem(24);
+        width: rem(24);
+      }
+    }
+  }
+}
