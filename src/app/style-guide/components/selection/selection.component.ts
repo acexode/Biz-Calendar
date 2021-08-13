@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
@@ -109,8 +111,26 @@ export class SelectionComponent implements OnInit {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    public modalController: ModalController) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.presentModal();
+  }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ModalComponent,
+      cssClass: 'my-custom-class'
+    });
+    return await modal.present();
+  }
+  dismiss() {
+    // using the injected ModalController this page
+    // can "dismiss" itself and optionally pass back data
+    this.modalController.dismiss({
+      dismissed: true
+    });
+  }
 
 }

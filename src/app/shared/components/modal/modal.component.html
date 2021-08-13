@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border" [translucent]="true">
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-icon
+        name="arrow-left"
+        class="icon-24 black-color"
+      ></ion-icon>
+    </ion-buttons>
+
+    <ion-title>My Navigation Bar</ion-title>
+
+     <ion-buttons slot="end">
+      <ion-button class="primary-color-step-100">
+        Adaugă
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+
+    <ion-list>
+
+      <ion-item *ngFor="let item of CHECK_LIST; let i=index">
+
+        <ion-label>{{item.name}}</ion-label>
+        <ion-checkbox
+        slot="start"
+        color="biz-primary"
+        class="margin-inline-end-12"
+        mode="md"
+        [value]="item.value"
+        [checked]="item.checked"
+        (ionChange)="onSelectionChange($event,i)"
+        ></ion-checkbox>
+
+
+      </ion-item>
+
+      <ion-item class="center">
+        <ion-button type="submit">Submit Form</ion-button>
+      </ion-item>
+
+    </ion-list>
+
+    {{CHECK_LIST | json}}
+
+  </form>
+
+</ion-content>
+

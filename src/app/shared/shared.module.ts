@@ -13,6 +13,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BizInputsModule } from './modules/biz-inputs/biz-inputs.module';
 import { IconsComponent } from './components/icons/icons.component';
+import { ModalComponent } from './components/modal/modal.component';
 registerLocaleData(localeDe);
 
 
@@ -21,7 +22,8 @@ registerLocaleData(localeDe);
     CalendarComponent,
     SideMenuComponent,
     CalendarListComponent,
-    IconsComponent
+    IconsComponent,
+    ModalComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ registerLocaleData(localeDe);
     CalendarListComponent,
     IconsComponent,
     ReactiveFormsModule,
-    BizInputsModule
+    BizInputsModule,
+    ModalComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
