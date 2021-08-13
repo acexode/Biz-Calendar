@@ -1,0 +1,78 @@
+<ion-header *ngIf="!isTablet" class="ion-no-border" [translucent]="true">
+  <ion-toolbar class="pl-45 bg-blue">
+    <ion-title>{{ page }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="cal-header flex">
+    <ion-row>
+      <ion-col size="8"  class="flex flex-column">
+        <div >
+          <ion-text class="header-date">
+            martie
+          </ion-text>
+          <ion-icon class="mt-5"  name="caret-down"></ion-icon>
+        </div>
+        <ion-text class="header-events">
+          123 programări
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="4"  class="flex">
+        <ion-buttons class="pb-5"  >         
+          <ion-icon size="large"  name="today-v-2" class="icon mr-32"></ion-icon>
+          <ion-menu-button class="mr-24"></ion-menu-button>
+        </ion-buttons>
+        
+      </ion-col >
+      <ion-col *ngIf="page === 'Day'" class="day-info" size="12">
+        <ion-text>
+          LUN
+        </ion-text> 
+        <b>8</b>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+<ion-header *ngIf="isTablet" class="ion-no-border" [translucent]="true">
+  <ion-toolbar class="pl-45 bg-blue">
+    <ion-title>{{ page }}</ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="cal-header flex">
+    <ion-row>
+      <ion-col  size="2" class="flex flex-column">
+        <div >
+          <ion-text class="header-date">
+            martie
+          </ion-text>
+          <ion-icon class="mt-5"  name="caret-down"></ion-icon>
+        </div>
+        <ion-text class="header-events">
+          123 programări
+        </ion-text>
+      </ion-col>
+      <ion-col  size="7" class="flex ion-justify-content-center">
+        <ion-button [ngClass]="p.url === activatedPath ? 'active' : ''" class="nav-btn" (click)="navigate(p.url)" fill="clear" *ngFor="let p of calendarPages " >
+          <ion-icon  size="large"  [name]="p.icon" class="icon"></ion-icon>
+          <ion-text class="pl-16" *ngIf="p.url === activatedPath">
+            {{p.title}}
+          </ion-text>
+        </ion-button>
+        
+      </ion-col >
+      <ion-col size="3" class="flex ion-justify-content-end">
+        <ion-buttons class="pb-5"  >
+          <ion-icon  size="large"  name="search" class="icon mr-32"></ion-icon>
+          <ion-icon size="large"  name="today-v-2" class="icon mr-32"></ion-icon>
+          <ion-icon  size="large"  name="menu-Hamburger" class="icon"></ion-icon>
+          <!-- <ion-menu-button></ion-menu-button> -->
+        </ion-buttons>
+        
+      </ion-col >
+      <ion-col *ngIf="page === 'Day'" class="day-info" size="12">
+        <ion-text>
+          LUN
+        </ion-text> 
+        <b>8</b>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>

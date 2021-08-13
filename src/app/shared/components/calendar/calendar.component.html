@@ -1,35 +1,3 @@
-<!-- <ion-row class="cal-header flex">
-  <ion-col sizeSm="8" sizeMd="3" class="flex flex-column">
-    <ion-text class="header-date">
-      martie
-    </ion-text>
-    <ion-text class="header-events">
-      123 programări
-    </ion-text>
-  </ion-col>
-  <ion-col *ngIf="isTablet" size="7" class="flex">
-    <ion-button [ngClass]="p.url === activatedPath ? 'active' : ''" class="nav-btn" (click)="navigate(p.url)" fill="clear" *ngFor="let p of calendarPages " >
-      <ion-icon  size="large"  [name]="p.icon" class="icon"></ion-icon>
-      <ion-text class="pl-16" *ngIf="p.url === activatedPath">
-        {{p.title}}
-      </ion-text>
-    </ion-button>
-    
-  </ion-col >
-  <ion-col sizeSm="4" sizeMd="2" class="flex ion-justify-content-end">
-    <ion-buttons class="pb-5"  >
-      <ion-icon *ngIf="isTablet" size="large"  name="search" class="icon mr-16"></ion-icon>
-      <ion-icon size="large"  name="today-v2" class="icon mr-16"></ion-icon>
-      <ion-icon *ngIf="isTablet" size="large"  name="menu-Hamburger" class="icon "></ion-icon>
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    
-  </ion-col >
-  <ion-col *ngIf="display === 'Day'" class="day-info" size="12">
-    LUN <b>8</b>
-  </ion-col>
-</ion-row> -->
-
 <ion-grid class="calendar-m px-0" *ngIf="display === 'list'" >
   <app-calendar-list [eventList]="calendarList" ></app-calendar-list>
 </ion-grid>
@@ -75,14 +43,17 @@
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
-      [activeDayIsOpen]="activeDayIsOpen"
+      [activeDayIsOpen]="false"
       (dayClicked)="dayClicked($event.day)"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
       [excludeDays]="excludeDays"
+      (beforeViewRender)="beforeMonthViewRender($event)"
+      [cellTemplate]="customCellTemplate"
     ></mwl-calendar-month-view> 
       <mwl-calendar-week-view
       *ngSwitchCase="CalendarView.Week"
+      [headerTemplate]="customHeaderTemplate"
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
@@ -106,6 +77,52 @@
     </ion-col>
   </ion-row>
 
-
+  <ng-template #customCellTemplate let-day="day" let-locale="locale">
+    <div class="cal-cell-top" [ngClass]="day.events[0]?.title === 'Vacation' ? 'vacation-bg' : ''">
+      <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0"
+        >{{ day.badgeTotal }}</span
+      > -->
+      <span  class="cal-day-number"
+        >{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span
+      >
+    </div>
+    <small *ngIf="day.events[0]?.title === 'Vacation'">
+      concediu
+    </small>
+    <small  *ngIf="day.events.length > 0 && day.events[0]?.title !== 'Vacation'" style="margin: 5px;"
+      >{{ day.events.length }} programări</small
+    >
+  </ng-template>
+  <ng-template #customHeaderTemplate 
+  let-days="days"
+  let-locale="locale"
+  let-dayHeaderClicked="dayHeaderClicked"
+  let-eventDropped="eventDropped"
+  let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate"
+  let-dragEnter="dragEnter"
+  >
+  <div class="cal-day-headers" role="row">
+    <div
+      class="cal-header"
+      *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
+      [class.cal-past]="day.isPast"
+      [class.cal-today]="day.isToday"
+      [class.cal-future]="day.isFuture"
+      [class.cal-weekend]="day.isWeekend"
+      [ngClass]="day.cssClass"
+      dragOverClass="cal-drag-over"
+      
+      tabindex="0"
+      role="columnheader"
+    >
+      <span [ngClass]="day.isToday ? '' : 'caps'">{{ day.date | calendarDate: 'weekViewColumnHeader':locale | uppercase  }}</span
+      ><br />
+      <span [ngClass]="day.isToday ? 'bold' : ''" class="day-nr">{{
+        day.date  | date : 'd'
+      }}</span> 
+    </div>
+  </div>
+  </ng-template>
+  
   
 </ion-grid>

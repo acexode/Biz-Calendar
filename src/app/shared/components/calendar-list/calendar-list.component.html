@@ -1,45 +1,101 @@
-<ion-row *ngFor="let ev of eventList" class="mt-40">
-  <ion-col class="flex flex-column pl-64 " size="12">
-    <ion-text class="ev-day pl-8">MAR 15 - 21, 19 programari</ion-text>
-
-  </ion-col>
-  <ion-col class="flex flex-column px-0 ion-text-center" size="12">
-    <ion-row>
-      <ion-col class="flex flex-column" size="2">
-        <ion-text class="ev-day">{{ev.day}}</ion-text>
-        <ion-text class="ev-date">8</ion-text>
-
-      </ion-col>
-      <ion-col size="10" style="width: 100%;" >
-          <ion-row *ngFor="let cal of ev.events" class=" mb-8 bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
-            <ion-col size="12">
-              <div class="info flex">
-                <div>
-                  <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
-                </div>
-                <div class="pt-4">
-                  
-                  <ion-icon name="today-v2" class="mr-8" ></ion-icon>
-                  <ion-icon color="success" name="cnas-custom" ></ion-icon>            
-                </div>
-              </div>
-              <h5 class="title">
-                {{cal.title}}
-              </h5>
-              <p class="desc">
-                {{cal.desc | slice:0:90}}
-              </p>
-            </ion-col>
-           
-          </ion-row>
-          
-        </ion-col>
-      
-      
-    </ion-row>
-  </ion-col>
+<ion-grid *ngIf="!isTablet">
+  <ion-row  *ngFor="let ev of eventList" class="card-row">
+    <ion-col class="flex flex-column pl-64 " size="12">
+      <ion-text  class="ev-day current-day">MAR 15 - 21, 19 programari</ion-text>
   
-</ion-row>
-<ion-row class="ev-month    text-white">
-  <ion-text>Aprilie 2021</ion-text>
-</ion-row>
+    </ion-col>
+    <ion-col class="flex flex-column px-0" size="12">
+      <ion-row>
+        <ion-col class="flex flex-column ion-text-center" size="2">
+          <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day}}</ion-text>
+          <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
+  
+        </ion-col>
+        <ion-col size="10" style="width: 100%;" >
+            <ion-row *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
+              <ion-col size="12">
+                <div class="info flex">
+                  <div>
+                    <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
+                  </div>
+                  <div class="pt-4">
+                    
+                    <ion-icon name="today-v-2" class="mr-8" ></ion-icon>
+                    <ion-icon color="success" name="cnas" ></ion-icon>            
+                  </div>
+                </div>
+                <ion-text class="title">
+                  {{cal.title}}
+                </ion-text>
+                <p class="desc">
+                  {{cal.desc | slice:0:90}}
+                </p>
+              </ion-col>
+             
+            </ion-row>
+            
+          </ion-col>
+        
+        
+      </ion-row>
+    </ion-col>
+    
+  </ion-row>
+  <ion-row class="ev-month    text-white">
+    <ion-text>Aprilie 2021</ion-text>
+  </ion-row>
+
+</ion-grid>
+<ion-grid *ngIf="isTablet">
+  <ion-row  *ngFor="let ev of eventList" class="card-row">
+    <ion-col offset="3.6" size="12">
+      <ion-row>
+        <ion-col class="flex flex-column" offset="1" size="12">
+          <ion-text  class="ev-day current-day">MAR 15 - 21, 19 programari</ion-text>
+      
+        </ion-col>
+        <ion-col class="flex flex-column px-0" size="12">
+          <ion-row>
+            <ion-col class="flex flex-column" size="1">
+              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day}}</ion-text>
+              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
+      
+            </ion-col>
+            <ion-col size="10" style="width: 100%;" >
+                <ion-row *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
+                  <ion-col size="12">
+                    <div class="info flex">
+                      <div>
+                        <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
+                      </div>
+                      <div class="pt-4">
+                        
+                        <ion-icon name="today-v-2" class="mr-8" ></ion-icon>
+                        <ion-icon color="success" name="cnas" ></ion-icon>            
+                      </div>
+                    </div>
+                    <ion-text class="title">
+                      {{cal.title}}
+                    </ion-text>
+                    <p class="desc">
+                      {{cal.desc | slice:0:90}}
+                    </p>
+                  </ion-col>
+                 
+                </ion-row>
+                
+              </ion-col>
+            
+            
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-col>
+
+    
+  </ion-row>
+  <ion-row class="ev-month    text-white">
+    <ion-text>Aprilie 2021</ion-text>
+  </ion-row>
+
+</ion-grid>
