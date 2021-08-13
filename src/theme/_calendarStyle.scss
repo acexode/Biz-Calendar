@@ -19,8 +19,8 @@
     font-weight: normal;
 }
 .cal-event {
-    width: 100% !important;
-    height: 10px;
+    width: 0px !important;
+    height: 0px !important;
     border-radius: 10px !important;
     display: inline-block;
     margin: 2px;
@@ -57,3 +57,44 @@
     display: flex;
     align-items: center;
 }
+.cal-month-view .cal-day-badge {
+    border-radius: none;
+    background-color: transparent !important;
+    color: #97A1A6;
+    font-family: Roboto;
+    font-size: 11px;
+    letter-spacing: -0.3px;
+    line-height: 12px;
+    text-align: center;
+}
+.vaction {
+    background-color: #FFE9A1;
+}
+.cal-month-view .cal-cell-top {
+    min-height: 0px !important;
+    
+
+    transform: translateY(0px);
+    /* position: absolute; */
+    /* bottom: 5px; */
+}
+.cal-month-view .cal-day-number {
+    font-size: 1.2em;
+    font-weight: 400;
+    opacity: 0.5;
+    text-align: center;
+    margin-top: 7px;
+    margin-right: 0px;
+    float: none; 
+}
+.cal-month-view .cal-day-cell {
+    min-height: 107px;
+    width: 52px;
+    text-align: center;
+}
+.cal-month-view .cal-day-cell.cal-today .cal-day-number {
+    font-size: 1.2em;
+}
+// .cal-month-view .cal-day-cell.cal-today {
+//     background-color: #e8fde7;
+// }

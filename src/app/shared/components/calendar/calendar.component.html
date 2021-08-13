@@ -43,11 +43,13 @@
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
-      [activeDayIsOpen]="activeDayIsOpen"
+      [activeDayIsOpen]="false"
       (dayClicked)="dayClicked($event.day)"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
       [excludeDays]="excludeDays"
+      (beforeViewRender)="beforeMonthViewRender($event)"
+      [cellTemplate]="customCellTemplate"
     ></mwl-calendar-month-view> 
       <mwl-calendar-week-view
       *ngSwitchCase="CalendarView.Week"
@@ -74,6 +76,21 @@
     </ion-col>
   </ion-row>
 
-
+  <ng-template #customCellTemplate let-day="day" let-locale="locale">
+    <div class="cal-cell-top" [ngClass]="day.events[0]?.title === 'Vacation' ? 'vacation-bg' : ''">
+      <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0"
+        >{{ day.badgeTotal }}</span
+      > -->
+      <span  class="cal-day-number"
+        >{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span
+      >
+    </div>
+    <small *ngIf="day.events[0]?.title === 'Vacation'">
+      concediu
+    </small>
+    <small  *ngIf="day.events.length > 0 && day.events[0]?.title !== 'Vacation'" style="margin: 5px;"
+      >{{ day.events.length }} programări</small
+    >
+  </ng-template>
   
 </ion-grid>
