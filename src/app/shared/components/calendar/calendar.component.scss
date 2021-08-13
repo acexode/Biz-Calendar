@@ -1,13 +1,8 @@
 .cal-header{
   padding: 20px 24px 0 48px;
-  position: fixed;
-  width: 100%;
-  height: auto;
-  z-index: 10;
-  // height: 80px;
   background: white;
   border-bottom: 1px solid  #D5DBDE;
-  margin-bottom: 85px;
+
 }
 .calendar-m {
   // margin-top: 70px !important;
@@ -19,7 +14,7 @@
   font-size: 20px;
   font-weight: 500;
   letter-spacing: 0;
-  line-height: 28px;
+  line-height: 28px
 }
 .header-events{
   color: #198CA9;
@@ -91,4 +86,7 @@
   border-radius: 4px;
   background-color: #E3F9FF;
   height: 40px;
+}
+.bg-pink {
+  background-color: hotpink !important;
 }

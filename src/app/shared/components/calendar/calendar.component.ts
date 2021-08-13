@@ -21,6 +21,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     CalendarEvent,
     CalendarEventAction,
     CalendarEventTimesChangedEvent,
+    CalendarMonthViewBeforeRenderEvent,
     CalendarView,
   } from 'angular-calendar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -43,9 +44,14 @@ import { CalendarPages } from './calendarPages';
       primary: '#ecb986',
       secondary: '#F77C00',
     },
+    transparent: {
+      primary: 'white',
+      secondary: 'white',
+    },
   };
 @Component({
   selector: 'app-calendar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   providers: [
@@ -53,6 +59,15 @@ import { CalendarPages } from './calendarPages';
       provide: CalendarDateFormatter,
       useClass: CustomDateFormatter,
     },
+  ],
+  styles: [
+    `
+      .cal-month-view .bg-pink,
+      .cal-week-view .cal-day-columns .bg-pink,
+      .cal-day-view .bg-pink {
+        background-color: hotpink !important;
+      }
+    `,
   ],
 })
 export class CalendarComponent implements OnInit {
@@ -105,56 +120,64 @@ export class CalendarComponent implements OnInit {
         // draggable: true,
         // },
         {
-          title: 'An all day event',
-          color: colors.yellow,
-          start: new Date(),
+          title: 'Vacation',
+          color: colors.transparent,
+          start: new Date(2021,7,4,8),
           allDay: true,
+          meta: 'Vacation'
+        },
+        {
+          title: 'Vacation',
+          color: colors.transparent,
+          start: new Date(2021,7,11,8),
+          allDay: true,
+          meta: 'Vacation'
         },
         {
         start: new Date(2021,7,this.currentDate,8),
         end: new Date(2021,7,this.currentDate,10),
         title: null,
-        cssClass: 'green-pattern border-none',
+        cssClass: '',
         actions: null,
         },
         {
         start: new Date(2021,7,this.currentDate,10),
         end: new Date(2021,7,this.currentDate,10,30),
         title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
-        color: colors.green,
+        color: colors.transparent,
         actions: this.actions,
         },
         {
         start: new Date(2021,7,this.currentDate,10,30),
         end: new Date(2021,7,this.currentDate,11,30),
         title: 'Meeting with Mr A',
-        color: colors.blue,
+        color: colors.transparent,
         actions: this.actions,
         },
         {
         start: addHours(new Date(), .4),
         title: 'Birthday event for Mr B',
-        color: colors.yellow,
+        color: colors.transparent,
         actions: this.actions,
         },
         {
         start: addHours(new Date(), 1),
         title: 'An event with no end dated',
-        color: colors.blue,
+        color: colors.transparent,
         actions: this.actions,
         },
         {
         start: subDays(endOfMonth(new Date()), 3),
         end: addDays(endOfMonth(new Date()), 3),
         title: 'A long event that spans 2 months',
-        color: colors.blue,
+        color: colors.transparent,
         allDay: true,
         },
         {
         start: addHours(new Date(), 2),
         end: addHours(new Date(), 2),
         title: 'A draggable and resizable event',
-        color: colors.yellow,
+        color: colors.transparent,
         actions: this.actions,
         resizable: {
             beforeStart: true,
@@ -265,5 +288,15 @@ export class CalendarComponent implements OnInit {
       }
       logSegment(segment){
         console.log(segment);
+      }
+      beforeMonthViewRender(renderEvent: CalendarMonthViewBeforeRenderEvent): void {
+        renderEvent.body.forEach((day) => {
+          const dayOfMonth = day.date.getDate();
+          const vacations = [4,11];
+          if (vacations.includes(dayOfMonth) && day.inMonth) {
+            console.log(day);
+            day.cssClass = 'vacation-bg';
+          }
+        });
       }
 }
