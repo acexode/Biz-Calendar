@@ -121,7 +121,7 @@ export class SelectionComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: ModalComponent,
-      cssClass: 'my-custom-class'
+      cssClass: 'biz-modal-class'
     });
     return await modal.present();
   }

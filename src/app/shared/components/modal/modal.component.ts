@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { IonInputConfig } from '../../models/components/ion-input-config';
+import { IonTextItem } from '../../models/components/ion-text-item';
 
 @Component({
   selector: 'app-modal',
@@ -22,8 +24,33 @@ export class ModalComponent implements OnInit {
     { name: 'Pottery', value: 'Pottery' },
     { name: 'Knitting', value: 'Knitting' }
   ];
-
-  constructor(private formBuilder: FormBuilder) {
+  label: IonTextItem = {
+    text: 'Default',
+    classes: '',
+    slot: 'end',
+  };
+  config: IonInputConfig = {
+    placeholder: 'Caută',
+    type: 'search',
+    inputMode: 'search',
+    size: 100,
+    /* inputLabel: this.label, */
+    clearable: false,
+    inputClasses: '',
+    minLength: 10,
+    maxLength: 10,
+    bgwhite: true,
+    disabled: false,
+    removeInputItemBaseLine: true,
+    isInputFocused: false,
+  };
+  searchForm: FormGroup = this.fb.group({
+    search: [2, [Validators.required]],
+  });
+  constructor(
+    private formBuilder: FormBuilder,
+    private fb: FormBuilder
+  ) {
     this.ionicForm = this.formBuilder.group({
       checkboxArrayList: this.formBuilder.array([], [Validators.required])
     });
