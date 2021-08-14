@@ -34,7 +34,34 @@
 
       <ion-item *ngFor="let item of CHECK_LIST; let i=index">
 
-        <ion-label>{{item.name}}</ion-label>
+        <div class="flex flex-column">
+          <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+            Consultație peste vârsta de 4 ani
+          </p>
+          <p class="m-0">
+            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+            Servicii paraclinice
+          </ion-text>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            /
+          </ion-text>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            10,80 pt.
+          </ion-text>
+          </p>
+        </div>
+
+        <!-- <ion-label>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+            Servicii paraclinice
+          </ion-text>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            /
+          </ion-text>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            10,80 pt.
+          </ion-text>
+        </ion-label> -->
         <ion-checkbox
         slot="start"
         color="biz-primary"

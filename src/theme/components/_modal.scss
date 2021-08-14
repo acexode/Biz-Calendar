@@ -3,12 +3,43 @@
 
 .biz {
   .biz-modal-class {
-    ion-header {
-      padding: 22px 16px 22px 32px;
+
+    .modal-wrapper {
+      background: red;
+
+      &::-webkit-scrollbar {
+        display: none;
+        -ms-overflow-style: none;
+        /* IE and Edge */
+        scrollbar-width: none;
+        /* Firefox */
+      }
     }
 
-    .modal-view {
+    ion-header {
       padding: 22px 16px 22px 32px;
+      background: white !important;
+      border-bottom: 1px solid var(--ion-neutral-grey-default-color);
     }
+
+    ion-content {
+
+      .modal-view {
+        padding: 22px 16px 22px 32px;
+
+        ion-item {
+          align-items: flex-start;
+          margin-bottom: 16px !important;
+
+          ion-checkbox {
+            margin-top: 2px !important;
+
+            margin-inline: 0 24px !important;
+          }
+        }
+      }
+    }
+
+
   }
 }

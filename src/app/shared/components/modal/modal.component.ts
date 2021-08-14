@@ -22,7 +22,10 @@ export class ModalComponent implements OnInit {
     { name: 'Singing', value: 'Singing' },
     { name: 'Dancing', value: 'Dancing' },
     { name: 'Pottery', value: 'Pottery' },
-    { name: 'Knitting', value: 'Knitting' }
+    { name: 'Knitting', value: 'Knitting' },
+    { name: 'Knitting', value: 'Knittinddg' },
+    { name: 'Knitting', value: 'Knitdating' },
+    { name: 'Knitting', value: 'Knisdstting' },
   ];
   label: IonTextItem = {
     text: 'Default',
