@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import { IonInputConfig } from '../../models/components/ion-input-config';
 import { IonTextItem } from '../../models/components/ion-text-item';
 
@@ -14,18 +15,50 @@ export class ModalComponent implements OnInit {
 
   isFormSubmitted = false;
 
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  CHECK_LIST = [
-    { name: 'Photography', value: 'Photography', checked: true },
-    { name: 'Blogging', value: 'Blogging' },
-    { name: 'Cooking', value: 'Cooking' },
-    { name: 'Singing', value: 'Singing' },
-    { name: 'Dancing', value: 'Dancing' },
-    { name: 'Pottery', value: 'Pottery' },
-    { name: 'Knitting', value: 'Knitting' },
-    { name: 'Knitting', value: 'Knittinddg' },
-    { name: 'Knitting', value: 'Knitdating' },
-    { name: 'Knitting', value: 'Knisdstting' },
+  checkList = [
+    {
+      first: 'Consultație peste vârsta de 4 ani',
+      second: 'Servicii paraclinice',
+      third: '10,80 pt.',
+      value: 'Consultație',
+      checked: true
+    },
+    {
+      first: 'Ecografie generală (abdomen + pelvis)',
+      second: 'Servicii paraclinice',
+      third: '23,45 pt.',
+      value: 'Ecografie generală',
+    },
+    {
+      first: 'Ecografie abdominală',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'Ecografie abdominală',
+    },
+    {
+      first: 'EKG standard',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'EKG',
+    },
+    {
+      first: 'Consult peste 4 ani',
+      second: 'Consultație',
+      third: '5 pt.',
+      value: 'Consult',
+    },
+    {
+      first: 'Spirometrie',
+      second: 'Servicii paraclinice',
+      third: '23 pt.',
+      value: 'Spirometrie',
+    },
+    {
+      first: 'Pulsoximetrie',
+      second: 'Servicii paraclinice',
+      third: '10 pt.',
+      value: 'Pulsoximetrie',
+    },
   ];
   label: IonTextItem = {
     text: 'Default',
@@ -52,7 +85,8 @@ export class ModalComponent implements OnInit {
   });
   constructor(
     private formBuilder: FormBuilder,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private modalController: ModalController
   ) {
     this.ionicForm = this.formBuilder.group({
       checkboxArrayList: this.formBuilder.array([], [Validators.required])
@@ -79,14 +113,14 @@ export class ModalComponent implements OnInit {
 
   onLoadCheckboxStatus() {
     const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
-    this.CHECK_LIST.forEach(o => {
+    this.checkList.forEach(o => {
       this.updateCheckControl(checkboxArrayList, o);
     });
   }
 
   onSelectionChange(e, i) {
     const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
-    this.CHECK_LIST[i].checked = e.target.checked;
+    this.checkList[i].checked = e.target.checked;
     this.updateCheckControl(checkboxArrayList, e.target);
 
   }
@@ -99,6 +133,14 @@ export class ModalComponent implements OnInit {
     } else {
       console.log('Form Submitted', this.ionicForm.value);
     }
+  }
+  dismiss() {
+    // using the injected ModalController this page
+    // can "dismiss" itself and optionally pass back data
+    this.modalController.dismiss({
+      dismissed: true,
+      data: this.ionicForm.value
+    });
   }
 
 }

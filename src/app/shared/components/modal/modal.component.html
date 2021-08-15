@@ -19,7 +19,7 @@
     </ion-row>
 
      <ion-buttons slot="end">
-      <ion-button class="primary-color-step-100">
+      <ion-button class="primary-color-step-100" (click)="dismiss()">
         Adaugă
       </ion-button>
     </ion-buttons>
@@ -32,36 +32,25 @@
 
     <ion-list>
 
-      <ion-item *ngFor="let item of CHECK_LIST; let i=index">
+      <ion-item *ngFor="let item of checkList; let i=index">
 
         <div class="flex flex-column">
           <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
-            Consultație peste vârsta de 4 ani
+            {{item.first}}
           </p>
           <p class="m-0">
             <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            Servicii paraclinice
+            {{item.second}}
           </ion-text>
           <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
             /
           </ion-text>
           <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-            10,80 pt.
+            {{item.third}}
           </ion-text>
           </p>
         </div>
 
-        <!-- <ion-label>
-          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            Servicii paraclinice
-          </ion-text>
-          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-            /
-          </ion-text>
-          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-            10,80 pt.
-          </ion-text>
-        </ion-label> -->
         <ion-checkbox
         slot="start"
         color="biz-primary"
@@ -75,13 +64,7 @@
 
       </ion-item>
 
-      <ion-item class="center">
-        <ion-button type="submit">Submit Form</ion-button>
-      </ion-item>
-
     </ion-list>
-
-    {{CHECK_LIST | json}}
 
   </form>
   </div>

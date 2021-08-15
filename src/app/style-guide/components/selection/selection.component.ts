@@ -121,16 +121,15 @@ export class SelectionComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: ModalComponent,
-      cssClass: 'biz-modal-class'
+      cssClass: 'biz-modal-class',
+      componentProps: {
+        // data: dat,
+      },
     });
-    return await modal.present();
-  }
-  dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
-    this.modalController.dismiss({
-      dismissed: true
-    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    // return await modal.present();
   }
 
 }
