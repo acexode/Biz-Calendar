@@ -48,7 +48,7 @@ export class ModalComponent implements OnInit {
     isInputFocused: false,
   };
   searchForm: FormGroup = this.fb.group({
-    search: [2, [Validators.required]],
+    search: ['', [Validators.required]],
   });
   constructor(
     private formBuilder: FormBuilder,
