@@ -12,6 +12,11 @@
     --highlight-color-valid: var(--ion-neutral-grey-medium-color, #D5DBDE);
     --highlight-color-invalid: var(--ion-primary-error-color, #F23D3D);
 
+    --background-hover: none !important;
+
+    --ripple-color: transparent;
+    --background-activated: transparent;
+
     ion-icon {
       color: var(--ion-neutral-grey-default-color);
     }
@@ -125,6 +130,18 @@
 
       &+.assative-text {
         color: var(--ion-primary-error-color) !important;
+      }
+    }
+
+    // checkbox
+    &.item-checkbox, 
+    &.item-radio {
+      --min-height: 40px;
+      padding-top: 16px !important;
+      padding-bottom: 16px !important;
+
+      ion-label {
+        margin: 0px 8px 0px 0px !important;
       }
     }
   }

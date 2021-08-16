@@ -66,15 +66,49 @@ export class SelectionComponent implements OnInit {
     { val: 'Checkbox indecised disabled', isChecked: false, indeterminate: true, disable: true }
   ];
   radioOptions: Array<IonRadioInputOption> = [
-    { label: 'Sunt de acord', id: true },
-    { label: 'Nu sunt de acord', id: false },
+    { label: 'Sunt de acord', id: 1 },
+    { label: 'Nu sunt de acord', id: 2 },
+    { label: 'Nu de acord', id: 3 },
   ];
   radioConfig: IonRadiosConfig = {
     mode: 'item',
     inputLabel: {
-      text: 'Radio button off',
+      text: 'Radio button',
     },
+    itemClasses: 'mr-12'
   };
+  radioForm: FormGroup = this.fb.group({
+    radio: [2, [Validators.required]],
+  });
+  radioConfigA: IonRadiosConfig = {
+    mode: 'chip',
+    inputLabel: {
+      text: 'Tip servicii',
+    },
+    itemClasses: 'mr-12'
+  };
+  radioFormA: FormGroup = this.fb.group({
+    radio: ['Cuplată', [Validators.required]],
+  });
+  radioOptionA: Array<IonRadioInputOption> = [
+    { label: 'Cu plată', id: 'Cuplată' },
+    { label: 'C.N.A.S.', id: 'C.N.A.S.' },
+  ];
+
+  radioConfigB: IonRadiosConfig = {
+    mode: 'chip',
+    inputLabel: {
+      text: 'Durata (minute)',
+    },
+    itemClasses: 'mr-12'
+  };
+  radioOptionB: Array<IonRadioInputOption> = [
+    { label: '15', id: '15' },
+    { label: '20', id: '20' },
+    { label: '30', id: '30' },
+    { label: '45', id: '45' },
+    { label: 'Alta', id: 'Alta' },
+  ];
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() { }
