@@ -8,7 +8,7 @@
     --inner-border-width: 0;
     --ion-safe-area-left: 0;
     --ion-border-color: var(--ion-neutral-grey-medium-color);
-    --highlight-color-focused: var(--ion-primary-color-step-30, #ABE8F7);
+    // --highlight-color-focused: var(--ion-primary-color-step-30, #ABE8F7);
     --highlight-color-valid: var(--ion-neutral-grey-medium-color, #D5DBDE);
     --highlight-color-invalid: var(--ion-primary-error-color, #F23D3D);
 
@@ -26,12 +26,14 @@
     }
 
     &.isFocused {
-      --border-color: var(--ion-primary-color-step-30) !important;
-      --highlight-color-invalid: var(--ion-primary-color-step-30, #ABE8F7) !important;
-      --highlight-color-valid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+      &:not(.bg-white) {
+        --border-color: var(--ion-primary-color-step-30) !important;
+        --highlight-color-invalid: var(--ion-primary-color-step-30, #ABE8F7) !important;
+        --highlight-color-valid: var(--ion-primary-color-step-30, #ABE8F7) !important;
 
-      &+.assative-text {
-        color: var(--ion-neutral-grey-default-color) !important;
+        &+.assative-text {
+          color: var(--ion-neutral-grey-default-color) !important;
+        }
       }
     }
 
@@ -78,31 +80,33 @@
     }
 
     &.item-has-focus {
-      --border-color: var(--ion-primary-color-step-30) !important;
+      &:not(.bg-white) {
+        --border-color: var(--ion-primary-color-step-30) !important;
 
-      // --highlight-color-focused
-      ion-label {
-        color: var(--color) !important;
-        color: var(--color);
-      }
+        // --highlight-color-focused
+        ion-label {
+          color: var(--color) !important;
+          color: var(--color);
+        }
 
-      ion-icon {
-        color: var(--ion-primary-color-step-30) !important;
-      }
+        ion-icon {
+          color: var(--ion-primary-color-step-30) !important;
+        }
 
-      // for focused
-      ion-row {
-        background: var(--ion-primary-color-step-5) !important;
+        // for focused
+        ion-row {
+          background: var(--ion-primary-color-step-5) !important;
 
-        ion-col {
-          .pull-tab {
-            border-top: 10px solid #1EA5C7 !important;
+          ion-col {
+            .pull-tab {
+              border-top: 10px solid #1EA5C7 !important;
+            }
           }
         }
-      }
 
-      &+.assative-text {
-        color: var(--ion-neutral-grey-default-color) !important;
+        &+.assative-text {
+          color: var(--ion-neutral-grey-default-color) !important;
+        }
       }
     }
 
@@ -134,7 +138,7 @@
     }
 
     // checkbox
-    &.item-checkbox, 
+    &.item-checkbox,
     &.item-radio {
       --min-height: 40px;
       padding-top: 16px !important;

@@ -1,0 +1,93 @@
+@import '../variables';
+@import '../mixins/mixins';
+
+.biz {
+  .biz-modal-class {
+
+    ion-header {
+      padding: 22px 16px 22px 32px;
+      background: white !important;
+      border-bottom: 1px solid var(--ion-neutral-grey-default-color);
+
+      ion-toolbar {
+        --min-height: 0 !important;
+      }
+
+      ion-buttons {
+        margin-inline-start: 0 !important;
+
+        ion-icon {
+          margin-inline-start: 0 !important;
+          margin-right: 24px !important;
+        }
+      }
+
+
+
+      ion-button {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+
+      ion-item {
+        --min-height: auto !important;
+      }
+
+      ion-input {
+        font-size: rem(20);
+        line-height: rem(28);
+
+        input {
+          padding-top: 0 !important;
+          padding-bottom: 0 !important;
+        }
+
+
+        &:focus-within,
+        &.isInputFocused {
+          --padding-start: 0 !important;
+        }
+
+        input[disabled],
+        .disabled {
+          --padding-start: 0 !important;
+        }
+      }
+    }
+
+    ion-content {
+      /* hide scroll bar */
+      --offset-bottom: auto !important;
+      --overflow: hidden;
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      /*  */
+
+      .modal-view {
+        padding: 22px 16px 22px 32px;
+
+        ion-item {
+          align-items: flex-start;
+          margin-bottom: 16px !important;
+
+          ion-checkbox {
+            margin-top: 2px !important;
+
+            margin-inline: 0 24px !important;
+          }
+        }
+      }
+    }
+
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .modal-wrapper {
+    height: 100vh !important;
+  }
+}

@@ -118,6 +118,9 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     disabled: false,
     useIcon: {
       name: 'chevron-down'
+    },
+    inputAssistiveText: {
+      text: 'Assistive text'
     }
   },
   filledWithIcon: {
@@ -138,6 +141,9 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     disabled: false,
     useIcon: {
       name: 'chevron-down'
+    },
+    inputAssistiveText: {
+      text: 'Assistive text'
     }
   },
   disabledConfigWithIcon: {
@@ -158,6 +164,9 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     disabled: true,
     useIcon: {
       name: 'chevron-down'
+    },
+    inputAssistiveText: {
+      text: 'Assistive text'
     }
   },
   focusedConfigWithIcon: {
@@ -179,6 +188,9 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     isInputFocused: true,
     useIcon: {
       name: 'chevron-down'
+    },
+    inputAssistiveText: {
+      text: 'Assistive text'
     }
   },
   errorConfigWithIcon: {
@@ -200,6 +212,9 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     inputHasError: true,
     useIcon: {
       name: 'warning-custom'
+    },
+    inputAssistiveText: {
+      text: 'Assistive text'
     }
   },
 };

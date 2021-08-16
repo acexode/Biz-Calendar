@@ -1,5 +1,5 @@
 <div class="w-100 p-0 flex flex-column">
-  <ion-item class="form-group w-100 p-0" [formGroup]="formGroup" lines="full" [ngClass]="{
+  <ion-item class="form-group w-100 p-0" [formGroup]="formGroup" [lines]="config?.removeInputItemBaseLine ? 'none': 'full'" [ngClass]="{
       'item-mh-40': !config?.inputLabel?.text,
       'disabled-border': config?.disabled || inputReadonly,
       'bg-white': config?.bgwhite,
@@ -57,7 +57,7 @@
           </ion-col>
       </ion-row>
   </ion-item>
-  <div class="w-100 flex ion-justify-content-end assative-text">
-    <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right">Assistive text</ion-text>
+  <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="config?.inputAssistiveText?.text">
+    <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right">{{config?.inputAssistiveText?.text}}</ion-text>
   </div>
 </div>

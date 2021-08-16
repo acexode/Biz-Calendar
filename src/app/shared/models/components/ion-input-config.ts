@@ -1,3 +1,4 @@
+import { IonAssistiveText } from './ion-assistive-text-config';
 import { IonInputIcon } from './ion-input-icon-option';
 import { IonTextItem } from './ion-text-item';
 
@@ -33,4 +34,6 @@ export interface IonInputConfig {
   useIcon?: IonInputIcon;
   isInputFocused?: boolean;
   inputHasError?: boolean;
+  inputAssistiveText?: IonAssistiveText;
+  removeInputItemBaseLine?: boolean;
 }

@@ -1,22 +1,27 @@
-<div class="biz-custom-select-div">
+<div class="biz-custom-select-div" (click)="openModal()">
   <ion-label>Input chips</ion-label>
   <div class="biz-custom-select">
   <div class="select-display">
 
-    <ion-chip
-    class="input-chip selected"
-    [color]="'biz-radio-chip-active'"
-    [outline]="true"
-  >
-    <ion-label>Test</ion-label>
+    <ng-container *ngIf="data">
+      <ion-chip *ngFor="let item of data; first as isFirst; last as isLast"
+        class="input-chip selected"
+        [color]="'biz-radio-chip-active'"
+        [outline]="true"
+        (click)="stopModalPropagation($event)"
 
-     <ion-icon
-        name="close"
-        class="icon-16"
-        color="biz-primary"
-      ></ion-icon>
+      >
+        <ion-label>{{item}}</ion-label>
 
-  </ion-chip>
+        <ion-icon
+            name="close"
+            class="icon-16"
+            color="biz-primary"
+            (click)="removeChips($event,item)"
+          ></ion-icon>
+
+      </ion-chip>
+    </ng-container>
 
   </div>
   <div class="icon">
