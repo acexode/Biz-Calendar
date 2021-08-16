@@ -5,6 +5,13 @@ import { ModalComponent } from 'src/app/shared/components/modal/modal.component'
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
+interface DemoCheckList {
+  first: string;
+  second: string;
+  third: string;
+  value: string;
+  checked: boolean;
+}
 
 @Component({
   selector: 'app-selection',
@@ -111,7 +118,7 @@ export class SelectionComponent implements OnInit {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
-  checkList = [
+  checkList: DemoCheckList[] = [
     {
       first: 'Consultație peste vârsta de 4 ani',
       second: 'Servicii paraclinice',
@@ -124,45 +131,50 @@ export class SelectionComponent implements OnInit {
       second: 'Servicii paraclinice',
       third: '23,45 pt.',
       value: 'Ecografie generală',
+      checked: false
     },
     {
       first: 'Ecografie abdominală',
       second: 'Servicii paraclinice',
       third: '12,34 pt.',
       value: 'Ecografie abdominală',
+      checked: false
     },
     {
       first: 'EKG standard',
       second: 'Servicii paraclinice',
       third: '12,34 pt.',
       value: 'EKG',
+      checked: false
     },
     {
       first: 'Consult peste 4 ani',
       second: 'Consultație',
       third: '5 pt.',
       value: 'Consult',
+      checked: false
     },
     {
       first: 'Spirometrie',
       second: 'Servicii paraclinice',
       third: '23 pt.',
       value: 'Spirometrie',
+      checked: false
     },
     {
       first: 'Pulsoximetrie',
       second: 'Servicii paraclinice',
       third: '10 pt.',
       value: 'Pulsoximetrie',
+      checked: false
     },
   ];
-  customComponentData!: any;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {}
   async presentModal() {
     const modal = await this.modalController.create({
       component: ModalComponent,
@@ -174,7 +186,20 @@ export class SelectionComponent implements OnInit {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     console.log(data);
-    this.customComponentData = data?.checkboxArrayList;
+  }
+  unCheckItem(data: string): void {
+    if (typeof data !== null && data !== '') {
+      const indexOfData = this.checkList.findIndex(
+        (v: DemoCheckList) => v.value === data);
+      console.log(indexOfData);
+      if (indexOfData > -1) {
+        this.checkList[indexOfData].checked = false;
+      }
+    }
+  }
+  get filtercustomComponentData() {
+    return this.checkList.filter((v: DemoCheckList) => v.checked === true)
+      .map((v: DemoCheckList) => v.value);
   }
 
 }

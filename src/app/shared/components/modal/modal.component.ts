@@ -96,7 +96,8 @@ export class ModalComponent implements OnInit {
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
       dismissed: true,
-      ...this.ionicForm.value
+      //...this.ionicForm.value
+      checkList: this.checkList
     });
   }
   closeModal() {
