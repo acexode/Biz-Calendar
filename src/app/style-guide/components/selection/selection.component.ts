@@ -111,25 +111,70 @@ export class SelectionComponent implements OnInit {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
+  checkList = [
+    {
+      first: 'Consultație peste vârsta de 4 ani',
+      second: 'Servicii paraclinice',
+      third: '10,80 pt.',
+      value: 'Consultație',
+      checked: true
+    },
+    {
+      first: 'Ecografie generală (abdomen + pelvis)',
+      second: 'Servicii paraclinice',
+      third: '23,45 pt.',
+      value: 'Ecografie generală',
+    },
+    {
+      first: 'Ecografie abdominală',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'Ecografie abdominală',
+    },
+    {
+      first: 'EKG standard',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'EKG',
+    },
+    {
+      first: 'Consult peste 4 ani',
+      second: 'Consultație',
+      third: '5 pt.',
+      value: 'Consult',
+    },
+    {
+      first: 'Spirometrie',
+      second: 'Servicii paraclinice',
+      third: '23 pt.',
+      value: 'Spirometrie',
+    },
+    {
+      first: 'Pulsoximetrie',
+      second: 'Servicii paraclinice',
+      third: '10 pt.',
+      value: 'Pulsoximetrie',
+    },
+  ];
+  customComponentData!: any;
   constructor(
     private fb: FormBuilder,
-    public modalController: ModalController) { }
+    public modalController: ModalController
+  ) { }
 
-  ngOnInit() {
-    this.presentModal();
-  }
+  ngOnInit() { }
   async presentModal() {
     const modal = await this.modalController.create({
       component: ModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        // data: dat,
+        checkList: this.checkList,
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     console.log(data);
-    // return await modal.present();
+    this.customComponentData = data?.checkboxArrayList;
   }
 
 }

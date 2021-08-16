@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { IonInputConfig } from '../../models/components/ion-input-config';
@@ -10,56 +10,12 @@ import { IonTextItem } from '../../models/components/ion-text-item';
   styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
+  @Input() checkList!: any;
 
   ionicForm: FormGroup;
 
   isFormSubmitted = false;
 
-  checkList = [
-    {
-      first: 'Consultație peste vârsta de 4 ani',
-      second: 'Servicii paraclinice',
-      third: '10,80 pt.',
-      value: 'Consultație',
-      checked: true
-    },
-    {
-      first: 'Ecografie generală (abdomen + pelvis)',
-      second: 'Servicii paraclinice',
-      third: '23,45 pt.',
-      value: 'Ecografie generală',
-    },
-    {
-      first: 'Ecografie abdominală',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'Ecografie abdominală',
-    },
-    {
-      first: 'EKG standard',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'EKG',
-    },
-    {
-      first: 'Consult peste 4 ani',
-      second: 'Consultație',
-      third: '5 pt.',
-      value: 'Consult',
-    },
-    {
-      first: 'Spirometrie',
-      second: 'Servicii paraclinice',
-      third: '23 pt.',
-      value: 'Spirometrie',
-    },
-    {
-      first: 'Pulsoximetrie',
-      second: 'Servicii paraclinice',
-      third: '10 pt.',
-      value: 'Pulsoximetrie',
-    },
-  ];
   label: IonTextItem = {
     text: 'Default',
     classes: '',
@@ -91,11 +47,9 @@ export class ModalComponent implements OnInit {
     this.ionicForm = this.formBuilder.group({
       checkboxArrayList: this.formBuilder.array([], [Validators.required])
     });
-
-    this.onLoadCheckboxStatus();
   }
   ngOnInit(): void {
-    // throw new Error('Method not implemented.');
+    this.onLoadCheckboxStatus();
   }
 
   updateCheckControl(cal: any, o: any) {
@@ -112,13 +66,16 @@ export class ModalComponent implements OnInit {
   }
 
   onLoadCheckboxStatus() {
-    const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
-    this.checkList.forEach(o => {
-      this.updateCheckControl(checkboxArrayList, o);
-    });
+    if (this.checkList) {
+      const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
+      this.checkList.forEach((o: any) => {
+        this.updateCheckControl(checkboxArrayList, o);
+      });
+    }
+
   }
 
-  onSelectionChange(e, i) {
+  onSelectionChange(e: any, i: string | number) {
     const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
     this.checkList[i].checked = e.target.checked;
     this.updateCheckControl(checkboxArrayList, e.target);
@@ -139,7 +96,14 @@ export class ModalComponent implements OnInit {
     // can "dismiss" itself and optionally pass back data
     this.modalController.dismiss({
       dismissed: true,
-      data: this.ionicForm.value
+      ...this.ionicForm.value
+    });
+  }
+  closeModal() {
+    this.modalController.dismiss({
+      dismissed: true,
+      ...this.ionicForm.value,
+      checkboxArrayList: null
     });
   }
 

@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border" [translucent]="true" mode="md">
   <ion-toolbar class="ion-no-padding">
 
-    <ion-buttons slot="start">
+    <ion-buttons slot="start" (click)="closeModal()">
       <ion-icon
         name="arrow-left"
         class="icon-24 black-color"
@@ -30,7 +30,8 @@
   <div class="modal-view">
     <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
 
-    <ion-list>
+    <ng-container *ngIf="checkList">
+      <ion-list>
 
       <ion-item *ngFor="let item of checkList; let i=index">
 
@@ -63,8 +64,10 @@
 
 
       </ion-item>
+      </ion-list>
+    </ng-container>
 
-    </ion-list>
+
 
   </form>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-biz-custom-selection',
@@ -6,7 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./biz-custom-selection.component.scss'],
 })
 export class BizCustomSelectionComponent implements OnInit {
-
+  @Input() data!: any;
+  items = [
+    'text', 'jofsgnkgndkfgn', 'dsfjhkfhdskfd'
+  ];
   constructor() { }
 
   ngOnInit() { }
