@@ -8,13 +8,13 @@ import { MenuController, Platform } from '@ionic/angular';
 })
 export class SideMenuComponent implements OnInit {
   isTablet = false;
-  public appPages = [
-    { title: 'Listă', url: '/home/list', icon: '1-day' },
-    { title: 'Zi', url: '/home/Day', icon: 'schedule' },
-    { title: '3 zile', url: '/home/3-day', icon: '3-days' },
-    { title: 'Săptămână', url: '/home/Week', icon: '5-days' },
-    { title: 'Lună', url: '/home/Month', icon: 'month' },
-    { title: 'Comparativ', url: '/home/comparative', icon: 'coparativ' },
+  public appPages =  [
+    { title: 'Listă', url: '/calendar/lista', icon: '1-day' },
+    { title: 'Zi', url: '/calendar/zi', icon: 'schedule' },
+    { title: 'Zile lucratoare', url: '/calendar/zile-lucratoare', icon: '3-days' },
+    { title: 'Săptămână', url: '/calendar/saptamana', icon: '5-days' },
+    { title: 'Lună', url: '/calendar/luna', icon: 'month' },
+    { title: 'Comparativ', url: '/calendar/comparativ', icon: 'coparativ' },
   ];
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor(platform: Platform, private menu: MenuController) {

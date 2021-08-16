@@ -28,10 +28,6 @@
 }
 .bg-card{
     height: 137px;
-    width: 307px;
-    background-color: #EAF6E8;
-    border-radius: 4px 0 0 4px;
-    border-left: 4px solid #2EA81B;
 }
 .hour, .location {
     height: 24px;
@@ -89,4 +85,43 @@
 }
 .bg-pink {
   background-color: hotpink !important;
+}
+.weekEvent-title{
+  font-family: Roboto;
+  font-size: 14.8px;
+  letter-spacing: -0.3px;
+  line-height: 16px;
+}
+.cal-events{
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+.lh-none{
+  line-height: 0px !important;
+}
+.bg-green{
+  background-color: #2EA81B;
+  color: white;
+}
+.bg-blue{
+  background-color: #3093F8;
+  color: white;
+}
+.bg-blue-light{
+  background-color: #D6E9FE;
+  color: black;
+}
+.bg-orange{
+  background-color: #F77C00;
+  color: white;
+}
+.bg-green-light{
+  background-color: #D5EED1;
+  color: black;
+}
+.bg-yellow-light{
+  background-color: #FFE9A1;
+  color: black;
 }

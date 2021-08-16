@@ -38,12 +38,13 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.page = this.activatedRoute.snapshot.paramMap.get('id');
-    if(this.page === 'list'){
+    console.log(this.page);
+    if(this.page === 'lista'){
       this.calendarList = EVENTLIST;
     }
   }
   navigate(path){
-    this.router.navigate(['/home' +path]);
+    this.router.navigate(['/calendar' +path]);
   }
 
 

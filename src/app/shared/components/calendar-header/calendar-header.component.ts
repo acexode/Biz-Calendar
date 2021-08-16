@@ -1,3 +1,4 @@
+import { MenuController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { EVENTLIST } from 'src/app/home/event';
@@ -24,7 +25,7 @@ export class CalendarHeaderComponent implements OnInit {
       class: string;
     }[]; }[];
     public calendarPages = CalendarPages;
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private menu: MenuController) { }
 
   ngOnInit() {
     this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -36,8 +37,11 @@ export class CalendarHeaderComponent implements OnInit {
       this.calendarList = EVENTLIST;
     }
   }
+  toggleMenu(){
+    this.menu.toggle();
+  }
   navigate(path){
-    this.router.navigate(['/home' +path]);
+    this.router.navigate([path]);
   }
 
 }

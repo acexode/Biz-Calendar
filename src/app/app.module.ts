@@ -1,3 +1,4 @@
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,7 +15,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot(),
-    AppRoutingModule, SharedModule, CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })],
+    AppRoutingModule, HttpClientModule, SharedModule, CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

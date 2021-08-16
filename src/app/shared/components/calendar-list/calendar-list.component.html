@@ -11,18 +11,17 @@
           <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
   
         </ion-col>
-        <ion-col size="10" style="width: 100%;" >
-            <ion-row *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
-              <ion-col size="12">
+        <ion-col size="10" >
+            <ion-row  *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class" >
+              <ion-col>
                 <div class="info flex">
                   <div>
                     <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
                   </div>
-                  <div class="pt-4">
-                    
-                    <ion-icon name="today-v-2" class="mr-8" ></ion-icon>
-                    <ion-icon color="success" name="cnas" ></ion-icon>            
-                  </div>
+                  <div  class="pt-4">
+                    <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
+                    <ion-icon *ngFor="let icon of cal.icons" class="mr-4 event-icon" color="success" [name]="icon" ></ion-icon>   
+                  </div>  
                 </div>
                 <ion-text class="title">
                   {{cal.title}}
@@ -61,19 +60,19 @@
               <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
       
             </ion-col>
-            <ion-col size="10" style="width: 100%;" >
+            <ion-col size="10" >
                 <ion-row *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
                   <ion-col size="12">
-                    <div class="info flex">
-                      <div>
+                    <ion-row >
+                      <ion-col size="8">
                         <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
-                      </div>
-                      <div class="pt-4">
+                      </ion-col>
+                      <ion-col size="4"  class="pt-10">
                         
-                        <ion-icon name="today-v-2" class="mr-8" ></ion-icon>
-                        <ion-icon color="success" name="cnas" ></ion-icon>            
-                      </div>
-                    </div>
+                        <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
+                        <ion-icon  *ngFor="let icon of cal.icons; let i = index" class="mr-5 event-icon" color="success" [name]="icon" ></ion-icon>          
+                      </ion-col>
+                    </ion-row>
                     <ion-text class="title">
                       {{cal.title}}
                     </ion-text>
