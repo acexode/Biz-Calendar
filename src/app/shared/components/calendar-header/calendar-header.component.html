@@ -23,7 +23,7 @@
         </ion-buttons>
         
       </ion-col >
-      <ion-col *ngIf="page === 'Day'" class="day-info" size="12">
+      <ion-col *ngIf="page === 'zi'" class="day-info" size="12">
         <ion-text>
           LUN
         </ion-text> 
@@ -62,7 +62,10 @@
         <ion-buttons class="pb-5"  >
           <ion-icon  size="large"  name="search" class="icon mr-32"></ion-icon>
           <ion-icon size="large"  name="today-v-2" class="icon mr-32"></ion-icon>
-          <ion-icon  size="large"  name="menu-Hamburger" class="icon"></ion-icon>
+          <ion-button fill="clear" (click)="toggleMenu()">
+            <ion-icon  size="large"  name="menu-Hamburger" class="icon"></ion-icon>
+
+          </ion-button>
           <!-- <ion-menu-button></ion-menu-button> -->
         </ion-buttons>
         

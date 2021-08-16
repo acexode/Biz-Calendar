@@ -1,8 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const CalendarPages = [
-    { title: 'Listă', url: '/list', icon: '1-day' },
-    { title: 'Zi', url: '/Day', icon: 'schedule' },
-    { title: 'Săptămână', url: '/Week', icon: '5-days' },
-    { title: 'Lună', url: '/Month', icon: 'Month' },
-    { title: 'Comparativ', url: '/comparative', icon: 'coparativ' },
-];
+    { title: 'Listă', url: '/calendar/lista', icon: '1-day' },
+    { title: 'Zi', url: '/calendar/zi', icon: 'schedule' },
+    { title: 'Zile lucratoare', url: '/calendar/zile-lucratoare', icon: '3-days' },
+    { title: 'Săptămână', url: '/calendar/saptamana', icon: '5-days' },
+    { title: 'Lună', url: '/calendar/luna', icon: 'month' },
+    { title: 'Comparativ', url: '/calendar/comparativ', icon: 'coparativ' },
+  ];

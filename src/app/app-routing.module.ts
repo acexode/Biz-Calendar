@@ -8,11 +8,11 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'home',
+    path: 'calendar',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'home/:id',
+    path: 'calendar/:id',
     loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {

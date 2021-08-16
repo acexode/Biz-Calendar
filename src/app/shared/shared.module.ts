@@ -1,3 +1,4 @@
+import { CalendarMonthComponent } from './components/calendar-month/calendar-month.component';
 import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { CalendarListComponent } from './components/calendar-list/calendar-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +27,7 @@ registerLocaleData(localeDe);
     CalendarHeaderComponent,
     IconsComponent,
     ModalComponent,
+    CalendarMonthComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +50,8 @@ registerLocaleData(localeDe);
     IconsComponent,
     ReactiveFormsModule,
     BizInputsModule,
-    ModalComponent
+    ModalComponent,
+    CalendarMonthComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
