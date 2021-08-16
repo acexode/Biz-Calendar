@@ -1,3 +1,10 @@
+  <div class="w-100 my-32">
+      <app-biz-custom-selection
+        [data]="filtercustomComponentData"
+        (modalOpenEvent)="presentModal()"
+        (removeItemEvent)="unCheckItem($event)"
+      ></app-biz-custom-selection>
+    </div>
  <div class="w-100 pt-32">
      <div class="w-100 mb-56">
         <ion-text class="s40-h40 poppings-family-font ls-0">Icons & <br> miscellaneous</ion-text>

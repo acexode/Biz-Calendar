@@ -1,0 +1,76 @@
+<ion-header class="ion-no-border" [translucent]="true" mode="md">
+  <ion-toolbar class="ion-no-padding">
+
+    <ion-buttons slot="start" (click)="closeModal()">
+      <ion-icon
+        name="arrow-left"
+        class="icon-24 black-color"
+        slot="icon-only"
+      ></ion-icon>
+    </ion-buttons>
+
+    <ion-row class="ion-no-padding">
+      <ion-col class="ion-no-padding" [formGroup]="searchForm">
+        <app-input
+          [config]="config"
+          formControlName="search"
+        ></app-input>
+      </ion-col>
+    </ion-row>
+
+     <ion-buttons slot="end">
+      <ion-button class="primary-color-step-100" (click)="dismiss()">
+        Adaugă
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="modal-view">
+    <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+
+    <ng-container *ngIf="checkList">
+      <ion-list>
+
+      <ion-item *ngFor="let item of checkList; let i=index">
+
+        <div class="flex flex-column">
+          <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+            {{item.first}}
+          </p>
+          <p class="m-0">
+            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+            {{item.second}}
+          </ion-text>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            /
+          </ion-text>
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            {{item.third}}
+          </ion-text>
+          </p>
+        </div>
+
+        <ion-checkbox
+        slot="start"
+        color="biz-primary"
+        class="margin-inline-end-12"
+        mode="md"
+        [value]="item.value"
+        [checked]="item.checked"
+        (ionChange)="onSelectionChange($event,i)"
+        ></ion-checkbox>
+
+
+      </ion-item>
+      </ion-list>
+    </ng-container>
+
+
+
+  </form>
+  </div>
+
+</ion-content>
+

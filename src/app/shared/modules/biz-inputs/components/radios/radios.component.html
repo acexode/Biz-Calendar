@@ -86,6 +86,10 @@
     [color]="
       controlValue !== item?.id ? 'biz-radio-chip-default' : 'biz-radio-chip-active'
     "
+    [ngClass]="{
+      'ml-0': first,
+      'mr-0': last
+    }"
     [outline]="true"
     (click)="toggleRadio(item)"
   >
