@@ -175,7 +175,7 @@ export class SelectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.presentModal();
+    // this.presentModal();
   }
   async presentModal() {
     const modal = await this.modalController.create({
