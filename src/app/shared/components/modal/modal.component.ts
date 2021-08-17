@@ -61,7 +61,6 @@ export class ModalComponent implements OnInit {
       .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
       .subscribe(
         data => {
-          console.log(data);
           if (data.search !== '') {
             this.list = this.searching(data.search);
           } else {
