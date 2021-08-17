@@ -48,7 +48,9 @@
                     'isInputFocused':
                     config?.isInputFocused || false
                 }"
-                (ionFocus)="onMouseDown($event)"></ion-input>
+                (ionFocus)="onMouseDown($event)"
+                [debounce]="config?.debounce || 0"
+                ></ion-input>
 
                 <ion-icon *ngIf="useIcon"
                     [name]="config?.useIcon?.name"

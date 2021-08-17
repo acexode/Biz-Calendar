@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { IonInputConfig } from '../../models/components/ion-input-config';
 import { IonTextItem } from '../../models/components/ion-text-item';
 
@@ -11,7 +13,7 @@ import { IonTextItem } from '../../models/components/ion-text-item';
 })
 export class ModalComponent implements OnInit {
   @Input() checkList!: any;
-
+  list!: any;
   ionicForm: FormGroup;
 
   isFormSubmitted = false;
@@ -35,10 +37,12 @@ export class ModalComponent implements OnInit {
     disabled: false,
     removeInputItemBaseLine: true,
     isInputFocused: false,
+    debounce: 200,
   };
   searchForm: FormGroup = this.fb.group({
     search: ['', [Validators.required]],
   });
+  public subscriptions = new Subscription();
   constructor(
     private formBuilder: FormBuilder,
     private fb: FormBuilder,
@@ -50,13 +54,19 @@ export class ModalComponent implements OnInit {
   }
   ngOnInit(): void {
     this.onLoadCheckboxStatus();
+    this.list = this.checkList;
+    this.subscriptions.add(this.searchForm.valueChanges
+      .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
+      .subscribe(
+        data => this.list = this.searching(data.search)
+      ));
   }
 
   updateCheckControl(cal: any, o: any) {
     if (o.checked) {
       cal.push(new FormControl(o.value));
     } else {
-      cal.controls.forEach((item: FormControl, index) => {
+      cal.controls.forEach((item: FormControl, index: any) => {
         if (item.value === o.value) {
           cal.removeAt(index);
           return;
@@ -76,10 +86,12 @@ export class ModalComponent implements OnInit {
   }
 
   onSelectionChange(e: any, i: string | number) {
-    const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
-    this.checkList[i].checked = e.target.checked;
-    this.updateCheckControl(checkboxArrayList, e.target);
-
+    const indexOfData = this.checkList.findIndex((v: any) => v.value === e.target.value);
+    if (indexOfData > -1) {
+      const checkboxArrayList: FormArray = this.ionicForm.get('checkboxArrayList') as FormArray;
+      this.checkList[indexOfData].checked = e.target.checked;
+      this.updateCheckControl(checkboxArrayList, e.target);
+    }
   }
 
   submitForm() {
@@ -106,6 +118,12 @@ export class ModalComponent implements OnInit {
       ...this.ionicForm.value,
       checkboxArrayList: null
     });
+  }
+  searching(st: string) {
+    if (st) {
+      const d = this.checkList;
+      return d.filter((v: any) => (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1));
+    }
   }
 
 }

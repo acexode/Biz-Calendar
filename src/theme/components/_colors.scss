@@ -57,7 +57,6 @@
 .primary-color-step-100 {
   --color: var(--ion-primary-color-step-100) !important;
   color: var(--color) !important;
-
 }
 
 .isFocused {
@@ -66,4 +65,9 @@
 
 .defaultGrayColor {
   color: var(--ion-neutral-grey-default-color) !important;
+}
+
+.primary-color-step-110 {
+  --color: var(--ion-primary-color-step-110) !important;
+  color: var(--color) !important;
 }

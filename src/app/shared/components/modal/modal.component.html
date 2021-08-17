@@ -30,13 +30,15 @@
   <div class="modal-view">
     <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
 
-    <ng-container *ngIf="checkList">
+    <ng-container *ngIf="list">
       <ion-list>
 
-      <ion-item *ngFor="let item of checkList; let i=index">
+      <ion-item *ngFor="let item of list; let i=index">
 
         <div class="flex flex-column">
-          <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+          <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0"
+            [ngClass]="{'primary-color-step-110': item.checked}
+          ">
             {{item.first}}
           </p>
           <p class="m-0">
