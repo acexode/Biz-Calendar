@@ -23,7 +23,49 @@
         </ion-buttons>
         
       </ion-col >
-      <ion-col *ngIf="page === 'zi'" class="day-info" size="12">
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar  *ngIf="page === 'comparativ'">
+    <div class="umbra mt-9"></div>
+    <ion-row class="px-16">
+      <ion-col  class="day-info" size="12">
+       
+        <ion-row [formGroup]="locationForm" >
+          
+          <ion-col size="6">
+             <app-select
+             [config]="config"
+             formControlName="location"
+             [options]="locationOptions"
+             class="w-100"
+             ></app-select>
+             
+            </ion-col>
+          <ion-col size="6">
+             <app-select
+             [config]="configB"
+             formControlName="program"
+             [options]="programOptions"
+             class="w-100"
+             ></app-select>
+             
+            </ion-col>
+          </ion-row>
+      
+      </ion-col>
+      <ion-col class="mt-28"   size="12">
+        <div class="flex ion-justify-content-between">
+          <div class="flex flex-column day-info"><ion-text>LUN</ion-text><b>8</b></div>
+          <div *ngFor="let list of programList" class="flex flex-column defaultGrayColor"><ion-text class="s12pt8-h16">{{list.title}}</ion-text><b>{{list.label}}</b></div>
+        </div>
+       
+      </ion-col>
+
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar class="pl-48 flex" *ngIf="page === 'zi'">
+    <ion-row>
+      <ion-col  class="day-info" size="12">
         <ion-text>
           LUN
         </ion-text> 
@@ -70,7 +112,49 @@
         </ion-buttons>
         
       </ion-col >
-      <ion-col *ngIf="page === 'Day'" class="day-info" size="12">
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar  *ngIf="page === 'comparativ'">
+    <div class="umbra mt-9"></div>
+    <ion-row class="px-16">
+      <ion-col  class="day-info" size="12">
+       
+        <ion-row [formGroup]="locationForm" >
+          
+          <ion-col size="4">
+             <app-select
+             [config]="config"
+             formControlName="location"
+             [options]="locationOptions"
+             class="w-100"
+             ></app-select>
+             
+            </ion-col>
+          <ion-col size="4">
+             <app-select
+             [config]="configB"
+             formControlName="program"
+             [options]="programOptions"
+             class="w-100"
+             ></app-select>
+             
+            </ion-col>
+          </ion-row>
+      
+      </ion-col>
+      <ion-col class="mt-28"   size="12">
+        <div class="flex ion-justify-content-between">
+          <div class="flex flex-column day-info"><ion-text>LUN</ion-text><b>8</b></div>
+          <div *ngFor="let list of programList" class="flex flex-column defaultGrayColor"><ion-text class="s12pt8-h16">{{list.title}}</ion-text><b>{{list.label}}</b></div>
+        </div>
+       
+      </ion-col>
+
+    </ion-row>
+  </ion-toolbar>
+  <ion-toolbar class="pl-48 flex" *ngIf="page === 'zi'">
+    <ion-row>
+      <ion-col  class="day-info" size="12">
         <ion-text>
           LUN
         </ion-text> 

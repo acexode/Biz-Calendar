@@ -6,6 +6,7 @@ export interface IonSelectConfig {
   idKey?: string;
   labelKey?: string;
   alertOptions?: any;
+  mode?: any;
   forceListItems: boolean;
   placeholder?: string;
   disabled?: boolean;
