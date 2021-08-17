@@ -54,11 +54,21 @@ export class ModalComponent implements OnInit {
   }
   ngOnInit(): void {
     this.onLoadCheckboxStatus();
+    // load check list to list
     this.list = this.checkList;
+    //
     this.subscriptions.add(this.searchForm.valueChanges
       .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
       .subscribe(
-        data => this.list = this.searching(data.search)
+        data => {
+          console.log(data);
+          if (data.search !== '') {
+            this.list = this.searching(data.search);
+          } else {
+            this.list = this.checkList;
+          }
+
+        }
       ));
   }
 
