@@ -25,35 +25,38 @@
 
   <form [formGroup]="adaugaProgramareFormGroup">
 
-    <div class="w-100 mt-30 mb-32 px-32">
+    <div class="w-100 bottom-1px-solid-grey-default-color">
+      <div class="w-100 pt-30 px-32">
         <app-input
-        [config]="pacientInputConfig"
-        formControlName="pacient"
-      ></app-input>
-    </div>
+          [config]="pacientInputConfig"
+          formControlName="pacient"
+        ></app-input>
+      </div>
 
-    <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+      <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+
+        <ion-chip
+          class="chip"
+          outline="true"
+          color="biz-chip-secondary"
+        >
+          <ion-label>
+            Adaugă
+          </ion-label>
+          <ion-icon name="user-new"></ion-icon>
+      </ion-chip>
 
       <ion-chip
-        class="chip"
-        outline="true"
-        color="biz-chip-secondary"
-      >
-        <ion-label>
-          Adaugă
-        </ion-label>
-        <ion-icon name="user-new"></ion-icon>
-    </ion-chip>
+          class="chip-radio"
+          color="biz-radio-chip-default-b-no-outline"
+        >
+          <ion-label>
+            INFO
+          </ion-label>
+          <ion-icon name="info"></ion-icon>
+      </ion-chip>
 
-    <ion-chip
-        class="chip-radio"
-        color="biz-radio-chip-default-b-no-outline"
-      >
-        <ion-label>
-          INFO
-        </ion-label>
-        <ion-icon name="info"></ion-icon>
-    </ion-chip>
+      </div>
 
     </div>
 
