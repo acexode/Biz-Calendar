@@ -83,7 +83,7 @@
   padding-inline-end: 0 !important;
 }
 
-.alert-button.sc-ion-alert-md {
+.alert-button.sc-ion-alert-md,.alert-button.sc-ion-alert-ios {
   color: #1EA5C7 !important;
   font-size: 14px;
   line-height: 16px;
@@ -92,6 +92,7 @@
   margin-inline-start: 0 !important;
   -webkit-margin-end: 0 !important;
   margin-inline-end: 0 !important;
+  border: none;
 }
 
 .alert-header {
