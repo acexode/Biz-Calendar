@@ -1,12 +1,12 @@
-<div class="w-100 p-0 flex flex-column">
+<div class="w-100 p-0 flex flex-column biz-form-group">
   <ion-item class="form-group w-100 p-0" [formGroup]="formGroup" [lines]="config?.removeInputItemBaseLine ? 'none': 'full'" [ngClass]="{
       'item-mh-40': !config?.inputLabel?.text,
       'disabled-border': config?.disabled || inputReadonly,
       'bg-white': config?.bgwhite,
       'hasError': config?.inputHasError || false,
-      'item-has-focus isFocused': config?.isInputFocused || false
+      'item-has-focus': config?.isInputFocused || false
     }">
-      <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
+      <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color" position="stacked" [ngClass]="
         config?.disabled || inputReadonly || formGroup?.disabled
           ? 'input-label'
           : 'input-label-2'

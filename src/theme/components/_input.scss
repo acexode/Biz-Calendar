@@ -2,6 +2,12 @@
 @import '../mixins/mixins';
 
 .biz {
+  .biz-form-group {
+    ion-row {
+      width: 100% !important;
+    }
+  }
+
   ion-input {
     --padding-start: 0;
     font-family: var(--ion-font-roboto-family);
@@ -34,10 +40,13 @@
     @include flex-wrap(wrap);
 
     ion-input {
+      flex: 1;
+      /* width: 1%; */
+
       input {
-        -ms-flex: 1 1 auto;
+        width: 100%;
+        /* -ms-flex: 1 1 auto;*/
         flex: 1 1 auto;
-        width: 1%;
       }
     }
 

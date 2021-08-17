@@ -27,13 +27,13 @@ export class StyleGuidePage implements OnInit {
     inputClasses: '',
     minLength: 10,
     maxLength: 10,
-    bgwhite: true,
+    bgwhite: false,
     disabled: false,
   };
   inputStyleGuide = inputStyleGuideConfigurations;
   textAreaConfig = ionTextAreaConfigData;
   styleForm: FormGroup = this.fb.group({
-    text: ['', [Validators.required]],
+    text: [''],
     email: ['', [Validators.required, Validators.email]],
     filled: 'Lorem ipsum',
     focused: 'Type here',

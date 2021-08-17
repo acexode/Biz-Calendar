@@ -27,7 +27,7 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     inputClasses: '',
     minLength: 10,
     maxLength: 10,
-    bgwhite: true,
+    bgwhite: false,
     disabled: false,
   },
   disabledConfig: {
@@ -44,7 +44,7 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     inputClasses: '',
     minLength: 10,
     maxLength: 10,
-    bgwhite: true,
+    bgwhite: false,
     disabled: true,
   },
   filledConfig: {
@@ -78,7 +78,6 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     inputClasses: '',
     minLength: 10,
     maxLength: 10,
-    bgwhite: true,
     disabled: false,
     isInputFocused: true,
   },
@@ -114,7 +113,7 @@ export const inputStyleGuideConfigurations: InputStyleGuideCong = {
     inputClasses: '',
     minLength: 5,
     maxLength: 15,
-    bgwhite: true,
+    bgwhite: false,
     disabled: false,
     useIcon: {
       name: 'chevron-down'
