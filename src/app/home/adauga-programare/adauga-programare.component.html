@@ -13,7 +13,7 @@
 
       </ion-buttons>
 
-      <ion-title>Subheader</ion-title>
+      <ion-title>Programare</ion-title>
 
       <div slot="end">
         <ion-button size="default" color="biz-primary">
@@ -59,6 +59,45 @@
       </div>
 
     </div>
+
+    <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+
+      <div class="w-140">
+        <app-input
+          [config]="dataInputConfig"
+          formControlName="pacient"
+        ></app-input>
+      </div>
+
+      <div class="w-140">
+        <app-input
+          [config]="timeInputConfig"
+          formControlName="pacient"
+        ></app-input>
+      </div>
+
+    </div>
+
+    <div class="w-100 px-32 pb-32">
+        <app-radios
+          [config]="tipprogramareConfig"
+          [options]="tipprogramareOption"
+          formControlName="tipprogramare"
+          class="w-100"
+        >
+      </app-radios>
+    </div>
+
+    <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
+      <app-select
+      formControlName="select"
+      [config]="locatieConfig"
+      formControlName="locatie"
+      [options]="locatieOption"
+      class="w-100"
+      ></app-select>
+    </div>
+
 
   </form>
 </ion-content>

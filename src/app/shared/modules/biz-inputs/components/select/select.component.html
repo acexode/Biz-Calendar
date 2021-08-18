@@ -43,9 +43,9 @@
     {{ item.label }}
       </ion-select-option>
     </ion-select>
-    <ion-icon
-      name="caret-down"
-      class="icon-20 mr-8 custom-select-icon neutral-grey-medium-color"
-    ></ion-icon>
+    <ion-icon *ngIf="useIcon"
+      [name]="config?.useIcon?.name"
+      [class]="' icon-20 mr-8 custom-select-icon ' + config?.useIcon?.classes">
+    </ion-icon>
   </div>
 </ion-item>

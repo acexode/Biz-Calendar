@@ -113,8 +113,16 @@
   min-width: rem(188);
 }
 
+.mw-140 {
+  min-width: rem(188);
+}
+
 .w-50 {
   width: 50%;
+}
+
+.w-40 {
+  width: 40%;
 }
 
 .w-30 {
@@ -131,6 +139,10 @@
 
 .mw-50-perc {
   max-width: 50%;
+}
+
+.maxw-140 {
+  max-width: 140px !important;
 }
 
 .maxw-256 {
@@ -191,6 +203,10 @@
 
 .w-104 {
   width: rem(104) !important;
+}
+
+.w-140 {
+  width: 140px !important;
 }
 
 @media (min-width: $desktop-width) {
