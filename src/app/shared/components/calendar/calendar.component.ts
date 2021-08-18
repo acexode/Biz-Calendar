@@ -278,7 +278,7 @@ export class CalendarComponent implements OnInit {
         this.isTablet = window.innerWidth >= 768 ? true : false;
       });
         console.log(this.display);
-        if(this.display === 'zi' || this.display === 'comparativ'){
+        if(this.display === 'zi'){
             const day = new Date().getDay();
             // this.excludeDays = [3, 3];
             this.setView(this.CalendarView.Day);

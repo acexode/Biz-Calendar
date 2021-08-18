@@ -1,3 +1,5 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { ComparativComponent } from './components/comparativ/comparativ.component';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month.component';
 import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { CalendarListComponent } from './components/calendar-list/calendar-list.component';
@@ -16,6 +18,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BizInputsModule } from './modules/biz-inputs/biz-inputs.module';
 import { IconsComponent } from './components/icons/icons.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { DayViewSchedulerComponent } from './components/comparativ/day-view-scheduler.component';
 registerLocaleData(localeDe);
 
 
@@ -27,7 +30,9 @@ registerLocaleData(localeDe);
     CalendarHeaderComponent,
     IconsComponent,
     ModalComponent,
-    CalendarMonthComponent
+    CalendarMonthComponent,
+    ComparativComponent,
+    DayViewSchedulerComponent
   ],
   imports: [
     CommonModule,
@@ -51,7 +56,9 @@ registerLocaleData(localeDe);
     ReactiveFormsModule,
     BizInputsModule,
     ModalComponent,
-    CalendarMonthComponent
+    CalendarMonthComponent,
+    ComparativComponent,
+    DayViewSchedulerComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
