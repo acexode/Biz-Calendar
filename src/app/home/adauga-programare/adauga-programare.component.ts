@@ -4,6 +4,7 @@ import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
+import { TextAreaConfig } from 'src/app/shared/models/components/ion-textarea-config';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -128,13 +129,43 @@ export class AdaugaProgramareComponent implements OnInit {
       classes: 'neutral-grey-medium-color'
     }
   };
+  medicConfig: IonSelectConfig = {
+    inputLabel: {
+      classes: '',
+      text: 'Medic trimițător',
+    },
+    forceListItems: false,
+    multiple: false,
+    disabled: false,
+    placeholder: 'Alege',
+    alertOptions: {
+      cssClass: '',
+    },
+    idKey: 'id',
+    labelKey: 'label',
+    useIcon: {
+      name: 'doctor',
+      classes: 'neutral-grey-medium-color'
+    }
+  };
+  observatiiConfig: TextAreaConfig = {
+    textAreaLabel: {
+      text: 'Observații recepție',
+      classes: '',
+      slot: '',
+    },
+    placeholder: '',
+    disabled: false,
+  };
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['On-line', [Validators.required]],
     locatie: ['On-line', [Validators.required]],
     tipServicii: '',
     time: '',
-    cabinet: ''
+    cabinet: '',
+    medic: '',
+    observatii: ''
   });
   constructor(private fb: FormBuilder) { }
 
