@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { InfoPacientModalComponent } from 'src/app/shared/components/modal/info-pacient-modal/info-pacient-modal.component';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
@@ -167,8 +169,24 @@ export class AdaugaProgramareComponent implements OnInit {
     medic: '',
     observatii: ''
   });
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    public modalController: ModalController
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.presentModal();
+  }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: InfoPacientModalComponent,
+      cssClass: 'biz-modal-class-type-a',
+      componentProps: {
+        // data:
+      },
+    });
+    await modal.present();
+    // const { data } = await modal.onWillDismiss();
+  }
 
 }
