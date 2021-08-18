@@ -81,10 +81,60 @@ export class AdaugaProgramareComponent implements OnInit {
       label: 'Option 2'
     }
   ];
+  tipServiciiConfig: IonRadiosConfig = {
+    mode: 'chip',
+    inputLabel: {
+      text: 'Tip programare',
+      classes: ''
+    },
+    itemClasses: 'mr-12'
+  };
+  tipServiciiOption: Array<IonRadioInputOption> = [
+    { label: 'Cu plată', id: 'Cuplată' },
+    { label: 'C.N.A.S.', id: 'C.N.A.S.' },
+  ];
+
+  timeRadioConfig: IonRadiosConfig = {
+    mode: 'chip',
+    inputLabel: {
+      text: 'Durata (minute)',
+      classes: ''
+    },
+    itemClasses: 'mr-12'
+  };
+  timeRadioOption: Array<IonRadioInputOption> = [
+    { label: '15', id: '15' },
+    { label: '20', id: '20' },
+    { label: '30', id: '30' },
+    { label: '45', id: '45' },
+    { label: 'Alta', id: 'Alta' },
+  ];
+  cabinetConfig: IonSelectConfig = {
+    inputLabel: {
+      classes: '',
+      text: 'Cabinet',
+    },
+    forceListItems: false,
+    multiple: false,
+    disabled: false,
+    placeholder: 'Opțional',
+    alertOptions: {
+      cssClass: '',
+    },
+    idKey: 'id',
+    labelKey: 'label',
+    useIcon: {
+      name: 'cabinet',
+      classes: 'neutral-grey-medium-color'
+    }
+  };
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['On-line', [Validators.required]],
     locatie: ['On-line', [Validators.required]],
+    tipServicii: '',
+    time: '',
+    cabinet: ''
   });
   constructor(private fb: FormBuilder) { }
 
