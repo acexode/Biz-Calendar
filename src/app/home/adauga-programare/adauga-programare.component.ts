@@ -174,9 +174,7 @@ export class AdaugaProgramareComponent implements OnInit {
     public modalController: ModalController
   ) { }
 
-  ngOnInit() {
-    this.presentModal();
-  }
+  ngOnInit() {}
   async presentModal() {
     const modal = await this.modalController.create({
       component: InfoPacientModalComponent,

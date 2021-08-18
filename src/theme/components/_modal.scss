@@ -104,22 +104,18 @@
       height: 448px;
       --height: 448px;
       width: rem(311);
-      overflow: auto;
-      --overflow: auto;
 
-      /* > * {
-        position: relative;
-        --height: auto;
-        height: auto;
-        --min-height: rem(448);
-        min-height: rem(448);
-        max-height: 100%;
-        width: rem(375);
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        contain: content;
-      } */
+      ::part(scroll) {
+        overflow: hidden !important;
+      }
+    }
+  }
+
+  @media (min-width: $desktop-width) {
+    .biz-modal-class-type-a {
+      .modal-wrapper {
+        width: 413px !important;
+      }
     }
   }
 }

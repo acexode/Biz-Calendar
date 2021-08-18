@@ -119,5 +119,39 @@
         --padding-end: 4px !important;
       }
     }
+
+    &.button-default-flat {
+      border-radius: rem(12);
+      min-height: 24px;
+      height: 24px;
+      font-size: rem(14);
+      line-height: rem(16);
+      white-space: normal;
+      border: 0;
+      box-shadow: none;
+      --box-shadow: none;
+      --border-radius: 0;
+      --padding-top: 0;
+      --padding-bottom: 0;
+      --padding-start: 0;
+      --padding-end: 0;
+      margin-inline: 0 !important;
+
+      .button {
+        min-height: 24px;
+        --max-height: 24px;
+        height: auto;
+        padding-top: 0;
+        padding-bottom: 0;
+        border-width: 0;
+        line-height: rem(16);
+        margin: 0 !important;
+      }
+
+      &.biz-tertiary {
+        --background: none !important;
+        --color: var(--ion-primary-color-step-100) !important;
+      }
+    }
   }
 }
