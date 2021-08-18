@@ -1,3 +1,103 @@
-<p>
-  adauga-programare works!
-</p>
+
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+    <ion-toolbar class="ion-no-padding">
+
+      <ion-buttons slot="start" class="slot-start">
+
+        <ion-icon
+          name="close"
+          class="icon-24 black-color"
+          slot="icon-only"
+        ></ion-icon>
+
+      </ion-buttons>
+
+      <ion-title>Programare</ion-title>
+
+      <div slot="end">
+        <ion-button size="default" color="biz-primary">
+          Salvează
+        </ion-button>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="adaugaProgramareFormGroup">
+
+    <div class="w-100 bottom-1px-solid-grey-default-color">
+      <div class="w-100 pt-30 px-32">
+        <app-input
+          [config]="pacientInputConfig"
+          formControlName="pacient"
+        ></app-input>
+      </div>
+
+      <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+
+        <ion-chip
+          class="chip"
+          outline="true"
+          color="biz-chip-secondary"
+        >
+          <ion-label>
+            Adaugă
+          </ion-label>
+          <ion-icon name="user-new"></ion-icon>
+      </ion-chip>
+
+      <ion-chip
+          class="chip-radio"
+          color="biz-radio-chip-default-b-no-outline"
+        >
+          <ion-label>
+            INFO
+          </ion-label>
+          <ion-icon name="info"></ion-icon>
+      </ion-chip>
+
+      </div>
+
+    </div>
+
+    <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+
+      <div class="w-140">
+        <app-input
+          [config]="dataInputConfig"
+          formControlName="pacient"
+        ></app-input>
+      </div>
+
+      <div class="w-140">
+        <app-input
+          [config]="timeInputConfig"
+          formControlName="pacient"
+        ></app-input>
+      </div>
+
+    </div>
+
+    <div class="w-100 px-32 pb-32">
+        <app-radios
+          [config]="tipprogramareConfig"
+          [options]="tipprogramareOption"
+          formControlName="tipprogramare"
+          class="w-100"
+        >
+      </app-radios>
+    </div>
+
+    <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
+      <app-select
+      formControlName="select"
+      [config]="locatieConfig"
+      formControlName="locatie"
+      [options]="locatieOption"
+      class="w-100"
+      ></app-select>
+    </div>
+
+
+  </form>
+</ion-content>

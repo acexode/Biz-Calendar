@@ -33,6 +33,10 @@ export class SelectionComponent implements OnInit {
     },
     idKey: 'id',
     labelKey: 'label',
+    useIcon: {
+      name: 'caret-down',
+      classes: 'neutral-grey-medium-color'
+    }
   };
   configB: IonSelectConfig = {
     inputLabel: {
@@ -48,6 +52,10 @@ export class SelectionComponent implements OnInit {
     },
     idKey: 'id',
     labelKey: 'label',
+    useIcon: {
+      name: 'caret-down',
+      classes: 'neutral-grey-medium-color'
+    }
   };
   options = [
     {
