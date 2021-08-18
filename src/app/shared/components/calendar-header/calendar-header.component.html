@@ -18,7 +18,7 @@
 
       <ion-col size="4"  class="flex">
         <ion-buttons class="pb-5"  >         
-          <ion-icon size="large"  name="today-v-2" class="icon mr-32"></ion-icon>
+          <ion-icon size="large" (click)="navigate('/calendar/zi')"  name="today-v-2" class="icon mr-32"></ion-icon>
           <ion-menu-button class="mr-24"></ion-menu-button>
         </ion-buttons>
         
@@ -53,13 +53,13 @@
           </ion-row>
       
       </ion-col>
-      <ion-col class="mt-28"   size="12">
+      <!-- <ion-col class="mt-28"   size="12">
         <div class="flex ion-justify-content-between">
           <div class="flex flex-column day-info"><ion-text>LUN</ion-text><b>8</b></div>
           <div *ngFor="let list of programList" class="flex flex-column defaultGrayColor"><ion-text class="s12pt8-h16">{{list.title}}</ion-text><b>{{list.label}}</b></div>
         </div>
        
-      </ion-col>
+      </ion-col> -->
 
     </ion-row>
   </ion-toolbar>
@@ -103,7 +103,7 @@
       <ion-col size="3" class="flex ion-justify-content-end">
         <ion-buttons class="pb-5"  >
           <ion-icon  size="large"  name="search" class="icon mr-32"></ion-icon>
-          <ion-icon size="large"  name="today-v-2" class="icon mr-32"></ion-icon>
+          <ion-icon size="large" (click)="navigate('/calendar/zi')"  name="today-v-2" class="icon mr-32"></ion-icon>
           <ion-button fill="clear" (click)="toggleMenu()">
             <ion-icon  size="large"  name="menu-Hamburger" class="icon"></ion-icon>
 
@@ -142,13 +142,23 @@
           </ion-row>
       
       </ion-col>
-      <ion-col class="mt-28"   size="12">
+      <!-- <ion-col class="mt-28"   size="12">
+        <ion-row>
+          <ion-slides [options]="opts" #slides>
+            <ion-slide *ngFor="let list of programList; let i = index;">
+              
+              <div class="flex flex-column defaultGrayColor"><ion-text class="s12pt8-h16">{{list.title}}</ion-text><b>{{list.label}}</b></div>
+  
+            </ion-slide>
+          </ion-slides>
+
+        </ion-row>
         <div class="flex ion-justify-content-between">
           <div class="flex flex-column day-info"><ion-text>LUN</ion-text><b>8</b></div>
-          <div *ngFor="let list of programList" class="flex flex-column defaultGrayColor"><ion-text class="s12pt8-h16">{{list.title}}</ion-text><b>{{list.label}}</b></div>
+         
         </div>
        
-      </ion-col>
+      </ion-col> -->
 
     </ion-row>
   </ion-toolbar>

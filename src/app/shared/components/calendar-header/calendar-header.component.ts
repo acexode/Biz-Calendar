@@ -23,6 +23,12 @@ export class CalendarHeaderComponent implements OnInit {
   programOptions = programOptions;
   programList = utilizatorList;
   public page: string;
+  opts = {
+    freeMode: true,
+    slidesPerView: 3,
+    slidesOffsetBefore: 30,
+    slidesOffsetAfter: 100
+  };
   calendarList: {
     day: string;
     current: boolean;
@@ -68,7 +74,11 @@ export class CalendarHeaderComponent implements OnInit {
     this.menu.toggle();
   }
   navigate(path){
+    console.log(path);
     this.router.navigate([path]);
+  }
+  segmentChanged(id){
+    console.log(id);
   }
 
 }

@@ -132,4 +132,23 @@ ion-toolbar{
       background-color: #E3F9FF;
       height: 40px;
     }
-    
+    ion-slides {
+      background: #fff;
+      padding-top: 5px;  
+      padding-bottom: 5px;
+      position: sticky;
+      top: 0px;
+    }
+     .text-dark{
+         --color: #777777 ;
+     }
+    .border-bottom {
+      border-bottom: 1px solid var(--ion-color-step-150, rgba(0, 0, 0, 0.07));
+    }
+    .active-category {
+        --background: #0281B2;
+        --color: #fff;
+        --border-radius: 30px;
+        font-weight: 600;
+        padding: 4px;
+      }
