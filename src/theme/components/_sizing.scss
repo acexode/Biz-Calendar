@@ -114,7 +114,7 @@
 }
 
 .mw-140 {
-  min-width: rem(188);
+  min-width: rem(140);
 }
 
 .w-50 {
@@ -207,6 +207,10 @@
 
 .w-140 {
   width: 140px !important;
+}
+
+.w-160 {
+  width: 160px !important;
 }
 
 @media (min-width: $desktop-width) {
