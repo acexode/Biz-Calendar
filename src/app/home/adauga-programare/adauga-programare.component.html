@@ -98,6 +98,108 @@
       ></app-select>
     </div>
 
+    <div class="w-100 bottom-1px-solid-grey-default-color">
+
+      <div class="w-100 p-32">
+
+        <app-radios
+            [config]="tipServiciiConfig"
+            [options]="tipServiciiOption"
+            formControlName="tipServicii"
+            class="w-100"
+          >
+        </app-radios>
+
+      </div>
+
+      <div class="w-100 px-32 ">
+
+        <div class="w-100 mb-8">
+          <ion-label
+            class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color">
+            Servicii
+          </ion-label>
+        </div>
+        <ion-chip
+          class="chip-radio"
+          color="biz-chip-secondary-b-no-outline"
+          >
+            <ion-label>
+              Adaugă servicii
+            </ion-label>
+            <ion-icon name="plus"></ion-icon>
+        </ion-chip>
+
+      </div>
+
+      <div class="w-100 p-32">
+
+        <app-radios
+            [config]="timeRadioConfig"
+            [options]="timeRadioOption"
+            formControlName="time"
+            class="w-100"
+          >
+        </app-radios>
+
+      </div>
+
+      <div class="w-100 px-32 pb-32">
+        <app-select
+        formControlName="select"
+        [config]="cabinetConfig"
+        formControlName="cabinet"
+        [options]="locatieOption"
+        class="w-100"
+        ></app-select>
+      </div>
+
+      <div class="w-100 px-32 pb-32">
+        <ion-chip
+            class="chip"
+            outline="true"
+            color="biz-chip-secondary"
+          >
+            <ion-label>
+              Creează recurență
+            </ion-label>
+            <ion-icon name="recurenta"></ion-icon>
+        </ion-chip>
+      </div>
+
+    </div>
+
+    <div class="w-100 p-32 bottom-1px-solid-grey-default-color">
+      <ion-item class="item-checkbox">
+          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Generează link de plată</ion-label>
+          <ion-checkbox
+          slot="start"
+          color="biz-primary"
+          class="margin-inline-end-12"
+          mode="md"
+          [checked]="false"
+          ></ion-checkbox>
+        </ion-item>
+    </div>
+
+    <div class="w-100">
+
+        <div class="w-100 p-32">
+          <app-select
+          formControlName="select"
+          [config]="medicConfig"
+          formControlName="cabinet"
+          [options]="locatieOption"
+          class="w-100"
+          ></app-select>
+        </div>
+
+        <div class="px-32 pb-32">
+          <app-textarea [config]="observatiiConfig" formControlName="observatii"></app-textarea>
+        </div>
+
+    </div>
+
 
   </form>
 </ion-content>
