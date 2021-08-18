@@ -33,6 +33,10 @@ export class SelectionComponent implements OnInit {
     },
     idKey: 'id',
     labelKey: 'label',
+    useIcon: {
+      name: 'caret-down',
+      classes: 'neutral-grey-medium-color'
+    }
   };
   configB: IonSelectConfig = {
     inputLabel: {
@@ -48,6 +52,10 @@ export class SelectionComponent implements OnInit {
     },
     idKey: 'id',
     labelKey: 'label',
+    useIcon: {
+      name: 'caret-down',
+      classes: 'neutral-grey-medium-color'
+    }
   };
   options = [
     {
@@ -174,7 +182,9 @@ export class SelectionComponent implements OnInit {
     public modalController: ModalController
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this.presentModal();
+  }
   async presentModal() {
     const modal = await this.modalController.create({
       component: ModalComponent,

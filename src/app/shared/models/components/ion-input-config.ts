@@ -36,4 +36,6 @@ export interface IonInputConfig {
   inputHasError?: boolean;
   inputAssistiveText?: IonAssistiveText;
   removeInputItemBaseLine?: boolean;
+  debounce?: number;
+  mode?: 'ios' | 'md';
 }

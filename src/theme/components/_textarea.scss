@@ -20,11 +20,24 @@
       bottom: 0;
       right: -1px;
       pointer-events: none;
-      z-index: 2;
+      z-index: 10;
     }
 
     .pull-tab:hover {
       cursor: pointer;
+    }
+
+    .wrap:after {
+      border-top: 20px solid black;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      -webkit-transform: rotate(-45deg);
+      z-index: 1;
+      opacity: 0.5;
+      position: absolute;
+      right: -18px;
+      bottom: -3px;
+      pointer-events: none;
     }
   }
 
@@ -64,8 +77,10 @@
         background-repeat: no-repeat;
         background-size: contain !important;
       } */
-      &::-webkit-resizer {
+      &::-webkit-resizer,
+      &::-webkit-scrollbar-thumb {
         display: none !important;
+        opacity: 0 !important;
       }
 
       resize: vertical;

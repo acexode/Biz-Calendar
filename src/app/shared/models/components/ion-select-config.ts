@@ -1,3 +1,4 @@
+import { IonInputIcon } from './ion-input-icon-option';
 import { IonTextItem } from './ion-text-item';
 
 export interface IonSelectConfig {
@@ -12,4 +13,5 @@ export interface IonSelectConfig {
   disabled?: boolean;
   hasEmptyValue?: boolean;
   emptyValue?: any;
+  useIcon?: IonInputIcon;
 }

@@ -9,6 +9,7 @@ import { IonicModule } from '@ionic/angular';
 import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
+import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare.component';
 
 
 @NgModule({
@@ -21,6 +22,6 @@ import { HomePage } from './home.page';
     SharedModule,
     NgCalendarModule,
   ],
-  declarations: [HomePage],
+  declarations: [HomePage, AdaugaProgramareComponent],
 })
 export class HomePageModule {}

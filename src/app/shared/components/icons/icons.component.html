@@ -1,9 +1,17 @@
 <div class="tooltip">
    <ion-icon
       name="plus"
-      class="icon-24 defaultGrayColor"
+      [color]="color || ''"
+      [class]="class || ''"
+      [name]="name || ''"
+      [slot]="slot || ''"
     ></ion-icon>
-  <span class="tooltiptext right-tootip tooltip-visible s12pt8-h16 roboto-family-font text-weight-medium ls-0">Tooltip text</span>
+  <span [class]="
+    ' tooltiptext s12pt8-h16 roboto-family-font text-weight-medium ls-0 ' + (tooltipClass || '')
+    "
+    *ngIf="tooltip">
+    {{tooltip}}
+  </span>
 </div>
 <!-- do remove tooltips-visible -->
 <!--   <div class="tooltip">Hover over me

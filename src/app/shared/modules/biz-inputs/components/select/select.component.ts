@@ -233,5 +233,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   get selectField() {
     return this.formGroup.get('select');
   }
+  get useIcon(): boolean {
+    return this.config.hasOwnProperty('useIcon') ? true : false;
+  }
 
 }
