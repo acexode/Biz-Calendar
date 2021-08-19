@@ -5,9 +5,9 @@
   <ion-toolbar class="cal-header flex">
     <ion-row>
       <ion-col size="8"  class="flex flex-column">
-        <div >
+        <div (click)="openCalModal()" >
           <ion-text class="header-date">
-            martie
+            {{ month | titlecase}}
           </ion-text>
           <ion-icon class="mt-5"  name="caret-down"></ion-icon>
         </div>
@@ -81,9 +81,9 @@
   <ion-toolbar class="cal-header flex">
     <ion-row>
       <ion-col  size="2" class="flex flex-column">
-        <div >
+        <div (click)="openCalModal()" >
           <ion-text class="header-date">
-            martie
+            {{ month | titlecase}}
           </ion-text>
           <ion-icon class="mt-5"  name="caret-down"></ion-icon>
         </div>
