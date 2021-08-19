@@ -132,3 +132,38 @@
   display: block;
   padding-top: 7px;
 }
+.ion-page{
+  display: block;
+}
+.table-bordered > *{
+  border: none !important;
+}
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+  border: none !important;
+  text-transform: capitalize;
+  color: #000000;
+  font-family: Roboto;
+  font-size: 12.8px;
+  letter-spacing: 0;
+  line-height: 16px;
+  text-align: center;
+}
+.monthview-selected {
+  border-radius: 8px;
+  background-color: #1EA5C7 !important;
+  color: white;
+}
+.table-bordered > thead > tr > th{
+  text-transform: capitalize;
+  color: #97A1A6;
+  font-family: Roboto;
+  font-size: 12.8px;
+  letter-spacing: 0;
+  line-height: 16px;
+  text-align: center;
+}

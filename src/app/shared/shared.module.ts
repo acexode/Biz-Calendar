@@ -1,3 +1,4 @@
+import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { ComparativComponent } from './components/comparativ/comparativ.component';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month.component';
@@ -32,7 +33,8 @@ registerLocaleData(localeDe);
     ModalComponent,
     CalendarMonthComponent,
     ComparativComponent,
-    DayViewSchedulerComponent
+    DayViewSchedulerComponent,
+    CalModalComponent,
   ],
   imports: [
     CommonModule,
@@ -58,7 +60,8 @@ registerLocaleData(localeDe);
     ModalComponent,
     CalendarMonthComponent,
     ComparativComponent,
-    DayViewSchedulerComponent
+    DayViewSchedulerComponent,
+    CalModalComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }

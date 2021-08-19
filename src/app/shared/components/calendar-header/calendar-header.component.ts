@@ -1,12 +1,18 @@
 import { locationOptions, programOptions,
   selectConfig, selectConfigB, utilizatorList, cabinetList, aparatList } from './../../data/select-data';
-import { MenuController } from '@ionic/angular';
+import { AlertController, MenuController, ModalController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EVENTLIST } from 'src/app/home/event';
 import { CalendarPages } from '../calendar/calendarPages';
 import { IonSelectConfig } from '../../models/components/ion-select-config';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
+import { CalendarView } from 'angular-calendar';
+import { format } from 'date-fns';
+import { ro } from 'date-fns/locale';
+import { CalModalComponent } from '../modal/cal-modal/cal-modal.component';
+import { CalendarComponent } from 'ionic2-calendar';
+
 
 @Component({
   selector: 'app-calendar-header',
@@ -15,6 +21,11 @@ import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 })
 export class CalendarHeaderComponent implements OnInit {
   isTablet = false;
+  view: CalendarView = CalendarView.Month;
+  viewDate: Date = new Date();
+  month = format(new Date(), 'MMMM', { locale: ro });
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  CalendarView = CalendarView;
   locationCal: FormControl = new FormControl('');
   activatedPath  = '';
   config: IonSelectConfig = selectConfig;
@@ -44,11 +55,25 @@ export class CalendarHeaderComponent implements OnInit {
       location: [''],
       program: [''],
     });
+    eventSource = [];
+    viewTitle: string;
+
+    calendar = {
+      mode: 'month',
+      currentDate: new Date(),
+    };
+
+    selectedDate: Date;
+
+    // @ViewChild(CalendarComponent) myCal: CalendarComponent
     public calendarPages = CalendarPages;
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
+    private alertCtrl: AlertController,
+    private modalCtrl: ModalController,
     private fb: FormBuilder, private menu: MenuController) { }
 
   ngOnInit() {
+    console.log(this.view);
     this.locationForm.get('program').valueChanges.subscribe(val =>{
       console.log(val);
       if(val === '1'){
@@ -80,5 +105,39 @@ export class CalendarHeaderComponent implements OnInit {
   segmentChanged(id){
     console.log(id);
   }
+  async openCalModal() {
+    const modal = await this.modalCtrl.create({
+      component: CalModalComponent,
+      cssClass: 'cal-modal',
+      backdropDismiss: false
+    });
+    await modal.present();
+    modal.onDidDismiss().then((result) => {
+      if (result.data && result.data.event) {
+        const event = result.data.event;
+        if (event.allDay) {
+          const start = event.startTime;
+          event.startTime = new Date(
+            Date.UTC(
+              start.getUTCFullYear(),
+              start.getUTCMonth(),
+              start.getUTCDate()
+            )
+          );
+          event.endTime = new Date(
+            Date.UTC(
+              start.getUTCFullYear(),
+              start.getUTCMonth(),
+              start.getUTCDate() + 1
+            )
+          );
+        }
+        this.eventSource.push(result.data.event);
+        // this.myCal.loadEvents();
+      }
+    });
+  }
 
 }
+
+
