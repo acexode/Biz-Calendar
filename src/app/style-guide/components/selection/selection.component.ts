@@ -210,9 +210,5 @@ export class SelectionComponent implements OnInit {
       }
     }
   }
-  get filtercustomComponentData() {
-    return this.checkList.filter((v: DemoCheckList) => v.checked === true)
-      .map((v: DemoCheckList) => v.value);
-  }
 
 }
