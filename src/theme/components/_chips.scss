@@ -11,6 +11,10 @@
     font-weight: 500;
     letter-spacing: 0;
 
+    ion-icon {
+      margin-inline: 8px 0px;
+    }
+
     &.chip,
     &.chip-radio {
       height: 40px;
@@ -96,6 +100,7 @@
   --color: var(--ion-color-base);
   --ion-color-base-rgb: rgb(151, 161, 166);
   --ion-color-shade: var(--ion-color-base);
+  padding: 0 !important;
 }
 
 .ion-color-biz-chip-secondary-b-no-outline {
@@ -105,4 +110,5 @@
   --color: var(--ion-color-base);
   --ion-color-base-rgb: rgb(25, 140, 169);
   --ion-color-shade: var(--ion-color-base);
+  padding: 0 !important;
 }
