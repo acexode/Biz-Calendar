@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { ModalComponent } from 'src/app/shared/components/modal/modal.component';
+import { SelectieServiciiModalComponent } from 'src/app/shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
+import { BizCustomSelectionConfig } from 'src/app/shared/models/components/biz-custom-selection-config';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
-interface DemoCheckList {
+export interface DemoCheckList {
   first: string;
   second: string;
   third: string;
@@ -177,31 +178,33 @@ export class SelectionComponent implements OnInit {
       checked: false
     },
   ];
+  inputChipConfig: BizCustomSelectionConfig = {
+    placeholder: 'Click',
+    inputLabel: {
+      text: 'Input Chip'
+    }
+  };
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController
   ) { }
 
-  ngOnInit() {
-    // this.presentModal();
-  }
+  ngOnInit() {}
   async presentModal() {
     const modal = await this.modalController.create({
-      component: ModalComponent,
+      component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
         checkList: this.checkList,
       },
     });
     await modal.present();
-    const { data } = await modal.onWillDismiss();
-    console.log(data);
+    // const { data } = await modal.onWillDismiss();
   }
   unCheckItem(data: string): void {
     if (typeof data !== null && data !== '') {
       const indexOfData = this.checkList.findIndex(
         (v: DemoCheckList) => v.value === data);
-      console.log(indexOfData);
       if (indexOfData > -1) {
         this.checkList[indexOfData].checked = false;
       }

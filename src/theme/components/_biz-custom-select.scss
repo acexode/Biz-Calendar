@@ -23,7 +23,15 @@
     @include align-items(center);
     /* @include flex-wrap(wrap); */
 
-    border-bottom: 1px solid #ABE8F7;
+
+    &.border-light-blue {
+      border-bottom: 1px solid #ABE8F7;
+    }
+
+    &.border-light-grey {
+      border-bottom: 1px solid var(--ion-neutral-grey-medium-color);
+    }
+
     cursor: pointer;
 
     .select-display {

@@ -1,5 +1,6 @@
   <div class="w-100 my-32">
       <app-biz-custom-selection
+        [config]="inputChipConfig"
         [data]="filtercustomComponentData"
         (modalOpenEvent)="presentModal()"
         (removeItemEvent)="unCheckItem($event)"
@@ -586,7 +587,7 @@
     </div>
 
     <div class="w-100 my-32">
-      <app-biz-custom-selection></app-biz-custom-selection>
+      <app-biz-custom-selection [config]="inputChipConfig"></app-biz-custom-selection>
     </div>
 
   </div>

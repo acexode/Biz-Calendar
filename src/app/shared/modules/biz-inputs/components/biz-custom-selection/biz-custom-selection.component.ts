@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { BizCustomSelectionConfig } from 'src/app/shared/models/components/biz-custom-selection-config';
 
 
 @Component({
@@ -8,11 +9,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class BizCustomSelectionComponent implements OnInit {
   @Input() data!: any;
+  @Input() config: BizCustomSelectionConfig;
   @Output() modalOpenEvent = new EventEmitter<any>();
   @Output() removeItemEvent: EventEmitter<string | null> = new EventEmitter<string | null>(null);
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.data);
+  }
   removeChips(event: any, item: string): void {
     // IOS is a mess. Stop propagating the event to the input under the buttons.
     this.stopModalPropagation(event);
@@ -24,5 +28,8 @@ export class BizCustomSelectionComponent implements OnInit {
   stopModalPropagation(event: Event): void {
     event.stopPropagation();
   }
+  get useIcon(): boolean {
+    return this.config.hasOwnProperty('useIcon') ? true : false;
+  } // caret-down
 
 }

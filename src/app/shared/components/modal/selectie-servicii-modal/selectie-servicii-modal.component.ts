@@ -1,17 +1,19 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { IonInputConfig } from '../../models/components/ion-input-config';
-import { IonTextItem } from '../../models/components/ion-text-item';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { IonInputConfig } from 'src/app/shared/models/components/ion-input-config';
+import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  selector: 'app-selectie-servicii-modal',
+  templateUrl: './selectie-servicii-modal.component.html',
+  styleUrls: ['./selectie-servicii-modal.component.scss'],
 })
-export class ModalComponent implements OnInit {
+export class SelectieServiciiModalComponent implements OnInit, OnDestroy {
+
   @Input() checkList!: any;
   list!: any;
   ionicForm: FormGroup;
@@ -133,6 +135,9 @@ export class ModalComponent implements OnInit {
       const d = this.checkList;
       return d.filter((v: any) => (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1));
     }
+  }
+  ngOnDestroy(): void {
+    unsubscriberHelper(this.subscriptions);
   }
 
 }

@@ -1,16 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { InfoPacientModalComponent } from 'src/app/shared/components/modal/info-pacient-modal/info-pacient-modal.component';
+import { SelectieServiciiModalComponent } from 'src/app/shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
+import { BizCustomSelectionConfig } from 'src/app/shared/models/components/biz-custom-selection-config';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { TextAreaConfig } from 'src/app/shared/models/components/ion-textarea-config';
+import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
+import { get } from 'lodash';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
   styleUrls: ['./adauga-programare.component.scss'],
 })
-export class AdaugaProgramareComponent implements OnInit {
+export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   pacientInputConfig = inputConfigHelper({
     label: 'Pacient',
     type: 'text',
@@ -50,7 +59,7 @@ export class AdaugaProgramareComponent implements OnInit {
     itemClasses: 'mr-12'
   };
   tipprogramareOption: Array<IonRadioInputOption> = [
-    { label: 'În cabinet', id: 'În cabinet' },
+    { label: 'În cabinet', id: 'În-cabinet' },
     { label: 'On-line', id: 'On-line' },
   ];
   locatieConfig: IonSelectConfig = {
@@ -157,18 +166,139 @@ export class AdaugaProgramareComponent implements OnInit {
     placeholder: '',
     disabled: false,
   };
+  checkList: DemoCheckList[] = [
+    {
+      first: 'Consultație peste vârsta de 4 ani',
+      second: 'Servicii paraclinice',
+      third: '10,80 pt.',
+      value: 'Consultație',
+      checked: false
+    },
+    {
+      first: 'Ecografie generală (abdomen + pelvis)',
+      second: 'Servicii paraclinice',
+      third: '23,45 pt.',
+      value: 'Ecografie generală',
+      checked: false
+    },
+    {
+      first: 'Ecografie abdominală',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'Ecografie abdominală',
+      checked: false
+    },
+    {
+      first: 'EKG standard',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'EKG',
+      checked: false
+    },
+    {
+      first: 'Consult peste 4 ani',
+      second: 'Consultație',
+      third: '5 pt.',
+      value: 'Consult',
+      checked: false
+    },
+    {
+      first: 'Spirometrie',
+      second: 'Servicii paraclinice',
+      third: '23 pt.',
+      value: 'Spirometrie',
+      checked: false
+    },
+    {
+      first: 'Pulsoximetrie',
+      second: 'Servicii paraclinice',
+      third: '10 pt.',
+      value: 'Pulsoximetrie',
+      checked: false
+    },
+  ];
+  aparaturaConfig: BizCustomSelectionConfig = {
+    placeholder: 'Alege',
+    inputLabel: {
+      text: 'Aparatură asociată'
+    }
+  };
+  public subscriptions = new Subscription();
+  hideAparatura = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['On-line', [Validators.required]],
-    locatie: ['On-line', [Validators.required]],
+    locatie: new FormControl(''),
     tipServicii: '',
     time: '',
     cabinet: '',
     medic: '',
     observatii: ''
   });
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    public modalController: ModalController
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.subscriptions.add(this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
+      .subscribe(data => {
+        this.process(data);
+      }));
+  }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: InfoPacientModalComponent,
+      cssClass: 'biz-modal-class-type-a',
+      componentProps: {
+        // data:
+      },
+    });
+    await modal.present();
+    // const { data } = await modal.onWillDismiss();
+  }
+  async presentModalB() {
+    const modal = await this.modalController.create({
+      component: SelectieServiciiModalComponent,
+      cssClass: 'biz-modal-class',
+      componentProps: {
+        checkList: this.checkList,
+      },
+    });
+    await modal.present();
+    // const { data } = await modal.onWillDismiss();
+  }
+  unCheckItem(data: string): void {
+    if (typeof data !== null && data !== '') {
+      const indexOfData = this.checkList.findIndex(
+        (v: DemoCheckList) => v.value === data);
+      if (indexOfData > -1) {
+        this.checkList[indexOfData].checked = false;
+      }
+    }
+  }
+  get filtercustomComponentData() {
+    return this.checkList.filter((v: DemoCheckList) => v.checked === true)
+      .map((v: DemoCheckList) => v.value);
+  }
+  process(data: string) {
+    if (data === 'On-line') {
+      this.hideAparatura = false;
+      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
+    } else {
+      this.hideAparatura = true;
+      this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
+    }
+    this.locatieFormControl.updateValueAndValidity();
+  }
+  get isHideAparatura() {
+    return this.hideAparatura;
+  }
+  get locatieFormControl() {
+    return this.adaugaProgramareFormGroup.get('locatie') as FormControl;
+  }
+  ngOnDestroy() {
+    unsubscriberHelper(this.subscriptions);
+  }
 
 }
