@@ -242,6 +242,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
+      .pipe(distinctUntilChanged())
       .subscribe(data => {
         this.process(data);
       }));

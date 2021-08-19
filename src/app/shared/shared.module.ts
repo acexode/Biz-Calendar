@@ -19,6 +19,7 @@ import { BizInputsModule } from './modules/biz-inputs/biz-inputs.module';
 import { IconsComponent } from './components/icons/icons.component';
 import { DayViewSchedulerComponent } from './components/comparativ/day-view-scheduler.component';
 import { ModalModule } from './components/modal/modal.module';
+import { AddServiceSelectionComponent } from './components/add-service-selection/add-service-selection.component';
 registerLocaleData(localeDe);
 
 
@@ -32,6 +33,7 @@ registerLocaleData(localeDe);
     CalendarMonthComponent,
     ComparativComponent,
     DayViewSchedulerComponent,
+    AddServiceSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +60,8 @@ registerLocaleData(localeDe);
     CalendarMonthComponent,
     ComparativComponent,
     DayViewSchedulerComponent,
-    ModalModule
+    ModalModule,
+    AddServiceSelectionComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
