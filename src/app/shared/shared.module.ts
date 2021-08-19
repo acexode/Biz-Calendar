@@ -20,6 +20,7 @@ import { IconsComponent } from './components/icons/icons.component';
 import { DayViewSchedulerComponent } from './components/comparativ/day-view-scheduler.component';
 import { ModalModule } from './components/modal/modal.module';
 import { AddServiceSelectionComponent } from './components/add-service-selection/add-service-selection.component';
+import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
 registerLocaleData(localeDe);
 
 
@@ -33,7 +34,8 @@ registerLocaleData(localeDe);
     CalendarMonthComponent,
     ComparativComponent,
     DayViewSchedulerComponent,
-    AddServiceSelectionComponent
+    AddServiceSelectionComponent,
+    CalModalComponent
   ],
   imports: [
     CommonModule,
@@ -60,8 +62,8 @@ registerLocaleData(localeDe);
     CalendarMonthComponent,
     ComparativComponent,
     DayViewSchedulerComponent,
-    ModalModule,
-    AddServiceSelectionComponent
+    AddServiceSelectionComponent,
+    CalModalComponent,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
