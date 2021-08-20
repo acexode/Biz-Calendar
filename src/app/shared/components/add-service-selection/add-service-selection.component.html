@@ -1,3 +1,49 @@
-<p>
-  add-service-selection works!
-</p>
+<div class="add-service-selection">
+  <div class="w-100 mb-8">
+    <ion-label
+      class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color">
+      Servicii
+    </ion-label>
+  </div>
+  <div class="w-100 flex flex-column">
+    <!--  -->
+    <div class="servicii-items flex flex-row ion-justify-content-between ion-align-items-start mb-24"
+    *ngFor="let item of filtercustomComponentData">
+    <div class="mr-24">
+      <p class="m-0 s16-h20 text-weight-medium roboto-family-font ls-0 black-color">
+        {{item?.fourth}}
+      </p>
+      <div class="pl-8 border-left-1px-solid-primary-color-step-30">
+        <p class="m-0 s14pt8-h16 roboto-family-font text-weight-regular ls-03 black-color mt-8 mb-4">
+         {{item?.fifth}}
+        </p>
+        <p class="m-0 s14pt8-h16 roboto-family-font text-weight-regular ls-03 defaultGrayColor">
+          {{item?.sixth}}
+        </p>
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <ion-icon
+        name="edit"
+        class="icon-24 defaultGrayColor mr-24"
+      ></ion-icon>
+      <ion-icon
+        (click)="unCheckItem(item.value)"
+        name="delete"
+        class="icon-24 defaultGrayColor"
+      ></ion-icon>
+    </div>
+    </div>
+    <!--  -->
+  </div>
+  <ion-chip
+  (click)="presentModal()"
+    class="chip-radio"
+    color="biz-chip-secondary-b-no-outline"
+    >
+      <ion-label>
+        Adaugă servicii
+      </ion-label>
+      <ion-icon name="plus"></ion-icon>
+  </ion-chip>
+</div>

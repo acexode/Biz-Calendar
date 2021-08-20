@@ -227,7 +227,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   hideAparatura = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
-    tipprogramare: ['On-line', [Validators.required]],
+    tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: new FormControl(''),
     tipServicii: '',
     time: '',
@@ -241,7 +241,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.process();
     this.subscriptions.add(this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
+      .pipe(distinctUntilChanged())
       .subscribe(data => {
         this.process(data);
       }));
@@ -268,20 +270,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     await modal.present();
     // const { data } = await modal.onWillDismiss();
   }
-  unCheckItem(data: string): void {
-    if (typeof data !== null && data !== '') {
-      const indexOfData = this.checkList.findIndex(
-        (v: DemoCheckList) => v.value === data);
-      if (indexOfData > -1) {
-        this.checkList[indexOfData].checked = false;
-      }
-    }
-  }
-  get filtercustomComponentData() {
-    return this.checkList.filter((v: DemoCheckList) => v.checked === true)
-      .map((v: DemoCheckList) => v.value);
-  }
-  process(data: string) {
+  process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
       this.hideAparatura = false;
       this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);

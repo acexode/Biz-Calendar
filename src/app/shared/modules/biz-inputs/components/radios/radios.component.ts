@@ -134,7 +134,6 @@ export class RadiosComponent implements OnInit, ControlValueAccessor {
   }
 
   toggleRadio(item) {
-    console.log(item);
     if (this.controlI.disabled) {
       return;
     }

@@ -10,6 +10,9 @@ export interface DemoCheckList {
   first: string;
   second: string;
   third: string;
+  fourth?: string;
+  fifth?: string;
+  sixth?: string;
   value: string;
   checked: boolean;
 }
@@ -209,10 +212,6 @@ export class SelectionComponent implements OnInit {
         this.checkList[indexOfData].checked = false;
       }
     }
-  }
-  get filtercustomComponentData() {
-    return this.checkList.filter((v: DemoCheckList) => v.checked === true)
-      .map((v: DemoCheckList) => v.value);
   }
 
 }
