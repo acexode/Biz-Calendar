@@ -1,7 +1,14 @@
 ion-menu ion-content {
     --background: var(--ion-item-background, var(--ion-background-color, #fff));
   }
-  
+  ion-list-header {
+    color: #198CA9;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 28px;
+  }
   ion-menu.md ion-content {
     --padding-start: 32px;
     // --padding-end: 8px;
@@ -31,4 +38,12 @@ ion-menu ion-content {
     font-size: 12.8px;
     letter-spacing: 0;
     line-height: 16px;
+  }
+  .notify{
+    padding: 0px 5px;
+    font-size: 12.8px;
+    text-align: center;
+    color: #fff;
+    border-radius: 9px;
+    background-color: #1EA5C7;
   }

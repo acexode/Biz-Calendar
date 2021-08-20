@@ -2,8 +2,12 @@
   <ion-menu contentId="main-content" type="overlay">
     <ion-content>
       <ion-list id="inbox-list">
-        <ion-list-header class="pb-40">Inbox</ion-list-header>
-        
+        <ion-list-header class="pb-16 pl-0">Ioana Anghelescu</ion-list-header>
+       <ion-item class="mb-32"> 
+          <ion-button  color="biz-primary" fill="outline" size="small">
+          schimbă
+        </ion-button>
+    </ion-item>
         <ion-text class="pl-8 pb-11 tip-vizualizare">Tip vizualizare</ion-text>
         <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
           <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
@@ -12,16 +16,38 @@
             <ion-label>{{ p.title }}</ion-label>
           </ion-item>
         </ion-menu-toggle>
+        <ion-item class="md hydrated" (click)="toggleCoparative()" lines="none" detail="false" >
+          <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
+          <ion-icon slot="start" name="coparativ"></ion-icon>
+          <ion-label>Comparativ</ion-label>
+          <ion-icon class="mr-8" slot="end" name="chevron-down"></ion-icon>
+          
+        </ion-item>
+        <ion-row  *ngIf="hideCoparative" >
+          <ion-menu-toggle>
+            <ion-item class="pl-40" *ngFor="let p of comparative; let i = index" routerDirection="root" [routerLink]="[p.url]" [state]="{data: p.title}" lines="none" detail="false" routerLinkActive="selected">
+              <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            
+            </ion-item>
+
+          </ion-menu-toggle>
+        </ion-row>
+       
       </ion-list>
 
-      <!-- <ion-list id="labels-list">
-        <ion-list-header>Labels</ion-list-header>
-
-        <ion-item *ngFor="let label of labels" lines="none">
-          <ion-icon slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-          <ion-label>{{ label }}</ion-label>
-        </ion-item>
-      </ion-list> -->
+      <ion-list class="pt-16">
+        <ion-menu-toggle auto-hide="false">
+          <ion-item  *ngFor="let p of bottomNav; let i = index" routerDirection="root" [routerLink]="[p.url]" [state]="{data: p.title}" lines="none" detail="false" routerLinkActive="selected">
+            <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
+            <ion-icon slot="start" [name]="p.icon"></ion-icon>
+            <ion-label>{{ p.title }}</ion-label>
+            <ion-icon class="mr-8" *ngIf="p.chevron" slot="end" name="chevron-down"></ion-icon>
+            <ion-text class="mr-8 notify" *ngIf="p.notify" slot="end">12</ion-text>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="main-content"></ion-router-outlet>
