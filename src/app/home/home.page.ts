@@ -42,6 +42,9 @@ export class HomePage implements OnInit {
     if(this.page === 'lista'){
       this.calendarList = EVENTLIST;
     }
+    if(this.page === 'aparate' || this.page === 'utilizatori' || this.page === 'cabinet'){
+      this.page = 'comparativ';
+    }
   }
   navigate(path){
     this.router.navigate(['/calendar' +path]);
