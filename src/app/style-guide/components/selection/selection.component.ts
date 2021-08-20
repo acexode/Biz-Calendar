@@ -10,6 +10,9 @@ export interface DemoCheckList {
   first: string;
   second: string;
   third: string;
+  fourth?: string;
+  fifth?: string;
+  sixth?: string;
   value: string;
   checked: boolean;
 }
