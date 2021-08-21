@@ -1,9 +1,9 @@
-<ion-split-pane contentId="main-content">
+<ion-split-pane contentId="main-content" when="(min-width: 1366px)">
   <ion-menu contentId="main-content" type="overlay">
     <ion-content>
       <ion-list id="inbox-list">
         <ion-list-header class="pb-40">Inbox</ion-list-header>
-        
+
         <ion-text class="pl-8 pb-11 tip-vizualizare">Tip vizualizare</ion-text>
         <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
           <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">

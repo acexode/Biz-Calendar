@@ -79,3 +79,20 @@
 .red-bg {
   background: red !important;
 }
+
+
+
+@media (min-width: $desktop-width) {
+  .web-grey-light-b-bg-color {
+    --background: var(--ion-neutral-grey-light-b-color) !important;
+    background: var(--background) !important;
+  }
+
+  .web-white-page {
+    --background: var(--app-white-color, #ffffff);
+    --ion-background-color: var(--background, #ffffff);
+    --ion-background-color-rgb: 255, 255, 255;
+    background: $white;
+  }
+
+}

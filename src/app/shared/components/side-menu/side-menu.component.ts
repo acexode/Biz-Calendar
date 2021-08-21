@@ -8,7 +8,8 @@ import { MenuController, Platform } from '@ionic/angular';
 })
 export class SideMenuComponent implements OnInit {
   isTablet = false;
-  public appPages =  [
+  hideSideMenu = false;
+  public appPages = [
     { title: 'Listă', url: '/calendar/lista', icon: '1-day' },
     { title: 'Zi', url: '/calendar/zi', icon: 'schedule' },
     { title: 'Zile lucratoare', url: '/calendar/zile-lucratoare', icon: '3-days' },
@@ -19,14 +20,14 @@ export class SideMenuComponent implements OnInit {
   public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   constructor(platform: Platform, private menu: MenuController) {
     console.log(window.innerWidth);
-    if(window.innerWidth >= 768){
+    if (window.innerWidth >= 768) {
       this.menu.close();
-    }else{
+    } else {
       this.isTablet = false;
     }
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }
