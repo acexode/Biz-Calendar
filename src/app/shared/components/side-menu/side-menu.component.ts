@@ -8,6 +8,7 @@ import { MenuController, Platform } from '@ionic/angular';
 })
 export class SideMenuComponent implements OnInit {
   isTablet = false;
+  hideSideMenu = false;
   hideCoparative = false;
   public appPages =  [
     { title: 'Listă', url: '/calendar/lista', icon: '1-day' },
@@ -33,15 +34,15 @@ export class SideMenuComponent implements OnInit {
   ];
   constructor(platform: Platform, private menu: MenuController) {
     console.log(window.innerWidth);
-    if(window.innerWidth >= 768){
+    if (window.innerWidth >= 768) {
       this.menu.close();
-    }else{
+    } else {
       this.isTablet = false;
     }
 
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   toggleCoparative(){
     this.hideCoparative = !this.hideCoparative;
