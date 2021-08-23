@@ -225,7 +225,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
   };
   adaugaProgramareFormGroup$: Subscription;
-  hideAparatura = false;
+  isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
@@ -279,16 +279,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
-      this.hideAparatura = false;
-      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
-    } else {
-      this.hideAparatura = true;
+      this.isAparaturaOnLine = true;
       this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
+    } else {
+      this.isAparaturaOnLine = false;
+      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
     }
     this.locatieFormControl.updateValueAndValidity();
   }
-  get isHideAparatura() {
-    return this.hideAparatura;
+  get isAparaturaOnLineStatus() {
+    return this.isAparaturaOnLine;
   }
   get locatieFormControl() {
     return this.adaugaProgramareFormGroup.get('locatie') as FormControl;
