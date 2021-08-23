@@ -124,7 +124,7 @@
 
           </div>
 
-          <div class="w-100 pt-32 px-32" *ngIf="isHideAparatura">
+          <div class="w-100 pt-32 px-32" *ngIf="!isAparaturaOnLineStatus">
 
             <app-biz-custom-selection
             [config]="aparaturaConfig"
@@ -179,7 +179,8 @@
               color="biz-primary"
               class="margin-inline-end-12"
               mode="md"
-              [checked]="false"
+              [checked]="isAparaturaOnLineStatus"
+              [disabled]="isAparaturaOnLineStatus"
               ></ion-checkbox>
             </ion-item>
         </div>
