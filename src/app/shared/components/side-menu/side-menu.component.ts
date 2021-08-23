@@ -7,6 +7,7 @@ import { MenuController, Platform } from '@ionic/angular';
   styleUrls: ['./side-menu.component.scss'],
 })
 export class SideMenuComponent implements OnInit {
+  public currentVersion: string = require('../../../../assets/version.json').version;
   isTablet = false;
   hideSideMenu = false;
   hideCoparative = false;
