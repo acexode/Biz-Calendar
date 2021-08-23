@@ -1,205 +1,210 @@
 
 <ion-content [scrollEvents]="true" [fullscreen]="true">
-  <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
-    <ion-toolbar class="ion-no-padding">
+  <div class="web-grey-light-b-bg-color w-100" [ngClass]="{ 'flex ion-justify-content-center': isWed }">
+    <div class="w-100 w-lg-634px web-white-page position-relative">
+      <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
 
-      <ion-buttons slot="start" class="slot-start">
+          <ion-buttons slot="start" class="slot-start">
 
-        <ion-icon
-          name="close"
-          class="icon-24 black-color"
-          slot="icon-only"
-        ></ion-icon>
+            <ion-icon
+              name="close"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
 
-      </ion-buttons>
+          </ion-buttons>
 
-      <ion-title>Programare</ion-title>
+          <ion-title>Programare</ion-title>
 
-      <div slot="end">
-        <ion-button size="default" color="biz-primary">
-          Salvează
-        </ion-button>
-      </div>
-    </ion-toolbar>
-  </ion-header>
+          <div slot="end">
+            <ion-button size="default" color="biz-primary">
+              Salvează
+            </ion-button>
+          </div>
+        </ion-toolbar>
+      </ion-header>
 
-  <form [formGroup]="adaugaProgramareFormGroup">
+      <form [formGroup]="adaugaProgramareFormGroup">
 
-    <div class="w-100 bottom-1px-solid-grey-default-color">
-      <div class="w-100 pt-30 px-32">
-        <app-input
-          [config]="pacientInputConfig"
-          formControlName="pacient"
-        ></app-input>
-      </div>
+        <div class="w-100 bottom-1px-solid-grey-default-color">
+          <div class="w-100 pt-30 px-32">
+            <app-input
+              [config]="pacientInputConfig"
+              formControlName="pacient"
+            ></app-input>
+          </div>
 
-      <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+          <div class="w-100 p-32 flex flex-row ion-justify-content-between">
 
-        <ion-chip
-          class="chip"
-          outline="true"
-          color="biz-chip-secondary"
-        >
-          <ion-label>
-            Adaugă
-          </ion-label>
-          <ion-icon name="user-new"></ion-icon>
-      </ion-chip>
+            <ion-chip
+              class="chip"
+              outline="true"
+              color="biz-chip-secondary"
+            >
+              <ion-label>
+                Adaugă
+              </ion-label>
+              <ion-icon name="user-new"></ion-icon>
+          </ion-chip>
 
-      <ion-chip
-          class="chip-radio"
-          color="biz-radio-chip-default-b-no-outline"
-          (click)="presentModal()"
-        >
-          <ion-label>
-            INFO
-          </ion-label>
-          <ion-icon name="info"></ion-icon>
-      </ion-chip>
+          <ion-chip
+              class="chip-radio"
+              color="biz-radio-chip-default-b-no-outline"
+              (click)="presentModal()"
+            >
+              <ion-label>
+                INFO
+              </ion-label>
+              <ion-icon name="info"></ion-icon>
+          </ion-chip>
 
-      </div>
+          </div>
 
-    </div>
+        </div>
 
-    <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+        <div class="w-100 p-32 flex flex-1 flex-row ion-justify-content-between">
 
-      <div class="w-140">
-        <app-input
-          [config]="dataInputConfig"
-          formControlName="pacient"
-        ></app-input>
-      </div>
+          <div class="mw-140 flex-1 mr-16">
+            <app-input
+              [config]="dataInputConfig"
+              formControlName="pacient"
+            ></app-input>
+          </div>
 
-      <div class="w-140">
-        <app-input
-          [config]="timeInputConfig"
-          formControlName="pacient"
-        ></app-input>
-      </div>
+          <div class="mw-140 flex-1 ml-16">
+            <app-input
+              [config]="timeInputConfig"
+              formControlName="pacient"
+            ></app-input>
+          </div>
 
-    </div>
+        </div>
 
-    <div class="w-100 px-32 pb-32">
-        <app-radios
+        <div class="w-100 px-32 pb-32">
+            <app-radios
 
-          [config]="tipprogramareConfig"
-          [options]="tipprogramareOption"
-          formControlName="tipprogramare"
-          class="w-100"
-        >
-      </app-radios>
-    </div>
+              [config]="tipprogramareConfig"
+              [options]="tipprogramareOption"
+              formControlName="tipprogramare"
+              class="w-100"
+            >
+          </app-radios>
+        </div>
 
-    <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
-      <app-select
-      formControlName="select"
-      [config]="locatieConfig"
-      formControlName="locatie"
-      [options]="locatieOption"
-      class="w-100"
-      ></app-select>
-    </div>
-
-    <div class="w-100 bottom-1px-solid-grey-default-color">
-
-      <div class="w-100 p-32">
-
-        <app-radios
-            [config]="tipServiciiConfig"
-            [options]="tipServiciiOption"
-            formControlName="tipServicii"
-            class="w-100"
-          >
-        </app-radios>
-
-      </div>
-
-      <div class="w-100 px-32">
-
-        <app-add-service-selection>
-
-        </app-add-service-selection>
-
-      </div>
-
-      <div class="w-100 pt-32 px-32" *ngIf="isHideAparatura">
-
-        <app-biz-custom-selection
-        [config]="aparaturaConfig"
-        [data]="checkList"
-        (modalOpenEvent)="presentModalB()"
-      ></app-biz-custom-selection>
-
-      </div>
-
-      <div class="w-100 p-32">
-
-        <app-radios
-            [config]="timeRadioConfig"
-            [options]="timeRadioOption"
-            formControlName="time"
-            class="w-100"
-          >
-        </app-radios>
-
-      </div>
-
-      <div class="w-100 px-32 pb-32">
-        <app-select
-        formControlName="select"
-        [config]="cabinetConfig"
-        formControlName="cabinet"
-        [options]="locatieOption"
-        class="w-100"
-        ></app-select>
-      </div>
-
-      <div class="w-100 px-32 pb-32">
-        <ion-chip
-            class="chip"
-            outline="true"
-            color="biz-chip-secondary"
-          >
-            <ion-label>
-              Creează recurență
-            </ion-label>
-            <ion-icon name="recurenta"></ion-icon>
-        </ion-chip>
-      </div>
-
-    </div>
-
-    <div class="w-100 p-32 bottom-1px-solid-grey-default-color">
-      <ion-item class="item-checkbox">
-          <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Generează link de plată</ion-label>
-          <ion-checkbox
-          slot="start"
-          color="biz-primary"
-          class="margin-inline-end-12"
-          mode="md"
-          [checked]="false"
-          ></ion-checkbox>
-        </ion-item>
-    </div>
-
-    <div class="w-100">
-
-        <div class="w-100 p-32">
+        <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
           <app-select
           formControlName="select"
-          [config]="medicConfig"
-          formControlName="cabinet"
+          [config]="locatieConfig"
+          formControlName="locatie"
           [options]="locatieOption"
           class="w-100"
           ></app-select>
         </div>
 
-        <div class="px-32 pb-32">
-          <app-textarea [config]="observatiiConfig" formControlName="observatii"></app-textarea>
+        <div class="w-100 bottom-1px-solid-grey-default-color">
+
+          <div class="w-100 p-32">
+
+            <app-radios
+                [config]="tipServiciiConfig"
+                [options]="tipServiciiOption"
+                formControlName="tipServicii"
+                class="w-100"
+              >
+            </app-radios>
+
+          </div>
+
+          <div class="w-100 px-32">
+
+            <app-add-service-selection>
+
+            </app-add-service-selection>
+
+          </div>
+
+          <div class="w-100 pt-32 px-32" *ngIf="!isAparaturaOnLineStatus">
+
+            <app-biz-custom-selection
+            [config]="aparaturaConfig"
+            [data]="checkList"
+            (modalOpenEvent)="presentModalB()"
+          ></app-biz-custom-selection>
+
+          </div>
+
+          <div class="w-100 p-32">
+
+            <app-radios
+                [config]="timeRadioConfig"
+                [options]="timeRadioOption"
+                formControlName="time"
+                class="w-100"
+              >
+            </app-radios>
+
+          </div>
+
+          <div class="w-100 px-32 pb-32">
+            <app-select
+            formControlName="select"
+            [config]="cabinetConfig"
+            formControlName="cabinet"
+            [options]="locatieOption"
+            class="w-100"
+            ></app-select>
+          </div>
+
+          <div class="w-100 px-32 pb-32">
+            <ion-chip
+                class="chip"
+                outline="true"
+                color="biz-chip-secondary"
+              >
+                <ion-label>
+                  Creează recurență
+                </ion-label>
+                <ion-icon name="recurenta"></ion-icon>
+            </ion-chip>
+          </div>
+
         </div>
 
+        <div class="w-100 p-32 bottom-1px-solid-grey-default-color">
+          <ion-item class="item-checkbox">
+              <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Generează link de plată</ion-label>
+              <ion-checkbox
+              slot="start"
+              color="biz-primary"
+              class="margin-inline-end-12"
+              mode="md"
+              [checked]="isAparaturaOnLineStatus"
+              [disabled]="isAparaturaOnLineStatus"
+              ></ion-checkbox>
+            </ion-item>
+        </div>
+
+        <div class="w-100">
+
+            <div class="w-100 p-32">
+              <app-select
+              formControlName="select"
+              [config]="medicConfig"
+              formControlName="cabinet"
+              [options]="locatieOption"
+              class="w-100"
+              ></app-select>
+            </div>
+
+            <div class="px-32 pb-32">
+              <app-textarea [config]="observatiiConfig" formControlName="observatii"></app-textarea>
+            </div>
+
+        </div>
+
+
+      </form>
     </div>
-
-
-  </form>
+  </div>
 </ion-content>

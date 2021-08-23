@@ -14,6 +14,7 @@ import { TextAreaConfig } from 'src/app/shared/models/components/ion-textarea-co
 import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
 import { get } from 'lodash';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { PlatformService } from 'src/app/core/services/platform/platform.service';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -223,8 +224,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       text: 'Aparatură asociată'
     }
   };
-  public subscriptions = new Subscription();
-  hideAparatura = false;
+  adaugaProgramareFormGroup$: Subscription;
+  isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
@@ -235,18 +236,24 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     medic: '',
     observatii: ''
   });
+  isWed = false;
   constructor(
     private fb: FormBuilder,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private pS: PlatformService
   ) { }
 
   ngOnInit() {
     this.process();
-    this.subscriptions.add(this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
+    this.pS.isDesktopWidth$.subscribe(
+      v => this.isWed = v
+    );
+    console.log(this.isWed);
+    this.adaugaProgramareFormGroup$ = this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
       .pipe(distinctUntilChanged())
       .subscribe(data => {
         this.process(data);
-      }));
+      });
   }
   async presentModal() {
     const modal = await this.modalController.create({
@@ -272,22 +279,22 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
-      this.hideAparatura = false;
-      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
-    } else {
-      this.hideAparatura = true;
+      this.isAparaturaOnLine = true;
       this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
+    } else {
+      this.isAparaturaOnLine = false;
+      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
     }
     this.locatieFormControl.updateValueAndValidity();
   }
-  get isHideAparatura() {
-    return this.hideAparatura;
+  get isAparaturaOnLineStatus() {
+    return this.isAparaturaOnLine;
   }
   get locatieFormControl() {
     return this.adaugaProgramareFormGroup.get('locatie') as FormControl;
   }
   ngOnDestroy() {
-    unsubscriberHelper(this.subscriptions);
+    unsubscriberHelper(this.adaugaProgramareFormGroup$);
   }
 
 }
