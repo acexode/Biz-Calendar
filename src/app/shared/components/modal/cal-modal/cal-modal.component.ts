@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CalendarMode, Step } from 'ionic2-calendar/calendar';
 @Component({
@@ -7,6 +7,7 @@ import { CalendarMode, Step } from 'ionic2-calendar/calendar';
   styleUrls: ['./cal-modal.component.scss'],
 })
 export class CalModalComponent implements OnInit {
+  @Input() isTablet: boolean;
    calendar = {
         mode: 'month' as CalendarMode,
         step: 30 as Step,
@@ -33,6 +34,8 @@ export class CalModalComponent implements OnInit {
   modalReady = false;
   constructor(private modalCtrl: ModalController) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.isTablet);
+  }
 
 }

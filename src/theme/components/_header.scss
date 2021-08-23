@@ -5,6 +5,10 @@
   ion-header {
     background-color: white !important;
     padding: 16px 16px 25px 32px !important;
+    position: sticky !important;
+    top: 0;
+    left: 0;
+    z-index: 3000000;
 
     &.header-type-a {
       border-bottom: 1px solid var(--ion-neutral-grey-medium-color);

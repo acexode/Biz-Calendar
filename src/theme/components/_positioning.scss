@@ -1,0 +1,111 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+.position-sticky {
+  position: sticky !important;
+}
+
+.absolute-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.center-pos-fixed {
+  left: calc(50% - 315px);
+}
+
+.left-8-perc {
+  left: 8%;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.top-20-perc {
+  top: 20%;
+}
+
+.top-35-perc {
+  top: 35%;
+}
+
+.top-230 {
+  top: rem(230);
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.bottom-83 {
+  bottom: rem(83);
+}
+
+.bottom-n64 {
+  bottom: rem(-64);
+}
+
+.bottom-24 {
+  bottom: rem(24);
+}
+
+.right-0 {
+  right: 0;
+}
+
+.right-1 {
+  right: 1;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+@media (min-width: $desktop-width) {
+  .float-lg-left {
+    float: left !important;
+  }
+
+  .float-lg-right {
+    float: right !important;
+  }
+
+  .bottom-lg-240 {
+    bottom: rem(240) !important;
+  }
+
+  .position-lg-absolute {
+    position: absolute;
+  }
+}

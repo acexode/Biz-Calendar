@@ -1,4 +1,4 @@
-<ion-split-pane contentId="main-content">
+<ion-split-pane contentId="main-content" when="(min-width: 1366px)">
   <ion-menu contentId="main-content" type="overlay">
     <ion-content>
       <ion-list id="inbox-list">
@@ -30,15 +30,15 @@
               <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>{{ p.title }}</ion-label>
-            
+
             </ion-item>
 
           </ion-menu-toggle>
         </ion-row>
-       
+
       </ion-list>
 
-      <ion-list class="pt-16">
+      <ion-list class="pt-16 pb-0">
         <ion-menu-toggle auto-hide="false">
           <ion-item  *ngFor="let p of bottomNav; let i = index" routerDirection="root" [routerLink]="[p.url]" [state]="{data: p.title}" lines="none" detail="false" routerLinkActive="selected">
             <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
@@ -49,6 +49,10 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
+      <ion-item lines="none" class="s11-h13 ml-56">
+        <ion-label class="s11-h13"
+          >Versiune {{ currentVersion }}</ion-label>
+      </ion-item>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="main-content"></ion-router-outlet>
