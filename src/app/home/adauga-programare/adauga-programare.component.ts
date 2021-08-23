@@ -63,25 +63,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: 'În cabinet', id: 'În-cabinet' },
     { label: 'On-line', id: 'On-line' },
   ];
-  locatieConfig: IonSelectConfig = {
-    inputLabel: {
-      classes: '',
-      text: 'Locație',
-    },
-    forceListItems: false,
-    multiple: false,
-    disabled: false,
-    placeholder: 'Opțional',
-    alertOptions: {
-      cssClass: '',
-    },
-    idKey: 'id',
-    labelKey: 'label',
-    useIcon: {
-      name: 'location-custom',
-      classes: 'neutral-grey-medium-color'
-    }
-  };
   locatieOption = [
     {
       id: 'fcghhjhk',
@@ -237,6 +218,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     observatii: ''
   });
   isWed = false;
+  locatieConfigPlaceholder: string;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -281,9 +263,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     if (data === 'On-line') {
       this.isAparaturaOnLine = true;
       this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
+      this.locatieConfigPlaceholder = 'Optional';
     } else {
       this.isAparaturaOnLine = false;
       this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
+      this.locatieConfigPlaceholder = 'Required';
     }
     this.locatieFormControl.updateValueAndValidity();
   }
@@ -292,6 +276,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   get locatieFormControl() {
     return this.adaugaProgramareFormGroup.get('locatie') as FormControl;
+  }
+  islocatieConfig(placeholder: string = 'Opțional'): IonSelectConfig {
+    return {
+      inputLabel: {
+        classes: '',
+        text: 'Locație',
+      },
+      forceListItems: false,
+      multiple: false,
+      disabled: false,
+      placeholder,
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'id',
+      labelKey: 'label',
+      useIcon: {
+        name: 'location-custom',
+        classes: 'neutral-grey-medium-color'
+      }
+    };
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
