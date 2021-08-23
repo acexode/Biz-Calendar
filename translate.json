@@ -1,0 +1,23 @@
+{
+    "pacient":{
+        "title": "Adauga pacient",
+        "field": "field value",
+        "description": "Ooohh .... did you just translate this text ?",
+        "data": {
+        "name": "My name is {{name_value}}"}
+    },
+    "client":{
+        "title": "Adauga client",
+        "field": "field value",
+        "description": "Ooohh .... did you just translate this text ?",
+        "data": {
+        "name": "My name is {{name_value}}"}
+    },
+    "utilizator":{
+        "title": "Adauga utilizator",
+        "field": "field value",
+        "description": "Ooohh .... did you just translate this text ?",
+        "data": {
+        "name": "My name is {{name_value}}"}
+    }
+}
