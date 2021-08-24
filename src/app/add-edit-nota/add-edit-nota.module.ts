@@ -5,18 +5,18 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { NotaPageRoutingModule } from './nota-routing.module';
+import { AddEditNotaPageRoutingModule } from './add-edit-nota-routing.module';
 
-import { NotaPage } from './nota.page';
+import { AddEditNotaPage } from './add-edit-nota.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    NotaPageRoutingModule,
-    SharedModule
+    SharedModule,
+    AddEditNotaPageRoutingModule
   ],
-  declarations: [NotaPage]
+  declarations: [AddEditNotaPage]
 })
-export class NotaPageModule {}
+export class AddEditNotaPageModule {}
