@@ -2,7 +2,7 @@ import { locationOptions, programOptions,
   selectConfig, selectConfigB, utilizatorList, cabinetList, aparatList } from './../../data/select-data';
 import { AlertController, MenuController, ModalController } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { EVENTLIST } from 'src/app/home/event';
 import { CalendarPages } from '../calendar/calendarPages';
 import { IonSelectConfig } from '../../models/components/ion-select-config';
@@ -20,6 +20,7 @@ import { CalendarComponent } from 'ionic2-calendar';
   styleUrls: ['./calendar-header.component.scss'],
 })
 export class CalendarHeaderComponent implements OnInit {
+  @Input() isModal = false;
   isTablet = false;
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
@@ -109,6 +110,9 @@ export class CalendarHeaderComponent implements OnInit {
     const modal = await this.modalCtrl.create({
       component: CalModalComponent,
       cssClass: 'cal-modal',
+      componentProps: {
+        isTablet: this.isTablet
+      },
       backdropDismiss: false
     });
     await modal.present();
