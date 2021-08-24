@@ -83,7 +83,8 @@
   padding-inline-end: 0 !important;
 }
 
-.alert-button.sc-ion-alert-md,.alert-button.sc-ion-alert-ios {
+.alert-button.sc-ion-alert-md,
+.alert-button.sc-ion-alert-ios {
   color: #1EA5C7 !important;
   font-size: 14px;
   line-height: 16px;
@@ -95,11 +96,16 @@
   border: none;
 }
 
-.alert-header {
-  border: none !important;
+.alert-head {
+  border-bottom: 1px solid var(--ion-neutral-grey-light-b-color) !important;
+}
+
+.alert-button-group {
+  border-top: 1px solid var(--ion-neutral-grey-light-b-color) !important;
 }
 
 // radio button
+
 .alert-radio-inner.sc-ion-alert-md {
   background-color: var(--ion-primary-color-step-100, #1EA5C7);
 }
