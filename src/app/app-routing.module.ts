@@ -18,7 +18,12 @@ const routes: Routes = [
   {
     path: 'style',
     loadChildren: () => import('./style-guide/style-guide.module').then(m => m.StyleGuidePageModule)
-  },  {
+  },
+  {
+    path: 'nota',
+    loadChildren: () => import('./nota/nota.module').then( m => m.NotaPageModule)
+  },
+  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
