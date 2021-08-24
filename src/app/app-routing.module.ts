@@ -1,3 +1,4 @@
+import { EditNotaComponent } from './shared/components/edit-nota/edit-nota.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'style',
     loadChildren: () => import('./style-guide/style-guide.module').then(m => m.StyleGuidePageModule)
+  },
+  {
+    path: 'edit-nota',
+    component: EditNotaComponent
   }
 
 ];
