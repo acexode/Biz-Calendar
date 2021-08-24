@@ -23,19 +23,11 @@ export class RecurentaComponent implements OnInit {
       }
     }
   });
-  seRepetaLaFiecareRadioConfig: IonRadiosConfig = {
-    mode: 'r',
-    inputLabel: {
-      text: '',
-      classes: ''
-    },
-    itemClasses: 'mr-12'
-  };
-  seRepetaLaFiecareOption: Array<IonRadioInputOption> = [
-    { label: 'zile', id: 'zile' },
-    { label: 'săptămâni', id: 'săptămâni' },
-    { label: 'luni', id: 'luni' },
-    { label: 'ani?', id: 'ani?' },
+  seRepetaLaFiecareOption: any = [
+    { label: 'zile', value: 'zile' },
+    { label: 'săptămâni', value: 'săptămâni' },
+    { label: 'luni', value: 'luni' },
+    { label: 'ani?', value: 'ani?' },
   ];
   dataInputConfig = inputConfigHelper({
     label: 'Începe',
@@ -90,8 +82,10 @@ export class RecurentaComponent implements OnInit {
     }
   });
   isWed = false;
+  dropDownStatus = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
     seRepetaLaFiecare: [2, [Validators.required]],
+    zile: '',
     dupa: [12],
     pe: '08-04-2021',
   });
@@ -104,6 +98,28 @@ export class RecurentaComponent implements OnInit {
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
+    // set first value
+    this.setZileValue(this.seRepetaLaFiecareOption[0].value);
+  }
+  toggleDropDown() {
+    this.dropDownStatus = !this.dropDownStatus;
+  }
+  get isDropDown() {
+    return this.dropDownStatus;
+  }
+  get zileFormControl() {
+    return this.recurendtaFormGroup.get('zile');
+  }
+  get zileFormControlValue() {
+    return this.zileFormControl.value;
+  }
+  setZileValue(data: string) {
+    this.zileFormControl.setValue(data);
+  }
+  setZileValueAndToggle(data: string) {
+    this.setZileValue(data);
+    // toggle
+    this.toggleDropDown();
   }
 
 }

@@ -56,22 +56,17 @@
               </app-radios> -->
 
               <div class="custom-selection-drop-down">
-                <div class="selection-display">
-                  <span> zile</span>
+                <div class="selection-display" (click)="toggleDropDown()">
+                  <span> {{zileFormControlValue}}</span>
                   <ion-icon
                       name="chevron-down"
                       [class]="'icon-24 biz-neutral-gray-default-color'"
                     ></ion-icon>
                   </div>
-                  <div class="selection-dropdown">
-                    <div class="options">
-                      zile
-                    </div>
-                    <div class="options">
-                      zile
-                    </div>
-                    <div class="options">
-                      zile
+                  <div class="selection-dropdown" [ngClass]="{'show': isDropDown}">
+                    <div class="options" *ngFor="let item of seRepetaLaFiecareOption"
+                     (click)="setZileValueAndToggle(item.value)">
+                      {{item.label}}
                     </div>
                   </div>
                 </div>
