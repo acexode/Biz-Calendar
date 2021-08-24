@@ -1,4 +1,3 @@
-import { EditNotaComponent } from './shared/components/edit-nota/edit-nota.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -32,10 +31,6 @@ const routes: Routes = [
     path: 'selectie-spatiu',
     loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then( m => m.SelectieSpatiuPageModule)
   },
-  {
-    path: 'edit-nota',
-    component: EditNotaComponent
-  }
 ];
 
 
