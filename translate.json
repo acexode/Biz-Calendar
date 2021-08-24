@@ -1,23 +1,17 @@
 {
-    "pacient":{
-        "title": "Adauga pacient",
-        "field": "field value",
-        "description": "Ooohh .... did you just translate this text ?",
-        "data": {
-        "name": "My name is {{name_value}}"}
+    "Adauga pacient":{
+        "default": "Adauga pacient",
+        "variant1": "Adauga client",
+        "variant2": "Adauga utilizator"
     },
-    "client":{
-        "title": "Adauga client",
-        "field": "field value",
-        "description": "Ooohh .... did you just translate this text ?",
-        "data": {
-        "name": "My name is {{name_value}}"}
+    "Pacient":{
+        "default": "Pacient",
+        "variant1": "Client",
+        "variant2": "Utilizator"
     },
-    "utilizator":{
-        "title": "Adauga utilizator",
-        "field": "field value",
-        "description": "Ooohh .... did you just translate this text ?",
-        "data": {
-        "name": "My name is {{name_value}}"}
+    "Aparatura asociata":{
+        "default": "Aparatura asociata",
+        "variant1": "Echipament asociata",
+        "variant2": "Echipament asociata"
     }
 }
