@@ -67,10 +67,33 @@ export class RecurentaComponent implements OnInit {
       }
     }
   });
+  dupaInputConfig = inputConfigHelper({
+    label: '',
+    type: 'number',
+    placeholder: 'Type Here',
+    custom: {
+      mode: 'ios',
+      spinnerConfig: {
+        textAlign: true
+      }
+    }
+  });
+  paInputConfig = inputConfigHelper({
+    label: '',
+    type: 'date',
+    placeholder: '08.03.2021',
+    custom: {
+      mode: 'ios',
+      useIcon: {
+        name: 'default'
+      }
+    }
+  });
   isWed = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
     seRepetaLaFiecare: [2, [Validators.required]],
-    tipprogramare: ['În-cabinet', [Validators.required]],
+    dupa: [12],
+    pe: '08-04-2021',
   });
   constructor(
     private pS: PlatformService,

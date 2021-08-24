@@ -39,7 +39,6 @@
 
               <div class="w-44px mr-16">
                 <app-input
-                  class="text-align-center"
                   [config]="seRepetaLaFiecareInputConfig"
                   formControlName="seRepetaLaFiecare"
                 ></app-input>
@@ -95,7 +94,7 @@
 
           <div class="w-100 p-32 flex flex-row ion-justify-content-between">
 
-            <div class="mw-140 flex-1 mr-16">
+            <div class="mw-140">
 
               <app-input
                 [config]="dataInputConfig"
@@ -103,20 +102,86 @@
               ></app-input>
 
             </div>
-            <div class="mw-140 flex flex-1 ml-16">
-              <app-input
-                [config]="timeInputConfig"
-                formControlName="seRepetaLaFiecare"
-              ></app-input>
-              <app-input
-                [config]="timeBInputConfig"
-                formControlName="seRepetaLaFiecare"
-              ></app-input>
-            </div>
 
           </div>
 
         </div>
+
+
+        <div class="w-100 bottom-1px-solid-grey-default-color">
+
+          <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+
+           <!-- this is just for styling -->
+      <ion-list>
+      <ion-radio-group value="on" mode="md">
+        <ion-list-header>
+          <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Se termină</ion-label>
+        </ion-list-header>
+
+        <ion-item class="item-radio" lines="none">
+
+          <div class="ml-12 custom-radio-type-a">
+           <div class="mb-16">
+             <ion-label class="m-0 s12pt8-h16 roboto-family-font text-weight-medium ls-0">După</ion-label>
+           </div>
+
+           <div class="flex flex-row ion-align-items-center">
+             <div class="w-44px mr-16">
+              <app-input
+                class="text-align-center"
+                [config]="dupaInputConfig"
+                formControlName="dupa"
+              ></app-input>
+             </div>
+             <p class="m-0 s16-h24 roboto-family-font ls-0">
+               apariții
+             </p>
+
+           </div>
+          </div>
+          <ion-radio
+            slot="start"
+            value="on"
+            color="biz-primary"
+            ></ion-radio>
+
+        </ion-item>
+
+        <ion-item class="item-radio" lines="none">
+
+          <div class="ml-12 custom-radio-type-a">
+           <div class="mb-16">
+             <ion-label class="m-0 s12pt8-h16 roboto-family-font text-weight-medium ls-0">Pa</ion-label>
+           </div>
+
+           <div class="flex flex-row ion-align-items-center">
+             <div class="w-130px mr-16">
+              <app-input
+                class="text-align-center"
+                [config]="paInputConfig"
+                formControlName="pe"
+              ></app-input>
+             </div>
+
+           </div>
+          </div>
+          <ion-radio
+            slot="start"
+            value="off"
+            color="biz-primary"
+            ></ion-radio>
+
+        </ion-item>
+
+
+      </ion-radio-group>
+    </ion-list>
+
+          </div>
+
+        </div>
+
 
       </form>
 
