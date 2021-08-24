@@ -1,0 +1,123 @@
+
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="web-grey-light-b-bg-color w-100" [ngClass]="{ 'flex ion-justify-content-center': isWed }">
+    <div class="w-100 w-lg-634px web-white-page position-relative vh-100">
+      <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
+
+          <ion-buttons slot="start" class="slot-start">
+
+            <ion-icon
+              name="arrow-left"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+
+          </ion-buttons>
+
+          <ion-title>Recurență</ion-title>
+
+          <div slot="end">
+            <ion-button class="biz-tertiary" size="default-flat">
+              Adaugă
+            </ion-button>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+
+      <form [formGroup]="recurendtaFormGroup">
+
+        <div class="w-100 bottom-1px-solid-grey-default-color">
+
+          <div class="w-100 p-30">
+
+            <div class="mb-16">
+              <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Se repetă la fiecare</ion-label>
+            </div>
+
+            <div class="flex flex-row ion-align-items-center ion-justify-content-start">
+
+              <div class="w-44px mr-16">
+                <app-input
+                  class="text-align-center"
+                  [config]="seRepetaLaFiecareInputConfig"
+                  formControlName="seRepetaLaFiecare"
+                ></app-input>
+              </div>
+
+
+              <div class="w-100">
+                <!-- <app-radios
+
+                  [config]="seRepetaLaFiecareRadioConfig"
+                  [options]="seRepetaLaFiecareOption"
+                  formControlName="seRepetaLaFiecare"
+                  class="w-100"
+                >
+              </app-radios> -->
+
+              <div class="custom-selection-drop-down">
+                <div class="selection-display">
+                  <span> zile</span>
+                  <ion-icon
+                      name="chevron-down"
+                      [class]="'icon-24 biz-neutral-gray-default-color'"
+                    ></ion-icon>
+                  </div>
+                  <div class="selection-dropdown">
+                    <div class="options">
+                      zile
+                    </div>
+                    <div class="options">
+                      zile
+                    </div>
+                    <div class="options">
+                      zile
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+
+
+            </div>
+
+
+
+
+
+          </div>
+
+        </div>
+
+        <div class="w-100 bottom-1px-solid-grey-default-color">
+
+          <div class="w-100 p-32 flex flex-row ion-justify-content-between">
+
+            <div class="mw-140 flex-1 mr-16">
+
+              <app-input
+                [config]="dataInputConfig"
+                formControlName="seRepetaLaFiecare"
+              ></app-input>
+
+            </div>
+            <div class="mw-140 flex-1 mr-16">
+
+              <app-input
+                [config]="dataInputConfig"
+                formControlName="seRepetaLaFiecare"
+              ></app-input>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</ion-content>

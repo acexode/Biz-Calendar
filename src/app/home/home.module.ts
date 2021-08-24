@@ -10,6 +10,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare.component';
+import { RecurentaComponent } from './recurenta/recurenta.component';
 
 
 @NgModule({
@@ -22,6 +23,10 @@ import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare
     SharedModule,
     NgCalendarModule,
   ],
-  declarations: [HomePage, AdaugaProgramareComponent],
+  declarations: [
+    HomePage,
+    AdaugaProgramareComponent,
+    RecurentaComponent
+  ],
 })
 export class HomePageModule {}
