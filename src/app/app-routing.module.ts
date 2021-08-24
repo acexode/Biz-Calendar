@@ -18,7 +18,15 @@ const routes: Routes = [
   {
     path: 'style',
     loadChildren: () => import('./style-guide/style-guide.module').then(m => m.StyleGuidePageModule)
+  },  {
+    path: 'login',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'selectie-spatiu',
+    loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then( m => m.SelectieSpatiuPageModule)
   }
+
 
 ];
 
