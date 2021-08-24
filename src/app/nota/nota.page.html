@@ -1,14 +1,15 @@
 
+
 <ion-content [scrollEvents]="true" [fullscreen]="true">
-  <div class="web-grey-light-b-bg-color w-100" [ngClass]="{ 'flex ion-justify-content-center': isWed }">
-    <div class="w-100 w-lg-634px web-white-page position-relative">
+  <div class="web-grey-light-b-bg-color w-100" >
+    <div class="w-100 web-white-page position-relative">
       <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
         <ion-toolbar class="ion-no-padding">
 
           <ion-buttons slot="start" class="slot-start">
 
             <ion-icon
-              name="close"
+              name="arrow-left"
               class="icon-24 black-color"
               slot="icon-only"
             ></ion-icon>
@@ -18,85 +19,60 @@
           <ion-title>Notă</ion-title>
 
           <div slot="end">
-            <ion-button size="default" color="biz-primary">
-              Salvează
-            </ion-button>
+            <ion-icon
+              name="delete"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+            <ion-icon
+              name="edit"
+              class="ml-24 icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
           </div>
         </ion-toolbar>
       </ion-header>
-
-      <form [formGroup]="adaugaProgramareFormGroup">
-
-        <div class="w-100 ">
-          <div class="w-100 pt-30 px-32">
-            <app-select
-              formControlName="select"
-              [config]="config"
-              formControlName="tipPredefinit"
-              [options]="radioOptionB"
-              class="w-100"
-              ></app-select>
-          </div>
-          <div class="w-100 pt-30 px-32">
-            <ion-item>
-              <ion-toggle color="biz-primary" mode="md"></ion-toggle>
-              <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Toată ziua</ion-label>
-            </ion-item>
-          </div>
-          <div class="w-100 pt-30 px-32">
-            <ion-item  class="item-checkbox">
-              <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Permite programări în paralel</ion-label>
-              <ion-checkbox
-              slot="start"
-              color="biz-primary"
-              class="margin-inline-end-12"
-              mode="md"
-              ></ion-checkbox>
-            </ion-item>
-          </div>
-
-        </div>
-        <div class="w-100 p-32 flex flex-1 flex-row ion-justify-content-between">
-
-          <div class="mw-140 flex-1 mr-16">
-            <app-input
-              [config]="dataInputConfig"
-              formControlName="pacient"
-            ></app-input>
-          </div>
-
-          <div class="mw-140 flex-1 ml-16">
-            <app-input
-              [config]="timeInputConfig"
-              formControlName="pacient"
-            ></app-input>
-          </div>
-
-        </div>
-
-          <div class="w-100 px-32">
-
-            <app-radios
-                [config]="timeRadioConfig"
-                [options]="timeRadioOption"
-                formControlName="time"
-                class="w-100"
-              >
-            </app-radios>
-
-          </div>
-          <div class="w-100 p-32">
-            <app-textarea [config]="textAreaConfig" formControlName="observatii"></app-textarea>
-          </div>
-       
-          <div class="w-100 px-32">
-            <ion-text class="form-text">Folosește ”text to speech” ca să scrii mai ușor. Caută și apasă lung iconul cu microfon pe tastatură!</ion-text>
-          </div>
-       
-
-
-      </form>
     </div>
   </div>
+  <div class="pl-24 edit-note">    
+    <ion-item class="d-flex">    
+      <ion-icon
+          name="note"
+          class="mr-16"
+          
+        ></ion-icon>
+        <ion-text class="rezervare-slot-calen">Rezervare slot calendar</ion-text>
+    
+  </ion-item>
+    <ion-item class="d-flex">    
+      <ion-icon
+          name="clock"
+          class="mr-16"
+          
+        ></ion-icon>
+        <ion-text class="hour">Luni, 8 martie 2020 ● 16:00 - 17:00</ion-text>
+    
+  </ion-item>
+    <ion-item class="d-flex">    
+        <div class=" h-100">
+          <ion-icon
+          name="clipboard-biz"
+          class="mr-16 icon-24"
+          
+        ></ion-icon>
+        </div>
+        <div>
+          <ion-text class="notes">Donec nisi nisi, ultricies luctus massa non, commodo ultricies lectus. Etiam tortor ante, pulvinar ac est eget, ultricies aliquam velit. Ut odio tortor, aliquet sit amet iaculis et, hendrerit non est. Phasellus laoreet quam id placerat. </ion-text>
+
+        </div>
+    
+  </ion-item>
+  </div>
+  
 </ion-content>
+
+
+
+
+
 

@@ -9,7 +9,7 @@ const routes: Routes = [
     component: NotaPage
   },
   {
-    path: 'nota',
+    path: 'nota/:id',
     component: NotaPage
   },
 
