@@ -21,7 +21,7 @@ export class SideMenuComponent implements OnInit {
   ];
   public comparative =  [
     { title: 'Utilizatori', url: '/calendar/utilizatori', icon: 'users' },
-    { title: 'Cabinetei', url: '/calendar/cabinet', icon: 'cabinet' },
+    { title: 'Cabinete', url: '/calendar/cabinet', icon: 'cabinet' },
     { title: 'Aparate', url: '/calendar/aparate', icon: 'equipment' },
   ];
   public bottomNav =  [
