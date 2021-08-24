@@ -48,6 +48,25 @@ export class RecurentaComponent implements OnInit {
       }
     }
   });
+  timeInputConfig = inputConfigHelper({
+    label: '',
+    type: 'time',
+    placeholder: '09:00',
+    custom: {
+      mode: 'ios',
+    }
+  });
+  timeBInputConfig = inputConfigHelper({
+    label: '',
+    type: 'time',
+    placeholder: '09:00',
+    custom: {
+      mode: 'ios',
+      useIcon: {
+        name: 'clock'
+      }
+    }
+  });
   isWed = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
     seRepetaLaFiecare: [2, [Validators.required]],
