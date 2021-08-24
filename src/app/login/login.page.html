@@ -15,27 +15,33 @@
             </div>
     
             <form (ngSubmit)="login()" [formGroup]="credentials" class="form px-16">
-              <ion-item class="pb-24">
-                <ion-label position="floating" class="label">Utilizator</ion-label>
-                <ion-input formControlName="email"></ion-input>
+              <ion-item lines="none" class="pb-24">
+                <!-- <ion-label position="floating" class="label">Utilizator</ion-label>
+                <ion-input formControlName="utilizator"></ion-input> -->
+                <app-input
+                    [config]="inputConfig(
+                      'Utilizator',
+                      'text',
+                      'Type here',
+                      false)"
+                    formControlName="utilizator"
+                  ></app-input>
               </ion-item>
-              <div *ngIf="(email.dirty || email.touched) && email.errors" class="errors">
-                <span *ngIf="email.errors?.required">Email is required</span>
-                <span *ngIf="email.errors?.email">Email is invalid</span>
-              </div>
-              <ion-item class="pb-24">
-                <ion-label position="floating" class="label">Parolă</ion-label>
-                <ion-input formControlName="password" type="password"></ion-input>
+
+              <ion-item  lines="none" class="pb-24">
+                <app-input
+                    [config]="inputConfig(
+                      'Parolă',
+                      'password',
+                      'Type here',
+                      false)"
+                    formControlName="utilizator"
+                  ></app-input>
               </ion-item>
-              <div *ngIf="(password.dirty || password.touched) && password.errors" class="errors">
-                <span *ngIf="password.errors?.required">Password is required</span>
-                <span *ngIf="password.errors?.minlength">Password needs to be 6 characters</span>
-              </div>
+
               <ion-button (click)="login()" class="mb-24 upper" size="large" expand="block" color="biz-primary">
                 AUTENTIFICARE
               </ion-button>
-              
-            
             </form>
           </div>
         </ion-card>
