@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PlatformService } from 'src/app/core/services/platform/platform.service';
 
 @Component({
   selector: 'app-programare',
@@ -6,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./programare.component.scss'],
 })
 export class ProgramareComponent implements OnInit {
+  isWed: any;
 
-  constructor() { }
+  constructor(private pS: PlatformService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.pS.isDesktopWidth$.subscribe(
+      v => this.isWed = v
+    );
+  }
 
 }
