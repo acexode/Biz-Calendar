@@ -17,7 +17,7 @@ const routes: Routes = [
     component: AdaugaProgramareComponent
   },
   {
-    path: 'editare-nota',
+    path: 'editare-nota/:id',
     component: AddEditNotaComponent
   },
   {
