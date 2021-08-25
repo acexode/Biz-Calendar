@@ -3,6 +3,10 @@
 
 .biz {
   ion-radio-group {
+    ion-list-header {
+      padding-inline-start: 0 !important;
+    }
+
     ion-radio {
       margin-inline-end: 12px !important;
       --size: 24px;
@@ -40,6 +44,55 @@
 
         &::part(mark) {
           background: var(--ion-neutral-grey-default-color) !important;
+        }
+      }
+    }
+
+    ion-item {
+      &:not(.item-radio-checked) {
+        .custom-radio-type-a {
+
+          p,
+          ion-label {
+            color: var(--ion-neutral-grey-default-color);
+          }
+
+          /* input ion-item */
+          ion-item {
+            --ion-border-color: #F2F8FA !important;
+            --border-color: #F2F8FA !important;
+
+            // for disble
+            ion-row {
+              background: var(--ion-neutral-grey-light-b-color);
+            }
+
+            ion-icon {
+              color: var(--ion-neutral-grey-light-color);
+            }
+
+            ion-input {
+              --color: #626E73;
+              --placeholder-color: #626E73;
+              --padding-start: 8px !important;
+            }
+          }
+        }
+      }
+
+
+      &.item-radio-checked {
+        custom-radio-type-a {
+          ion-label {
+            color: #000;
+          }
+        }
+      }
+
+      &.item-interactive-disabled {
+        ion-item {
+          --ion-border-color: #F2F8FA !important;
+          --border-color: #F2F8FA !important;
         }
       }
     }

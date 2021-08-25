@@ -13,7 +13,7 @@
                     (config?.isInputFocused || false)
                 }"
         >
-          <ion-col class="ion-no-padding flex-1 w-100 biz-custom-form-group" [ngClass]="{
+          <ion-col class="ion-no-padding p-0 m-0 flex-1 w-100 biz-custom-form-group" [ngClass]="{
                     ' useIcon':
                     config?.useIcon || false
                 }">
@@ -38,7 +38,7 @@
                   config?.autoCapitalize !== '' ? config?.autoCapitalize : 'none'"
                 [inputmode]="config?.inputMode" [class]="config?.inputClasses"
                 [ngClass]="{
-                  'has-spinners ion-text-center': config?.spinnerConfig,
+                  'ion-text-center': config?.spinnerConfig?.textAlign,
                   'disabled':
                     config?.disabled || inputReadonly || formGroup?.disabled,
                     'isInputFocused':

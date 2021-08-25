@@ -42,6 +42,16 @@
         ></ng-container>
 
         <ng-container
+          *ngIf="config?.mode === 'r'"
+          [ngTemplateOutlet]="rRef"
+          [ngTemplateOutletContext]="{
+            item: item,
+            first: isFirst,
+            last: isLast
+          }"
+        ></ng-container>
+
+        <ng-container
           *ngIf="config?.mode === 'item' || !config?.mode"
           [ngTemplateOutlet]="radioItemRef"
           [ngTemplateOutletContext]="{
@@ -107,4 +117,8 @@
       >{{ item?.label }}</ion-label
     >
   </ion-chip>
+</ng-template>
+
+<ng-template #rRef let-item="item" let-last="last" let-first="first">
+  
 </ng-template>
