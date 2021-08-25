@@ -7,7 +7,12 @@ const routes: Routes = [
   {
     path: '',
     component: NotaPage
-  }
+  },
+  {
+    path: 'nota/:id',
+    component: NotaPage
+  },
+
 ];
 
 @NgModule({

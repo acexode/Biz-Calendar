@@ -20,7 +20,7 @@ const routes: Routes = [
     loadChildren: () => import('./style-guide/style-guide.module').then(m => m.StyleGuidePageModule)
   },
   {
-    path: 'nota',
+    path: 'vizualizare',
     loadChildren: () => import('./nota/nota.module').then( m => m.NotaPageModule)
   },
   {
@@ -30,10 +30,11 @@ const routes: Routes = [
   {
     path: 'selectie-spatiu',
     loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then( m => m.SelectieSpatiuPageModule)
-  }
-
-
+  },
 ];
+
+
+
 
 @NgModule({
   imports: [

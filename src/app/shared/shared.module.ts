@@ -21,6 +21,7 @@ import { DayViewSchedulerComponent } from './components/comparativ/day-view-sche
 import { ModalModule } from './components/modal/modal.module';
 import { AddServiceSelectionComponent } from './components/add-service-selection/add-service-selection.component';
 import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
+
 registerLocaleData(localeDe);
 
 
@@ -35,7 +36,7 @@ registerLocaleData(localeDe);
     ComparativComponent,
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
-    CalModalComponent
+    CalModalComponent,
   ],
   imports: [
     CommonModule,
@@ -63,7 +64,7 @@ registerLocaleData(localeDe);
     ComparativComponent,
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
-    CalModalComponent,
+    CalModalComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
