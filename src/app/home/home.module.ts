@@ -1,3 +1,5 @@
+import { AdaugaNotaComponent } from './adauga-nota/adauga-nota.component';
+import { AddEditNotaComponent } from './add-edit-nota/add-edit-nota.component';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -22,6 +24,6 @@ import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare
     SharedModule,
     NgCalendarModule,
   ],
-  declarations: [HomePage, AdaugaProgramareComponent],
+  declarations: [HomePage, AdaugaProgramareComponent, AddEditNotaComponent, AdaugaNotaComponent],
 })
 export class HomePageModule {}

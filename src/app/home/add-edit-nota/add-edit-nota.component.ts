@@ -1,20 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { unsubscriberHelper } from '../core/helpers/unsubscriber.helper';
-import { PlatformService } from '../core/services/platform/platform.service';
-import { inputConfigHelper } from '../shared/data/input-config-helper';
-import { IonRadioInputOption } from '../shared/models/components/ion-radio-input-option';
-import { IonRadiosConfig } from '../shared/models/components/ion-radios-config';
-import { IonSelectConfig } from '../shared/models/components/ion-select-config';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
+import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
+import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
+import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 
 @Component({
   selector: 'app-add-edit-nota',
-  templateUrl: './add-edit-nota.page.html',
-  styleUrls: ['./add-edit-nota.page.scss'],
+  templateUrl: './add-edit-nota.component.html',
+  styleUrls: ['./add-edit-nota.component.scss'],
 })
-export class AddEditNotaPage implements OnInit, OnDestroy {
+export class AddEditNotaComponent implements OnInit, OnDestroy {
 
   config: IonSelectConfig = {
     inputLabel: {
@@ -126,6 +126,4 @@ export class AddEditNotaPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
   }
-
-
 }

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { AddEditNotaPage } from './add-edit-nota.page';
+import { AdaugaNotaComponent } from './adauga-nota.component';
 
-describe('AddEditNotaPage', () => {
-  let component: AddEditNotaPage;
-  let fixture: ComponentFixture<AddEditNotaPage>;
+describe('AdaugaNotaComponent', () => {
+  let component: AdaugaNotaComponent;
+  let fixture: ComponentFixture<AdaugaNotaComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddEditNotaPage ],
+      declarations: [ AdaugaNotaComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AddEditNotaPage);
+    fixture = TestBed.createComponent(AdaugaNotaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

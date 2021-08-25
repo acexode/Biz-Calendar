@@ -1,0 +1,68 @@
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="web-grey-light-b-bg-color w-100" >
+    <div class="w-100 web-white-page position-relative">
+      <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
+          <ion-buttons slot="start" class="slot-start">
+            <ion-icon
+              name="arrow-left"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+
+          </ion-buttons>
+
+          <ion-title>Notă</ion-title>
+
+          <div slot="end">
+            <ion-icon
+              name="delete"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+            <ion-icon
+              name="edit"
+              class="ml-24 icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+    </div>
+  </div>
+  <ion-list class="pl-24 edit-note">
+    <ion-item class="d-flex mb-32">
+      <ion-icon
+          name="note"
+          class="mr-16"
+        ></ion-icon>
+        <ion-text class="text-weight-medium s20-h28 roboto-family-font">Rezervare slot calendar</ion-text>
+  </ion-item>
+    <ion-item class="d-flex mb-32">
+      <ion-icon
+          name="clock"
+          class="mr-16"
+        ></ion-icon>
+        <ion-text class="hour">Luni, 8 martie 2020 ● 16:00 - 17:00</ion-text>
+  </ion-item>
+    <ion-item class="d-flex mb-32">
+        <div class=" h-100">
+          <ion-icon
+          name="clipboard-biz"
+          class="mr-16 icon-24"
+
+        ></ion-icon>
+        </div>
+        <div>
+          <ion-text class="notes">Donec nisi nisi, ultricies luctus massa non, commodo ultricies lectus. Etiam tortor ante, pulvinar ac est eget, ultricies aliquam velit. Ut odio tortor, aliquet sit amet iaculis et, hendrerit non est. Phasellus laoreet quam id placerat. </ion-text>
+        </div>
+  </ion-item>
+  </ion-list>
+</ion-content>
+
+
+
+
+
+
+

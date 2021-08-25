@@ -26,18 +26,11 @@ const routes: Routes = [
   {
     path: 'selectie-spatiu',
     loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then( m => m.SelectieSpatiuPageModule)
-  },
-  {
-    path: 'adauga/nota',
-    loadChildren: () => import('./add-edit-nota/add-edit-nota.module').then( m => m.AddEditNotaPageModule)
-  },
-  {
-    path: 'editare/nota/:id',
-    loadChildren: () => import('./add-edit-nota/add-edit-nota.module').then( m => m.AddEditNotaPageModule)
   }
-
-
 ];
+
+
+
 
 @NgModule({
   imports: [
