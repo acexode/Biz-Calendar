@@ -30,7 +30,12 @@ const routes: Routes = [
   {
     path: 'selectie-spatiu',
     loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then( m => m.SelectieSpatiuPageModule)
+  },
+  {
+    path: 'vizualiare',
+    loadChildren: () => import('./vizualiare/vizualiare.module').then( m => m.VizualiarePageModule)
   }
+
 
 
 ];
