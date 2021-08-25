@@ -37,6 +37,8 @@
       [viewDate]="viewDate"
       [events]="events"
       [eventTemplate]="customDayTemplate"
+      [hourSegmentTemplate]=""
+      [ngTemplateOutlet]="hourSegmentTemplate"
       [refresh]="refresh"
       [dayStartHour]="7"
       [dayEndHour]="23"
@@ -48,7 +50,11 @@
 
     </ion-col>
   </ion-row>
-
+  <ng-template #hourSegmentTemplate>
+    <ion-row style="background-color: aqua;">
+      hello word
+    </ion-row>
+  </ng-template>
   <ng-template #customDayTemplate let-dayEvents="dayEvents"
   let-weekEvent="weekEvent"
   let-tooltipPlacement="tooltipPlacement"
@@ -93,18 +99,18 @@
   </ng-template>
 
   <!-- Month Cell Template -->
-  <ng-template #customCellTemplate let-day="day" let-locale="locale">
-    <div class="cal-cell-top" [ngClass]="day.events[0]?.title === 'Vacation' ? 'vacation-bg' : ''">
+  <ng-template class="pt-0" #customCellTemplate let-day="day" let-locale="locale">
+    <div class="cal-cell-top flex flex-column sp-b ion-justify-content-between pt-0" [ngClass]="day.events[0]?.title === 'Vacation' ? 'vacation-bg' : ''">
       <!-- <span class="cal-day-badge" *ngIf="day.badgeTotal > 0"
         >{{ day.badgeTotal }}</span
       > -->
       <span  class="cal-day-number"
         >{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span
       >
+      <small *ngIf="day.events[0]?.title === 'Vacation'">
+        concediu
+      </small>
     </div>
-    <small *ngIf="day.events[0]?.title === 'Vacation'">
-      concediu
-    </small>
     <small  *ngIf="day.events.length > 0 && day.events[0]?.title !== 'Vacation'" style="margin: 5px;"
       >{{ day.events.length }} programări</small
     >
