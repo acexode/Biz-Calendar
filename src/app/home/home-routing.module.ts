@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare.component';
 
 import { HomePage } from './home.page';
+import { RecurentaComponent } from './recurenta/recurenta.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
   {
     path: 'vizualizare-nota',
     component: AdaugaNotaComponent
+  },
+  {
+    path: 'recurenta',
+    component: RecurentaComponent
+
   }
 ];
 

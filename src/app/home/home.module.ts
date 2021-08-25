@@ -12,6 +12,7 @@ import { HomePageRoutingModule } from './home-routing.module';
 
 import { HomePage } from './home.page';
 import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare.component';
+import { RecurentaComponent } from './recurenta/recurenta.component';
 
 
 @NgModule({
@@ -24,6 +25,12 @@ import { AdaugaProgramareComponent } from './adauga-programare/adauga-programare
     SharedModule,
     NgCalendarModule,
   ],
-  declarations: [HomePage, AdaugaProgramareComponent, AddEditNotaComponent, AdaugaNotaComponent],
+  declarations: [
+    HomePage,
+    AdaugaProgramareComponent,
+    AddEditNotaComponent,
+    AdaugaNotaComponent,
+    RecurentaComponent
+  ],
 })
 export class HomePageModule {}

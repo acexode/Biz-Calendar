@@ -15,6 +15,7 @@ export interface IonInputConfig {
   spinnerConfig?: {
     // Number input.
     step?: number;
+    textAlign?: boolean;
   };
   maskActive?: boolean;
 
