@@ -25,7 +25,7 @@ const routes: Routes = [
     component: AddEditNotaComponent
   },
   {
-    path: 'vizualizare-nota',
+    path: 'vizualizare-nota/:id',
     component: AdaugaNotaComponent
   },
   {
