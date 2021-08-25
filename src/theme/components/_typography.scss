@@ -105,7 +105,7 @@ h5,
 
 .s12pt8-h16 {
   font-size: 12.8px !important;
-  line-height: rem(16) !important;
+  line-height: 16px !important;
 }
 
 .s13-h16 {
@@ -367,6 +367,7 @@ a.no-decoration {
 .is-not-visible {
   visibility: hidden !important;
 }
-.upper{
+
+.upper {
   text-transform: uppercase;
 }

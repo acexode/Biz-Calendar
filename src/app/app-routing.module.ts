@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'calendar/adauga-programare',
+    redirectTo: 'calendar/recurenta',
     pathMatch: 'full'
   },
   {
@@ -20,10 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./style-guide/style-guide.module').then(m => m.StyleGuidePageModule)
   },
   {
-    path: 'nota',
-    loadChildren: () => import('./nota/nota.module').then( m => m.NotaPageModule)
-  },
-  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
@@ -35,9 +31,6 @@ const routes: Routes = [
     path: 'vizualiare',
     loadChildren: () => import('./vizualiare/vizualiare.module').then( m => m.VizualiarePageModule)
   }
-
-
-
 ];
 
 @NgModule({

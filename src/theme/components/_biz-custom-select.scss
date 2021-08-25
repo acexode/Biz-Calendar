@@ -57,3 +57,52 @@
     }
   }
 }
+
+.custom-selection-drop-down {
+  @include flexbox;
+  @include flex-direction(column);
+  /* @include justify-content(center);
+  @include align-items(center); */
+  font-family: var(--ion-font-roboto-family);
+  font-size: rem(16) !important;
+  line-height: rem(24) !important;
+  letter-spacing: 0;
+  position: relative;
+  display: inline-block;
+  /* the trick */
+
+  .selection-display {
+    @include flexbox;
+    @include flex-direction(row);
+    @include align-items(center);
+    padding: 8px 0;
+    min-width: 70px;
+    text-align: center;
+    border-bottom: 1px solid var(--ion-primary-color-step-30);
+    height: 40px;
+    padding: 8px 0;
+
+    span {
+      margin-right: 20px;
+    }
+  }
+
+  .selection-dropdown {
+    display: none;
+    width: 153px;
+    background: white;
+    position: absolute;
+    z-index: 100000;
+    box-shadow: var(--ion-light-box-shadow);
+
+    &.show {
+      @include flexbox;
+      @include flex-direction(column);
+    }
+
+    .options {
+      width: 153px;
+      padding: 16px;
+    }
+  }
+}

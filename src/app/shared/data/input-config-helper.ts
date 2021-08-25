@@ -15,7 +15,7 @@ export const inputConfigHelper = (conf: {
     placeholder: get(conf, 'placeholder', ''),
     inputLabel: {
       text: get(conf, 'label', ''),
-      classes: 'mb-8 input-label',
+      classes: 'mb-8',
     },
     disabled: conf.disabled || false,
     inputMode: get(conf, 'inputMode', 'none'),

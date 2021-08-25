@@ -3,6 +3,10 @@
 
 .biz {
   ion-item {
+    &.item-mh-40 {
+      --min-height: 40px;
+    }
+
     --padding-start: 0;
     --inner-padding-end: 0;
     --inner-border-width: 0;
