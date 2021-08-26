@@ -33,6 +33,7 @@ export class SideMenuComponent implements OnInit {
     { title: 'Ieșire', url: '/calendar/lesire', icon: 'deconectare', chevron: false, notify: false },
     { title: 'style Guide', url: '/style', icon: 'edit', chevron: false, notify: false },
     { title: 'calendar adauga-programare', url: '/calendar/adauga-programare', icon: 'edit', chevron: false, notify: false },
+    { title: 'recurenta', url: '/calendar/recurenta', icon: 'edit', chevron: false, notify: false}
     // { title: 'Comparativ', url: '/calendar/comparativ', icon: 'coparativ' },
   ];
   constructor(platform: Platform, private menu: MenuController) {
