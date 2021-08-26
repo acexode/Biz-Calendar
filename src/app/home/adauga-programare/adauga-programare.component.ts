@@ -212,6 +212,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: new FormControl(''),
     tipServicii: '',
+    data: ['', [Validators.required]],
+    oraDeIncepere: ['', [Validators.required]],
     time: '',
     cabinet: '',
     medic: '',
@@ -235,6 +237,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
+    console.log(this.dataAndOraDeIncepereNotFilledStatus);
   }
   async presentModal() {
     const modal = await this.modalController.create({
@@ -276,6 +279,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   get locatieFormControl() {
     return this.adaugaProgramareFormGroup.get('locatie') as FormControl;
   }
+  get dataFormControl() {
+    return this.adaugaProgramareFormGroup.get('data') as FormControl;
+  }
+  get oraDeIncepereFormControl() {
+    return this.adaugaProgramareFormGroup.get('oraDeIncepere') as FormControl;
+  }
   islocatieConfig(placeholder: string = 'Opțional'): IonSelectConfig {
     return {
       inputLabel: {
@@ -296,6 +305,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         classes: 'neutral-grey-medium-color'
       }
     };
+  }
+  get dataAndOraDeIncepereNotFilledStatus() {
+    return (this.dataFormControl.value === '' || this.oraDeIncepereFormControl.value === '') ? true : false;
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
