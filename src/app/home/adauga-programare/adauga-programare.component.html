@@ -68,14 +68,14 @@
           <div class="mw-140 flex-1 mr-16">
             <app-input
               [config]="dataInputConfig"
-              formControlName="pacient"
+              formControlName="data"
             ></app-input>
           </div>
 
           <div class="mw-140 flex-1 ml-16">
             <app-input
               [config]="timeInputConfig"
-              formControlName="pacient"
+              formControlName="oraDeIncepere"
             ></app-input>
           </div>
 
@@ -157,16 +157,26 @@
           </div>
 
           <div class="w-100 px-32 pb-32">
-            <ion-chip
+            <div>
+              <ion-chip
                 class="chip"
                 outline="true"
                 color="biz-chip-secondary"
+                [disabled]="dataAndOraDeIncepereNotFilledStatus"
               >
                 <ion-label>
                   Creează recurență
                 </ion-label>
                 <ion-icon name="recurenta"></ion-icon>
             </ion-chip>
+            </div>
+            <div class="mt-8">
+              <ion-label
+                class="primary-error-color s12pt8-h16 roboto-family-font text-weight-medium ls-0"
+                *ngIf="dataAndOraDeIncepereNotFilledStatus">
+                Completeaza campul data si ora de incepere de mai sus.
+              </ion-label>
+            </div>
           </div>
 
         </div>
