@@ -237,7 +237,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
-    console.log(this.dataAndOraDeIncepereNotFilledStatus);
   }
   async presentModal() {
     const modal = await this.modalController.create({
