@@ -38,17 +38,23 @@ export class SideMenuComponent implements OnInit {
   ];
   constructor(platform: Platform, private menu: MenuController) {
     console.log(window.innerWidth);
-    if (window.innerWidth >= 768) {
-      this.menu.close();
-    } else {
-      this.isTablet = false;
-    }
+    this.isTablet = window.innerWidth >= 768 ? true : false;
+    window.addEventListener('resize', ()=>{
+      if (window.innerWidth >= 768) {
+        // this.menu.close();
+        this.isTablet = true;
+      } else {
+        this.isTablet = false;
+      }
+    });
+
 
   }
 
   ngOnInit() { }
 
   toggleCoparative(){
+    console.log(this.hideCoparative);
     this.hideCoparative = !this.hideCoparative;
   }
 

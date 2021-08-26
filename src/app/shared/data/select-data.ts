@@ -52,6 +52,10 @@ export const selectConfig = {
     alertOptions: {
       cssClass: '',
     },
+    useIcon: {
+      name: 'caret-down',
+      classes: 'neutral-grey-medium-color'
+    },
     idKey: 'id',
     labelKey: 'label',
   };
@@ -67,6 +71,10 @@ export const selectConfig = {
     placeholder: 'Selection',
     alertOptions: {
       cssClass: '',
+    },
+    useIcon: {
+      name: 'caret-down',
+      classes: 'neutral-grey-medium-color'
     },
     idKey: 'id',
     labelKey: 'label',
