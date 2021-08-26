@@ -87,7 +87,7 @@ export class RecurentaComponent implements OnInit {
     seRepetaLaFiecare: [2, [Validators.required]],
     zile: '',
     dupa: [12],
-    pe: '08-04-2021',
+    pa: '2021-04-08',
   });
   constructor(
     private pS: PlatformService,
