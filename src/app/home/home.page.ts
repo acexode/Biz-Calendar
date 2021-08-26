@@ -53,6 +53,8 @@ export class HomePage implements OnInit {
   showButtons(){
     this.showFab = true;
   }
-
+  close(){
+    this.showFab = false;
+  }
 
 }

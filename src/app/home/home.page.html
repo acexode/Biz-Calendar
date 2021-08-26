@@ -1,29 +1,32 @@
 
 <app-calendar-header></app-calendar-header>
-<ion-content [scrollEvents]="true" [fullscreen]="true">
+<ion-content  [scrollEvents]="true" [fullscreen]="true">
   
   <app-calendar [calendarList]="calendarList" [display]="page"></app-calendar>
   <!-- <app-calendar-month [calendarList]="calendarList" [display]="page"></app-calendar-month> -->
   <div class="fab-container">
-    <div class="fab fab-icon-holder white px-32 py-16 s18-h24 upper text-weight-medium md hydrated">
+    <div (click)="showButtons()" class="fab fab-icon-holder white px-32 py-16 s18-h24 upper text-weight-medium md hydrated">
       Adaugă
     </div>
-    <ul class="fab-options">
+    <ul [ngClass]="showFab ? 'showFab': 'hideFab'" class="fab-options">
       <li>
-        <div class="fab-icon-holder programm d-flex biz-primary white py-16 pl-24 pr-16 upper">
-          <ion-text class="white pr-12 upper">Programare </ion-text>
+        <div (click)="navigate('/adauga-programare')" class="fab-icon-holder programm d-flex biz-primary white py-16 pl-24 pr-16 upper">
+          <div>
+            <ion-text class="white pr-12 upper">Programare </ion-text>
+
+          </div>
           <ion-icon class="icon-24" name="programare" color="ion-color-biz-primary"></ion-icon>
         </div>
       </li>
       <li>
       
-        <div class="fab-icon-holder py-16 pl-24 pr-16 nota d-flex">
+        <div (click)="navigate('/adauga-nota')" class="fab-icon-holder py-16 pl-24 pr-16 nota d-flex">
           <ion-text class="ion-color-biz-primary pr-12 upper">Notă </ion-text>
           <ion-icon class="icon-24" name="note" color="ion-color-biz-primary"></ion-icon>
         </div>
       </li>
       <li>       
-        <div class="fab-icon-holder p-16 cancel d-flex">
+        <div (click)="close()" class="fab-icon-holder p-16 cancel d-flex">
           <ion-icon class="icon-24" name="close-biz" color="ion-color-biz-primary"></ion-icon>
         </div>
       </li>
