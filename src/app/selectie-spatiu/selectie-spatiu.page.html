@@ -1,19 +1,19 @@
 
 <ion-content>
-  <ion-grid class="px-24">
+  <ion-grid class="px-24 d-grid ion-justify-content-center">
     <ion-row class="init-row pl-16">
       <ion-text class="buna-ziua-ioana">Bună ziua, Ioana.</ion-text>
     </ion-row>
     <ion-row class="init-row pl-16">
-      <ion-text class="selecteaza-un-spațiu">Selectează un spațiu de lucru:</ion-text>
+      <ion-text class="roboto-family-font s18-h24 text-weight-medium ls-0">Selectează un spațiu de lucru:</ion-text>
     </ion-row>
     <ion-row class="pt-16">
-      <ion-col size="12">
-        <ion-row (click)="navigate(card)" *ngFor="let card of cards" class="card mb-16">
+      <ion-col class="d-flex ion-justify-content-center" size="12">
+        <ion-row class="card px-16 pt-16  mb-16" [ngClass]="isTablet ? 'tablet-width' : 'mobile-width'" (click)="navigate(card)" *ngFor="let card of cards" >
           <ion-col size="3" offset="9">
             <img [src]="card.img" alt="" />
           </ion-col>
-          <ion-col size="12"><ion-text class="mediplus-clinic ">{{card.title}}</ion-text></ion-col>
+          <ion-col class="pb-8" size="12"><ion-text class="mediplus-clinic ">{{card.title}}</ion-text></ion-col>
         </ion-row>
       </ion-col>
     </ion-row>

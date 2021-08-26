@@ -24,8 +24,19 @@
           <ion-icon *ngIf="!hideCoparative" class="mr-8" slot="end" name="chevron-down"></ion-icon>
           
         </ion-item>
-        <ion-row  *ngIf="hideCoparative" >
-          <ion-menu-toggle>
+               <ion-row  *ngIf="isTablet" >
+          <ion-list class="pt-8" *ngIf="hideCoparative">
+            <ion-item class="pl-40" *ngFor="let p of comparative; let i = index" routerDirection="root" [routerLink]="[p.url]" [state]="{data: p.title}" lines="none" detail="false" routerLinkActive="selected">
+              <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
+              <ion-icon slot="start" [name]="p.icon"></ion-icon>
+              <ion-label>{{ p.title }}</ion-label>
+
+            </ion-item>
+
+          </ion-list>
+        </ion-row>
+        <ion-row  *ngIf="!isTablet" >
+          <ion-menu-toggle *ngIf="hideCoparative">
             <ion-item class="pl-40" *ngFor="let p of comparative; let i = index" routerDirection="root" [routerLink]="[p.url]" [state]="{data: p.title}" lines="none" detail="false" routerLinkActive="selected">
               <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
               <ion-icon slot="start" [name]="p.icon"></ion-icon>

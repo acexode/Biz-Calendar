@@ -123,10 +123,68 @@ ion-menu-button {
       line-height: 24px;
     }
   }
-  
+
   .active, .nav-btn:hover {
     border-radius: 4px;
     background-color: #E3F9FF;
     height: 40px;
   }
-  
+  .fab-container {
+    position: fixed;
+    bottom: 50px;
+    right: 24px;
+    z-index: 999;
+    cursor: pointer;
+  }
+
+  .fab-icon-holder {
+    border-radius: 16px;
+    background-color: #1EA5C7; 
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .fab-icon-holder:hover {
+    opacity: 0.8;
+  }
+  .fab {
+    border-radius: 16px;
+    background-color: #1EA5C7; 
+  }
+  .programm{
+    width: 196px;
+  }
+  .fab-options {
+    list-style-type: none;
+    margin: 0;
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform-origin: 85% bottom;
+  }
+  .hideFab{
+    transform: scale(0);
+  }
+  .showFab{
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  // .fab:hover+.fab-options,
+  // .fab-options:hover {
+    
+  // }
+  .cancel, .nota{
+    box-sizing: border-box;
+    border: 2px solid #1EA5C7;
+    color: #1EA5C7;
+    border-radius: 16px;
+    background-color: #FFFFFF;
+  }
+
+  .fab-options li {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px;
+  }

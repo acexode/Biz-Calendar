@@ -22,6 +22,7 @@ import { CalendarComponent } from 'ionic2-calendar';
 export class CalendarHeaderComponent implements OnInit {
   @Input() isModal = false;
   isTablet = false;
+  isComparativ= false;
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   month = format(new Date(), 'MMMM', { locale: ro });
@@ -74,7 +75,7 @@ export class CalendarHeaderComponent implements OnInit {
     private fb: FormBuilder, private menu: MenuController) { }
 
   ngOnInit() {
-    console.log(this.view);
+    console.log(this.page);
     this.locationForm.get('program').valueChanges.subscribe(val =>{
       console.log(val);
       if(val === '1'){
@@ -92,6 +93,12 @@ export class CalendarHeaderComponent implements OnInit {
       this.isTablet = window.innerWidth >= 768 ? true : false;
     });
     this.page = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(this.page);
+    if(this.page === 'aparate' || this.page === 'cabinet' || this.page === 'utilizatori'){
+      this.isComparativ = true;
+    }else{
+      this.isComparativ = false;
+    }
     if(this.page === 'list'){
       this.calendarList = EVENTLIST;
     }
