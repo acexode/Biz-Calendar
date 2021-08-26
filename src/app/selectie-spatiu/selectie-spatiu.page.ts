@@ -1,3 +1,4 @@
+import { MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -21,9 +22,15 @@ export class SelectieSpatiuPage implements OnInit {
       img: 'assets/icon/bellanima.png',
     }
   ];
-  constructor(private router: Router) { }
+  isTablet = false;
+  constructor(private router: Router, private menu: MenuController) { }
 
   ngOnInit() {
+    this.menu.enable(false);
+    this.isTablet = window.innerWidth >= 768 ? true : false;
+      window.addEventListener('resize', ()=>{
+        this.isTablet = window.innerWidth >= 768 ? true : false;
+      });
   }
   navigate(card){
     this.router.navigate(['calendar']);
