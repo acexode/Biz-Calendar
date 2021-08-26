@@ -31,6 +31,7 @@ export class HomePage implements OnInit {
   public page: string;
   activatedPath  = '';
   isTablet = false;
+  showFab = false;
   // eslint-disable-next-line @typescript-eslint/ban-types
   calendarList = [];
   public calendarPages = CalendarPages;
@@ -48,6 +49,9 @@ export class HomePage implements OnInit {
   }
   navigate(path){
     this.router.navigate(['/calendar' +path]);
+  }
+  showButtons(){
+    this.showFab = true;
   }
 
 
