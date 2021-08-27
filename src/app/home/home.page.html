@@ -10,25 +10,22 @@
     </div>
     <ul [ngClass]="showFab ? 'showFab': 'hideFab'" class="fab-options">
       <li>
-        <div (click)="navigate('/adauga-programare')" class="fab-icon-holder programm d-flex biz-primary white py-16 pl-24 pr-16 upper">
-          <div>
-            <ion-text class="white pr-12 upper">Programare </ion-text>
-
-          </div>
-          <ion-icon class="icon-24" name="programare" color="ion-color-biz-primary"></ion-icon>
-        </div>
+        <ion-button (click)="navigate('/adauga-programare')" color="biz-primary" size="large" >
+           <ion-text class="white pr-12 upper">Programare </ion-text>
+          <ion-icon class="icon-24" name="programare" color=""></ion-icon>
+        </ion-button>
       </li>
       <li>
       
-        <div (click)="navigate('/adauga-nota')" class="fab-icon-holder py-16 pl-24 pr-16 nota d-flex">
+        <ion-button fill="outline" size="large" color="biz-primary" class="bg-white" (click)="navigate('/adauga-nota')">
           <ion-text class="ion-color-biz-primary pr-12 upper">Notă </ion-text>
           <ion-icon class="icon-24" name="note" color="ion-color-biz-primary"></ion-icon>
-        </div>
+        </ion-button>
       </li>
       <li>       
-        <div (click)="close()" class="fab-icon-holder p-16 cancel d-flex">
+        <ion-button fill="outline" size="large" color="biz-primary" class="bg-white" (click)="close()" >
           <ion-icon class="icon-24" name="close-biz" color="ion-color-biz-primary"></ion-icon>
-        </div>
+        </ion-button>
       </li>
      
     </ul>
