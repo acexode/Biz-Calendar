@@ -34,25 +34,31 @@
     ></mwl-calendar-week-view>
       <mwl-calendar-day-view
       *ngSwitchCase="CalendarView.Day"
+      [hourSegments]="6"
       [viewDate]="viewDate"
       [events]="events"
       [eventTemplate]="customDayTemplate"
-      [hourSegmentTemplate]=""
-      [ngTemplateOutlet]="hourSegmentTemplate"
+      [hourSegmentTemplate]="hourSegmentTemplate"
       [refresh]="refresh"
       [dayStartHour]="7"
       [dayEndHour]="23"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
-    <h1>{{events | json}}</h1>
+   
     </mwl-calendar-day-view>
 
     </ion-col>
   </ion-row>
-  <ng-template #hourSegmentTemplate>
-    <ion-row style="background-color: aqua;">
-      hello word
+  <ng-template #hourSegmentTemplate let-hour="hour" let-segment="segment">
+    <ion-row class=" b-bottom pl-0 h-100">
+      <ion-col [size]=" isTablet ? 1: 2">
+        <ion-label class="h-100 w-40 cal-time">{{segment.date | date:'shortTime'}}</ion-label>
+        
+      </ion-col >
+      <ion-col [ngClass]="setBg(segment.date)" class="b-left" [size]=" isTablet ? 11: 10">
+
+      </ion-col>
     </ion-row>
   </ng-template>
   <ng-template #customDayTemplate let-dayEvents="dayEvents"
