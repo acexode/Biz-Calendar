@@ -64,7 +64,6 @@ export class LoginPage implements OnInit {
   }
   // Easy access for form fields
   login(){
-    console.log('submitted');
     this.router.navigate(['selectie-spatiu']);
   }
   get utilizator() {

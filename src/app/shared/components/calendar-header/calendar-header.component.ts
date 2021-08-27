@@ -76,7 +76,6 @@ export class CalendarHeaderComponent implements OnInit {
   ngOnInit() {
     console.log(this.view);
     this.locationForm.get('program').valueChanges.subscribe(val =>{
-      console.log(val);
       if(val === '1'){
         this.programList = utilizatorList;
       }else if(val === '2'){
@@ -100,11 +99,9 @@ export class CalendarHeaderComponent implements OnInit {
     this.menu.toggle();
   }
   navigate(path){
-    console.log(path);
     this.router.navigate([path]);
   }
   segmentChanged(id){
-    console.log(id);
   }
   async openCalModal() {
     const modal = await this.modalCtrl.create({

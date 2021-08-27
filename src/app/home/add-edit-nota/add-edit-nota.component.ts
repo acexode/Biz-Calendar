@@ -120,7 +120,6 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
-    console.log(this.isWed);
   }
 
   ngOnDestroy() {
