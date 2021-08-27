@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { of, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
@@ -11,7 +14,7 @@ import { inputStyleGuideConfigurations } from 'src/app/style-guide/input-config-
   templateUrl: './recurenta.component.html',
   styleUrls: ['./recurenta.component.scss'],
 })
-export class RecurentaComponent implements OnInit {
+export class RecurentaComponent implements OnInit, OnDestroy {
   inputStyleGuide = inputStyleGuideConfigurations;
   seRepetaLaFiecareInputConfig = inputConfigHelper({
     label: '',
@@ -24,10 +27,10 @@ export class RecurentaComponent implements OnInit {
     }
   });
   seRepetaLaFiecareOption: any = [
-    { label: 'zile', value: 'zile' },
-    { label: 'săptămâni', value: 'săptămâni' },
-    { label: 'luni', value: 'luni' },
-    { label: 'ani?', value: 'ani?' },
+    { label: 'zile', value: 'days' },
+    { label: 'săptămâni', value: 'weekly' },
+    { label: 'luni', value: 'monthly' },
+    { label: 'ani?', value: 'yearly' },
   ];
   dataInputConfig = inputConfigHelper({
     label: 'Începe',
@@ -81,14 +84,24 @@ export class RecurentaComponent implements OnInit {
       }
     }
   });
+  radioGroupOptions = {
+    dupa: 'dupa',
+    pa: 'pa'
+  };
   isWed = false;
   dropDownStatus = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
-    seRepetaLaFiecare: [2, [Validators.required]],
-    zile: '',
+    seRepetaLaFiecareNumber: [2, [Validators.required]],
+    seRepetaLaFiecareTimeChoose: [
+      this.seRepetaLaFiecareOption[0].value,
+      [Validators.required]
+    ],
+    incepe: ['2021-08-27', [Validators.required]],
+    seTermina: [this.radioGroupOptions.dupa],
     dupa: [12],
     pa: '2021-04-08',
   });
+  recurendtaFormGroup$: Subscription;
   constructor(
     private pS: PlatformService,
     private fb: FormBuilder
@@ -100,6 +113,13 @@ export class RecurentaComponent implements OnInit {
     );
     // set first value
     this.setZileValue(this.seRepetaLaFiecareOption[0].value);
+
+    this.recurendtaFormGroup$ = this.recurendtaFormGroup.valueChanges
+      // .pipe(distinctUntilChanged())
+      .subscribe(data => {
+        console.log(data);
+      });
+    this.add();
   }
   toggleDropDown() {
     this.dropDownStatus = !this.dropDownStatus;
@@ -107,19 +127,43 @@ export class RecurentaComponent implements OnInit {
   get isDropDown() {
     return this.dropDownStatus;
   }
-  get zileFormControl() {
-    return this.recurendtaFormGroup.get('zile');
+  get timeChooseFormControl() {
+    return this.recurendtaFormGroup.get('seRepetaLaFiecareTimeChoose');
   }
   get zileFormControlValue() {
-    return this.zileFormControl.value;
+    return this.timeChooseFormControl.value;
   }
   setZileValue(data: string) {
-    this.zileFormControl.setValue(data);
+    this.timeChooseFormControl.setValue(data);
   }
   setZileValueAndToggle(data: string) {
     this.setZileValue(data);
     // toggle
     this.toggleDropDown();
+  }
+  add() {
+    const {
+      seRepetaLaFiecareNumber,
+      seRepetaLaFiecareTimeChoose,
+      incepe,
+      dupa
+    } = this.recurendtaFormGroup.value;
+    console.log(seRepetaLaFiecareNumber, seRepetaLaFiecareTimeChoose, incepe);
+    const occurance = Number(seRepetaLaFiecareNumber);
+    const appearance = Number(dupa);
+
+    const userDteInput = new Date(incepe);
+    let temp: any = userDteInput;
+    for (let index = 0;index < appearance;index++) {
+
+      const occur = temp.setDate( temp.getDate() + occurance);
+      temp = new Date(occur);
+      console.log(temp);
+    }
+
+  }
+  ngOnDestroy() {
+    unsubscriberHelper(this.recurendtaFormGroup$);
   }
 
 }
