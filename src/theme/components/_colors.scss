@@ -72,6 +72,11 @@
   color: var(--color) !important;
 }
 
+.primary-error-bg-color {
+  --background: var(--ion-primary-error-color) !important;
+  background: var(--background) !important;
+}
+
 .status-green-color-step-100 {
   --color: var(--ion-status-green-color-step-100) !important;
   color: var(--color) !important;

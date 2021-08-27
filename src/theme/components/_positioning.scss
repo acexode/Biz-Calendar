@@ -28,6 +28,13 @@
   right: 0;
 }
 
+.absolute-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .left-0 {
   left: 0;
 }
@@ -91,7 +98,9 @@
 .float-right {
   float: right;
 }
-
+.z-index-9999 {
+  z-index: 9999 !important;
+}
 @media (min-width: $desktop-width) {
   .float-lg-left {
     float: left !important;
