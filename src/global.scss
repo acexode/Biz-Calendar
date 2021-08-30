@@ -53,15 +53,15 @@
   background: #97A1A6;
 }
 .green-pattern  {
-  border-left: 4px solid #d5eed1;
+  border-left: 4px solid #EAF6E8;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
   background: repeating-linear-gradient(
-    45deg,
+    132deg,
     transparent,
     transparent 10px,
-    #d5eed1 10px,
-    #d5eed1 calc(2 * 9px)
+    #EAF6E8 10px,
+    #EAF6E8 calc(2 * 10px)
   ) !important;
 }
 //.green-pattern   *, .green-pattern .cal-week-view .cal-event
@@ -69,11 +69,11 @@
   border-left: 4px solid #D6E9FE;
   border-radius: 4px 0 0 4px;
   background: repeating-linear-gradient(
-    45deg,
+    132deg,
     transparent,
     transparent 10px,
     #D6E9FE 10px,
-    #D6E9FE calc(2 * 9px)
+    #D6E9FE calc(2 * 10px)
   );
 }
 .border-none{

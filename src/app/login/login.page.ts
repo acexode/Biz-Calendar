@@ -37,6 +37,7 @@ export class LoginPage implements OnInit {
     type,
     placeholder: string = 'Type here',
     isDisabled: boolean = false,
+    hasError: boolean = false
   ): IonInputConfig {
     return {
       inputLabel: {
@@ -44,11 +45,13 @@ export class LoginPage implements OnInit {
         classes: '',
         slot: 'end',
       },
+      inputHasError: hasError,
       inputMode:  type,
+      inputAssistiveText:{
+        text: hasError ? 'Camp obligatoriu' : ''
+      },
       placeholder: placeholder || '',
       size: 100,
-      minLength: 10,
-      maxLength: 10,
       bgwhite: false,
       disabled: isDisabled,
     };
