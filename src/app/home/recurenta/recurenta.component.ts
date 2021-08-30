@@ -97,9 +97,9 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       [Validators.required]
     ],
     incepe: ['2021-08-27', [Validators.required]],
-    seTermina: [this.radioGroupOptions.dupa],
+    seTermina: [this.radioGroupOptions.pa],
     dupa: [12],
-    pa: '2021-04-08',
+    pa: '2021-08-30',
   });
   recurendtaFormGroup$: Subscription;
   constructor(
@@ -145,17 +145,42 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       seRepetaLaFiecareNumber,
       seRepetaLaFiecareTimeChoose,
       incepe,
-      dupa
+      seTermina,
+      dupa,
+      pa
     } = this.recurendtaFormGroup.value;
     console.log(seRepetaLaFiecareNumber, seRepetaLaFiecareTimeChoose, incepe);
 
-    const [days, weekly, monthly, yearly] = this.seRepetaLaFiecareOption;
     const occurance = Number(seRepetaLaFiecareNumber);
     const appearance = Number(dupa);
 
     const userDateInput = new Date(incepe);
-    let temp: any = userDateInput;
 
+    switch (seTermina) {
+      case this.radioGroupOptions.dupa:
+        this.isDupa(
+          seRepetaLaFiecareTimeChoose,
+          userDateInput,
+          appearance,
+          occurance
+        );
+        break;
+      case this.radioGroupOptions.pa:
+        break;
+      default:
+        break;
+
+    }
+
+  }
+  isDupa(
+    seRepetaLaFiecareTimeChoose: number,
+    userDateInput: Date,
+    appearance: number,
+    occurance: number
+  ) {
+    const [days, weekly, monthly, yearly] = this.seRepetaLaFiecareOption;
+    let temp: any = userDateInput;
     switch (seRepetaLaFiecareTimeChoose) {
       case days.value:
 
@@ -195,7 +220,6 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       default:
         break;
     }
-
   }
   ngOnDestroy() {
     unsubscriberHelper(this.recurendtaFormGroup$);
