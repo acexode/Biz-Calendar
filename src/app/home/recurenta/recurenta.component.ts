@@ -119,7 +119,6 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         console.log(data);
       });
-    this.add();
   }
   toggleDropDown() {
     this.dropDownStatus = !this.dropDownStatus;
@@ -149,16 +148,52 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       dupa
     } = this.recurendtaFormGroup.value;
     console.log(seRepetaLaFiecareNumber, seRepetaLaFiecareTimeChoose, incepe);
+
+    const [days, weekly, monthly, yearly] = this.seRepetaLaFiecareOption;
     const occurance = Number(seRepetaLaFiecareNumber);
     const appearance = Number(dupa);
 
-    const userDteInput = new Date(incepe);
-    let temp: any = userDteInput;
-    for (let index = 0;index < appearance;index++) {
+    const userDateInput = new Date(incepe);
+    let temp: any = userDateInput;
 
-      const occur = temp.setDate( temp.getDate() + occurance);
-      temp = new Date(occur);
-      console.log(temp);
+    switch (seRepetaLaFiecareTimeChoose) {
+      case days.value:
+
+        for (let index = 0;index < appearance;index++) {
+
+          const occur = temp.setDate(temp.getDate() + occurance);
+          temp = new Date(occur);
+          console.log(temp);
+        }
+        break;
+
+      case weekly.value:
+
+        for (let index = 0;index < appearance;index++) {
+
+          const occur = temp.setDate(temp.getDate() + (occurance * 7));
+          temp = new Date(occur);
+          console.log(temp);
+        }
+        break;
+      case monthly.value:
+        for (let index = 0;index < appearance;index++) {
+
+          const occur = temp.setMonth(temp.getMonth() + occurance);
+          temp = new Date(occur);
+          console.log(temp);
+        }
+        break;
+      case yearly.value:
+        for (let index = 0;index < appearance;index++) {
+
+          const occur = temp.setFullYear(temp.getFullYear() + occurance);
+          temp = new Date(occur);
+          console.log(temp);
+        }
+        break;
+      default:
+        break;
     }
 
   }
