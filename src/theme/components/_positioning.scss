@@ -28,6 +28,13 @@
   right: 0;
 }
 
+.absolute-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .left-0 {
   left: 0;
 }
@@ -90,6 +97,26 @@
 
 .float-right {
   float: right;
+}
+
+.z-index-9999 {
+  z-index: 9999 !important;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.custom-center-bottom {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  right: 0;
+  transform: translateX(-50%);
 }
 
 @media (min-width: $desktop-width) {

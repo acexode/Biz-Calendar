@@ -25,7 +25,7 @@
         </ion-toolbar>
       </ion-header>
 
-      <form [formGroup]="adaugaProgramareFormGroup">
+      <form [formGroup]="adaugaProgramareFormGroup" class="mb-74">
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
           <div class="w-100 pt-30 px-32">
@@ -170,13 +170,13 @@
                 <ion-icon name="recurenta"></ion-icon>
             </ion-chip>
             </div>
-            <div class="mt-8">
+           <!--  <div class="mt-8">
               <ion-label
                 class="primary-error-color s12pt8-h16 roboto-family-font text-weight-medium ls-0"
                 *ngIf="dataAndOraDeIncepereNotFilledStatus">
                 Completeaza campul data si ora de incepere de mai sus.
               </ion-label>
-            </div>
+            </div> -->
           </div>
 
         </div>
@@ -215,6 +215,14 @@
 
 
       </form>
+
+      <!-- notify  -->
+      <div class="primary-error-bg-color custom-center-bottom z-index-9999 px-16 py-13 w-415px"  *ngIf="dataAndOraDeIncepereNotFilledStatus">
+        <p class="black-color m-0 s18-h24 text-weight-regular roboto-family-font ls-02">
+          Completează data și ora de începere de mai sus!
+        </p>
+      </div>
+      <!--  -->
     </div>
   </div>
 </ion-content>
