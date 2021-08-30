@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, MenuController } from '@ionic/angular';
+import { format } from 'date-fns';
+import { ro } from 'date-fns/locale';
 import { CalendarMode, Step } from 'ionic2-calendar/calendar';
 @Component({
   selector: 'app-cal-modal',
@@ -32,10 +34,14 @@ export class CalModalComponent implements OnInit {
     allDay: true
   };
   modalReady = false;
-  constructor(private modalCtrl: ModalController) { }
+  month = format(new Date(), 'MMMM', { locale: ro });
+  constructor(private modalCtrl: ModalController, private menu: MenuController) { }
 
   ngOnInit() {
     console.log(this.isTablet);
+  }
+  toggleMenu(){
+    this.menu.toggle();
   }
 
 }

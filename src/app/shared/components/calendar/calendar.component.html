@@ -53,7 +53,9 @@
   <ng-template #hourSegmentTemplate let-hour="hour" let-segment="segment">
     <ion-row class=" b-bottom pl-0 h-100">
       <ion-col [size]=" isTablet ? 1: 2">
-        <ion-label class="h-100 w-40 cal-time">{{segment.date | date:'shortTime'}}</ion-label>
+        <ion-label class="h-100 w-40 cal-time">
+          
+          {{segment.date | hour}}</ion-label>
         
       </ion-col >
       <ion-col [ngClass]="setBg(segment.date)" class="b-left" [size]=" isTablet ? 11: 10">

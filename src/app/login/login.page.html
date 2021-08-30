@@ -23,7 +23,9 @@
                       'Utilizator',
                       'text',
                       'Type here',
-                      false)"
+                      false,
+                      (utilizator.touched || utilizator.dirty) && utilizator.errors.required
+                      )"
                     formControlName="utilizator"
                   ></app-input>
               </ion-item>
@@ -34,8 +36,10 @@
                       'Parolă',
                       'password',
                       'Type here',
-                      false)"
-                    formControlName="utilizator"
+                      false,
+                      (password.touched || password.dirty) && password.errors.required
+                      )"
+                    formControlName="password"
                   ></app-input>
               </ion-item>
 
