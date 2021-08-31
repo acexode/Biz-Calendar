@@ -27,7 +27,7 @@
       <form [formGroup]="adaugaProgramareFormGroup">
 
         <div class="w-100 ">
-          <div class="w-100 pt-30 px-32">
+          <div class="w-100 pt-16 px-32">
             <app-select
               formControlName="select"
               [config]="config"
@@ -36,13 +36,13 @@
               class="w-100"
               ></app-select>
           </div>
-          <div class="w-100 pt-30 px-32">
+          <div class="w-100 pt-16 px-32">
             <ion-item>
               <ion-toggle color="biz-primary" mode="md"></ion-toggle>
               <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Toată ziua</ion-label>
             </ion-item>
           </div>
-          <div class="w-100 pt-16 px-32">
+          <div class="w-100 px-32">
             <ion-item  class="item-checkbox p-0">
               <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Permite programări în paralel</ion-label>
               <ion-checkbox
@@ -55,7 +55,7 @@
           </div>
 
         </div>
-        <div class="w-100 p-32 flex flex-1 flex-row ion-justify-content-between">
+        <div class="w-100 px-32 flex flex-1 flex-row ion-justify-content-between">
 
           <div class="mw-140 flex-1 mr-16">
             <app-input
@@ -73,7 +73,7 @@
 
         </div>
 
-          <div class="w-100 px-32">
+          <div class="w-100 pt-32 px-32">
 
             <app-radios
                 [config]="timeRadioConfig"
