@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { of, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { dateDifference } from 'src/app/core/helpers/date.helper';
+import { dateDifference, getDateInYearMonthDay } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
@@ -115,12 +115,6 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     );
     // set first value
     this.setZileValue(this.seRepetaLaFiecareOption[0].value);
-
-    this.recurendtaFormGroup$ = this.recurendtaFormGroup.valueChanges
-      .pipe(distinctUntilChanged())
-      .subscribe(data => {
-        console.log(data);
-      });
   }
   toggleDropDown() {
     this.dropDownStatus = !this.dropDownStatus;
@@ -151,7 +145,6 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       dupa, // how many times to fix it on calendar
       pa // end date
     } = this.recurendtaFormGroup.value;
-    console.log(seRepetaLaFiecareNumber, seRepetaLaFiecareTimeChoose, incepe);
 
     const occurance = Number(seRepetaLaFiecareNumber);
 
@@ -188,25 +181,29 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   ) {
     const [days, weekly, monthly, yearly] = this.seRepetaLaFiecareOption;
     // let temp: any = userDateInput;
+    let timeType = 'days';
     switch (seRepetaLaFiecareTimeChoose) {
       case days.value:
-        const d = dateDifference(
-          userDateInput,
-          pa,
-          'days'
-        );
-        console.log(Math.floor(d / occurance));
+        timeType = 'days';
         break;
-
       case weekly.value:
+        timeType = 'weeks';
         break;
       case monthly.value:
+        timeType = 'months';
         break;
       case yearly.value:
+        timeType = 'years';
         break;
       default:
         break;
     }
+    const diff = dateDifference(
+      userDateInput,
+      pa,
+      timeType
+    );
+    this.setDupa(Math.floor(diff / occurance));
   }
   isDupa(
     seRepetaLaFiecareTimeChoose: number,
@@ -218,43 +215,39 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     let temp: any = userDateInput;
     switch (seRepetaLaFiecareTimeChoose) {
       case days.value:
-
         for (let index = 0;index < appearance;index++) {
-
           const occur = temp.setDate(temp.getDate() + occurance);
           temp = new Date(occur);
-          console.log(temp);
         }
         break;
-
       case weekly.value:
-
         for (let index = 0;index < appearance;index++) {
-
           const occur = temp.setDate(temp.getDate() + (occurance * 7));
           temp = new Date(occur);
-          console.log(temp);
         }
         break;
       case monthly.value:
         for (let index = 0;index < appearance;index++) {
-
           const occur = temp.setMonth(temp.getMonth() + occurance);
           temp = new Date(occur);
-          console.log(temp);
         }
         break;
       case yearly.value:
         for (let index = 0;index < appearance;index++) {
-
           const occur = temp.setFullYear(temp.getFullYear() + occurance);
           temp = new Date(occur);
-          console.log(temp);
         }
         break;
       default:
         break;
     }
+    this.setPa(getDateInYearMonthDay(temp));
+  }
+  setDupa(data: any) {
+    this.recurendtaFormGroup.get('dupa').patchValue(data);
+  }
+  setPa(data: any) {
+    this.recurendtaFormGroup.get('pa').patchValue(data);
   }
   ngOnDestroy() {
     unsubscriberHelper(this.recurendtaFormGroup$);
