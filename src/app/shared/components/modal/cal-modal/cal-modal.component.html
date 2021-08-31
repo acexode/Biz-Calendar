@@ -7,7 +7,7 @@
       <ion-col  size="9" class="flex flex-column primary-color-step-100">
         <div >
           <ion-text class="primary-color-step-100 text-weight-medium">
-            {{ month | titlecase}}
+            {{ viewTitle }}
           </ion-text>
           <ion-icon class="mt-5"  name="caret-up"></ion-icon>
         </div>
@@ -35,6 +35,9 @@
 <calendar
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"
-    [lockSwipes]="true"
-  >
+    (onCurrentDateChanged)="onCurrentDateChanged($event)"
+    (onEventSelected)="onEventSelected($event)"
+    (onTitleChanged)="onViewTitleChanged($event)"
+    (onTimeSelected)="onTimeSelected($event)"
+    >
   </calendar>

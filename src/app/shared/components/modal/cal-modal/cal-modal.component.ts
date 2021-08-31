@@ -10,6 +10,10 @@ import { CalendarMode, Step } from 'ionic2-calendar/calendar';
 })
 export class CalModalComponent implements OnInit {
   @Input() isTablet: boolean;
+  eventSource;
+  viewTitle;
+
+  isToday: boolean;
    calendar = {
         mode: 'month' as CalendarMode,
         step: 30 as Step,
@@ -25,7 +29,6 @@ export class CalModalComponent implements OnInit {
             formatDayViewTitle: (date: Date) => 'testDT'
         }
     };
-  viewTitle: string;
   event = {
     title: '',
     desc: '',
@@ -39,6 +42,35 @@ export class CalModalComponent implements OnInit {
 
   ngOnInit() {
     console.log(this.isTablet);
+  }
+
+
+  onViewTitleChanged(title) {
+      this.viewTitle = title;
+  }
+
+  onEventSelected(event) {
+      console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
+  }
+
+  changeMode(mode) {
+      this.calendar.mode = mode;
+  }
+
+  today() {
+      this.calendar.currentDate = new Date();
+  }
+
+  onTimeSelected(ev) {
+      console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
+          (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
+  }
+
+  onCurrentDateChanged(event: Date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      event.setHours(0, 0, 0, 0);
+      this.isToday = today.getTime() === event.getTime();
   }
   toggleMenu(){
     this.menu.toggle();
