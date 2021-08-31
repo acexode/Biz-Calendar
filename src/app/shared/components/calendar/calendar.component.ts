@@ -194,7 +194,7 @@ export class CalendarComponent implements OnInit {
           title: 'Vacation',
           color: colors.blue,
           start: addHours(startOfDay(new Date()), 10),
-          // end: addHours(new Date(), -5),
+          end: addHours(new Date(), 11),
           meta: {
             icon: 'nou',
             cssClass: 'bg-green'
@@ -205,10 +205,10 @@ export class CalendarComponent implements OnInit {
           color: colors.blue,
           start: addHours(startOfDay(new Date()), 8),
           end: addHours(new Date(), 2),
-          meta: {
-            icon: '',
-            cssClass: 'green-pattern border-none'
-          }
+          // meta: {
+          //   icon: '',
+          //   cssClass: 'green-pattern border-none'
+          // }
         },
         {
           title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
@@ -379,4 +379,15 @@ export class CalendarComponent implements OnInit {
           }
         });
       }
+    setBg(d){
+      const hours = new Date(d).getHours();
+      if(hours > 7 && hours <= 10){
+        return 'green-pattern';
+      }else if(hours > 10 && hours < 13){
+        return 'blue-pattern';
+      }else{
+        return 'green-pattern';
+
+      }
+    }
 }

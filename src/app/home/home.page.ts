@@ -31,6 +31,7 @@ export class HomePage implements OnInit {
   public page: string;
   activatedPath  = '';
   isTablet = false;
+  showFab = false;
   // eslint-disable-next-line @typescript-eslint/ban-types
   calendarList = [];
   public calendarPages = CalendarPages;
@@ -38,7 +39,6 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.page = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(this.page);
     if(this.page === 'lista'){
       this.calendarList = EVENTLIST;
     }
@@ -49,6 +49,11 @@ export class HomePage implements OnInit {
   navigate(path){
     this.router.navigate(['/calendar' +path]);
   }
-
+  showButtons(){
+    this.showFab = true;
+  }
+  close(){
+    this.showFab = false;
+  }
 
 }

@@ -1,24 +1,34 @@
 
 <app-calendar-header></app-calendar-header>
-<ion-content [scrollEvents]="true" [fullscreen]="true">
+<ion-content  [scrollEvents]="true" [fullscreen]="true">
   
   <app-calendar [calendarList]="calendarList" [display]="page"></app-calendar>
   <!-- <app-calendar-month [calendarList]="calendarList" [display]="page"></app-calendar-month> -->
-  <!-- <ion-fab horizontal="end" vertical="center" slot="fixed">
-    <ion-fab-button color="danger">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-button size="large" color="biz-primary">
-        <ion-icon name="logo-facebook"></ion-icon>
-      </ion-button>
-      <ion-fab-button color="light">
-        <ion-icon name="logo-twitter"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button color="light">
-        <ion-icon name="logo-vimeo"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab> -->
+  <div class="fab-container">
+    <div *ngIf="!showFab" (click)="showButtons()" class="fab fab-icon-holder white px-32 py-16 s18-h24 upper text-weight-medium md hydrated">
+      Adaugă
+    </div>
+    <ul [ngClass]="showFab ? 'showFab': 'hideFab'" class="fab-options">
+      <li>
+        <ion-button (click)="navigate('/adauga-programare')" color="biz-primary" size="large" >
+           <ion-text class="white pr-12 upper">Programare </ion-text>
+          <ion-icon class="icon-24" name="programare" color=""></ion-icon>
+        </ion-button>
+      </li>
+      <li>
+      
+        <ion-button fill="outline" size="large" color="biz-primary" class="bg-white" (click)="navigate('/adauga-nota')">
+          <ion-text class="ion-color-biz-primary pr-12 upper">Notă </ion-text>
+          <ion-icon class="icon-24" name="note" color="ion-color-biz-primary"></ion-icon>
+        </ion-button>
+      </li>
+      <li>       
+        <ion-button fill="outline" size="large" color="biz-primary" class="bg-white" (click)="close()" >
+          <ion-icon class="icon-24" name="close-biz" color="ion-color-biz-primary"></ion-icon>
+        </ion-button>
+      </li>
+     
+    </ul>
+  </div>
 </ion-content>
 

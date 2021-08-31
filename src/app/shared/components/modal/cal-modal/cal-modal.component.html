@@ -1,4 +1,37 @@
-<app-calendar-header [isModal]="isTablet"></app-calendar-header>
+<ion-header  class="ion-no-border p-0" [translucent]="true">
+  <ion-toolbar class="pl-48 bg-blue">
+    <ion-title class="s16-h24 pl-0">Ioana Anghelescu</ion-title>
+  </ion-toolbar>
+  <ion-toolbar class="cal-header flex pl-48">
+    <ion-row>
+      <ion-col  size="9" class="flex flex-column primary-color-step-100">
+        <div >
+          <ion-text class="primary-color-step-100 text-weight-medium">
+            {{ month | titlecase}}
+          </ion-text>
+          <ion-icon class="mt-5"  name="caret-up"></ion-icon>
+        </div>
+        <ion-text class="header-events">
+          123 programări
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="3" class="flex ion-justify-content-end">
+        <ion-buttons class="pb-5"  >
+          <ion-icon size="large"  color="biz-primary" name="today-v-1" class="icon mr-32"></ion-icon>
+          <ion-button (click)="toggleMenu()" fill="clear" >
+            <ion-icon  size="large" color="biz-primary" name="menu-Hamburger" class="icon"></ion-icon>
+
+          </ion-button>
+          <!-- <ion-menu-button></ion-menu-button> -->
+        </ion-buttons>
+        
+      </ion-col >
+    </ion-row>
+  </ion-toolbar>
+ 
+ 
+</ion-header>
 <calendar
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"

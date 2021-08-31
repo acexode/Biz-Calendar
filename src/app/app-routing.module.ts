@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'calendar/recurenta',
+    redirectTo: 'vizualiare/programare/2 ',
     pathMatch: 'full'
   },
   {
@@ -21,16 +21,17 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'selectie-spatiu',
-    loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then( m => m.SelectieSpatiuPageModule)
+    loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then(m => m.SelectieSpatiuPageModule)
+  },
+  {
+    path: 'vizualiare',
+    loadChildren: () => import('./vizualiare/vizualiare.module').then(m => m.VizualiarePageModule)
   }
 ];
-
-
-
 
 @NgModule({
   imports: [

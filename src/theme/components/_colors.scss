@@ -67,6 +67,21 @@
   color: var(--ion-neutral-grey-default-color) !important;
 }
 
+.primary-error-color {
+  --color: var(--ion-primary-error-color) !important;
+  color: var(--color) !important;
+}
+
+.primary-error-bg-color {
+  --background: var(--ion-primary-error-color) !important;
+  background: var(--background) !important;
+}
+
+.status-green-color-step-100 {
+  --color: var(--ion-status-green-color-step-100) !important;
+  color: var(--color) !important;
+}
+
 .primary-color-step-110 {
   --color: var(--ion-primary-color-step-110) !important;
   color: var(--color) !important;
