@@ -210,7 +210,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
-    locatie: new FormControl(''),
+    locatie: '',
     tipServicii: '',
     data: ['', [Validators.required]],
     oraDeIncepere: ['', [Validators.required]],
