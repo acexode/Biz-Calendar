@@ -1,5 +1,6 @@
+import { AuthService } from './../core/services/auth/auth.service';
 import { MenuController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInputConfig } from '../shared/models/components/ion-input-config';
@@ -12,6 +13,8 @@ import { IonTextItem } from '../shared/models/components/ion-text-item';
 })
 export class LoginPage implements OnInit {
   credentials: FormGroup;
+  showError = false;
+  errorMsg = 'Parola sau numele de utilizator este gresita';
   label: IonTextItem = {
     text: 'Default',
     classes: '',
@@ -30,7 +33,9 @@ export class LoginPage implements OnInit {
     bgwhite: false,
     disabled: false,
   };
-  constructor(private fb: FormBuilder, private router: Router, private menu: MenuController) { }
+  constructor(private fb: FormBuilder, private router: Router, private menu: MenuController,
+    private aRoute: ActivatedRoute, private authS: AuthService
+    ) { }
 
   inputConfig(
     label: string,
@@ -67,7 +72,18 @@ export class LoginPage implements OnInit {
   }
   // Easy access for form fields
   login(){
-    this.router.navigate(['selectie-spatiu']);
+    this.authS.login({
+      username: this.utilizator.value,
+      password: this.password.value,
+      aRoute: this.aRoute
+    }).subscribe(res => console.log(res), err =>{
+      console.log(err);
+      this.showError = true;
+      setTimeout(() => {
+        this.showError = false;
+      }, 5000);
+    });
+    // this.router.navigate(['selectie-spatiu']);
   }
   get utilizator() {
     return this.credentials.get('utilizator');

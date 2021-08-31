@@ -12,9 +12,13 @@
             <div class="ion-text-center">
               <ion-text class=" biz-calendar text-weight-500 p-0 ls-0 primary-color-step-100 poppings-family-font">Biz Calendar</ion-text>
               <ion-text class="setrio text-weight-500 poppings-family-font">SETRIO</ion-text>
+              
             </div>
-    
             <form (ngSubmit)="login()" [formGroup]="credentials" class="form px-16">
+              <div class="ion-text-center">
+                <ion-text *ngIf="showError" class="s14-h16 text-weight-500 ls-0  primary-error-color roboto-family-font">{{errorMsg}}</ion-text>
+              </div>
+      
               <ion-item lines="none" class="pb-24">
                 <!-- <ion-label position="floating" class="label">Utilizator</ion-label>
                 <ion-input formControlName="utilizator"></ion-input> -->
@@ -24,7 +28,7 @@
                       'text',
                       'Type here',
                       false,
-                      (utilizator.touched || utilizator.dirty) && utilizator.errors.required
+                      (utilizator.touched || utilizator.dirty) && utilizator?.errors?.required
                       )"
                     formControlName="utilizator"
                   ></app-input>
@@ -37,7 +41,7 @@
                       'password',
                       'Type here',
                       false,
-                      (password.touched || password.dirty) && password.errors.required
+                      (password.touched || password.dirty) && password?.errors?.required
                       )"
                     formControlName="password"
                   ></app-input>
