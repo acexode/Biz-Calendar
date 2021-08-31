@@ -17,7 +17,6 @@ export class IconsComponent implements OnInit {
 
   ngOnInit() { }
   isClicked() {
-    console.log('clicked');
   }
 
 }

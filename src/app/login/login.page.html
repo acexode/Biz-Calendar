@@ -10,8 +10,8 @@
           <div class="card-header"></div>
           <div class="card-contents pt-28">
             <div class="ion-text-center">
-              <h4 class="biz-calendar text-weight-500 p-0 ls-0 primary-color-step-100 poppings-family-font">Biz Calendar</h4>
-              <ion-text class="setrio text-weight-500 ls-0 poppings-family-font">SETRIO</ion-text>
+              <ion-text class=" biz-calendar text-weight-500 p-0 ls-0 primary-color-step-100 poppings-family-font">Biz Calendar</ion-text>
+              <ion-text class="setrio text-weight-500 poppings-family-font">SETRIO</ion-text>
             </div>
     
             <form (ngSubmit)="login()" [formGroup]="credentials" class="form px-16">
@@ -23,7 +23,9 @@
                       'Utilizator',
                       'text',
                       'Type here',
-                      false)"
+                      false,
+                      (utilizator.touched || utilizator.dirty) && utilizator.errors.required
+                      )"
                     formControlName="utilizator"
                   ></app-input>
               </ion-item>
@@ -34,8 +36,10 @@
                       'Parolă',
                       'password',
                       'Type here',
-                      false)"
-                    formControlName="utilizator"
+                      false,
+                      (password.touched || password.dirty) && password.errors.required
+                      )"
+                    formControlName="password"
                   ></app-input>
               </ion-item>
 

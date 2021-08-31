@@ -1,3 +1,4 @@
+import { HourPipe } from './../core/pipes/hour.pipe';
 import { BrowserModule } from '@angular/platform-browser';
 import { ComparativComponent } from './components/comparativ/comparativ.component';
 import { CalendarMonthComponent } from './components/calendar-month/calendar-month.component';
@@ -37,6 +38,7 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
+    HourPipe
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,8 @@ registerLocaleData(localeDe);
     ComparativComponent,
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
-    CalModalComponent
+    CalModalComponent,
+    HourPipe
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }
