@@ -157,12 +157,19 @@
           </div>
 
           <div class="w-100 px-32 pb-32">
+            <div class="mb-16" *ngIf="!dataAndOraDeIncepereNotFilledStatus && recurentaDetails">
+              <ion-text class="s16-h19 roboto-family-font text-weight-regular ls-0 priamry-color-text">
+               <!--  Se repetă o dată la 2 zile, de 12 ori -->
+               {{recurentaDetails}}
+              </ion-text>
+            </div>
             <div>
               <ion-chip
                 class="chip"
                 outline="true"
                 color="biz-chip-secondary"
                 [disabled]="dataAndOraDeIncepereNotFilledStatus"
+                (click)="navigateToRecurenta()"
               >
                 <ion-label>
                   Creează recurență
@@ -171,11 +178,11 @@
             </ion-chip>
             </div>
            <!--  <div class="mt-8">
-              <ion-label
+              <ion-text
                 class="primary-error-color s12pt8-h16 roboto-family-font text-weight-medium ls-0"
                 *ngIf="dataAndOraDeIncepereNotFilledStatus">
                 Completeaza campul data si ora de incepere de mai sus.
-              </ion-label>
+              </ion-text>
             </div> -->
           </div>
 

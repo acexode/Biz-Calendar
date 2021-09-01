@@ -95,7 +95,10 @@
   background: red !important;
 }
 
-
+.priamry-color-text {
+  --color: var(--ion-primary-color-text) !important;
+  color: var(--color) !important;
+}
 
 @media (min-width: $desktop-width) {
   .web-grey-light-b-bg-color {

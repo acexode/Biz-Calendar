@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { dateDifference, getDateInYearMonthDay } from 'src/app/core/helpers/date.helper';
@@ -9,6 +10,7 @@ import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { inputStyleGuideConfigurations } from 'src/app/style-guide/input-config-data/input-config-data';
+import { RecurentaService } from './services/recurenta.service';
 
 @Component({
   selector: 'app-recurenta',
@@ -92,20 +94,20 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   isWed = false;
   dropDownStatus = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
-    seRepetaLaFiecareNumber: [2, [Validators.required]],
-    seRepetaLaFiecareTimeChoose: [
-      this.seRepetaLaFiecareOption[0].value,
-      [Validators.required]
+    seRepetaLaFiecareNumber: [ 0, [Validators.required]],
+    seRepetaLaFiecareTimeChoose: ['', [Validators.required]
     ],
-    incepe: ['2021-08-27', [Validators.required]],
+    incepe: ['', [Validators.required]], // 2021-08-27
     seTermina: [this.radioGroupOptions.pa],
-    dupa: [12],
-    pa: '2021-08-30',
+    dupa: [0, [Validators.required]],
+    pa: ['', [Validators.required]],
   });
   recurendtaFormGroup$: Subscription;
   constructor(
     private pS: PlatformService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private rS: RecurentaService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -115,6 +117,15 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     );
     // set first value
     this.setZileValue(this.seRepetaLaFiecareOption[0].value);
+
+    /* this.recurendtaFormGroup$ = this.recurendtaFormGroup.valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(data => {
+        // console.log(data);
+      }); */
+    this.rS.getRecurenta.subscribe(
+      d => console.log(d)
+    );
   }
   toggleDropDown() {
     this.dropDownStatus = !this.dropDownStatus;
@@ -169,9 +180,8 @@ export class RecurentaComponent implements OnInit, OnDestroy {
         break;
       default:
         break;
-
     }
-
+    this.updateRecurentaServiceData();
   }
   isPa(
     seRepetaLaFiecareTimeChoose: number,
@@ -248,6 +258,12 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   }
   setPa(data: any) {
     this.recurendtaFormGroup.get('pa').patchValue(data);
+  }
+  updateRecurentaServiceData() {
+    this.rS.updateRecurenta({ ...this.recurendtaFormGroup.value });
+  }
+  navigateToRecurenta() {
+    this.router.navigate(['calendar/adauga-programare']);
   }
   ngOnDestroy() {
     unsubscriberHelper(this.recurendtaFormGroup$);

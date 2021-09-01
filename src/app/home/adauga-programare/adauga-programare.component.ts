@@ -15,6 +15,8 @@ import { DemoCheckList } from 'src/app/style-guide/components/selection/selectio
 import { get } from 'lodash';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { Router } from '@angular/router';
+import { RecurentaService } from '../recurenta/services/recurenta.service';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -221,10 +223,14 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   });
   isWed = false;
   locatieConfigPlaceholder: string;
+  recurentaS$: Subscription;
+  recurentaDetails = '';
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
-    private pS: PlatformService
+    private pS: PlatformService,
+    private router: Router,
+    private recurentaS: RecurentaService
   ) { }
 
   ngOnInit() {
@@ -237,6 +243,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
+    this.recurentaS$ = this.recurentaS.getRecurenta.subscribe(
+      v => this.recurentaDetails
+    );
   }
   async presentModal() {
     const modal = await this.modalController.create({
@@ -308,8 +317,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   get dataAndOraDeIncepereNotFilledStatus() {
     return (this.dataFormControl.value === '' || this.oraDeIncepereFormControl.value === '') ? true : false;
   }
+  navigateToRecurenta() {
+    this.router.navigate(['calendar/recurenta']);
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
+    unsubscriberHelper(this.recurentaS$);
   }
 
 }
