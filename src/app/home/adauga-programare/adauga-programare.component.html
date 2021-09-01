@@ -118,9 +118,7 @@
 
           <div class="w-100 px-32">
 
-            <app-add-service-selection>
-
-            </app-add-service-selection>
+            <app-add-service-selection></app-add-service-selection>
 
           </div>
 
@@ -160,7 +158,8 @@
             <div class="mb-16" *ngIf="!dataAndOraDeIncepereNotFilledStatus && recurentaDetails">
               <ion-text class="s16-h19 roboto-family-font text-weight-regular ls-0 priamry-color-text">
                <!--  Se repetă o dată la 2 zile, de 12 ori -->
-               {{recurentaDetails}}
+               Se repetă o dată la {{recurentaDetails.seRepetaLaFiecareNumber}}
+               {{recurentaDetails.seRepetaLaFiecareTimeChoose}}, de {{recurentaDetails.dupa}}
               </ion-text>
             </div>
             <div>
@@ -169,7 +168,7 @@
                 outline="true"
                 color="biz-chip-secondary"
                 [disabled]="dataAndOraDeIncepereNotFilledStatus"
-                (click)="presentModalC()"
+                (click)="presentModalRecurentaComponentModal()"
               >
                 <ion-label>
                   Creează recurență

@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { timeStamp } from 'console';
 import { of, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { dateDifference, getDateInYearMonthDay } from 'src/app/core/helpers/date.helper';
@@ -18,6 +20,7 @@ import { RecurentaService } from './services/recurenta.service';
   styleUrls: ['./recurenta.component.scss'],
 })
 export class RecurentaComponent implements OnInit, OnDestroy {
+  @Input() isModal!: boolean;
   inputStyleGuide = inputStyleGuideConfigurations;
   seRepetaLaFiecareInputConfig = inputConfigHelper({
     label: '',
@@ -94,7 +97,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   isWed = false;
   dropDownStatus = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
-    seRepetaLaFiecareNumber: [ 0, [Validators.required]],
+    seRepetaLaFiecareNumber: [0, [Validators.required]],
     seRepetaLaFiecareTimeChoose: ['', [Validators.required]
     ],
     incepe: ['', [Validators.required]], // 2021-08-27
@@ -103,11 +106,14 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     pa: ['', [Validators.required]],
   });
   recurendtaFormGroup$: Subscription;
+  dupaInputChanges$: Subscription;
+  paInputChamges$: Subscription;
   constructor(
     private pS: PlatformService,
     private fb: FormBuilder,
     private rS: RecurentaService,
-    private router: Router
+    private router: Router,
+    private modalController: ModalController
   ) { }
 
   ngOnInit() {
@@ -116,16 +122,22 @@ export class RecurentaComponent implements OnInit, OnDestroy {
       v => this.isWed = v
     );
     // set first value
-    this.setZileValue(this.seRepetaLaFiecareOption[0].value);
+    this.setZileValue(this.seRepetaLaFiecareOption[0].label);
 
-    /* this.recurendtaFormGroup$ = this.recurendtaFormGroup.valueChanges
+    this.dupaInputChanges$ = this.recurendtaFormGroup.get('dupa').valueChanges
       .pipe(distinctUntilChanged())
-      .subscribe(data => {
-        // console.log(data);
-      }); */
-    this.rS.getRecurenta.subscribe(
-      d => console.log(d)
-    );
+      .subscribe(
+        _d => {
+          this.compute();
+        }
+      );
+    this.paInputChamges$ = this.recurendtaFormGroup.get('pa').valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(
+        _d => {
+          this.compute();
+        }
+      );
   }
   toggleDropDown() {
     this.dropDownStatus = !this.dropDownStatus;
@@ -147,7 +159,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     // toggle
     this.toggleDropDown();
   }
-  add() {
+  compute() {
     const {
       seRepetaLaFiecareNumber, // repeat times
       seRepetaLaFiecareTimeChoose, // repetition type:: dayly, weekly, monthly, yearly
@@ -184,7 +196,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     this.updateRecurentaServiceData();
   }
   isPa(
-    seRepetaLaFiecareTimeChoose: number,
+    seRepetaLaFiecareTimeChoose: string,
     userDateInput: Date,
     pa: Date,
     occurance: number,
@@ -193,16 +205,16 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     // let temp: any = userDateInput;
     let timeType = 'days';
     switch (seRepetaLaFiecareTimeChoose) {
-      case days.value:
+      case days.label:
         timeType = 'days';
         break;
-      case weekly.value:
+      case weekly.label:
         timeType = 'weeks';
         break;
-      case monthly.value:
+      case monthly.label:
         timeType = 'months';
         break;
-      case yearly.value:
+      case yearly.label:
         timeType = 'years';
         break;
       default:
@@ -216,7 +228,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     this.setDupa(Math.floor(diff / occurance));
   }
   isDupa(
-    seRepetaLaFiecareTimeChoose: number,
+    seRepetaLaFiecareTimeChoose: string,
     userDateInput: Date,
     appearance: number,
     occurance: number
@@ -224,25 +236,25 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     const [days, weekly, monthly, yearly] = this.seRepetaLaFiecareOption;
     let temp: any = userDateInput;
     switch (seRepetaLaFiecareTimeChoose) {
-      case days.value:
+      case days.label:
         for (let index = 0;index < appearance;index++) {
           const occur = temp.setDate(temp.getDate() + occurance);
           temp = new Date(occur);
         }
         break;
-      case weekly.value:
+      case weekly.label:
         for (let index = 0;index < appearance;index++) {
           const occur = temp.setDate(temp.getDate() + (occurance * 7));
           temp = new Date(occur);
         }
         break;
-      case monthly.value:
+      case monthly.label:
         for (let index = 0;index < appearance;index++) {
           const occur = temp.setMonth(temp.getMonth() + occurance);
           temp = new Date(occur);
         }
         break;
-      case yearly.value:
+      case yearly.label:
         for (let index = 0;index < appearance;index++) {
           const occur = temp.setFullYear(temp.getFullYear() + occurance);
           temp = new Date(occur);
@@ -253,20 +265,47 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     }
     this.setPa(getDateInYearMonthDay(temp));
   }
-  setDupa(data: any) {
-    this.recurendtaFormGroup.get('dupa').patchValue(data);
+  setDupa(data: number) {
+    const d = data > 0 ? data : 0;
+    this.recurendtaFormGroup.get('dupa').patchValue(d);
   }
   setPa(data: any) {
     this.recurendtaFormGroup.get('pa').patchValue(data);
   }
   updateRecurentaServiceData() {
-    this.rS.updateRecurenta({ ...this.recurendtaFormGroup.value });
+    if (this.isModal) {
+
+    } else {
+      this.rS.updateRecurenta({ ...this.recurendtaFormGroup.value });
+    }
+
   }
   navigateToRecurenta() {
     this.router.navigate(['calendar/adauga-programare']);
   }
+  dismiss() {
+    // using the injected ModalController this page
+    // can "dismiss" itself and optionally pass back data
+    this.modalController.dismiss({
+      dismissed: true,
+      recurentaData: this.recurendtaFormGroup.value
+    });
+  }
+  backAction(): void {
+    if (this.isModal) {
+      this.dismiss();
+    } else {
+      this.navigateToRecurenta();
+    }
+  }
+  computeAndNavigate() {
+    this.compute();
+    this.backAction();
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.recurendtaFormGroup$);
+    unsubscriberHelper(this.dupaInputChanges$);
+    unsubscriberHelper(this.paInputChamges$);
   }
 
 }

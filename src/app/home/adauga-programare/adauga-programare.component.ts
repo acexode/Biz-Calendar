@@ -18,6 +18,7 @@ import { PlatformService } from 'src/app/core/services/platform/platform.service
 import { Router } from '@angular/router';
 import { RecurentaService } from '../recurenta/services/recurenta.service';
 import { RecurentaComponent } from '../recurenta/recurenta.component';
+import { RecurentaModel } from '../recurenta/models/recurenta.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -224,18 +225,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   });
   isWed = false;
   locatieConfigPlaceholder: string;
-  recurentaS$: Subscription;
-  recurentaDetails = '';
+  recurentaDetails!: RecurentaModel;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
     private pS: PlatformService,
     private router: Router,
-    private recurentaS: RecurentaService
   ) { }
 
   ngOnInit() {
-    this.presentModalC();
+    this.presentModalRecurentaComponentModal();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -245,9 +244,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
-    this.recurentaS$ = this.recurentaS.getRecurenta.subscribe(
-      v => this.recurentaDetails
-    );
   }
   async presentModal() {
     const modal = await this.modalController.create({
@@ -269,18 +265,19 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       },
     });
     await modal.present();
-    // const { data } = await modal.onWillDismiss();
   }
-  async presentModalC() {
+  async presentModalRecurentaComponentModal() {
     const modal = await this.modalController.create({
       component: RecurentaComponent,
       cssClass: 'biz-modal-class neutral-grey-light-backdrop',
       componentProps: {
-        checkList: this.checkList,
+        isModal: true,
       },
     });
     await modal.present();
-    // const { data } = await modal.onWillDismiss();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    this.recurentaDetails = data?.recurentaData;
   }
   process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
@@ -335,7 +332,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
-    unsubscriberHelper(this.recurentaS$);
   }
 
 }

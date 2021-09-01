@@ -5,10 +5,10 @@
       <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
         <ion-toolbar class="ion-no-padding">
 
-          <ion-buttons slot="start" class="slot-start">
+          <ion-buttons slot="start" class="slot-start cursor-pointer">
 
             <ion-icon
-            (click)="navigateToRecurenta()"
+            (click)="backAction()"
               name="arrow-left"
               class="icon-24 black-color"
               slot="icon-only"
@@ -19,7 +19,7 @@
           <ion-title>Recurență</ion-title>
 
           <div slot="end">
-            <ion-button class="biz-tertiary" size="default-flat" (click)="add()">
+            <ion-button class="biz-tertiary" size="default-flat" (click)="computeAndNavigate()">
               Adaugă
             </ion-button>
           </div>
@@ -58,7 +58,7 @@
                   </div>
                   <div class="selection-dropdown" [ngClass]="{'show': isDropDown}">
                     <div class="options" *ngFor="let item of seRepetaLaFiecareOption"
-                     (click)="setZileValueAndToggle(item.value)">
+                     (click)="setZileValueAndToggle(item.label)">
                       {{item.label}}
                     </div>
                   </div>
