@@ -17,6 +17,7 @@ import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { Router } from '@angular/router';
 import { RecurentaService } from '../recurenta/services/recurenta.service';
+import { RecurentaComponent } from '../recurenta/recurenta.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -234,6 +235,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.presentModalC();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -262,6 +264,17 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
+      componentProps: {
+        checkList: this.checkList,
+      },
+    });
+    await modal.present();
+    // const { data } = await modal.onWillDismiss();
+  }
+  async presentModalC() {
+    const modal = await this.modalController.create({
+      component: RecurentaComponent,
+      cssClass: 'biz-modal-class neutral-grey-light-backdrop',
       componentProps: {
         checkList: this.checkList,
       },
