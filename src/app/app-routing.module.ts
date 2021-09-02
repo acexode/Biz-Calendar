@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'vizualiare/programare/2 ',
+    redirectTo: 'calendar/recurenta',
     pathMatch: 'full'
   },
   {
