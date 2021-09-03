@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { CalendarService } from './../../../../core/services/calendar/calendar.service';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, MenuController } from '@ionic/angular';
 import { format } from 'date-fns';
 import { ro } from 'date-fns/locale';
@@ -8,8 +11,9 @@ import { CalendarMode, Step } from 'ionic2-calendar/calendar';
   templateUrl: './cal-modal.component.html',
   styleUrls: ['./cal-modal.component.scss'],
 })
-export class CalModalComponent implements OnInit {
+export class CalModalComponent implements OnInit, OnDestroy {
   @Input() isTablet: boolean;
+  @Input() showPicker: boolean;
   eventSource;
   viewTitle;
 
@@ -38,15 +42,18 @@ export class CalModalComponent implements OnInit {
   };
   modalReady = false;
   month = format(new Date(), 'MMMM', { locale: ro });
-  constructor(private modalCtrl: ModalController, private menu: MenuController) { }
+  showSub$: Subscription;
+  constructor(private modalCtrl: ModalController, private menu: MenuController, private routerS: Router,
+    private calS: CalendarService) { }
 
   ngOnInit() {
-    console.log(this.isTablet);
+    console.log('hello');
   }
 
 
   onViewTitleChanged(title) {
-      this.viewTitle = title;
+    this.calS.selectedMonth.next(title);
+    this.viewTitle = title;
   }
 
   onEventSelected(event) {
@@ -61,9 +68,12 @@ export class CalModalComponent implements OnInit {
       this.calendar.currentDate = new Date();
   }
 
-  onTimeSelected(ev) {
-      console.log('Selected time: ' + ev.selectedTime + ', hasEvents: ' +
-          (ev.events !== undefined && ev.events.length !== 0) + ', disabled: ' + ev.disabled);
+  onTimeSelected(ev, clicked= false) {
+    this.calS.selectedDate.next(ev.selectedTime);
+    if(this.showPicker === true){
+      this.routerS.navigate(['calendar/zi']);
+
+    }
   }
 
   onCurrentDateChanged(event: Date) {
@@ -74,6 +84,10 @@ export class CalModalComponent implements OnInit {
   }
   toggleMenu(){
     this.menu.toggle();
+  }
+  ngOnDestroy() {
+    // this.showSub$.unsubscribe();
+    // this.calS.selectedDate.unsubscribe();
   }
 
 }

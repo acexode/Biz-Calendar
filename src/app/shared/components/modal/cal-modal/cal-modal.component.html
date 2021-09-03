@@ -1,4 +1,4 @@
-<ion-header  class="ion-no-border p-0" [translucent]="true">
+<!-- <ion-header  class="ion-no-border p-0" [translucent]="true">
   <ion-toolbar class="pl-48 bg-blue">
     <ion-title class="s16-h24 pl-0">Ioana Anghelescu</ion-title>
   </ion-toolbar>
@@ -23,7 +23,7 @@
             <ion-icon  size="large" color="biz-primary" name="menu-Hamburger" class="icon"></ion-icon>
 
           </ion-button>
-          <!-- <ion-menu-button></ion-menu-button> -->
+         
         </ion-buttons>
         
       </ion-col >
@@ -31,13 +31,13 @@
   </ion-toolbar>
  
  
-</ion-header>
+</ion-header> -->
 <calendar
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"
     (onCurrentDateChanged)="onCurrentDateChanged($event)"
     (onEventSelected)="onEventSelected($event)"
     (onTitleChanged)="onViewTitleChanged($event)"
-    (onTimeSelected)="onTimeSelected($event)"
+    (onTimeSelected)="onTimeSelected($event, true)"
     >
   </calendar>
