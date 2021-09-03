@@ -97,7 +97,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   isWed = false;
   dropDownStatus = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
-    seRepetaLaFiecareNumber: [0, [Validators.required]],
+    seRepetaLaFiecareNumber: [1, [Validators.required]],
     seRepetaLaFiecareTimeChoose: ['', [Validators.required]
     ],
     incepe: ['', [Validators.required]], // 2021-08-27
