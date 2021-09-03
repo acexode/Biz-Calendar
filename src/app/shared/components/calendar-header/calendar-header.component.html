@@ -9,7 +9,7 @@
           <ion-text class="header-date">
             {{ month | titlecase}}
           </ion-text>
-          <ion-icon class="mt-5"  name="caret-down"></ion-icon>
+          <ion-icon class="mt-5"  [name]="!showPicker ? 'caret-down':'caret-up'"></ion-icon>
         </div>
         <ion-text class="header-events">
           123 programări
@@ -24,6 +24,10 @@
         
       </ion-col >
     </ion-row>
+  </ion-toolbar>
+  <ion-toolbar  [@openClose]="showPicker ? 'open' : 'closed'">
+    <app-cal-modal [showPicker]="showPicker"></app-cal-modal>
+
   </ion-toolbar>
   <ion-toolbar  *ngIf="isComparativ === true">
     <div class="umbra mt-9"></div>
@@ -113,6 +117,10 @@
         
       </ion-col >
     </ion-row>
+  </ion-toolbar>
+  <ion-toolbar [@openClose]="showPicker ? 'open' : 'closed'" >
+    <app-cal-modal></app-cal-modal>
+
   </ion-toolbar>
   <ion-toolbar  *ngIf="isComparativ === true">
     <div class="umbra mt-9"></div>
