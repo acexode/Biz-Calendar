@@ -1,3 +1,4 @@
+import { CalendarService } from './../../../core/services/calendar/calendar.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 import { Component, Input, OnInit,ChangeDetectionStrategy,ViewChild,
@@ -172,13 +173,16 @@ export class CalendarComponent implements OnInit {
     eventSource;
     viewTitle;
     isToday: boolean;
-    constructor(route: ActivatedRoute, private router: Router) {
+    constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
-      console.log(addHours(startOfDay(new Date()), 2));
-      console.log(addHours(new Date(), 3));
+      // console.log(addHours(startOfDay(new Date()), 2));
+      // console.log(addHours(new Date(), 3));
     }
 
     ngOnInit() {
+      this.calS.selectedDate.subscribe(e =>{
+        this.viewDate = new Date(e);
+      });
       this.events = [
         {
           title: 'Vacation',
@@ -277,7 +281,6 @@ export class CalendarComponent implements OnInit {
       window.addEventListener('resize', ()=>{
         this.isTablet = window.innerWidth >= 768 ? true : false;
       });
-        console.log(this.display);
         if(this.display === 'zi'){
             const day = new Date().getDay();
             // this.excludeDays = [3, 3];

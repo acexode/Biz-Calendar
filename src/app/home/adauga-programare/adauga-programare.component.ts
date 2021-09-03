@@ -15,6 +15,10 @@ import { DemoCheckList } from 'src/app/style-guide/components/selection/selectio
 import { get } from 'lodash';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { Router } from '@angular/router';
+import { RecurentaService } from '../recurenta/services/recurenta.service';
+import { RecurentaComponent } from '../recurenta/recurenta.component';
+import { RecurentaModel } from '../recurenta/models/recurenta.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -210,7 +214,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
-    locatie: new FormControl(''),
+    locatie: '',
     tipServicii: '',
     data: ['', [Validators.required]],
     oraDeIncepere: ['', [Validators.required]],
@@ -221,10 +225,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   });
   isWed = false;
   locatieConfigPlaceholder: string;
+  recurentaDetails!: RecurentaModel;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
-    private pS: PlatformService
+    private pS: PlatformService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -258,7 +264,19 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       },
     });
     await modal.present();
-    // const { data } = await modal.onWillDismiss();
+  }
+  async presentModalRecurentaComponentModal() {
+    const modal = await this.modalController.create({
+      component: RecurentaComponent,
+      cssClass: 'biz-modal-class neutral-grey-light-backdrop',
+      componentProps: {
+        isModal: true,
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    this.recurentaDetails = data?.recurentaData;
   }
   process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
@@ -307,6 +325,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   get dataAndOraDeIncepereNotFilledStatus() {
     return (this.dataFormControl.value === '' || this.oraDeIncepereFormControl.value === '') ? true : false;
+  }
+  navigateToRecurenta() {
+    this.router.navigate(['calendar/recurenta']);
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
