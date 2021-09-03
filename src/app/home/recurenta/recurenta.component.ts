@@ -9,8 +9,6 @@ import { dateDifference, getDateInYearMonthDay } from 'src/app/core/helpers/date
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
-import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
-import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { inputStyleGuideConfigurations } from 'src/app/style-guide/input-config-data/input-config-data';
 import { RecurentaService } from './services/recurenta.service';
 
@@ -97,7 +95,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   isWed = false;
   dropDownStatus = false;
   recurendtaFormGroup: FormGroup = this.fb.group({
-    seRepetaLaFiecareNumber: [0, [Validators.required]],
+    seRepetaLaFiecareNumber: [1, [Validators.required]],
     seRepetaLaFiecareTimeChoose: ['', [Validators.required]
     ],
     incepe: ['', [Validators.required]], // 2021-08-27
