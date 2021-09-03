@@ -234,7 +234,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.presentModalRecurentaComponentModal();
+    // this.presentModalRecurentaComponentModal();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
