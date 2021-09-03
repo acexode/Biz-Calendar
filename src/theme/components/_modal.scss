@@ -3,6 +3,17 @@
 
 .biz {
   .biz-modal-class {
+    /* can be remove for more customizations */
+    --backdrop-opacity: 0;
+    background: var(--ion-neutral-grey-light-b-color) !important;
+    --box-shadow: vaar(--ion-diffuse-box-shadow) !important;
+
+    /*  */
+    &.neutral-grey-light-backdrop {
+      --backdrop-opacity: 0;
+      background: var(--ion-neutral-grey-light-b-color) !important;
+      --box-shadow: vaar(--ion-diffuse-box-shadow) !important;
+    }
 
     ion-header {
       padding: 22px 16px 22px 32px;
