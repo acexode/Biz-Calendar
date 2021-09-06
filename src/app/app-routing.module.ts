@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -9,11 +10,13 @@ const routes: Routes = [
   },
   {
     path: 'calendar',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'calendar/:id',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'style',
@@ -25,11 +28,13 @@ const routes: Routes = [
   },
   {
     path: 'selectie-spatiu',
-    loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then(m => m.SelectieSpatiuPageModule)
+    loadChildren: () => import('./selectie-spatiu/selectie-spatiu.module').then(m => m.SelectieSpatiuPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'vizualiare',
-    loadChildren: () => import('./vizualiare/vizualiare.module').then(m => m.VizualiarePageModule)
+    loadChildren: () => import('./vizualiare/vizualiare.module').then(m => m.VizualiarePageModule),
+    canActivate: [AuthGuard]
   }
 ];
 
