@@ -234,6 +234,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // this.presentModalRecurentaComponentModal();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -269,6 +270,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: RecurentaComponent,
       cssClass: 'biz-modal-class neutral-grey-light-backdrop',
+      backdropDismiss: false,
       componentProps: {
         isModal: true,
       },
