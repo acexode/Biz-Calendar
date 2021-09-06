@@ -15,7 +15,7 @@ export class CustomStorageService {
     const storage =  SecureStoragePlugin.set({ key, value });
     return from(storage);
   }
-  getItem(key: string, value: string) {
+  getItem(key: string) {
     const storage = SecureStoragePlugin.get({ key});
     return from(storage);
   }

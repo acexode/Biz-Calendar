@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonInputConfig } from '../shared/models/components/ion-input-config';
 import { IonTextItem } from '../shared/models/components/ion-text-item';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { IonTextItem } from '../shared/models/components/ion-text-item';
 export class LoginPage implements OnInit {
   credentials: FormGroup;
   showError = false;
+  returnUrl: string;
   errorMsg = 'Parola sau numele de utilizator este gresita';
   label: IonTextItem = {
     text: 'Default',
@@ -35,7 +37,12 @@ export class LoginPage implements OnInit {
   };
   constructor(private fb: FormBuilder, private router: Router, private menu: MenuController,
     private aRoute: ActivatedRoute, private authS: AuthService
-    ) { }
+    ) {
+      console.log(this.authS.userValue);
+      if (this.authS.userValue) {
+        this.router.navigate(['/']);
+    }
+     }
 
   inputConfig(
     label: string,
@@ -69,6 +76,7 @@ export class LoginPage implements OnInit {
       utilizator: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
+    this.returnUrl = this.aRoute.snapshot.queryParams.returnUrl || '/';
   }
   // Easy access for form fields
   login(){
@@ -76,14 +84,22 @@ export class LoginPage implements OnInit {
       username: this.utilizator.value,
       password: this.password.value,
       aRoute: this.aRoute
-    }).subscribe(res => console.log(res), err =>{
+    }).pipe(first()).subscribe(res => {
+      console.log(res);
+      console.log(this.returnUrl);
+      if(this.returnUrl === '/'){
+        this.router.navigate(['selectie-spatiu']);
+      }else{
+        this.router.navigate([this.returnUrl]);
+      }
+    }, err =>{
       console.log(err);
       this.showError = true;
       setTimeout(() => {
         this.showError = false;
       }, 5000);
     });
-    // this.router.navigate(['selectie-spatiu']);
+
   }
   get utilizator() {
     return this.credentials.get('utilizator');
@@ -94,3 +110,4 @@ export class LoginPage implements OnInit {
   }
 
 }
+
