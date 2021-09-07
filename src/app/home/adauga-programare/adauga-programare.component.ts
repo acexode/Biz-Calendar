@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 import { RecurentaService } from '../recurenta/services/recurenta.service';
 import { RecurentaComponent } from '../recurenta/recurenta.component';
 import { RecurentaModel } from '../recurenta/models/recurenta.model';
+import { BizRadioModalComponent } from 'src/app/shared/components/modal/biz-radio-modal/biz-radio-modal.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -110,6 +111,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       classes: '',
       text: 'Cabinet',
     },
+    mode: 'md',
     forceListItems: false,
     multiple: false,
     disabled: false,
@@ -203,6 +205,14 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       checked: false
     },
   ];
+  cabinetOption:  Array<IonRadioInputOption> = [
+    { label: 'Cabinet 1', id: 'Cabinet 1' },
+    { label: 'Cabinet 2', id: 'Cabinet 2' },
+    { label: 'Cabinet 3', id: 'Cabinet 3' },
+    { label: 'Sala de Operație 1', id: 'Sala de Operație 1' },
+    { label: 'Sala de Operație 2', id: 'Sala de Operație 2' },
+  ];
+
   aparaturaConfig: BizCustomSelectionConfig = {
     placeholder: 'Alege',
     inputLabel: {
@@ -215,13 +225,13 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
-    tipServicii: '',
+    tipServicii: ['În-cabinet', [Validators.required]],
     data: ['', [Validators.required]],
     oraDeIncepere: ['', [Validators.required]],
-    time: '',
-    cabinet: '',
-    medic: '',
-    observatii: ''
+    time: ['', [Validators.required]],
+    cabinet: ['', [Validators.required]],
+    medic:['', [Validators.required]],
+    observatii: ['', [Validators.required]]
   });
   isWed = false;
   locatieConfigPlaceholder: string;
@@ -234,7 +244,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // this.presentModalRecurentaComponentModal();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -244,6 +253,17 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
+  }
+  async presentModalRadio() {
+    const modal = await this.modalController.create({
+      component: BizRadioModalComponent,
+      cssClass: 'biz-modal-class',
+      componentProps: {
+        options: this.cabinetOption
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
   }
   async presentModal() {
     const modal = await this.modalController.create({
@@ -330,6 +350,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   navigateToRecurenta() {
     this.router.navigate(['calendar/recurenta']);
+  }
+  save(): void {
+
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);

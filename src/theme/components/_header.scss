@@ -23,6 +23,9 @@
 
         ion-buttons {
           margin-inline-start: 0 !important;
+          ion-icon {
+            margin-right: 0 !important;
+          }
 
           &.slot-start {
             margin-right: 8px !important;
@@ -31,7 +34,6 @@
 
         ion-button {
           margin: 0 !important;
-
         }
       }
 

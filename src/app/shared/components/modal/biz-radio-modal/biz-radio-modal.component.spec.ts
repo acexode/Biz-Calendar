@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { BasicRadioModalComponent } from './basic-radio-modal.component';
+import { BizRadioModalComponent } from './biz-radio-modal.component';
 
-describe('BasicRadioModalComponent', () => {
-  let component: BasicRadioModalComponent;
-  let fixture: ComponentFixture<BasicRadioModalComponent>;
+describe('BizRadioModalComponent', () => {
+  let component: BizRadioModalComponent;
+  let fixture: ComponentFixture<BizRadioModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ BasicRadioModalComponent ],
+      declarations: [ BizRadioModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(BasicRadioModalComponent);
+    fixture = TestBed.createComponent(BizRadioModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
