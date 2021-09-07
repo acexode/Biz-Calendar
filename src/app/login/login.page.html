@@ -14,10 +14,10 @@
               <ion-text class="setrio text-weight-500 poppings-family-font">SETRIO</ion-text>
               
             </div>
+            <div class="ion-text-center mt-16">
+              <ion-text *ngIf="showError" class="s14-h16 text-weight-500 ls-0 primary-error-color roboto-family-font">{{errorMsg}}</ion-text>
+            </div>
             <form (ngSubmit)="login()" [formGroup]="credentials" class="form px-16">
-              <div class="ion-text-center">
-                <ion-text *ngIf="showError" class="s14-h16 text-weight-500 ls-0  primary-error-color roboto-family-font">{{errorMsg}}</ion-text>
-              </div>
       
               <ion-item lines="none" class="pb-24">
                 <!-- <ion-label position="floating" class="label">Utilizator</ion-label>
@@ -47,7 +47,7 @@
                   ></app-input>
               </ion-item>
 
-              <ion-button (click)="login()" class="mb-24 upper" size="large" expand="block" color="biz-primary">
+              <ion-button [disabled]="!credentials?.valid" (click)="login()" class="mb-24 upper" size="large" expand="block" color="biz-primary">
                 AUTENTIFICARE
               </ion-button>
             </form>

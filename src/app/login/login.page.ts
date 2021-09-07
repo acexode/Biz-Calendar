@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
   credentials: FormGroup;
   showError = false;
   returnUrl: string;
-  errorMsg = 'Parola sau numele de utilizator este gresita';
+  errorMsg = 'Parola sau nume de utilizator incorecte';
   label: IonTextItem = {
     text: 'Default',
     classes: '',
@@ -59,6 +59,7 @@ export class LoginPage implements OnInit {
       },
       inputHasError: hasError,
       inputMode:  type,
+      type,
       inputAssistiveText:{
         text: hasError ? 'Camp obligatoriu' : ''
       },
