@@ -1,3 +1,4 @@
+import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
@@ -8,7 +9,7 @@ import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 export class CalendarListComponent implements OnInit {
   @Input() eventList;
   isTablet: boolean;
-  constructor() { }
+  constructor(private calS: CalendarService) { }
 
   ngOnInit() {
     this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -16,6 +17,9 @@ export class CalendarListComponent implements OnInit {
       this.isTablet = window.innerWidth >= 768 ? true : false;
     });
     console.log(this.eventList);
+    this.calS.appointments$.subscribe(e =>{
+      console.log(e);
+    });
   }
 
 }

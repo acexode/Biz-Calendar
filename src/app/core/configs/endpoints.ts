@@ -8,3 +8,7 @@ export const authEndpoints = {
   getUsers: serverBaseUrl + '/Users',
 
 };
+export const appointmentEndpoints = {
+  getAppointment: serverBaseUrl + '/BizCalendarService/GetAppointments',
+  getUserPhysicians: serverBaseUrl + '/BizCalendarService/GetUsersPhysicians',
+};
