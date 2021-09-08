@@ -57,7 +57,7 @@ export class BizRadioModalComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalController.dismiss({
       dismissed: true,
-      value: this.controlValue,
+      radioValue: this.controlValue,
     });
   }
   checkRadio(event: any) {

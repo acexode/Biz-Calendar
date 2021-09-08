@@ -1,35 +1,35 @@
 <div class="biz-custom-select-div" (click)="openModal()">
   <ion-label *ngIf="config?.inputLabel?.text">{{config.inputLabel.text}}</ion-label>
   <div [class]="'biz-custom-select ' + (filtercustomComponentData ? 'border-light-blue' : 'border-light-grey')">
-  <div class="select-display">
+    <div class="select-display">
 
-    <ng-container *ngIf="data">
-      <ion-chip *ngFor="let item of filtercustomComponentData; first as isFirst; last as isLast"
-        class="input-chip selected"
-        [color]="'biz-radio-chip-active'"
-        [outline]="true"
-        (click)="stopModalPropagation($event)"
+      <ng-container *ngIf="data">
+        <ion-chip *ngFor="let item of filtercustomComponentData; first as isFirst; last as isLast"
+          class="input-chip selected"
+          [color]="'biz-radio-chip-active'"
+          [outline]="true"
+          (click)="stopModalPropagation($event)"
 
-      >
-        <ion-label>{{item}}</ion-label>
+        >
+          <ion-label>{{item}}</ion-label>
 
-        <ion-icon
-            name="close"
-            class="icon-16"
-            color="biz-primary"
-            (click)="removeChips($event,item)"
-          ></ion-icon>
+          <ion-icon
+              name="close"
+              class="icon-16"
+              color="biz-primary"
+              (click)="removeChips($event,item)"
+            ></ion-icon>
 
-      </ion-chip>
-    </ng-container>
+        </ion-chip>
+      </ng-container>
 
+    </div>
+    <div class="icon">
+      <ion-icon
+          name="caret-down"
+          [class]="'icon-24 ' + (!filtercustomComponentData ? 'biz-neutral-gray-default-color': '' )"
+          [color]="(data ? 'biz-primary': '' )"
+        ></ion-icon>
+    </div>
   </div>
-  <div class="icon">
-    <ion-icon
-        name="caret-down"
-        [class]="'icon-24 ' + (!filtercustomComponentData ? 'biz-neutral-gray-default-color': '' )"
-        [color]="(data ? 'biz-primary': '' )"
-      ></ion-icon>
-  </div>
-</div>
 </div>

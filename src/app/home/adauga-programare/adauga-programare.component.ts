@@ -106,26 +106,19 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
-  cabinetConfig: IonSelectConfig = {
-    inputLabel: {
-      classes: '',
-      text: 'Cabinet',
-    },
-    mode: 'md',
-    forceListItems: false,
-    multiple: false,
-    disabled: false,
-    placeholder: 'Opțional',
-    alertOptions: {
-      cssClass: '',
-    },
-    idKey: 'id',
-    labelKey: 'label',
-    useIcon: {
-      name: 'cabinet',
-      classes: 'neutral-grey-medium-color'
+  cabinetConfig = inputConfigHelper({
+    label: 'Cabinet',
+    type: 'text',
+    placeholder: '',
+    custom: {
+      mode: 'md',
+      useIcon: {
+        name: 'cabinet',
+        classes: 'neutral-grey-medium-color'
+      },
+      readonly: true
     }
-  };
+  });
   medicConfig: IonSelectConfig = {
     inputLabel: {
       classes: '',
@@ -244,7 +237,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.presentModalRadio();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -266,6 +258,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     await modal.present();
     const { data } = await modal.onWillDismiss();
     console.log('rad: ', data);
+    const {dismissed, radioValue} = data;
+    console.log(radioValue);
+    if(dismissed && radioValue !== '') {
+      this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+    }
   }
   async presentModal() {
     const modal = await this.modalController.create({
