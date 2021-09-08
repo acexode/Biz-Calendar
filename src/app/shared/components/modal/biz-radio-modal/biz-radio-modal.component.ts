@@ -53,21 +53,11 @@ export class BizRadioModalComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private cdRef: ChangeDetectorRef,
   ) {}
-  ngOnInit(): void {
-    console.log('items', this.items);
-  }
-  dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
-    this.modalController.dismiss({
-      dismissed: true,
-      checkList: this.checkList
-    });
-  }
+  ngOnInit(): void {}
   closeModal() {
     this.modalController.dismiss({
       dismissed: true,
-      checkboxArrayList: null
+      value: this.controlValue,
     });
   }
   checkRadio(event: any) {
@@ -76,11 +66,9 @@ export class BizRadioModalComponent implements OnInit, OnDestroy {
   get controlI() {
     return this.customRadioForm.get('radio');
   }
-
   get controlValue() {
     return this.controlI ? this.controlI.value : null;
   }
-
   toggleRadio(data: any) {
     if (this.controlI.disabled) {
       return;
@@ -104,5 +92,4 @@ export class BizRadioModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
   }
-
 }

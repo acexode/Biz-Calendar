@@ -244,6 +244,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.presentModalRadio();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -264,6 +265,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
+    console.log('rad: ', data);
   }
   async presentModal() {
     const modal = await this.modalController.create({
