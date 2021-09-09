@@ -30,7 +30,7 @@ export interface IonInputConfig {
   autoCorrect?: boolean;
   autoCapitalize?: string;
   inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url';
-  readonly?: string;
+  readonly?: string | boolean;
   bgwhite?: boolean;
   useIcon?: IonInputIcon;
   isInputFocused?: boolean;

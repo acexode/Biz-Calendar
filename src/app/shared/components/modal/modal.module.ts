@@ -5,17 +5,26 @@ import { InfoPacientModalComponent } from './info-pacient-modal/info-pacient-mod
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BizInputsModule } from '../../modules/biz-inputs/biz-inputs.module';
+import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.component';
 
 
 
 @NgModule({
-  declarations: [SelectieServiciiModalComponent, InfoPacientModalComponent],
+  declarations: [
+    SelectieServiciiModalComponent,
+    InfoPacientModalComponent,
+    BizRadioModalComponent
+  ],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
     BizInputsModule
   ],
-  exports: [SelectieServiciiModalComponent, InfoPacientModalComponent]
+  exports: [
+    SelectieServiciiModalComponent,
+    InfoPacientModalComponent,
+    BizRadioModalComponent
+  ]
 })
 export class ModalModule { }

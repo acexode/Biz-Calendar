@@ -22,7 +22,7 @@
       appCustomSelect
       #selectEl
       interface="alert"
-      [mode]="config.mode"
+      [mode]="config.mode || 'md'"
       okText="Selectează"
       cancelText="Renunță"
       [compareWith]="compareWithFn"
