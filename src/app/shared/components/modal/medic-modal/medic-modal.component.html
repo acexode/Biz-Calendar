@@ -39,7 +39,7 @@
       <div *ngIf="list" class="mb-32">
         <ion-list>
 
-        <ion-item *ngFor="let item of list; let i=index">
+        <ion-item *ngFor="let item of list; let i=index" (click)="closeModal(item)">
 
           <div class="flex flex-column">
             <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">

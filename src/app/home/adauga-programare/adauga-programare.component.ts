@@ -258,9 +258,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log('rad: ', data);
     const {dismissed, radioValue} = data;
-    console.log(radioValue);
     if(dismissed && radioValue !== '') {
       this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
     }
@@ -364,6 +362,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       componentProps: {},
     });
     await modal.present();
+    const d = await modal.onWillDismiss();
+    console.log(d);
+    const {dismissed , data} = d?.data;
+    if(dismissed && data !== '') {
+      this.adaugaProgramareFormGroup.patchValue({medic: data});
+    }
   }
 
 }

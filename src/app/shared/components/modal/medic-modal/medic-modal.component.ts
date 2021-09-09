@@ -176,29 +176,10 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       ));
   }
-  submitForm() {
-    this.isFormSubmitted = true;
-    /* if (!this.ionicForm.valid) {
-      console.log('Please provide all the required values!');
-      return false;
-    } else {
-      console.log('Form Submitted', this.ionicForm.value);
-    } */
-  }
-  dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
+  closeModal(data: any) {
     this.modalController.dismiss({
       dismissed: true,
-      //...this.ionicForm.value
-      checkList: this.checkList
-    });
-  }
-  closeModal() {
-    this.modalController.dismiss({
-      dismissed: true,
-      // ...this.ionicForm.value,
-      checkboxArrayList: null
+      data: data?.first
     });
   }
   searching(st: string) {
