@@ -18,7 +18,7 @@
           <ion-title>Programare</ion-title>
 
           <div slot="end">
-            <ion-button size="default" color="biz-primary">
+            <ion-button size="default" color="biz-primary" (click)="save()">
               SALVEAZĂ
             </ion-button>
           </div>
@@ -145,13 +145,26 @@
           </div>
 
           <div class="w-100 px-32 pb-32">
-            <app-select
-            formControlName="select"
-            [config]="cabinetConfig"
-            formControlName="cabinet"
-            [options]="locatieOption"
-            class="w-100"
-            ></app-select>
+
+            <ng-container>
+              <div class="biz-custom-select-div" (click)="presentModalRadio()">
+                <ion-label>Cabinet</ion-label>
+                <div [class]="'biz-custom-select border-light-grey'">
+                  <div class="input-select-display">
+
+                    <input type="text" formControlName="cabinet" readonly>
+
+                  </div>
+                  <div class="icon">
+                    <ion-icon
+                        name="cabinet"
+                        [class]="'icon-24 biz-neutral-gray-default-color'"
+                      ></ion-icon>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
           </div>
 
           <div class="w-100 px-32 pb-32">
@@ -176,13 +189,6 @@
                 <ion-icon name="recurenta"></ion-icon>
             </ion-chip>
             </div>
-           <!--  <div class="mt-8">
-              <ion-text
-                class="primary-error-color s12pt8-h16 roboto-family-font text-weight-medium ls-0"
-                *ngIf="dataAndOraDeIncepereNotFilledStatus">
-                Completeaza campul data si ora de incepere de mai sus.
-              </ion-text>
-            </div> -->
           </div>
 
         </div>

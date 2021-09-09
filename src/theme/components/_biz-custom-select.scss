@@ -43,12 +43,27 @@
       flex-wrap: wrap;
       gap: 8px;
     }
+    .input-select-display {
+      flex: 1;
+      input {
+        width: 100%;
+        font-family: var(--ion-font-roboto-family);
+        font-size: rem(16) !important;
+        line-height: rem(24) !important;
+        letter-spacing: 0;
+        border: none;
+        outline: none;
+        background: none;
+        padding: 0;
+        color:  var(--ion-neutral-grey-default-color);
+      }
+    }
 
     .icon {
       @include flexbox;
       @include justify-content(center);
       @include align-items(center);
-      padding: 12px 8px 12px 0px;
+      padding: 8px 8px 8px 0px;
 
       ion-icon {
         height: rem(24);
