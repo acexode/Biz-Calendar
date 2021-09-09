@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
   credentials: FormGroup;
   showError = false;
   returnUrl: string;
-  errorMsg = 'Parola sau nume de utilizator incorecte';
+  errorMsg = 'Parola sau nume de utilizator incorecte.';
   label: IonTextItem = {
     text: 'Default',
     classes: '',
@@ -112,7 +112,7 @@ export class LoginPage implements OnInit {
   }
   async presentToast() {
     const toast = await this.toastController.create({
-      message: 'Your settings have been saved.',
+      message: this.errorMsg,
       duration: 5000,
       cssClass: 'toast-bg black-color m-0 s18-h24 ion-text-center px-16 py-13 text-weight-regular roboto-family-font ls-02'
     });
