@@ -1,5 +1,5 @@
 import { AuthService } from './../core/services/auth/auth.service';
-import { MenuController } from '@ionic/angular';
+import { MenuController, ToastController } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,7 +16,7 @@ export class LoginPage implements OnInit {
   credentials: FormGroup;
   showError = false;
   returnUrl: string;
-  errorMsg = 'Parola sau nume de utilizator incorecte';
+  errorMsg = 'Parola sau nume de utilizator incorecte.';
   label: IonTextItem = {
     text: 'Default',
     classes: '',
@@ -36,7 +36,7 @@ export class LoginPage implements OnInit {
     disabled: false,
   };
   constructor(private fb: FormBuilder, private router: Router, private menu: MenuController,
-    private aRoute: ActivatedRoute, private authS: AuthService
+    private aRoute: ActivatedRoute, private authS: AuthService,public toastController: ToastController
     ) {
       console.log(this.authS.userValue);
       if (this.authS.userValue) {
@@ -95,10 +95,11 @@ export class LoginPage implements OnInit {
       }
     }, err =>{
       console.log(err);
-      this.showError = true;
-      setTimeout(() => {
-        this.showError = false;
-      }, 5000);
+      this.presentToast();
+      // this.showError = true;
+      // setTimeout(() => {
+      //   this.showError = false;
+      // }, 5000);
     });
 
   }
@@ -108,6 +109,14 @@ export class LoginPage implements OnInit {
 
   get password() {
     return this.credentials.get('password');
+  }
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: this.errorMsg,
+      duration: 5000,
+      cssClass: 'toast-bg black-color m-0 s18-h24 ion-text-center px-16 py-13 text-weight-regular roboto-family-font ls-02'
+    });
+    toast.present();
   }
 
 }
