@@ -12,13 +12,9 @@
             <div class="ion-text-center">
               <ion-text class=" biz-calendar text-weight-500 p-0 ls-0 primary-color-step-100 poppings-family-font">Biz Calendar</ion-text>
               <ion-text class="setrio text-weight-500 poppings-family-font">SETRIO</ion-text>
-              
             </div>
-            <div class="ion-text-center mt-16">
-              <ion-text *ngIf="showError" class="s14-h16 text-weight-500 ls-0 primary-error-color roboto-family-font">{{errorMsg}}</ion-text>
-            </div>
+
             <form (ngSubmit)="login()" [formGroup]="credentials" class="form px-16">
-      
               <ion-item lines="none" class="pb-24">
                 <!-- <ion-label position="floating" class="label">Utilizator</ion-label>
                 <ion-input formControlName="utilizator"></ion-input> -->
@@ -54,9 +50,14 @@
           </div>
         </ion-card>
   </ion-grid>
-  <ion-row class="ion-text-center mb-48">
-    <ion-col>
+  <ion-row class="ion-text-center mb-10">
+    <ion-col size>
       <ion-text class="s14-h16 text-weight-500 ls-0 primary-color-step-100 roboto-family-font upper">Am uitat parola</ion-text>
+    </ion-col>
+  </ion-row>
+  <ion-row class="ion-text-center mb-17">
+    <ion-col size>
+      <ion-text *ngIf="showError" class="s14-h16 text-weight-500 ls-0 primary-error-color roboto-family-font upper">{{errorMsg}}</ion-text>
     </ion-col>
   </ion-row>
 </ion-content>
