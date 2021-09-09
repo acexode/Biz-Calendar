@@ -20,6 +20,7 @@ import { RecurentaService } from '../recurenta/services/recurenta.service';
 import { RecurentaComponent } from '../recurenta/recurenta.component';
 import { RecurentaModel } from '../recurenta/models/recurenta.model';
 import { BizRadioModalComponent } from 'src/app/shared/components/modal/biz-radio-modal/biz-radio-modal.component';
+import { MedicModalComponent } from 'src/app/shared/components/modal/medic-modal/medic-modal.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -237,6 +238,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.presentMedicModal();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -355,6 +357,14 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
+  }
+  async presentMedicModal() {
+    const modal = await this.modalController.create({
+      component: MedicModalComponent,
+      cssClass: 'biz-modal-class',
+      componentProps: {},
+    });
+    await modal.present();
   }
 
 }

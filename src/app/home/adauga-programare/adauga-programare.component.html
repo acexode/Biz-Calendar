@@ -94,7 +94,6 @@
 
         <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
           <app-select
-          formControlName="select"
           [config]="islocatieConfig(locatieConfigPlaceholder)"
           formControlName="locatie"
           [options]="locatieOption"
@@ -210,13 +209,32 @@
         <div class="w-100">
 
             <div class="w-100 p-32">
-              <app-select
-              formControlName="select"
+              <!-- <app-select
               [config]="medicConfig"
-              formControlName="cabinet"
+              formControlName="medic"
               [options]="locatieOption"
               class="w-100"
-              ></app-select>
+              ></app-select> -->
+
+              <ng-container>
+                <div class="biz-custom-select-div" (click)="presentModalRadio()">
+                  <ion-label>Medic trimițător</ion-label>
+                  <div [class]="'biz-custom-select border-light-grey'">
+                    <div class="input-select-display">
+
+                      <input type="text" formControlName="medic" readonly>
+
+                    </div>
+                    <div class="icon">
+                      <ion-icon
+                          name="doctor"
+                          [class]="'icon-24 neutral-grey-medium-color'"
+                        ></ion-icon>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+
             </div>
 
             <div class="px-32 pb-32">

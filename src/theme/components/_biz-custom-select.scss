@@ -3,6 +3,7 @@
 
 
 .biz-custom-select-div {
+  cursor: pointer;
   &>ion-label {
     font-family: var(--ion-font-roboto-family);
     font-weight: 500;
@@ -32,8 +33,6 @@
       border-bottom: 1px solid var(--ion-neutral-grey-medium-color);
     }
 
-    cursor: pointer;
-
     .select-display {
       -ms-flex: 1 1 auto;
       flex: 1 1 auto;
@@ -56,6 +55,7 @@
         background: none;
         padding: 0;
         color:  var(--ion-neutral-grey-default-color);
+        cursor: pointer;
       }
     }
 
