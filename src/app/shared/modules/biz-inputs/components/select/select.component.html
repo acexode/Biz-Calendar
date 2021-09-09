@@ -7,7 +7,7 @@
   lines="none"
 >
   <ion-label
-    class="s12pt8-h16 roboto-family-font text-weight-medium mb-16"
+    [class]="'s12pt8-h16 roboto-family-font text-weight-medium mb-16 ' + config?.inputLabel?.classes"
     position="stacked"
     [ngClass]="
       config?.disabled || inputReadonly || formGroup?.disabled

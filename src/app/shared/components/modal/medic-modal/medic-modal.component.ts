@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { IonInputConfig } from 'src/app/shared/models/components/ion-input-config';
+import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
 
 export interface DemoMedicData {
@@ -116,8 +117,44 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       value: 'Costin'
     }
   ];
+  medicConfig: IonSelectConfig = {
+    inputLabel: {
+      classes: 'd-none',
+      text: 'Medic trimițător',
+    },
+    forceListItems: false,
+    multiple: false,
+    disabled: false,
+    placeholder: 'Tip: Medici externi cu contract CNAS',
+    alertOptions: {
+      cssClass: '',
+    },
+    idKey: 'id',
+    labelKey: 'label',
+    useIcon: {
+      name: 'chevron-down',
+      classes: 'neutral-grey-medium-color'
+    }
+  };
+  medicOption = [
+    {
+      id: 'Intern (din clinică)',
+      label: 'Intern (din clinică)'
+    },
+    {
+      id: 'Extern cu contract CNAS',
+      label: 'Extern cu contract CNAS'
+    },
+    {
+      id: 'Extern fără contract CNAS',
+      label: 'Extern fără contract CNAS'
+    }
+  ];
+  componentFormGroup: FormGroup = this.fb.group({
+    medicOptionTip: ['', [Validators.required]],
+    optionValue: ['', [Validators.required]],
+  });
   constructor(
-    private formBuilder: FormBuilder,
     private fb: FormBuilder,
     private modalController: ModalController
   ) {
