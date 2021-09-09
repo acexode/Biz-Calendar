@@ -120,7 +120,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   medicConfig: IonSelectConfig = {
     inputLabel: {
       classes: 'd-none',
-      text: 'Medic trimițător',
+      text: 'Tip medic trimițător',
     },
     forceListItems: false,
     multiple: false,
