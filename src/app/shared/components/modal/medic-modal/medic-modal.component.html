@@ -24,7 +24,7 @@
 
 <ion-content [scrollEvents]="true" [fullscreen]="true">
   <div class="modal-view pb-60">
-    <form [formGroup]="componentFormGroup" (ngSubmit)="submitForm()">
+    <form [formGroup]="componentFormGroup">
 
       <div class="mt-10 mb-24">
         <app-select
@@ -39,7 +39,7 @@
       <div *ngIf="list" class="mb-32">
         <ion-list>
 
-        <ion-item *ngFor="let item of list; let i=index" (click)="closeModal(item)">
+        <ion-item *ngFor="let item of list; let i=index" (click)="submit(item)">
 
           <div class="flex flex-column">
             <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">

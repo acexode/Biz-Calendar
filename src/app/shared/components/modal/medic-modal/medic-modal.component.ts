@@ -176,10 +176,16 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       ));
   }
-  closeModal(data: any) {
+  submit(data: any) {
     this.modalController.dismiss({
       dismissed: true,
       data: data?.first
+    });
+  }
+  closeModal() {
+    this.modalController.dismiss({
+      dismissed: true,
+      data: null
     });
   }
   searching(st: string) {
