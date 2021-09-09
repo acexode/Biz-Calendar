@@ -113,7 +113,7 @@ export class LoginPage implements OnInit {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Your settings have been saved.',
-      duration: 100000,
+      duration: 5000,
       cssClass: 'toast-bg black-color m-0 s18-h24 ion-text-center px-16 py-13 text-weight-regular roboto-family-font ls-02'
     });
     toast.present();
