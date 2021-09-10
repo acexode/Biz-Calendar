@@ -24,8 +24,6 @@ export interface DemoMedicData {
   styleUrls: ['./medic-modal.component.scss'],
 })
 export class MedicModalComponent implements OnInit, OnDestroy {
-
-  @Input() checkList!: any;
   list!: any;
 
   isFormSubmitted = false;

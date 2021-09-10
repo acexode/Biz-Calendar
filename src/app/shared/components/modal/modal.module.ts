@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BizInputsModule } from '../../modules/biz-inputs/biz-inputs.module';
 import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.component';
 import { MedicModalComponent } from './medic-modal/medic-modal.component';
+import { PacientComponent } from './pacient/pacient.component';
 
 
 
@@ -15,7 +16,8 @@ import { MedicModalComponent } from './medic-modal/medic-modal.component';
     SelectieServiciiModalComponent,
     InfoPacientModalComponent,
     BizRadioModalComponent,
-    MedicModalComponent
+    MedicModalComponent,
+    PacientComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { MedicModalComponent } from './medic-modal/medic-modal.component';
     SelectieServiciiModalComponent,
     InfoPacientModalComponent,
     BizRadioModalComponent,
-    MedicModalComponent
+    MedicModalComponent,
+    PacientComponent
   ]
 })
 export class ModalModule { }

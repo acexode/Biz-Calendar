@@ -5,7 +5,7 @@
       <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
         <ion-toolbar class="ion-no-padding">
 
-          <ion-buttons slot="start" class="slot-start">
+          <ion-buttons slot="start" class="slot-start" routerLink="/calendar">
 
             <ion-icon
               name="close"
@@ -83,7 +83,6 @@
 
         <div class="w-100 px-32 pb-32">
             <app-radios
-
               [config]="tipprogramareConfig"
               [options]="tipprogramareOption"
               formControlName="tipprogramare"
@@ -94,11 +93,13 @@
 
         <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
           <app-select
-          [config]="islocatieConfig(locatieConfigPlaceholder)"
+          [config]="l"
           formControlName="locatie"
           [options]="locatieOption"
           class="w-100"
-          ></app-select>
+          >
+        </app-select>
+
         </div>
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
