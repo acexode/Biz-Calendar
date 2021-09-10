@@ -56,7 +56,68 @@ export class PacientComponent implements OnInit, OnDestroy {
     search: ['', [Validators.required]],
   });
   public subscriptions = new Subscription();
-  pacientData: DemoPatientData[] = [];
+  pacientData: DemoPatientData[] = [
+    {
+      first: 'Angela Ghica Protopopescu',
+      second: 'F',
+      third: '47',
+      value: 'Angela Ghica Protopopescu',
+    },
+    {
+      first: 'Ciprian Costescu',
+      second: 'M',
+      third: '67',
+      value: 'Ciprian Costescu',
+    },
+    {
+      first: 'Ciprian Costescu',
+      second: 'F',
+      third: '67',
+      value: 'Ciprian Costescu',
+    },
+    {
+      first: 'Camil Oprea Micălăceanu',
+      second: 'F',
+      third: '47',
+      value: 'Camil Oprea Micălăceanu',
+    },
+    {
+      first: 'Corneliu Pricop',
+      second: '-',
+      third: '**** *** 843',
+      value: 'Corneliu Pricop',
+    },
+    {
+      first: 'Maria Pop Postolache',
+      second: 'M',
+      third: '67',
+      value: 'Maria Pop Postolache',
+    },
+    {
+      first: 'Mariana Romascanu',
+      second: 'F',
+      third: '47',
+      value: 'Mariana Romascanu',
+    },
+    {
+      first: 'Marin Voroncea',
+      second: 'M',
+      third: '67',
+      value: 'Marin Voroncea',
+    },
+    {
+      first: 'Mario Andrea Zanardi',
+      second: '-',
+      third: '**** *** 843',
+      value: 'Mario Andrea Zanardi',
+    },
+    {
+      first: 'Ionica Zorban',
+      second: '-',
+      third: '**** *** 843',
+      value: 'Ionica Zorban',
+    }
+  ];
   componentFormGroup: FormGroup = this.fb.group({
     medicOptionTip: ['', [Validators.required]],
     optionValue: ['', [Validators.required]],
@@ -68,7 +129,7 @@ export class PacientComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     // load check list to list
-    // this.list = this.medicData;
+    this.list = this.pacientData;
     //
     this.subscriptions.add(this.searchForm.valueChanges
       .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
@@ -77,7 +138,7 @@ export class PacientComponent implements OnInit, OnDestroy {
           if (data.search !== '') {
             this.list = this.searching(data.search);
           } else {
-            // this.list = this.medicData;
+            this.list = this.pacientData;
           }
 
         }

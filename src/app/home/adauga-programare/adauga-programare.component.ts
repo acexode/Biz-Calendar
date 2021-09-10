@@ -16,11 +16,11 @@ import { get } from 'lodash';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { Router } from '@angular/router';
-import { RecurentaService } from '../recurenta/services/recurenta.service';
 import { RecurentaComponent } from '../recurenta/recurenta.component';
 import { RecurentaModel } from '../recurenta/models/recurenta.model';
 import { BizRadioModalComponent } from 'src/app/shared/components/modal/biz-radio-modal/biz-radio-modal.component';
 import { MedicModalComponent } from 'src/app/shared/components/modal/medic-modal/medic-modal.component';
+import { PacientComponent } from 'src/app/shared/components/modal/pacient/pacient.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -261,6 +261,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.presentPacient();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -270,6 +271,20 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
+  }
+  async presentPacient() {
+    const modal = await this.modalController.create({
+      component: PacientComponent,
+      cssClass: 'biz-modal-class',
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    console.log(d);
+    const {dismissed , data} = d?.data;
+    if(dismissed && data !== '') {
+      this.adaugaProgramareFormGroup.patchValue({medic: data});
+    }
   }
   async presentModalRadio() {
     const modal = await this.modalController.create({
@@ -358,20 +373,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
   }
   async presentMedicModal() {
-    const modal = await this.modalController.create({
-      component: MedicModalComponent,
-      cssClass: 'biz-modal-class',
-      componentProps: {},
-    });
-    await modal.present();
-    const d = await modal.onWillDismiss();
-    console.log(d);
-    const {dismissed , data} = d?.data;
-    if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({medic: data});
-    }
-  }
-  async presentPacient() {
     const modal = await this.modalController.create({
       component: MedicModalComponent,
       cssClass: 'biz-modal-class',

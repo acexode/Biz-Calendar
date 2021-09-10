@@ -25,7 +25,31 @@
 <ion-content [scrollEvents]="true" [fullscreen]="true">
   <div class="modal-view pb-60">
     <form [formGroup]="componentFormGroup">
+      <div *ngIf="list" class="mb-32">
+        <ion-list>
 
+        <ion-item *ngFor="let item of list; let i=index" (click)="submit(item)">
+
+          <div class="flex flex-column">
+            <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+              {{item.first}}
+            </p>
+            <p class="m-0 flex flex-row ion-align-items-center">
+              <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+              {{item.second}}
+            </ion-text>
+            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
+              /
+            </ion-text>
+            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+              {{item.third}}
+            </ion-text>
+            </p>
+          </div>
+
+        </ion-item>
+        </ion-list>
+      </div>
   </form>
   </div>
 
