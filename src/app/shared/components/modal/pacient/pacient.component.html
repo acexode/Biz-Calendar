@@ -22,9 +22,17 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [scrollEvents]="true" [fullscreen]="true">
-  <div class="modal-view pb-60">
-    <form [formGroup]="componentFormGroup">
+<ion-content [scrollEvents]="true">
+  <ion-segment value="Pacienți" (ionChange)="segmentChanged($event)" color="biz-primary" mode="md">
+    <ion-segment-button value="Pacienți">
+      <ion-label>Pacienți</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Grupuri">
+      <ion-label>Grupuri</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div class="modal-view mb-60">
+    <div>
       <div *ngIf="list" class="mb-32">
         <ion-list>
 
@@ -49,8 +57,21 @@
 
         </ion-item>
         </ion-list>
+
       </div>
-  </form>
+      <div>
+        <ion-chip
+            class="chip"
+            outline="true"
+            color="biz-chip-secondary"
+          >
+            <ion-label>
+              Adaugă
+            </ion-label>
+            <ion-icon name="user-new"></ion-icon>
+        </ion-chip>
+      </div>
+  </div>
   </div>
 
 </ion-content>

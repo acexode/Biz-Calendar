@@ -144,6 +144,9 @@ export class PacientComponent implements OnInit, OnDestroy {
         }
       ));
   }
+  segmentChanged(ev: any) {
+    console.log('Segment changed', ev);
+  }
   submit(data: any) {
     this.modalController.dismiss({
       dismissed: true,
