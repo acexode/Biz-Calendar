@@ -7,8 +7,8 @@
     <ion-col  class="flex flex-column px-0" size="12">
           <ion-row>
             <ion-col class="flex flex-column" size="2">
-              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day}}</ion-text>
-              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
+              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day.split(' ')[0].slice(0,3)}}</ion-text>
+              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >{{ev.day.split(' ')[1]}}</ion-text>
       
             </ion-col>
             <ion-col size="10" >

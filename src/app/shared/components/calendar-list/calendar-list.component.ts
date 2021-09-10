@@ -37,7 +37,7 @@ export class CalendarListComponent implements OnInit {
             class: tempBg[Math.floor(Math.random()*tempBg.length)],
           }));
         return {
-          day: format(new Date(apt.startTime), 'ddd', {locale: ro}),
+          day: format(new Date(apt.startTime), 'EEEE d', {locale: ro}),
           current: true,
           events: formattedEvent
         };
