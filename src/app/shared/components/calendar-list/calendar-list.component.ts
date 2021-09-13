@@ -24,27 +24,29 @@ export class CalendarListComponent implements OnInit {
       console.log(e);
       const tempBg = ['green-bg', 'blue-bg', 'yellow-bg', 'orange-bg', 'green-pattern', 'gray-bg', 'blue-pattern'];
       const eventObj: CalendarEventObject[] = [];
-      const appointments = e?.appointments.map((apt, i, self) => {
-        const date = new Date(apt.startTime).toLocaleDateString();
-        const ev = self.filter(s => new Date(apt.startTime).toLocaleDateString() === date );
+      const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
+      console.log(dates);
+      console.log([...new Set(dates)]);
+      const uniqDates = [...new Set(dates)];
+      const appt = uniqDates.map(unq =>{
+        const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
         const formattedEvent = ev.map(form =>({
-            id: apt.uid,
-            icons: ['cnas'],
-            title: apt.personName,
-            time: '09:00 - 09:30',
-            desc: apt.subject,
-            location: 'Buc. Aviatori',
-            class: tempBg[Math.floor(Math.random()*tempBg.length)],
-          }));
-        return {
-          day: format(new Date(apt.startTime), 'EEEE d', {locale: ro}),
-          current: true,
-          events: formattedEvent
-        };
+          id: form.uid,
+          icons: ['cnas'],
+          title: form.personName,
+          time: '09:00 - 09:30',
+          desc: form.subject,
+          location: 'Buc. Aviatori',
+          class: tempBg[Math.floor(Math.random()*tempBg.length)],
+        }));
+      return {
+        day: format(new Date(unq), 'EEEE d', {locale: ro}),
+        current: true,
+        events: formattedEvent
+      };
       });
-      this.eventList = appointments;
-      console.log(appointments);
-      console.log(new Set(appointments));
+      console.log(appt);
+      this.eventList = appt;
 
     });
   }
