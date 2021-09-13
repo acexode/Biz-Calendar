@@ -1,0 +1,124 @@
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="modal-div-body">
+    <div class="modal-div-header white-bg">
+      <ion-header class="ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
+
+          <ion-buttons slot="start" (click)="closeModal()">
+            <ion-icon
+              name="arrow-left"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+          </ion-buttons>
+
+          <ion-row class="ion-no-padding">
+            <ion-col class="ion-no-padding" [formGroup]="searchForm">
+              <app-input
+                [config]="config"
+                formControlName="search"
+              ></app-input>
+            </ion-col>
+          </ion-row>
+
+
+        </ion-toolbar>
+      </ion-header>
+      <ion-segment [value]="segment.one" (ionChange)="segmentChanged($event)" color="biz-primary" mode="md" class="position-sticky">
+        <ion-segment-button [value]="segment.one">
+          <ion-label>{{segment.one}}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button [value]="segment.two">
+          <ion-label>{{segment.two}}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+
+    <div *ngIf="segment.one === currentSegement">
+      <div class="modal-div-body modal-view mt-150">
+        <div>
+          <div *ngIf="list" class="">
+            <ion-list>
+
+              <ion-item *ngFor="let item of list; let i=index" (click)="submit(item)">
+
+                <div class="flex flex-column">
+                  <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+                    {{item.first}}
+                  </p>
+                  <p class="m-0 flex flex-row ion-align-items-center">
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+                      {{item.second}}
+                    </ion-text>
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
+                      /
+                    </ion-text>
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                      {{item.third}}
+                    </ion-text>
+                  </p>
+                </div>
+
+              </ion-item>
+            </ion-list>
+
+          </div>
+        </div>
+      </div>
+      <div class="w-100 flex ion-justify-content-center ion-align-items-center mt-10 mb-24">
+        <ion-chip class="chip" outline="true" color="biz-chip-secondary">
+          <ion-label>
+            Adaugă pacient
+          </ion-label>
+          <ion-icon name="user-new"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+
+    <div *ngIf="segment.two === currentSegement">
+      <div class="modal-div-body modal-view mt-150">
+        <div>
+          <div *ngIf="grupuris" class="">
+            <ion-list>
+
+              <ion-item *ngFor="let grupuri of list; let i=index" (click)="submit(grupuri)">
+
+                <div class="flex flex-column">
+                  <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+                    {{grupuri.first}}
+                  </p>
+                  <p class="m-0 flex flex-row ion-align-items-center">
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+                      {{grupuri.second}}
+                    </ion-text>
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
+
+                    </ion-text>
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                      {{grupuri.third}}
+                    </ion-text>
+                  </p>
+                </div>
+
+              </ion-item>
+            </ion-list>
+
+          </div>
+        </div>
+      </div>
+      <div class="w-100 flex ion-justify-content-center ion-align-items-center mt-10 mb-24">
+        <ion-chip class="chip" outline="true" color="biz-chip-secondary">
+          <ion-label>
+          Adaugă grup nou
+          </ion-label>
+          <ion-icon name="user-group"></ion-icon>
+        </ion-chip>
+      </div>
+    </div>
+
+  </div>
+
+
+</ion-content>
+

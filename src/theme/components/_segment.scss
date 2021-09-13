@@ -1,0 +1,10 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-segment {
+    ion-segment-button {
+      height: 56px !important;
+    }
+  }
+}

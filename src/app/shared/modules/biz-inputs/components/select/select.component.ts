@@ -141,6 +141,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       this.inputControl.disable();
     }
     this.formGroup.valueChanges.subscribe((vals) => {
+      console.log(vals);
       if (this.onChange) {
         this.onChange(this.getFieldValue());
         this.setCustomError();
@@ -201,6 +202,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     } else {
       value = obj;
     }
+    console.log('write', obj);
     this.formGroup.setValue({ select: obj });
     this.formGroup.updateValueAndValidity();
     this.setCustomError();

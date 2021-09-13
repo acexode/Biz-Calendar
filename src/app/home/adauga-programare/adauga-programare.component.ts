@@ -16,17 +16,40 @@ import { get } from 'lodash';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { Router } from '@angular/router';
-import { RecurentaService } from '../recurenta/services/recurenta.service';
 import { RecurentaComponent } from '../recurenta/recurenta.component';
 import { RecurentaModel } from '../recurenta/models/recurenta.model';
 import { BizRadioModalComponent } from 'src/app/shared/components/modal/biz-radio-modal/biz-radio-modal.component';
 import { MedicModalComponent } from 'src/app/shared/components/modal/medic-modal/medic-modal.component';
+import { PacientComponent } from 'src/app/shared/components/modal/pacient/pacient.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
   styleUrls: ['./adauga-programare.component.scss'],
 })
 export class AdaugaProgramareComponent implements OnInit, OnDestroy {
+  get l(): IonSelectConfig {
+    const locatie: IonSelectConfig = {
+      inputLabel: {
+        classes: '',
+        text: 'Locație',
+      },
+      forceListItems: false,
+      multiple: false,
+      disabled: false,
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'id',
+      labelKey: 'label',
+      useIcon: {
+        name: 'doctor',
+        classes: 'neutral-grey-medium-color'
+      }
+    };
+    return this.isAparaturaOnLine ?
+    {...locatie, placeholder: 'required'} :
+    {...locatie, placeholder: 'Opțional'};
+  }
   pacientInputConfig = inputConfigHelper({
     label: 'Pacient',
     type: 'text',
@@ -75,7 +98,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       label: 'Option 1'
     },
     {
-      id: 'fcghhjhkss',
+      id: 'kcghhjhkss',
       label: 'Option 2'
     }
   ];
@@ -248,10 +271,26 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         this.process(data);
       });
   }
+  async presentPacient() {
+    const modal = await this.modalController.create({
+      component: PacientComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: false,
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    console.log(d);
+    const {dismissed , data} = d?.data;
+    if(dismissed && data !== '') {
+      this.adaugaProgramareFormGroup.patchValue({pacient: data});
+    }
+  }
   async presentModalRadio() {
     const modal = await this.modalController.create({
       component: BizRadioModalComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {
         options: this.cabinetOption
       },
@@ -267,6 +306,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: InfoPacientModalComponent,
       cssClass: 'biz-modal-class-type-a',
+      backdropDismiss: false,
       componentProps: {
         // data:
       },
@@ -278,6 +318,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {
         checkList: this.checkList,
       },
@@ -301,12 +342,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
       this.isAparaturaOnLine = true;
-      this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
-      this.locatieConfigPlaceholder = 'Optional';
+      // this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
+      // this.locatieConfigPlaceholder = 'Optional';
     } else {
       this.isAparaturaOnLine = false;
-      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
-      this.locatieConfigPlaceholder = 'Required';
+      // this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
+      // this.locatieConfigPlaceholder = 'Required';
     }
     this.locatieFormControl.updateValueAndValidity();
   }
@@ -321,27 +362,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   get oraDeIncepereFormControl() {
     return this.adaugaProgramareFormGroup.get('oraDeIncepere') as FormControl;
-  }
-  islocatieConfig(placeholder: string = 'Opțional'): IonSelectConfig {
-    return {
-      inputLabel: {
-        classes: '',
-        text: 'Locație',
-      },
-      forceListItems: false,
-      multiple: false,
-      disabled: false,
-      placeholder,
-      alertOptions: {
-        cssClass: '',
-      },
-      idKey: 'id',
-      labelKey: 'label',
-      useIcon: {
-        name: 'location-custom',
-        classes: 'neutral-grey-medium-color'
-      }
-    };
   }
   get dataAndOraDeIncepereNotFilledStatus() {
     return (this.dataFormControl.value === '' || this.oraDeIncepereFormControl.value === '') ? true : false;
@@ -359,6 +379,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: MedicModalComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {},
     });
     await modal.present();
