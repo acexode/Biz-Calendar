@@ -22,7 +22,7 @@
   --ion-primary-color-text: #002F49;
 
   // status colors
-    --ion-status-green-color-step-100: #2EA81B;
+  --ion-status-green-color-step-100: #2EA81B;
   --ion-status-green-color-step-20: #D5EED1;
   --ion-status-green-color-step-10: #EAF6E8;
 
@@ -179,6 +179,7 @@ $spacers: map-merge((0: 0,
     128: 128px,
     138: 138px,
     144: 144px,
+    150: 150px,
     168: 168px,
     112: rem(112),
     116: rem(116),
