@@ -29,11 +29,23 @@
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
           <div class="w-100 pt-30 px-32">
-            <app-input
-              [config]="pacientInputConfig"
-              formControlName="pacient"
-              (click)="presentPacient()"
-            ></app-input>
+
+            <ng-container>
+              <div class="biz-custom-select-div" (click)="presentPacient()">
+                <ion-label>{{pacientInputConfig.inputLabel.text}}</ion-label>
+                <div [class]="'biz-custom-select border-light-grey'">
+                  <div class="input-select-display">
+
+                    <input type="text" formControlName="pacient" readonly>
+
+                  </div>
+                  <div class="icon">
+                    <ion-icon name="search-custom" [class]="'icon-24 neutral-grey-medium-color'"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
           </div>
 
           <div class="w-100 p-32 flex flex-row ion-justify-content-between">

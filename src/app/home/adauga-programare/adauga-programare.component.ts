@@ -261,7 +261,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.presentPacient();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -284,7 +283,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     console.log(d);
     const {dismissed , data} = d?.data;
     if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({medic: data});
+      this.adaugaProgramareFormGroup.patchValue({pacient: data});
     }
   }
   async presentModalRadio() {
