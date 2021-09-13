@@ -206,7 +206,6 @@ export class PacientComponent implements OnInit, OnDestroy {
           } else {
             this.dataSwitch();
           }
-
         }
       ));
   }

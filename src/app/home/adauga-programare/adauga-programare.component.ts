@@ -276,6 +276,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: PacientComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {},
     });
     await modal.present();
@@ -290,6 +291,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: BizRadioModalComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {
         options: this.cabinetOption
       },
@@ -305,6 +307,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: InfoPacientModalComponent,
       cssClass: 'biz-modal-class-type-a',
+      backdropDismiss: false,
       componentProps: {
         // data:
       },
@@ -316,6 +319,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {
         checkList: this.checkList,
       },
@@ -376,6 +380,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: MedicModalComponent,
       cssClass: 'biz-modal-class',
+      backdropDismiss: false,
       componentProps: {},
     });
     await modal.present();
