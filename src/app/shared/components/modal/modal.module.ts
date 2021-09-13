@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BizInputsModule } from '../../modules/biz-inputs/biz-inputs.module';
 import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.component';
+import { MedicModalComponent } from './medic-modal/medic-modal.component';
 
 
 
@@ -13,7 +14,8 @@ import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.compon
   declarations: [
     SelectieServiciiModalComponent,
     InfoPacientModalComponent,
-    BizRadioModalComponent
+    BizRadioModalComponent,
+    MedicModalComponent
   ],
   imports: [
     CommonModule,
@@ -24,7 +26,8 @@ import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.compon
   exports: [
     SelectieServiciiModalComponent,
     InfoPacientModalComponent,
-    BizRadioModalComponent
+    BizRadioModalComponent,
+    MedicModalComponent
   ]
 })
 export class ModalModule { }

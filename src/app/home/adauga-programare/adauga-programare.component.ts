@@ -20,6 +20,7 @@ import { RecurentaService } from '../recurenta/services/recurenta.service';
 import { RecurentaComponent } from '../recurenta/recurenta.component';
 import { RecurentaModel } from '../recurenta/models/recurenta.model';
 import { BizRadioModalComponent } from 'src/app/shared/components/modal/biz-radio-modal/biz-radio-modal.component';
+import { MedicModalComponent } from 'src/app/shared/components/modal/medic-modal/medic-modal.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -257,9 +258,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log('rad: ', data);
     const {dismissed, radioValue} = data;
-    console.log(radioValue);
     if(dismissed && radioValue !== '') {
       this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
     }
@@ -355,6 +354,20 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
+  }
+  async presentMedicModal() {
+    const modal = await this.modalController.create({
+      component: MedicModalComponent,
+      cssClass: 'biz-modal-class',
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    console.log(d);
+    const {dismissed , data} = d?.data;
+    if(dismissed && data !== '') {
+      this.adaugaProgramareFormGroup.patchValue({medic: data});
+    }
   }
 
 }

@@ -82,7 +82,7 @@
 
       .modal-view {
         padding: 22px 16px 22px 32px;
-
+        overflow: auto !important;
         ion-item {
           align-items: flex-start;
           margin-bottom: 16px !important;
