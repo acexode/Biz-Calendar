@@ -198,7 +198,7 @@ export class PacientComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: NewPacientModalComponent,
       cssClass: 'biz-modal-class',
-      backdropDismiss: true,
+      backdropDismiss: false,
       componentProps: {},
     });
     await modal.present();

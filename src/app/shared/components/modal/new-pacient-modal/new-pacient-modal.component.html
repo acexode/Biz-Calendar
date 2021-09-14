@@ -13,10 +13,7 @@
           <ion-title>Pacient nou</ion-title>
 
           <div slot="end">
-            <ion-button size="small" color="biz-primary" *ngIf="addMoreField">
-              SALVEAZĂ
-            </ion-button>
-            <ion-button class="mr-8" color="biz-disabled-primary" size="small" *ngIf="!addMoreField">
+            <ion-button class="mr-8" [color]="(formGroupValidity ? 'biz-primary' : 'biz-disabled-primary')" size="small" (click)="closeModal()">
               SALVEAZĂ
             </ion-button>
           </div>
@@ -24,7 +21,7 @@
       </ion-header>
     </div>
 
-      <div class="primary-color-step-5 px-18 py-16 mt-80"
+      <div class="primary-color-step-5 px-18 px-md-32 py-md-22 py-16 mt-80"
       >
         <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 ls-0">
           Completarea câmpurilor de mai jos este obligatorie pentru a putea salva un profil nou.
@@ -60,7 +57,7 @@
 
             <ion-chip class="chip" outline="true" color="biz-chip-secondary" *ngIf="!addMoreField" (click)="toggleMoreField()">
               <ion-label>
-                Adaugă mai multe câmpuri
+                Mai multe câmpuri
               </ion-label>
               <ion-icon name="plus"></ion-icon>
             </ion-chip>

@@ -57,7 +57,7 @@ export class NewPacientModalComponent implements OnInit {
     placeholder: '',
     custom: {
       useIcon: {
-          name: 'pbone',
+          name: 'phone',
           classes: 'neutral-grey-medium-color'
       }
     }
@@ -76,7 +76,7 @@ export class NewPacientModalComponent implements OnInit {
    judetConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
-        text: 'Locație',
+        text: 'Județ',
       },
       forceListItems: false,
       multiple: false,
@@ -134,7 +134,9 @@ componentFormGroup: FormGroup = this.fb.group({
   });
   constructor(private fb: FormBuilder, private modalController: ModalController) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.formGroupValidity);
+   }
   toggleMoreField() {
     this.addMoreField = !this.addMoreField;
   }
@@ -143,6 +145,9 @@ componentFormGroup: FormGroup = this.fb.group({
       dismissed: true,
       data: null
     });
+  }
+  get formGroupValidity() {
+    return this.componentFormGroup.valid;
   }
 
 }
