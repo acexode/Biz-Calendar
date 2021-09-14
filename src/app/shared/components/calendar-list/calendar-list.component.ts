@@ -20,13 +20,14 @@ export class CalendarListComponent implements OnInit {
       this.isTablet = window.innerWidth >= 768 ? true : false;
     });
     console.log(this.eventList);
+    this.getEventLists();
+  }
+
+
+  getEventLists(){
     this.calS.appointments$.subscribe(e =>{
-      console.log(e);
       const tempBg = ['green-bg', 'blue-bg', 'yellow-bg', 'orange-bg', 'green-pattern', 'gray-bg', 'blue-pattern'];
-      const eventObj: CalendarEventObject[] = [];
       const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
-      console.log(dates);
-      console.log([...new Set(dates)]);
       const uniqDates = [...new Set(dates)];
       const appt = uniqDates.map(unq =>{
         const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
@@ -45,10 +46,34 @@ export class CalendarListComponent implements OnInit {
         events: formattedEvent
       };
       });
-      console.log(appt);
       this.eventList = appt;
 
     });
+  }
+  colorCode(code){
+    let cssClass;
+    switch (code) {
+      case '1CS':
+        cssClass = 'green-bg';
+        break;
+      case '1CY':
+        cssClass = 'green-bg';
+        break;
+      case '1CN':
+         cssClass = 'green-pattern';
+        break;
+      case '1N':
+        cssClass = 'yellow-bg';
+        break;
+      case 4:
+        cssClass = 'Thursday';
+        break;
+      case 5:
+        cssClass = 'Friday';
+        break;
+      case 6:
+        cssClass = 'Saturday';
+    }
   }
 
 }

@@ -15,6 +15,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     isSameDay,
     isSameMonth,
     addHours,
+    format,
   } from 'date-fns';
   import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -29,6 +30,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
 import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
+import { ro } from 'date-fns/locale';
   const colors: any = {
     green: {
       primary: '#D5EED1',
@@ -97,78 +99,8 @@ export class CalendarComponent implements OnInit {
         },
     ];
     refresh: Subject<any> = new Subject();
-    // events: CalendarEvent[] = [
 
-        // {
-        //   title: 'Vacation',
-        //   color: colors.transparent,
-        //   start: new Date(2021,7,4,8),
-        //   allDay: true,
-        //   meta: 'Vacation'
-        // },
-        // {
-        //   title: 'Vacation',
-        //   color: colors.transparent,
-        //   start: new Date(2021,7,11,8),
-        //   allDay: true,
-        //   meta: 'Vacation'
-        // },
-    //     {
-    //     start: subDays(startOfDay(new Date()), 1),
-    //     end:  addDays(new Date(), 1),
-    //     title: null,
-    //     cssClass: '',
-    //     actions: null,
-    //     },
-    //     {
-    //     start: new Date(2021,7,14,10),
-    //     end: new Date(2021,7,14,10,30),
-    //     title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
-    //     color: colors.transparent,
-    //     actions: this.actions,
-    //     },
-    //     {
-    //     start: new Date(2021,7,this.currentDate,10,30),
-    //     end: new Date(2021,7,this.currentDate,11,30),
-    //     title: 'Meeting with Mr A',
-    //     color: colors.transparent,
-    //     actions: this.actions,
-    //     },
-    //     {
-    //     start: addHours(new Date(), .4),
-    //     title: 'Birthday event for Mr B',
-    //     color: colors.transparent,
-    //     actions: this.actions,
-    //     },
-    //     {
-    //     start: addHours(new Date(), 1),
-    //     title: 'An event with no end dated',
-    //     color: colors.transparent,
-    //     actions: this.actions,
-    //     },
-    //     {
-    //     start: subDays(endOfMonth(new Date()), 3),
-    //     end: addDays(endOfMonth(new Date()), 3),
-    //     title: 'A long event that spans 2 months',
-    //     color: colors.transparent,
-    //     allDay: true,
-    //     },
-    //     {
-    //     start: addHours(new Date(), 2),
-    //     end: addHours(new Date(), 2),
-    //     title: 'A draggable and resizable event',
-    //     color: colors.transparent,
-    //     actions: this.actions,
-    //     resizable: {
-    //         beforeStart: true,
-    //         afterEnd: true,
-    //     },
-    //     draggable: true,
-    //     },
-    // ];
-    events: CalendarEvent[] = [
-
-    ];
+    events = [];
     activeDayIsOpen = true;
     eventSource;
     viewTitle;
@@ -183,100 +115,7 @@ export class CalendarComponent implements OnInit {
       this.calS.selectedDate.subscribe(e =>{
         this.viewDate = new Date(e);
       });
-      this.events = [
-        {
-          title: 'Vacation',
-          color: colors.transparent,
-          start: new Date(2021,7,4,8),
-          allDay: true,
-          meta: {
-            icon: 'cnas',
-            cssClass: 'bg-green'
-          }
-        },
-        {
-          title: 'Vacation',
-          color: colors.blue,
-          start: addHours(startOfDay(new Date()), 10),
-          end: addHours(new Date(), 11),
-          meta: {
-            icon: 'nou',
-            cssClass: 'bg-green'
-          }
-        },
-        {
-          title: '',
-          color: colors.blue,
-          start: addHours(startOfDay(new Date()), 8),
-          end: addHours(new Date(), 2),
-          // meta: {
-          //   icon: '',
-          //   cssClass: 'green-pattern border-none'
-          // }
-        },
-        {
-          title: 'Angela Ghica Protopopescu • Consult control gastroenterologie, Ecografie abdominală',
-          color: colors.blue,
-          start: addHours(startOfDay(new Date()), 11),
-          // end: addHours(new Date(), -5),
-          meta: {
-            icon: 'nou',
-            cssClass: 'bg-blue-light'
-          }
-        },
-        {
-          title: 'Alexandru Daniel Roscovici • Evaluare nivel sănătate emoțională • Donec nisi nisi, ultricies luctus massa non, ',
-          color: colors.blue,
-          start: addHours(startOfDay(new Date()), 12),
-          // end: addHours(new Date(), -5),
-          meta: {
-            icon: '',
-            cssClass: 'bg-blue'
-          }
-        },
-        {
-          start: subDays(startOfDay(new Date()), 1),
-          end: addDays(new Date(), 1),
-          title: 'A 3 day event',
-          color: colors.red,
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-        },
-        {
-          start: startOfDay(new Date()),
-          title: 'An event with no end date',
-          color: colors.yellow,
-          actions: this.actions,
-          meta: {
-            icon: 'nou',
-            cssClass: 'bg-green'
-          },
-        },
-        {
-          start: subDays(endOfMonth(new Date()), 3),
-          end: addDays(endOfMonth(new Date()), 3),
-          title: 'A long event that spans 2 months',
-          color: colors.blue,
-          allDay: true,
-        },
-        // {
-        //   start: addHours(startOfDay(new Date()), 2),
-        //   end: addHours(new Date(), 0),
-        //   title: 'A draggable and resizable event',
-        //   color: colors.yellow,
-        //   actions: this.actions,
-        //   resizable: {
-        //     beforeStart: true,
-        //     afterEnd: true,
-        //   },
-        //   draggable: true,
-        // },
-      ];
+      this.getEventLists();
       this.isTablet = window.innerWidth >= 768 ? true : false;
       window.addEventListener('resize', ()=>{
         this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -296,6 +135,31 @@ export class CalendarComponent implements OnInit {
           this.setView(this.CalendarView.Month);
         }
         this.refresh.next();
+    }
+    getEventLists(){
+      this.calS.appointments$.subscribe(e =>{
+        const tempBg = ['green-bg', 'blue-bg', 'yellow-bg', 'orange-bg', 'green-pattern', 'gray-bg', 'blue-pattern'];
+        const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
+        const uniqDates = [...new Set(dates)];
+        const appt = uniqDates.map(unq =>{
+          const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
+          const formattedEvent: CalendarEvent[] = ev.map(form =>(
+            {
+              title: form.personName,
+              color: colors.transparent,
+              start: new Date(form.startTime),
+              end: new Date(form.endTime),
+              meta: {
+                icon: 'cnas',
+                cssClass: 'bg-green'
+              }
+            }
+          ));
+        return formattedEvent;
+        });
+        this.events = appt;
+
+      });
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
