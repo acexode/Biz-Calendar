@@ -140,8 +140,13 @@ componentFormGroup: FormGroup = this.fb.group({
   toggleMoreField() {
     this.addMoreField = !this.addMoreField;
   }
+  add() {
+    if (this.formGroupValidity) {
+      this.closeModal();
+    }
+  }
   closeModal() {
-    this.modalController.dismiss({
+      this.modalController.dismiss({
       dismissed: true,
       data: null
     });
