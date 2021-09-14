@@ -100,6 +100,11 @@
   color: var(--color) !important;
 }
 
+.primary-color-step-5 {
+  --background: var(--ion-primary-color-step-5);
+  background: var(--background) !important;
+}
+
 @media (min-width: $desktop-width) {
   .web-grey-light-b-bg-color {
     --background: var(--ion-neutral-grey-light-b-color) !important;
