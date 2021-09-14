@@ -1,0 +1,106 @@
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="modal-div-body">
+    <div class="modal-div-header white-bg">
+      <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
+
+          <ion-buttons slot="start" class="slot-start" (click)="closeModal()">
+
+            <ion-icon name="close" class="icon-24 black-color" slot="icon-only"></ion-icon>
+
+          </ion-buttons>
+
+          <ion-title>Pacient nou</ion-title>
+
+          <div slot="end">
+            <ion-button size="small" color="biz-primary" *ngIf="addMoreField">
+              SALVEAZĂ
+            </ion-button>
+            <ion-button class="mr-8" color="biz-disabled-primary" size="small" *ngIf="!addMoreField">
+              SALVEAZĂ
+            </ion-button>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+    </div>
+
+      <div class="primary-color-step-5 px-18 py-16 mt-80"
+      >
+        <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 ls-0">
+          Completarea câmpurilor de mai jos este obligatorie pentru a putea salva un profil nou.
+        </ion-text>
+      </div>
+
+      <div class="" [formGroup]="componentFormGroup" >
+
+        <div class="p-32 bottom-1px-solid-grey-default-color">
+
+          <div>
+            <app-input [config]="numeConfig" formControlName="nume" class="w-100"></app-input>
+          </div>
+
+          <div class="mt-32">
+            <app-input [config]="preNumeConfig" formControlName="preNume" class="w-100"></app-input>
+          </div>
+
+          <div class="my-32">
+            <app-input [config]="dateNasteriiConfig" formControlName="dateNasterii" class="w-100"></app-input>
+          </div>
+
+          <div>
+            <app-radios [config]="sexRadioConfig" [options]="sexOption" formControlName="sex" class="w-100">
+            </app-radios>
+          </div>
+
+        </div>
+
+        <div class="p-32">
+
+          <div class="">
+
+            <ion-chip class="chip" outline="true" color="biz-chip-secondary" *ngIf="!addMoreField" (click)="toggleMoreField()">
+              <ion-label>
+                Adaugă mai multe câmpuri
+              </ion-label>
+              <ion-icon name="plus"></ion-icon>
+            </ion-chip>
+
+            <ion-chip class="chip" outline="true" color="biz-chip-secondary" *ngIf="addMoreField" (click)="toggleMoreField()">
+              <ion-label>
+              Mai puține câmpuri
+              </ion-label>
+              <ion-icon name="minus"></ion-icon>
+            </ion-chip>
+
+          </div>
+
+          <div *ngIf="addMoreField">
+
+            <div class="mt-32">
+              <app-input [config]="telePhoneConfig" formControlName="telephone" class="w-100"></app-input>
+            </div>
+            <div class="my-32">
+              <app-input [config]="cnpConfig" formControlName="cnp" class="w-100"></app-input>
+            </div>
+            <div>
+              <app-select [config]="judetConfig" formControlName="judet" [options]="judetOption" class="w-100">
+              </app-select>
+            </div>
+            <div class="mt-32">
+              <app-select [config]="orasConfig" formControlName="oras" [options]="judetOption" class="w-100">
+              </app-select>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+
+
+</ion-content>

@@ -8,6 +8,7 @@ import { BizInputsModule } from '../../modules/biz-inputs/biz-inputs.module';
 import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.component';
 import { MedicModalComponent } from './medic-modal/medic-modal.component';
 import { PacientComponent } from './pacient/pacient.component';
+import { NewPacientModalComponent } from './new-pacient-modal/new-pacient-modal.component';
 
 
 
@@ -17,7 +18,8 @@ import { PacientComponent } from './pacient/pacient.component';
     InfoPacientModalComponent,
     BizRadioModalComponent,
     MedicModalComponent,
-    PacientComponent
+    PacientComponent,
+    NewPacientModalComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +32,8 @@ import { PacientComponent } from './pacient/pacient.component';
     InfoPacientModalComponent,
     BizRadioModalComponent,
     MedicModalComponent,
-    PacientComponent
+    PacientComponent,
+    NewPacientModalComponent
   ]
 })
 export class ModalModule { }
