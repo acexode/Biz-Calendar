@@ -9,6 +9,8 @@ import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.compon
 import { MedicModalComponent } from './medic-modal/medic-modal.component';
 import { PacientComponent } from './pacient/pacient.component';
 import { NewPacientModalComponent } from './new-pacient-modal/new-pacient-modal.component';
+import { GrupNouModalComponent } from './grup-nou-modal/grup-nou-modal.component';
+import { PacientViewModalComponent } from './pacient-view-modal/pacient-view-modal.component';
 
 
 
@@ -19,7 +21,9 @@ import { NewPacientModalComponent } from './new-pacient-modal/new-pacient-modal.
     BizRadioModalComponent,
     MedicModalComponent,
     PacientComponent,
-    NewPacientModalComponent
+    NewPacientModalComponent,
+    GrupNouModalComponent,
+    PacientViewModalComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +37,9 @@ import { NewPacientModalComponent } from './new-pacient-modal/new-pacient-modal.
     BizRadioModalComponent,
     MedicModalComponent,
     PacientComponent,
-    NewPacientModalComponent
+    NewPacientModalComponent,
+    GrupNouModalComponent,
+    PacientViewModalComponent
   ]
 })
 export class ModalModule { }
