@@ -64,7 +64,7 @@ export class NewPacientModalComponent implements OnInit {
   });
   emailConfig = inputConfigHelper({
     label: 'Email',
-    type: 'text',
+    type: 'email',
     placeholder: '',
   });
   cnpConfig = inputConfigHelper({
