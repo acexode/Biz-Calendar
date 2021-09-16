@@ -27,6 +27,8 @@
         personHasArrived: boolean;
         isPrivateCLN: boolean;
         consultationID: number;
+        colorCode: string;
+        icons: [];
         infPacient: string;
         subject: string;
         priorityOrder: number;
