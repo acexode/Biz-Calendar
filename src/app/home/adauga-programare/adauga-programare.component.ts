@@ -12,7 +12,6 @@ import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-con
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { TextAreaConfig } from 'src/app/shared/models/components/ion-textarea-config';
 import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
-import { get } from 'lodash';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { Router } from '@angular/router';
@@ -21,6 +20,12 @@ import { RecurentaModel } from '../recurenta/models/recurenta.model';
 import { BizRadioModalComponent } from 'src/app/shared/components/modal/biz-radio-modal/biz-radio-modal.component';
 import { MedicModalComponent } from 'src/app/shared/components/modal/medic-modal/medic-modal.component';
 import { PacientComponent } from 'src/app/shared/components/modal/pacient/pacient.component';
+import { GrupNouModalComponent } from 'src/app/shared/components/modal/grup-nou-modal/grup-nou-modal.component';
+import
+{ BizSearchableRadioModalComponent }
+  from
+  'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
+import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -229,6 +234,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: 'Sala de Operație 1', id: 'Sala de Operație 1' },
     { label: 'Sala de Operație 2', id: 'Sala de Operație 2' },
   ];
+  adugaOptions:  Array<IonRadioInputOption> = [
+    { label: 'O persoană', id: 'O persoană' },
+    { label: 'Un grup', id: 'Un grup' },
+  ];
 
   aparaturaConfig: BizCustomSelectionConfig = {
     placeholder: 'Alege',
@@ -271,6 +280,52 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         this.process(data);
       });
   }
+  async presentNewPacientModal() {
+    const modal = await this.modalController.create({
+      component: NewPacientModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
+  }
+   async presentBizRadioModal() {
+    const modal = await this.modalController.create({
+      component: BizRadioModalComponent,
+      cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
+      backdropDismiss: true,
+      componentProps: {
+        options: this.adugaOptions
+      },
+    });
+     await modal.present();
+      const {data} = await modal.onWillDismiss();
+     const { radioValue } = data;
+     switch (radioValue) {
+       case this.adugaOptions[0].label:
+         this.presentNewPacientModal();
+         break;
+       case this.adugaOptions[1].label:
+         this.presentGrupModal();
+         break;
+       default:
+         break;
+     }
+  }
+  async presentGrupModal() {
+    const modal = await this.modalController.create({
+      component: GrupNouModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: false,
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    const {dismissed , data} = d?.data;
+    if(dismissed && data !== '') {
+      this.adaugaProgramareFormGroup.patchValue({pacient: data});
+    }
+  }
   async presentPacient() {
     const modal = await this.modalController.create({
       component: PacientComponent,
@@ -288,7 +343,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   async presentModalRadio() {
     const modal = await this.modalController.create({
-      component: BizRadioModalComponent,
+      component: BizSearchableRadioModalComponent,
       cssClass: 'biz-modal-class',
       backdropDismiss: false,
       componentProps: {
@@ -302,17 +357,14 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
     }
   }
-  async presentModal() {
+  async presentInfoPacientModalModal() {
     const modal = await this.modalController.create({
       component: InfoPacientModalComponent,
       cssClass: 'biz-modal-class-type-a',
-      backdropDismiss: false,
-      componentProps: {
-        // data:
-      },
+      backdropDismiss: true,
+      componentProps: {},
     });
     await modal.present();
-    // const { data } = await modal.onWillDismiss();
   }
   async presentModalB() {
     const modal = await this.modalController.create({
@@ -339,15 +391,30 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     console.log(data);
     this.recurentaDetails = data?.recurentaData;
   }
+  async presentMedicModal() {
+    const modal = await this.modalController.create({
+      component: MedicModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: false,
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    console.log(d);
+    const {dismissed , data} = d?.data;
+    if(dismissed && data !== '') {
+      this.adaugaProgramareFormGroup.patchValue({medic: data});
+    }
+  }
   process(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
       this.isAparaturaOnLine = true;
-      // this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
-      // this.locatieConfigPlaceholder = 'Optional';
+      this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
+      this.locatieConfigPlaceholder = 'Optional';
     } else {
       this.isAparaturaOnLine = false;
-      // this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
-      // this.locatieConfigPlaceholder = 'Required';
+      this.adaugaProgramareFormGroup.controls.locatie.setValidators(Validators.required);
+      this.locatieConfigPlaceholder = 'Required';
     }
     this.locatieFormControl.updateValueAndValidity();
   }
@@ -374,21 +441,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
-  }
-  async presentMedicModal() {
-    const modal = await this.modalController.create({
-      component: MedicModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
-      componentProps: {},
-    });
-    await modal.present();
-    const d = await modal.onWillDismiss();
-    console.log(d);
-    const {dismissed , data} = d?.data;
-    if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({medic: data});
-    }
   }
 
 }

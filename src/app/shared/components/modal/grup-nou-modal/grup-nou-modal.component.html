@@ -1,0 +1,79 @@
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="modal-div-body">
+    <div class="modal-div-header white-bg">
+      <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
+
+          <ion-buttons slot="start" class="slot-start" (click)="closeModal()">
+
+            <ion-icon name="close" class="icon-24 black-color" slot="icon-only"></ion-icon>
+
+          </ion-buttons>
+
+          <ion-title>Grup nou</ion-title>
+
+          <div slot="end">
+            <ion-button class="mr-8" [color]="(formGroupValidity ? 'biz-primary' : 'biz-disabled-primary')" size="small"
+              (click)="add()">
+              SALVEAZĂ
+            </ion-button>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+    </div>
+
+    <div class="mt-64" [formGroup]="componentFormGroup">
+
+      <div class="p-32">
+
+        <div class="">
+          <app-input [config]="numeGrupConfig" formControlName="numeGrup" class="w-100"></app-input>
+        </div>
+
+        <div class="py-16" *ngIf="checkedData">
+          <div class="flex flex-row ion-align-items-start my-16" *ngFor="let item of checkedData">
+            <div class="mr-24">
+              <ion-icon name="delete" class="icon-24 defaultGrayColor" (click)="unCheckItem(item.value)"></ion-icon>
+            </div>
+            <div class="flex flex-column" (click)="presentPacientViewModal()">
+              <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
+                {{item.first}}
+              </p>
+              <p class="m-0">
+                <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+                  {{item.second}}
+                </ion-text>
+                <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                  /
+                </ion-text>
+                <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                  {{item.third}}
+                </ion-text>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="mt-32">
+          <ion-chip class="chip" outline="true" color="biz-chip-secondary" (click)="presentSelectModal()">
+            <ion-label>
+              ADAUGA MEMBRI
+            </ion-label>
+            <ion-icon name="user-new"></ion-icon>
+          </ion-chip>
+        </div>
+
+      </div>
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+</ion-content>

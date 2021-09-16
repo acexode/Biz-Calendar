@@ -134,9 +134,7 @@ componentFormGroup: FormGroup = this.fb.group({
   });
   constructor(private fb: FormBuilder, private modalController: ModalController) { }
 
-  ngOnInit() {
-    console.log(this.formGroupValidity);
-   }
+  ngOnInit() {}
   toggleMoreField() {
     this.addMoreField = !this.addMoreField;
   }

@@ -7,6 +7,7 @@ import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { IonInputConfig } from 'src/app/shared/models/components/ion-input-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
+import { GrupNouModalComponent } from '../grup-nou-modal/grup-nou-modal.component';
 import { NewPacientModalComponent } from '../new-pacient-modal/new-pacient-modal.component';
 
 
@@ -197,6 +198,16 @@ export class PacientComponent implements OnInit, OnDestroy {
   async presentPacientnew() {
     const modal = await this.modalController.create({
       component: NewPacientModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: false,
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+  }
+   async presentGrupNouModal() {
+    const modal = await this.modalController.create({
+      component: GrupNouModalComponent,
       cssClass: 'biz-modal-class',
       backdropDismiss: false,
       componentProps: {},
