@@ -118,7 +118,7 @@ export class GrupNouModalComponent implements OnInit {
     });
   }
   get formGroupValidity() {
-    return this.componentFormGroup.valid;
+    return this.componentFormGroup.valid && this.checkedData.length > 0;
   }
   async presentSelectModal() {
     const modal = await this.modalController.create({
