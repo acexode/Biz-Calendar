@@ -62,6 +62,11 @@ export class NewPacientModalComponent implements OnInit {
       }
     }
   });
+  emailConfig = inputConfigHelper({
+    label: 'Email',
+    type: 'text',
+    placeholder: '',
+  });
   cnpConfig = inputConfigHelper({
     label: 'CNP',
     type: 'text',
@@ -91,7 +96,8 @@ export class NewPacientModalComponent implements OnInit {
         name: 'caret-down',
         classes: 'neutral-grey-medium-color'
       }
-   };
+  };
+
   judetOption = [
     {
       id: 'Alba',
@@ -102,6 +108,25 @@ export class NewPacientModalComponent implements OnInit {
       label: 'Arad'
     }
   ];
+  canalDePromovareConfig: IonSelectConfig = {
+      inputLabel: {
+        classes: '',
+        text: 'Canal de Promovare',
+      },
+      forceListItems: false,
+      multiple: false,
+     disabled: false,
+      placeholder: '',
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'id',
+      labelKey: 'label',
+      useIcon: {
+        name: 'caret-down',
+        classes: 'neutral-grey-medium-color'
+      }
+   };
   orasConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
@@ -128,8 +153,10 @@ componentFormGroup: FormGroup = this.fb.group({
   dateNasterii: ['', [Validators.required]],
   sex: ['', [Validators.required]],
   telephone: '',
+  email: '',
   cnp:'',
   judet: '',
+  canalDePromovare: '',
   oras: ''
   });
   constructor(private fb: FormBuilder, private modalController: ModalController) { }

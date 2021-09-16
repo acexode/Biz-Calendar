@@ -77,10 +77,17 @@
               <app-input [config]="telePhoneConfig" formControlName="telephone" class="w-100"></app-input>
             </div>
             <div class="my-32">
+              <app-input [config]="emailConfig" formControlName="email" class="w-100"></app-input>
+            </div>
+            <div class="my-32">
               <app-input [config]="cnpConfig" formControlName="cnp" class="w-100"></app-input>
             </div>
             <div>
               <app-select [config]="judetConfig" formControlName="judet" [options]="judetOption" class="w-100">
+              </app-select>
+            </div>
+            <div>
+              <app-select [config]="canalDePromovareConfig" formControlName="canalDePromovare" [options]="judetOption" class="w-100">
               </app-select>
             </div>
             <div class="mt-32">
