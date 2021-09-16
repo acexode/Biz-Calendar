@@ -8,14 +8,15 @@ import { IonicModule } from '@ionic/angular';
 import { DataStatisticePageRoutingModule } from './data-statistice-routing.module';
 
 import { DataStatisticePage } from './data-statistice.page';
-
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     SharedModule,
-    DataStatisticePageRoutingModule
+    DataStatisticePageRoutingModule,
+    NgChartsModule
   ],
   declarations: [DataStatisticePage]
 })

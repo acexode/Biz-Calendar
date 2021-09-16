@@ -28,9 +28,11 @@
     "@ionic/angular": "^5.5.2",
     "angular-calendar": "^0.28.26",
     "capacitor-secure-storage-plugin": "^0.6.2",
+    "chart.js": "^3.5.1",
     "date-fns": "^2.16.1",
     "ionic2-calendar": "^0.6.9",
     "lodash": "^4.17.21",
+    "ng2-charts": "^3.0.0-rc.5",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

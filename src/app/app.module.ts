@@ -13,6 +13,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BasicAuthInterceptor } from './core/guards/basic-auth.interceptor';
 import { ErrorInterceptor } from './core/guards/error.interceptor';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

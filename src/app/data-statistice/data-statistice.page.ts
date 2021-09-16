@@ -1,3 +1,4 @@
+import { NumarDeProgramariComponent } from './../shared/components/numar-de-programari/numar-de-programari.component';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,6 +9,7 @@ import { SelectieServiciiModalComponent } from '../shared/components/modal/selec
 import { BizCustomSelectionConfig } from '../shared/models/components/biz-custom-selection-config';
 
 import { DemoCheckList } from '../style-guide/components/selection/selection.component';
+import { ChartOptions, Color } from 'chart.js';
 
 @Component({
   selector: 'app-data-statistice',
@@ -15,70 +17,54 @@ import { DemoCheckList } from '../style-guide/components/selection/selection.com
   styleUrls: ['./data-statistice.page.scss'],
 })
 export class DataStatisticePage implements OnInit {
-
-
-  checkList: DemoCheckList[] = [
+  public lineChartData = [
+    { data: [65, 59, 80, 81, 56, 55, 40] },
+  ];
+  public lineChartLabels= ['S9', 'S10', 'S11', 'S12', 'S13'];
+  public lineChartOptions = {
+    responsive: true,
+  };
+  public lineChartColors = [
     {
-      first: 'Consultație peste vârsta de 4 ani',
-      second: 'Servicii paraclinice',
-      third: '10,80 pt.',
-      value: 'Consultație',
-      checked: false
-    },
-    {
-      first: 'Ecografie generală (abdomen + pelvis)',
-      second: 'Servicii paraclinice',
-      third: '23,45 pt.',
-      value: 'Ecografie generală',
-      checked: false
-    },
-    {
-      first: 'Ecografie abdominală',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'Ecografie abdominală',
-      checked: false
-    },
-    {
-      first: 'EKG standard',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'EKG',
-      checked: false
-    },
-    {
-      first: 'Consult peste 4 ani',
-      second: 'Consultație',
-      third: '5 pt.',
-      value: 'Consult',
-      checked: false
-    },
-    {
-      first: 'Spirometrie',
-      second: 'Servicii paraclinice',
-      third: '23 pt.',
-      value: 'Spirometrie',
-      checked: false
-    },
-    {
-      first: 'Pulsoximetrie',
-      second: 'Servicii paraclinice',
-      third: '10 pt.',
-      value: 'Pulsoximetrie',
-      checked: false
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,0,0,0.3)',
     },
   ];
-
-
-  aparaturaConfig: BizCustomSelectionConfig = {
-    placeholder: 'Alege',
-    inputLabel: {
-      text: 'Tip de date'
+  public lineChartLegend = true;
+  public lineChartType = 'line';
+  public lineChartPlugins = [];
+  list = [
+    {
+      label:'Număr de programări',
+      icon: 'bar-chart',
+    },
+    {
+      label:'Încasări',
+      icon: 'paid',
+    },
+    {
+      label:'Servicii C.N.A.S. vs. Cu plată',
+      icon: 'privat',
+    },
+    {
+      label:'Programări active vs. anulate',
+      icon: 'default',
+    },
+    {
+      label:'Programări vs. consultații efectuate',
+      icon: 'consult',
+    },
+    {
+      label:'Pacienți noi vs. recurenți',
+      icon: 'users',
     }
-  };
+  ];
+
+  selected = this.list[0].label;
+
 
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
-
+    numar: this.list[0].label
   });
   isWed = false;
 
@@ -100,12 +86,18 @@ export class DataStatisticePage implements OnInit {
 
   async presentModalB() {
     const modal = await this.modalController.create({
-      component: SelectieServiciiModalComponent,
+      component: NumarDeProgramariComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        checkList: this.checkList,
+        list: this.list,
       },
     });
+    modal.onDidDismiss()
+    .then((data) => {
+      console.log(data);
+      console.log(data.data.label);
+      this.adaugaProgramareFormGroup.get('numar').setValue(data.data.label);
+  });
     await modal.present();
   }
   save(): void {
