@@ -13,11 +13,11 @@
           <ion-title>Pacient</ion-title>
 
           <div slot="end" class="flex flex-row ion-align-items-center">
-            <ion-button class="biz-tertiary p-0" size="default-flat">
+            <ion-button class="biz-tertiary p-0" size="default-flat" (click)="closeModal(true, 'edit')">
               <ion-icon name="edit" class="icon-24 black-color" slot="icon-only"></ion-icon>
             </ion-button>
             <div class="p-0 ml-24">
-              <ion-button class="biz-tertiary p-0" size="default-flat">
+              <ion-button class="biz-tertiary p-0" size="default-flat" (click)="closeModal(true, 'delete')">
                 <ion-icon name="delete" class="icon-24 black-color" slot="icon-only"></ion-icon>
               </ion-button>
             </div>
@@ -32,7 +32,7 @@
         <div class="mr-16">
           <ion-icon name="user" class="icon-24 defaultGrayColor" slot="icon-only"></ion-icon>
         </div>
-        <ion-label class="s20-h28 text-weight-medium roboto-family-font ls-0">Angela Ghica Protopopescu</ion-label>
+        <ion-label class="s20-h28 text-weight-medium roboto-family-font ls-0">{{data?.first}}</ion-label>
       </div>
 
       <div class="flex flex-row ion-align-items-start mb-32">

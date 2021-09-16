@@ -19,6 +19,7 @@ export interface DemoPatientData {
   fifth?: string;
   sixth?: string;
   value: string;
+  list?: Array<any>;
 }
 
 
@@ -213,7 +214,10 @@ export class PacientComponent implements OnInit, OnDestroy {
       componentProps: {},
     });
     await modal.present();
-    const d = await modal.onWillDismiss();
+     const { data } = await modal.onWillDismiss();
+     if (data.data) {
+      this.grupuris.push(data.data);
+     }
   }
   ngOnInit(): void {
     // load check list to list

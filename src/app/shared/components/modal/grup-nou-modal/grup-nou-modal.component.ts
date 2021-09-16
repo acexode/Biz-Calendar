@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
+import { NewPacientModalComponent } from '../new-pacient-modal/new-pacient-modal.component';
 import { PacientViewModalComponent } from '../pacient-view-modal/pacient-view-modal.component';
 import { SelectieServiciiModalComponent } from '../selectie-servicii-modal/selectie-servicii-modal.component';
 
@@ -110,11 +111,20 @@ export class GrupNouModalComponent implements OnInit {
   constructor(private fb: FormBuilder, private modalController: ModalController) { }
 
   ngOnInit() {}
-  add(){}
-  closeModal() {
+  add() {
+    if (this.formGroupValidity) {
+      this.closeModal({
+      first: this.componentFormGroup.value.numeGrup,
+      second: this.checkedData.length,
+      third: ' ',
+      value: 'this.componentFormGroup.value.numeGrup',
+    });
+    }
+  }
+  closeModal(data: any = null) {
       this.modalController.dismiss({
       dismissed: true,
-      data: null
+      data,
     });
   }
   get formGroupValidity() {
@@ -132,17 +142,46 @@ export class GrupNouModalComponent implements OnInit {
     const { data } = await modal.onWillDismiss();
     console.log(data);
   }
-  async presentPacientViewModal() {
+  async presentPacientViewModal(item: any) {
     const modal = await this.modalController.create({
       component: PacientViewModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        checkList: this.checkList,
+        data: item,
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
+    if (typeof data?.data !== null) {
+      switch (data?.action) {
+        case 'edit':
+          this.presentNewPacientModal(
+            {
+              nume: data?.data?.first,
+              preNume: 'Dummy',
+              dateNasterii: '2021-08-08',
+              sex: 'Feminin',
+            }
+          );
+          break;
+        case 'delete':
+          this.unCheckItem(data?.data?.value);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+  async presentNewPacientModal(data: any) {
+    const modal = await this.modalController.create({
+      component: NewPacientModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: true,
+      componentProps: {
+        data,
+      },
+    });
+    await modal.present();
   }
   get checkedData() {
     return this.checkList.filter((v: DemoCheckList) => v.checked === true);

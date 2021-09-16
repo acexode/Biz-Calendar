@@ -35,7 +35,7 @@
             <div class="mr-24">
               <ion-icon name="delete" class="icon-24 defaultGrayColor" (click)="unCheckItem(item.value)"></ion-icon>
             </div>
-            <div class="flex flex-column" (click)="presentPacientViewModal()">
+            <div class="flex flex-column" (click)="presentPacientViewModal(item)">
               <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
                 {{item.first}}
               </p>
