@@ -32,15 +32,15 @@ export class CalendarListComponent implements OnInit {
       const appt = uniqDates.map(unq =>{
         const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
         const formattedEvent = ev.map(form =>{
-          const icons = form.icons.map(this.iconCode);
+          const icons = new Set(form.icons.map(this.iconCode));
           return {
             id: form.uid,
-            icons,
+            icons: [...icons],
             title: form.personName,
             time: '09:00 - 09:30',
             desc: form.subject,
             location: 'Buc. Aviatori',
-            class: tempBg[Math.floor(Math.random()*tempBg.length)],
+            class: this.colorCode(form.colorCode),
           };
         });
       return {
@@ -56,30 +56,29 @@ export class CalendarListComponent implements OnInit {
   colorCode(code){
     let cssClass;
     switch (code) {
-      case '1CS':
-        cssClass = 'green-bg';
-        break;
       case '1CY':
-        cssClass = 'green-bg';
+        return 'green-bg';
+        break;
+      case '1OY':
+        return 'blue-bg';
         break;
       case '1CN':
-         cssClass = 'green-pattern';
+        return 'green-pattern';
+        break;
+      case '1ON':
+        return 'blue-pattern';
         break;
       case '1N':
-        cssClass = 'yellow-bg';
+        return 'note-bg';
         break;
-      case 4:
-        cssClass = 'Thursday';
+      case '1WM':
+        return 'warning-bg';
         break;
-      case 5:
-        cssClass = 'Friday';
-        break;
-      case 6:
-        cssClass = 'Saturday';
+      case '1NUL':
+        return 'cancelled-bg';
     }
   }
   iconCode(code){
-    
     switch (code) {
       case 1:
         return 'partially-paid';
