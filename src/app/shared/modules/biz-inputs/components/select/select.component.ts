@@ -201,6 +201,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
     } else {
       value = obj;
     }
+    console.log('write', obj);
     this.formGroup.setValue({ select: obj });
     this.formGroup.updateValueAndValidity();
     this.setCustomError();

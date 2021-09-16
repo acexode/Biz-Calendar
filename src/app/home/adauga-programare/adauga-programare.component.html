@@ -5,7 +5,7 @@
       <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
         <ion-toolbar class="ion-no-padding">
 
-          <ion-buttons slot="start" class="slot-start">
+          <ion-buttons slot="start" class="slot-start" routerLink="/calendar">
 
             <ion-icon
               name="close"
@@ -29,10 +29,23 @@
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
           <div class="w-100 pt-30 px-32">
-            <app-input
-              [config]="pacientInputConfig"
-              formControlName="pacient"
-            ></app-input>
+
+            <ng-container>
+              <div class="biz-custom-select-div" (click)="presentPacient()">
+                <ion-label>{{pacientInputConfig.inputLabel.text}}</ion-label>
+                <div [class]="'biz-custom-select border-light-grey'">
+                  <div class="input-select-display">
+
+                    <input type="text" formControlName="pacient" readonly>
+
+                  </div>
+                  <div class="icon">
+                    <ion-icon name="search-custom" [class]="'icon-24 neutral-grey-medium-color'"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
           </div>
 
           <div class="w-100 p-32 flex flex-row ion-justify-content-between">
@@ -83,7 +96,6 @@
 
         <div class="w-100 px-32 pb-32">
             <app-radios
-
               [config]="tipprogramareConfig"
               [options]="tipprogramareOption"
               formControlName="tipprogramare"
@@ -94,11 +106,13 @@
 
         <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
           <app-select
-          [config]="islocatieConfig(locatieConfigPlaceholder)"
+          [config]="l"
           formControlName="locatie"
           [options]="locatieOption"
           class="w-100"
-          ></app-select>
+          >
+        </app-select>
+
         </div>
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
