@@ -15,9 +15,7 @@ export class BizCustomSelectionComponent implements OnInit {
   @Output() removeItemEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.filtercustomComponentData);
-  }
+  ngOnInit() {}
   removeChips(event: any, item: string): void {
     // IOS is a mess. Stop propagating the event to the input under the buttons.
     this.stopModalPropagation(event);

@@ -1,19 +1,20 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { get } from 'lodash';
 import { Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
-import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
-import { get } from 'lodash';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
+import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
 
 @Component({
-  selector: 'app-biz-radio-modal',
-  templateUrl: './biz-radio-modal.component.html',
-  styleUrls: ['./biz-radio-modal.component.scss'],
+  selector: 'app-biz-searchable-radio-modal',
+  templateUrl: './biz-searchable-radio-modal.component.html',
+  styleUrls: ['./biz-searchable-radio-modal.component.scss'],
 })
-export class BizRadioModalComponent implements OnInit, OnDestroy {
+export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
+
   @Input() config!: IonRadiosConfig;
   @Input() @Input() set options(opts: Array<IonRadioInputOption>) {
     this.opts = opts ? opts : [];
@@ -53,10 +54,10 @@ export class BizRadioModalComponent implements OnInit, OnDestroy {
     private cdRef: ChangeDetectorRef,
   ) {}
   ngOnInit(): void {}
-  closeModal(closeStatus: boolean = true) {
+  closeModal() {
     this.modalController.dismiss({
       dismissed: true,
-      radioValue: closeStatus ? null : this.controlValue,
+      radioValue: this.controlValue,
     });
   }
   checkRadio(event: any) {
@@ -91,4 +92,5 @@ export class BizRadioModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
   }
+
 }

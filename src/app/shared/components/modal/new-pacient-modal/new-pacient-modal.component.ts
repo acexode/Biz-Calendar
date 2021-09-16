@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
@@ -12,6 +12,7 @@ import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-con
   styleUrls: ['./new-pacient-modal.component.scss'],
 })
 export class NewPacientModalComponent implements OnInit {
+  @Input() data!: any;
   numeConfig = inputConfigHelper({
     label: 'Nume',
     type: 'text',
@@ -62,6 +63,11 @@ export class NewPacientModalComponent implements OnInit {
       }
     }
   });
+  emailConfig = inputConfigHelper({
+    label: 'Email',
+    type: 'email',
+    placeholder: '',
+  });
   cnpConfig = inputConfigHelper({
     label: 'CNP',
     type: 'text',
@@ -91,7 +97,8 @@ export class NewPacientModalComponent implements OnInit {
         name: 'caret-down',
         classes: 'neutral-grey-medium-color'
       }
-   };
+  };
+
   judetOption = [
     {
       id: 'Alba',
@@ -102,6 +109,25 @@ export class NewPacientModalComponent implements OnInit {
       label: 'Arad'
     }
   ];
+  canalDePromovareConfig: IonSelectConfig = {
+      inputLabel: {
+        classes: '',
+        text: 'Canal de Promovare',
+      },
+      forceListItems: false,
+      multiple: false,
+     disabled: false,
+      placeholder: '',
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'id',
+      labelKey: 'label',
+      useIcon: {
+        name: 'caret-down',
+        classes: 'neutral-grey-medium-color'
+      }
+   };
   orasConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
@@ -122,21 +148,25 @@ export class NewPacientModalComponent implements OnInit {
       }
   };
   addMoreField = false;
-componentFormGroup: FormGroup = this.fb.group({
-  nume: ['', [Validators.required]],
-  preNume: ['', [Validators.required]],
-  dateNasterii: ['', [Validators.required]],
-  sex: ['', [Validators.required]],
-  telephone: '',
-  cnp:'',
-  judet: '',
-  oras: ''
+  componentFormGroup: FormGroup = this.fb.group({
+    nume: ['', [Validators.required]],
+    preNume: ['', [Validators.required]],
+    dateNasterii: ['', [Validators.required]],
+    sex: ['', [Validators.required]],
+    telephone: '',
+    email: '',
+    cnp:'',
+    judet: '',
+    canalDePromovare: '',
+    oras: ''
   });
   constructor(private fb: FormBuilder, private modalController: ModalController) { }
 
   ngOnInit() {
-    console.log(this.formGroupValidity);
-   }
+    if (this.data) {
+      this.componentFormGroup.patchValue(this.data);
+    }
+  }
   toggleMoreField() {
     this.addMoreField = !this.addMoreField;
   }
