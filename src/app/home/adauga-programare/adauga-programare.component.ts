@@ -321,9 +321,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const d = await modal.onWillDismiss();
-    const {dismissed , data} = d?.data;
+    const { dismissed, data } = d?.data;
     if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({pacient: data});
+      this.adaugaProgramareFormGroup.patchValue({pacient: data?.first});
     }
   }
   async presentPacient() {
