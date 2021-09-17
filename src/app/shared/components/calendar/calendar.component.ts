@@ -75,7 +75,7 @@ function getTimezoneOffsetString(date: Date): string {
       provide: CalendarDateFormatter,
       useClass: CustomDateFormatter,
     },
-  ],
+  ]
 })
 export class CalendarComponent implements OnInit {
 
@@ -127,7 +127,7 @@ export class CalendarComponent implements OnInit {
 
     ngOnInit() {
       this.calS.selectedDate.subscribe(e =>{
-        console.log(e)
+        console.log(e);
         this.viewDate = new Date(e);
       });
       this.getEventLists();
