@@ -26,7 +26,6 @@ export class CalendarListComponent implements OnInit {
 
   getEventLists(){
     this.calS.appointments$.subscribe(e =>{
-      const tempBg = ['green-bg', 'blue-bg', 'yellow-bg', 'orange-bg', 'green-pattern', 'gray-bg', 'blue-pattern'];
       const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
       const uniqDates = [...new Set(dates)];
       const appt = uniqDates.map(unq =>{
