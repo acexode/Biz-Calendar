@@ -60,7 +60,7 @@
         endDate: string;
     }
 
-    export interface AppointmenetResponse {
+    export interface AppointmentResponse {
         errorMessage: string;
         errorCode: number;
         insertedUID: string;

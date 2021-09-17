@@ -32,7 +32,7 @@ export class CalendarListComponent implements OnInit {
       const appt = uniqDates.map(unq =>{
         const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
         const formattedEvent = ev.map(form =>{
-          const icons = new Set(form.icons.map(this.iconCode));
+          const icons = new Set(form.icons.map(this.calS.iconCode));
           return {
             id: form.uid,
             icons: [...icons],
@@ -40,7 +40,7 @@ export class CalendarListComponent implements OnInit {
             time: '09:00 - 09:30',
             desc: form.subject,
             location: 'Buc. Aviatori',
-            class: this.colorCode(form.colorCode),
+            class: this.calS.colorCode(form.colorCode),
           };
         });
       return {
@@ -53,57 +53,6 @@ export class CalendarListComponent implements OnInit {
       console.log(appt);
     });
   }
-  colorCode(code){
-    let cssClass;
-    switch (code) {
-      case '1CY':
-        return 'green-bg';
-        break;
-      case '1OY':
-        return 'blue-bg';
-        break;
-      case '1CN':
-        return 'green-pattern';
-        break;
-      case '1ON':
-        return 'blue-pattern';
-        break;
-      case '1N':
-        return 'note-bg';
-        break;
-      case '1WM':
-        return 'warning-bg';
-        break;
-      case '1NUL':
-        return 'cancelled-bg';
-    }
-  }
-  iconCode(code){
-    switch (code) {
-      case 1:
-        return 'partially-paid';
-        break;
-      case 2:
-        return 'green-bg';
-        break;
-      case 3:
-         return 'notificare';
-        break;
-      case 4:
-        return 'cnas';
-        break;
-      case 5:
-        return 'nou';
-        break;
-      case 6:
-        return 'recurrenta';
-        break;
-      case 7:
-        return 'note';
-        break;
-      case 8:
-        return 'cancelled';
-    }
-  }
+
 
 }

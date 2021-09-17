@@ -1,6 +1,8 @@
-import { CalendarService } from './../../../core/services/calendar/calendar.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
+
+import { AppointmentResponse, Appointment } from './../../../core/models/appointment.interface';
+import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, Input, OnInit,ChangeDetectionStrategy,ViewChild,
     TemplateRef,
     ViewEncapsulation} from '@angular/core';
@@ -16,6 +18,9 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     isSameMonth,
     addHours,
     format,
+    startOfMonth,
+    startOfWeek,
+    endOfWeek,
   } from 'date-fns';
   import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,28 +36,36 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
-  const colors: any = {
-    green: {
-      primary: '#D5EED1',
-      secondary: '#2EA81B',
-    },
-    blue: {
-      primary: '#D6E9FE',
-      secondary: '#3093F8',
-    },
-    yellow: {
-      primary: '#e7d597',
-      secondary: '#FFC715',
-    },
-    orange: {
-      primary: '#ecb986',
-      secondary: '#F77C00',
-    },
-    transparent: {
-      primary: 'white',
-      secondary: 'white',
-    },
-  };
+interface Film {
+  id: number;
+  title: string;
+  release_date: string;
+}
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF',
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA',
+  },
+};
+function getTimezoneOffsetString(date: Date): string {
+  const timezoneOffset = date.getTimezoneOffset();
+  const hoursOffset = String(
+    Math.floor(Math.abs(timezoneOffset / 60))
+  ).padStart(2, '0');
+  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
+  const direction = timezoneOffset > 0 ? '-' : '+';
+
+  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
+}
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -101,6 +114,7 @@ export class CalendarComponent implements OnInit {
     refresh: Subject<any> = new Subject();
 
     events = [];
+    events$: Observable<CalendarEvent[]>;
     activeDayIsOpen = true;
     eventSource;
     viewTitle;
@@ -113,6 +127,7 @@ export class CalendarComponent implements OnInit {
 
     ngOnInit() {
       this.calS.selectedDate.subscribe(e =>{
+        console.log(e)
         this.viewDate = new Date(e);
       });
       this.getEventLists();
@@ -136,30 +151,27 @@ export class CalendarComponent implements OnInit {
         }
         this.refresh.next();
     }
+
+
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        const tempBg = ['green-bg', 'blue-bg', 'yellow-bg', 'orange-bg', 'green-pattern', 'gray-bg', 'blue-pattern'];
-        const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
-        const uniqDates = [...new Set(dates)];
-        const appt = uniqDates.map(unq =>{
-          const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
-          const formattedEvent: CalendarEvent[] = ev.map(form =>(
-            {
-              title: form.personName,
-              color: colors.transparent,
-              start: new Date(form.startTime),
-              end: new Date(form.endTime),
-              meta: {
-                icon: 'cnas',
-                cssClass: 'bg-green'
-              }
-            }
-          ));
-        return formattedEvent;
-        });
+        const appt = e?.appointments.map(d => ({
+          start:  new Date(d.startTime + getTimezoneOffsetString(this.viewDate)),
+          end:  new Date(d.endTime + getTimezoneOffsetString(this.viewDate)),
+          title: d.personName,
+          color: colors.red,
+          actions: this.actions,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+        }));
         this.events = appt;
 
       });
+      console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
