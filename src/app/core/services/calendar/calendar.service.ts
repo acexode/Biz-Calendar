@@ -28,10 +28,10 @@ export class CalendarService {
         endDate: new Date(),
         physicianUID: physician.physicianUID
       };
-      console.log(e);
+      // console.log(e);
       return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
-        console.log(res);
-        console.log(res);
+        /* console.log(res);
+        console.log(res); */
         this.appointments$.next(res.appointments);
       });
     });

@@ -12,6 +12,8 @@ import { NewPacientModalComponent } from './new-pacient-modal/new-pacient-modal.
 import { GrupNouModalComponent } from './grup-nou-modal/grup-nou-modal.component';
 import { PacientViewModalComponent } from './pacient-view-modal/pacient-view-modal.component';
 import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/biz-searchable-radio-modal.component';
+import { CabinetComponent } from './cabinet/cabinet.component';
+import { CalendarMainModule } from '../calendar/calendar.main.module';
 
 
 
@@ -25,13 +27,15 @@ import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/b
     NewPacientModalComponent,
     GrupNouModalComponent,
     PacientViewModalComponent,
-    BizSearchableRadioModalComponent
+    BizSearchableRadioModalComponent,
+    CabinetComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
-    BizInputsModule
+    BizInputsModule,
+    CalendarMainModule
   ],
   exports: [
     SelectieServiciiModalComponent,
@@ -42,7 +46,8 @@ import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/b
     NewPacientModalComponent,
     GrupNouModalComponent,
     PacientViewModalComponent,
-    BizSearchableRadioModalComponent
+    BizSearchableRadioModalComponent,
+    CabinetComponent
   ]
 })
 export class ModalModule { }

@@ -22,23 +22,19 @@ import { DayViewSchedulerComponent } from './components/comparativ/day-view-sche
 import { ModalModule } from './components/modal/modal.module';
 import { AddServiceSelectionComponent } from './components/add-service-selection/add-service-selection.component';
 import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
+import { CalendarMainModule } from './components/calendar/calendar.main.module';
 
 registerLocaleData(localeDe);
 
 
 @NgModule({
   declarations: [
-    CalendarComponent,
     SideMenuComponent,
-    CalendarListComponent,
     CalendarHeaderComponent,
     IconsComponent,
-    CalendarMonthComponent,
-    ComparativComponent,
-    DayViewSchedulerComponent,
+    // CalendarMonthComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
-    HourPipe
   ],
   imports: [
     CommonModule,
@@ -46,28 +42,25 @@ registerLocaleData(localeDe);
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    CalendarModule.forRoot({
+    /* CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    }),
+    }), */
     NgCalendarModule,
     BizInputsModule,
-    ModalModule
+    ModalModule,
+    CalendarMainModule
   ],
   exports: [
-    CalendarComponent,
     SideMenuComponent,
-    CalendarListComponent,
     CalendarHeaderComponent,
     IconsComponent,
     ReactiveFormsModule,
     BizInputsModule,
-    CalendarMonthComponent,
-    ComparativComponent,
-    DayViewSchedulerComponent,
+    // CalendarMonthComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
-    HourPipe
+    CalendarMainModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }

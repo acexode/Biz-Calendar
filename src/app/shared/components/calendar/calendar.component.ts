@@ -179,9 +179,10 @@ export class CalendarComponent implements OnInit {
       // console.log(addHours(new Date(), 3));
     }
 
-    ngOnInit() {
+  ngOnInit() {
+    console.log(this.display, this.viewDate, this.events);
       this.calS.selectedDate.subscribe(e =>{
-        this.viewDate = new Date(e);
+        // this.viewDate = new Date(e);
       });
       this.events = [
         {
@@ -276,6 +277,16 @@ export class CalendarComponent implements OnInit {
         //   },
         //   draggable: true,
         // },
+        {
+          title: 'Ereyomi Test',
+          color: colors.blue,
+          start: addDays(new Date(), 11),
+          end: addHours(addDays(new Date(), 11), 5),
+          meta: {
+            icon: 'nou',
+            cssClass: 'bg-green'
+          }
+        },
       ];
       this.isTablet = window.innerWidth >= 768 ? true : false;
       window.addEventListener('resize', ()=>{

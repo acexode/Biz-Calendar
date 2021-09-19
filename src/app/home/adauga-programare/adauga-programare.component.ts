@@ -26,6 +26,7 @@ import
   from
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
+import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -270,6 +271,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.presentCabinent();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -279,6 +281,15 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.process(data);
       });
+  }
+  async presentCabinent() {
+    const modal = await this.modalController.create({
+      component: CabinetComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
   }
   async presentNewPacientModal() {
     const modal = await this.modalController.create({
