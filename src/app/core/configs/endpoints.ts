@@ -19,3 +19,7 @@ export const appointmentEndpoints = {
   getAppointment: serverBaseUrl + '/BizCalendarService/GetAppointments',
   getUserPhysicians: serverBaseUrl + '/BizCalendarService/GetUsersPhysicians',
 };
+
+export const persons = {
+  addPerson: baseEndpoints.bizCalendarService + '/AddNewPerson',
+};
