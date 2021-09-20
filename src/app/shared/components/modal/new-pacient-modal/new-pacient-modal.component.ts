@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
@@ -173,7 +173,8 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
-    private reqS: RequestService
+    private reqS: RequestService,
+    public toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -190,7 +191,14 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
             this.getCities(d);
           }
         }
-      );
+    );
+  }
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000
+    });
+    toast.present();
   }
   getCountries() {
     this.getCountries$ = this.reqS.post(location.getCountries, {
@@ -207,7 +215,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
           console.log(this.judetOption);
           this.componentFormGroup.controls?.judet?.enable();
         },
-        err => console.log(err)
+        _err => this.presentToast('unable to get countries at this time. Please Check your newtwork and try again.')
       );
   }
   getCities(
@@ -226,7 +234,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         }));
         this.componentFormGroup.controls?.oras?.enable();
       },
-      err => console.log(err)
+      _err => this.presentToast('An error occur while trying to get cities at this time. Please Check your newtwork and try again.')
     );
   }
   toggleMoreField() {
@@ -253,8 +261,8 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
           this.toggleLoadingState();
           this.closeModal();
         },
-        err => {
-          console.log(err);
+        _err => {
+          this.presentToast('An error occur while trying to add new person. Please try again.');
           this.toggleLoadingState();
         }
       );
