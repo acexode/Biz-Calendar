@@ -15,7 +15,7 @@ import { DataStatisticePage } from './data-statistice.page';
     FormsModule,
     IonicModule,
     SharedModule,
-    DataStatisticePageRoutingModule
+    DataStatisticePageRoutingModule,
   ],
   declarations: [DataStatisticePage]
 })

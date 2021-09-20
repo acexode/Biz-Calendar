@@ -49,25 +49,45 @@ export class CalendarService {
   colorCode(code){
     switch (code) {
       case '1CY':
-        return 'green-bg';
+        return 'cabinet-confirmed-v1';
+        break;
+      case '2CY':
+        return 'cabinet-confirmed-v2';
         break;
       case '1OY':
-        return 'blue-bg';
+        return 'online-confirmed-v1';
+        break;
+      case '2OY':
+        return 'online-confirmed-v2';
         break;
       case '1CN':
-        return 'green-pattern';
+        return 'cabinet-not-confirmed-v1';
+        break;
+      case '2CN':
+        return 'cabinet-not-confirmed-v2';
         break;
       case '1ON':
-        return 'blue-pattern';
+        return 'online-not-confirmed-v1';
+        break;
+      case '2ON':
+        return 'online-not-confirmed-v2';
         break;
       case '1N':
-        return 'note-bg';
+        return 'note-v1';
+        break;
+      case '2N':
+        return 'note-v2';
         break;
       case '1WM':
-        return 'warning-bg';
+        return 'warning-v1';
+        break;
+      case '2WM':
+        return 'warning-v2';
         break;
       case '1NUL':
-        return 'cancelled-bg';
+        return 'cancelled-v1';
+      case '2NUL':
+        return 'cancelled-v2';
     }
   }
   iconCode(code){

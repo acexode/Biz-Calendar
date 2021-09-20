@@ -36,25 +36,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
-interface Film {
-  id: number;
-  title: string;
-  release_date: string;
-}
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
-  },
-};
+
+
 function getTimezoneOffsetString(date: Date): string {
   const timezoneOffset = date.getTimezoneOffset();
   const hoursOffset = String(
@@ -159,7 +142,9 @@ export class CalendarComponent implements OnInit {
           start:  new Date(d.startTime + getTimezoneOffsetString(this.viewDate)),
           end:  new Date(d.endTime + getTimezoneOffsetString(this.viewDate)),
           title: d.personName,
-          color: colors.red,
+          color: {
+            primary: ''
+          },
           actions: this.actions,
           allDay: true,
           resizable: {
@@ -217,23 +202,6 @@ export class CalendarComponent implements OnInit {
           this.view = CalendarView.Day;
           this.modalData = { event, action };
         //this.modal.open(this.modalContent, { size: 'lg' });
-      }
-
-      addEvent(): void {
-        this.events = [
-          ...this.events,
-          {
-            title: 'New event',
-            start: startOfDay(new Date()),
-            end: endOfDay(new Date()),
-            color: colors.red,
-            draggable: true,
-            resizable: {
-              beforeStart: true,
-              afterEnd: true,
-            },
-          },
-        ];
       }
 
       deleteEvent(eventToDelete: CalendarEvent) {

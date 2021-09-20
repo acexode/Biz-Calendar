@@ -27,127 +27,7 @@ import { DemoCheckList } from '../style-guide/components/selection/selection.com
 })
 export class DataStatisticePage implements OnInit {
 
-  pacientInputConfig = inputConfigHelper({
-    label: 'Pacient',
-    type: 'text',
-    placeholder: 'Value',
-    custom: {
-      useIcon: { name: 'search-custom' }
-    }
-  });
-  dataInputConfig = inputConfigHelper({
-    label: 'Data',
-    type: 'date',
-    placeholder: '08.03.2021',
-    custom: {
-      mode: 'ios',
-      useIcon: {
-        name: 'default'
-      }
-    }
-  });
-  timeInputConfig = inputConfigHelper({
-    label: 'Ora de începere',
-    type: 'time',
-    placeholder: '09:00',
-    custom: {
-      mode: 'ios',
-      useIcon: {
-        name: 'clock'
-      }
-    }
-  });
-  tipprogramareConfig: IonRadiosConfig = {
-    mode: 'chip',
-    inputLabel: {
-      text: 'Tip programare',
-      classes: ''
-    },
-    itemClasses: 'mr-12'
-  };
-  tipprogramareOption: Array<IonRadioInputOption> = [
-    { label: 'În cabinet', id: 'În-cabinet' },
-    { label: 'On-line', id: 'On-line' },
-  ];
-  locatieOption = [
-    {
-      id: 'fcghhjhk',
-      label: 'Option 1'
-    },
-    {
-      id: 'fcghhjhkss',
-      label: 'Option 2'
-    }
-  ];
-  tipServiciiConfig: IonRadiosConfig = {
-    mode: 'chip',
-    inputLabel: {
-      text: 'Tip programare',
-      classes: ''
-    },
-    itemClasses: 'mr-12'
-  };
-  tipServiciiOption: Array<IonRadioInputOption> = [
-    { label: 'Cu plată', id: 'Cuplată' },
-    { label: 'C.N.A.S.', id: 'C.N.A.S.' },
-  ];
 
-  timeRadioConfig: IonRadiosConfig = {
-    mode: 'chip',
-    inputLabel: {
-      text: 'Durata (minute)',
-      classes: ''
-    },
-    itemClasses: 'mr-12'
-  };
-  timeRadioOption: Array<IonRadioInputOption> = [
-    { label: '15', id: '15' },
-    { label: '20', id: '20' },
-    { label: '30', id: '30' },
-    { label: '45', id: '45' },
-    { label: 'Alta', id: 'Alta' },
-  ];
-  cabinetConfig = inputConfigHelper({
-    label: 'Cabinet',
-    type: 'text',
-    placeholder: '',
-    custom: {
-      mode: 'md',
-      useIcon: {
-        name: 'cabinet',
-        classes: 'neutral-grey-medium-color'
-      },
-      readonly: true
-    }
-  });
-  medicConfig: IonSelectConfig = {
-    inputLabel: {
-      classes: '',
-      text: 'Medic trimițător',
-    },
-    forceListItems: false,
-    multiple: false,
-    disabled: false,
-    placeholder: 'Alege',
-    alertOptions: {
-      cssClass: '',
-    },
-    idKey: 'id',
-    labelKey: 'label',
-    useIcon: {
-      name: 'doctor',
-      classes: 'neutral-grey-medium-color'
-    }
-  };
-  observatiiConfig: TextAreaConfig = {
-    textAreaLabel: {
-      text: 'Observații recepție',
-      classes: '',
-      slot: '',
-    },
-    placeholder: '',
-    disabled: false,
-  };
   checkList: DemoCheckList[] = [
     {
       first: 'Consultație peste vârsta de 4 ani',
@@ -215,16 +95,8 @@ export class DataStatisticePage implements OnInit {
   };
 
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
-    pacient: ['', [Validators.required]],
-    tipprogramare: ['În-cabinet', [Validators.required]],
-    locatie: '',
-    tipServicii: ['În-cabinet', [Validators.required]],
-    data: ['', [Validators.required]],
-    oraDeIncepere: ['', [Validators.required]],
-    time: ['', [Validators.required]],
-    cabinet: ['', [Validators.required]],
-    medic:['', [Validators.required]],
-    observatii: ['', [Validators.required]]
+    numar: ['', [Validators.required]],
+
   });
   isWed = false;
 
@@ -254,11 +126,6 @@ export class DataStatisticePage implements OnInit {
     });
     await modal.present();
   }
-
-
-
-
-
 
   navigateToRecurenta() {
     this.router.navigate(['calendar/recurenta']);

@@ -32,18 +32,21 @@ export class CalendarListComponent implements OnInit {
         const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
         const formattedEvent = ev.map(form =>{
           const icons = new Set(form.icons.map(this.calS.iconCode));
+          const start = new Date(form.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const end = new Date(form.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
           return {
             id: form.uid,
             icons: [...icons],
             title: form.personName,
-            time: '09:00 - 09:30',
+            time: start + ' - '+ end ,
             desc: form.subject,
-            location: 'Buc. Aviatori',
+            location: form.locationUID,
             class: this.calS.colorCode(form.colorCode),
           };
         });
       return {
         day: format(new Date(unq), 'EEEE d', {locale: ro}),
+        total: formattedEvent.length + ' programari',
         current: true,
         events: formattedEvent
       };
