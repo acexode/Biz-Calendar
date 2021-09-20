@@ -272,6 +272,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     unsubscriberHelper(this.getCountries$);
+    unsubscriberHelper(this.getCities$);
     unsubscriberHelper(this.addUser$);
   }
 
