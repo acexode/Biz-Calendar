@@ -27,9 +27,11 @@ export class CalendarListComponent implements OnInit {
   getEventLists(){
     this.calS.appointments$.subscribe(e =>{
       const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
-      const uniqDates = [...new Set(dates)];
-      const appt = uniqDates.map(unq =>{
-        const ev = e?.appointments.filter(s => new Date(s.startTime).toLocaleDateString() === unq );
+      const week = e?.appointments.map(d => this.weekNumber(d.startTime));
+      console.log(week);
+      const uniqDates = [...new Set(week)];
+      const appt = uniqDates?.map(unq =>{
+        const ev = e?.appointments.filter(s => this.weekNumber(s.startTime) === unq );
         const formattedEvent = ev.map(form =>{
           const icons = new Set(form.icons.map(this.calS.iconCode));
           const start = new Date(form.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -46,6 +48,7 @@ export class CalendarListComponent implements OnInit {
         });
       return {
         day: format(new Date(unq), 'EEEE d', {locale: ro}),
+        week: this.getFirstLastDay(this.getDateOfWeek(unq)),
         total: formattedEvent.length + ' programari',
         current: true,
         events: formattedEvent
@@ -54,6 +57,25 @@ export class CalendarListComponent implements OnInit {
       this.eventList = appt;
       console.log(appt);
     });
+  }
+  weekNumber(date){
+    const now = new Date(date);
+    const onejan = new Date(now.getFullYear(), 0, 1);
+    return Math.ceil((((now.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7);
+  }
+  getFirstLastDay(d){
+    const curr = new Date(d); // get current date
+    const first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+    const last = first + 6; // last day is the first day + 6
+
+    const firstday = new Date(curr.setDate(first)).toDateString().split(' ');
+    const lastday = new Date(curr.setDate(last)).toDateString().split(' ');
+    return firstday[1] + ' ' + firstday[2] + ' - ' + lastday[2];
+  }
+  getDateOfWeek(w) {
+    const year = new Date().getFullYear();
+    const d = (1 + (w - 1) * 7); // 1st of January + 7 days for each week
+    return new Date(year, 0, d);
   }
 
 
