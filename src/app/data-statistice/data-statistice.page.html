@@ -1,0 +1,96 @@
+
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <!-- <div class="web-grey-light-b-bg-color w-100" [ngClass]="{ 'flex ion-justify-content-center': isWed }">
+    <div class="w-100 w-lg-634px web-white-page position-relative vh-100"> -->
+      <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
+
+          <ion-buttons slot="start" class="slot-start cursor-pointer">
+
+            <ion-icon
+            (click)="backAction()"
+              name="arrow-left"
+              class="icon-24 black-color"
+              slot="icon-only"
+            ></ion-icon>
+
+          </ion-buttons>
+
+          <ion-title>Data Statistice</ion-title>
+
+         
+        </ion-toolbar>
+      </ion-header>
+
+      <form [formGroup]="adaugaProgramareFormGroup" class="mb-74">
+        <div class="biz-custom-select-div px-16 pt-32" (click)="presentModalB()">
+          <ion-label>Tip de date</ion-label>
+          <div [class]="'biz-custom-select border-light-grey'">
+            <div class="input-select-display">
+
+              <input type="text" formControlName="numar" readonly>
+
+            </div>
+            <div class="icon">
+              <ion-icon name="caret-down" color="biz-primary" [class]="'icon-24'"></ion-icon>
+            </div>
+          </div>
+        </div>
+        
+        <div *ngIf="" class="pt-32 px-32">
+          <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Ioana Anghelescu</ion-text>
+          <!-- <ion-icon >Ioana Anghelescu</ion-icon> -->
+        </div>
+        <div class="pt-32 px-32">
+          <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Martie</ion-text>
+          <ion-icon name="caret-down" color="biz-primary" ></ion-icon>
+        </div>
+
+        <ion-row class="px-16 pt-16">
+          <ion-col class="card px-16 pt-16">
+            <ion-row>
+              <ion-col size="3">
+                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                  TOTAL
+                  martie
+                  2021
+
+                </ion-text>
+              </ion-col>
+              <ion-col size="6">
+                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                  <div style="display: block;">
+                    <!-- <canvas baseChart  height="80"
+                      [datasets]="lineChartData"
+                      [labels]="lineChartLabels"
+                      [options]="lineChartOptions"
+                      [colors]="lineChartColors"
+                      [legend]="lineChartLegend"
+                      [chartType]="lineChartType"
+                      [plugins]="lineChartPlugins">
+                    </canvas> -->
+                  </div>
+
+                </ion-text>
+              </ion-col>
+              <ion-col size="3">
+                <ion-text class="s32-h32 text-weight-medium poppin-family-font ls-03 ">
+                  565
+
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+
+
+
+      </form>
+
+
+  <!--   </div>
+
+  </div> -->
+
+</ion-content>
+
