@@ -47,7 +47,7 @@ export class CalendarListComponent implements OnInit {
           };
         });
       return {
-        day: format(new Date(unq), 'EEEE d', {locale: ro}),
+        day: format(new Date(this.getDateOfWeek(unq)), 'EEEE d', {locale: ro}),
         week: this.getFirstLastDay(this.getDateOfWeek(unq)),
         total: formattedEvent.length + ' programari',
         current: true,
