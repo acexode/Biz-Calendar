@@ -23,7 +23,7 @@
               <span>SALVEAZĂ</span>
 
               <div class="ml-8" *ngIf="loading">
-                
+
                 <ion-spinner name="crescent" class="icon-20" ></ion-spinner>
               </div>
             </ion-button>
@@ -98,7 +98,7 @@
               </app-select>
             </div>
             <div class="mt-32">
-              <app-select [config]="orasConfig" formControlName="oras" [options]="judetOption" class="w-100">
+              <app-select [config]="orasConfig" formControlName="oras" [options]="orasOptions" class="w-100">
               </app-select>
             </div>
             <div class="mt-32">

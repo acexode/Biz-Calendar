@@ -1,0 +1,14 @@
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-toast {
+    --background: var(--ion-primary-error-color) !important;
+    --color: #000 !important;
+
+    --border-radius: 0;
+    &::part(message) {
+      text-align: center;
+    }
+  }
+}
