@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { RequestService } from 'src/app/core/services/request/request.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
-
+import { get } from 'lodash';
+import { persons } from 'src/app/core/configs/endpoints';
 @Component({
   selector: 'app-new-pacient-modal',
   templateUrl: './new-pacient-modal.component.html',
@@ -40,8 +42,8 @@ export class NewPacientModalComponent implements OnInit {
     }
   });
    sexOption: Array<IonRadioInputOption> = [
-    { label: 'Masculin', id: 'Masculin' },
-    { label: 'Feminin', id: 'Feminin' },
+    { label: 'Masculin', id: 0 },
+    { label: 'Feminin', id: 1 },
   ];
 
   sexRadioConfig: IonRadiosConfig = {
@@ -160,7 +162,12 @@ export class NewPacientModalComponent implements OnInit {
     canalDePromovare: '',
     oras: ''
   });
-  constructor(private fb: FormBuilder, private modalController: ModalController) { }
+  loading = false;
+  constructor(
+    private fb: FormBuilder,
+    private modalController: ModalController,
+    private reqS: RequestService
+  ) { }
 
   ngOnInit() {
     if (this.data) {
@@ -170,9 +177,31 @@ export class NewPacientModalComponent implements OnInit {
   toggleMoreField() {
     this.addMoreField = !this.addMoreField;
   }
+  toggleLoadingState() {
+    this.loading = !this.loading;
+  }
   add() {
     if (this.formGroupValidity) {
-      this.closeModal();
+      this.toggleLoadingState();
+      const d = {
+        firstName: get(this.componentFormGroup.value, 'nume', ''),
+        lastName: get(this.componentFormGroup.value, 'preNume', ''),
+        pid: get(this.componentFormGroup.value, 'dateNasterii', ''),
+        phone: get(this.componentFormGroup.value, 'telephone', ''),
+        cityID: Number(get(this.componentFormGroup.value, 'cityId', 0)),
+        genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
+        passWarnnings: true
+      };
+      this.reqS.post(persons.addPerson, d).subscribe(
+        _rep => {
+          this.toggleLoadingState();
+          this.closeModal();
+        },
+        err => {
+          console.log(err);
+          this.toggleLoadingState();
+        }
+      );
     }
   }
   closeModal() {
