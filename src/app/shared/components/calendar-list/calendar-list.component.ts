@@ -70,6 +70,7 @@ export class CalendarListComponent implements OnInit {
 
     const firstday = new Date(curr.setDate(first)).toDateString().split(' ');
     const lastday = new Date(curr.setDate(last)).toDateString().split(' ');
+    console.log(firstday);
     return firstday[1] + ' ' + firstday[2] + ' - ' + lastday[2];
   }
   getDateOfWeek(w) {

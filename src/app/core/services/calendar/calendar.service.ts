@@ -20,18 +20,15 @@ export class CalendarService {
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
-  getAppointments(){
-    // to be removed later
-    // return this.getUserPhysicians().subscribe((e: any) =>{
-    //   const physician = e.physicians[0];
-      const obj = {
-        startDate: new Date('2021-07-03T12:09:40.163Z'),
-        endDate: new Date('2021-09-03T12:09:40.163Z'),
-        physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
-      };
-    //   console.log(e);
+  async  getAppointments(){
 
-    // });
+    const phy: any = await this.getUserPhysicians().toPromise();
+    console.log(phy.physicians);
+    const obj = {
+      startDate: new Date('2021-07-03T12:09:40.163Z'),
+      endDate: new Date('2021-09-03T12:09:40.163Z'),
+      physicianUID: phy.physicians[7].physicianUID
+    };
     return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
       console.log(res);
       console.log(res);
