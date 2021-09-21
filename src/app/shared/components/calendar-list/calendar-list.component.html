@@ -54,13 +54,13 @@
     <ion-col offset="3.6" size="12">
       <ion-row>
         <ion-col class="flex flex-column" offset="1" size="12">
-          <ion-text  class="ev-day current-day">MAR 15 - 21, {{ev.total}}</ion-text>
+          <ion-text  class="ev-day current-day">{{ev.week}}, {{ev.events.length}} programari</ion-text>
       
         </ion-col>
         <ion-col class="flex flex-column px-0" size="12">
           <ion-row>
             <ion-col class="flex flex-column" size="1">
-              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day.split(' ')[0]}}</ion-text>
+              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day.split(' ')[0].slice(0,3)}}</ion-text>
               <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >{{ev.day.split(' ')[1]}}</ion-text>
       
             </ion-col>
