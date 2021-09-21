@@ -37,6 +37,8 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   view: CalendarView = CalendarView.Month;
   viewDate: Date = new Date();
   month = format(new Date(), 'MMMM', { locale: ro });
+  currDay = format(new Date(), 'E', { locale: ro });
+  currDate = format(new Date(), 'd', { locale: ro });
   // eslint-disable-next-line @typescript-eslint/naming-convention
   CalendarView = CalendarView;
   locationCal: FormControl = new FormControl('');
@@ -46,6 +48,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   locationOptions = locationOptions;
   programOptions = programOptions;
   programList = utilizatorList;
+  totalAppt = 0;
   public page: string;
   opts = {
     freeMode: true,
@@ -87,6 +90,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    console.log(format(new Date(), 'E d', { locale: ro }).split(' '));
+    this.calS.appointments$.subscribe(e => {
+      this.totalAppt = e?.appointments.length;
+
+      console.log(this.totalAppt);
+    });
     this.calS.selectedMonth.subscribe(e =>{
       this.month = e.split(' ')[0];
     });

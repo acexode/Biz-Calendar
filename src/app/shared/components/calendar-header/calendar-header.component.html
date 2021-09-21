@@ -12,7 +12,7 @@
           <ion-icon class="mt-5"  [name]="!showPicker ? 'caret-down':'caret-up'"></ion-icon>
         </div>
         <ion-text class="header-events">
-          123 programări
+          {{totalAppt}} programări
         </ion-text>
       </ion-col>
 
@@ -71,9 +71,9 @@
     <ion-row>
       <ion-col  class="day-info" size="12">
         <ion-text>
-          LUN
-        </ion-text> 
-        <b>8</b>
+          {{currDay | uppercase}}
+        </ion-text>
+        <b>{{currDate}}</b>
       </ion-col>
     </ion-row>
   </ion-toolbar>
@@ -92,7 +92,7 @@
           <ion-icon class="mt-5"  name="caret-down"></ion-icon>
         </div>
         <ion-text class="header-events">
-          123 programări
+          {{totalAppt}}  programări
         </ion-text>
       </ion-col>
       <ion-col *ngIf="!isModal" size="7" class="flex ion-justify-content-center">
@@ -174,9 +174,9 @@
     <ion-row>
       <ion-col  class="day-info" size="12">
         <ion-text>
-          LUN
-        </ion-text> 
-        <b>8</b>
+          {{currDay | uppercase}}
+        </ion-text>
+        <b>{{currDate}}</b>
       </ion-col>
     </ion-row>
   </ion-toolbar>

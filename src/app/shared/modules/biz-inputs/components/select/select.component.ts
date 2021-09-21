@@ -64,7 +64,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
       id: any;
       label: string;
     }>
-  > = new BehaviorSubject([]);
+    > = new BehaviorSubject([]);
   onChange: (_: any) => void;
   onTouched: () => void;
   value: any;
@@ -138,7 +138,7 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     if (this.inputReadonly) {
-      this.inputControl.disable();
+      this.inputControl.disable({ emitEvent: true });
     }
     this.formGroup.valueChanges.subscribe((vals) => {
       if (this.onChange) {

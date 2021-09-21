@@ -24,7 +24,6 @@ export class AuthService {
     this.user = this.userSubject.asObservable();
   }
   public get userValue(): User {
-    console.log(this.userSubject.value);
     return this.userSubject.value;
   }
 

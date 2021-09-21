@@ -2,13 +2,13 @@
 <ion-grid  *ngIf="!isTablet">
   <ion-row  *ngFor="let ev of eventList" class="card-row">
     <ion-col class="flex flex-column pl-64 " size="12">
-      <ion-text  class="ev-day current-day">MAR 15 - 21, 19 programari</ion-text>
+      <ion-text  class="ev-day current-day">{{ev.week}}, {{ev.events.length}} programari</ion-text>
     </ion-col>
     <ion-col  class="flex flex-column px-0" size="12">
           <ion-row>
             <ion-col class="flex flex-column" size="2">
-              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day}}</ion-text>
-              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
+              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day.split(' ')[0].slice(0,3)}}</ion-text>
+              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >{{ev.day.split(' ')[1]}}</ion-text>
       
             </ion-col>
             <ion-col size="10" >
@@ -20,7 +20,7 @@
                       </div>
                       <div  class="pt-4">
                         <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
-                        <ion-icon *ngFor="let icon of cal.icons" class="mr-4 event-icon" color="success" [name]="icon" ></ion-icon>   
+                        <ion-icon *ngFor="let icon of cal.icons" class="mr-5 event-icon" color="success" [name]="icon" ></ion-icon>   
                       </div>  
                     </div>
                     <ion-text class="title">
@@ -54,21 +54,21 @@
     <ion-col offset="3.6" size="12">
       <ion-row>
         <ion-col class="flex flex-column" offset="1" size="12">
-          <ion-text  class="ev-day current-day">MAR 15 - 21, 19 programari</ion-text>
+          <ion-text  class="ev-day current-day">{{ev.week}}, {{ev.events.length}} programari</ion-text>
       
         </ion-col>
         <ion-col class="flex flex-column px-0" size="12">
           <ion-row>
             <ion-col class="flex flex-column" size="1">
-              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day}}</ion-text>
-              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >8</ion-text>
+              <ion-text class="ev-day" [ngClass]="ev.current ? 'current-day' : ''" >{{ev.day.split(' ')[0].slice(0,3)}}</ion-text>
+              <ion-text class="ev-date" [ngClass]="ev.current ? 'current-day' : 'day-nr'" >{{ev.day.split(' ')[1]}}</ion-text>
       
             </ion-col>
             <ion-col size="10" >
                 <ion-row *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class" size="10" >
                   <ion-col size="12">
                     <ion-row >
-                      <ion-col size="8">
+                      <ion-col size="7">
                         <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
                       </ion-col>
                       <ion-col size="4"  class="pt-10">

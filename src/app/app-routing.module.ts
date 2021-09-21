@@ -35,7 +35,11 @@ const routes: Routes = [
     path: 'vizualiare',
     loadChildren: () => import('./vizualiare/vizualiare.module').then(m => m.VizualiarePageModule),
     canActivate: [AuthGuard]
+  },  {
+    path: 'data-statistice',
+    loadChildren: () => import('./data-statistice/data-statistice.module').then( m => m.DataStatisticePageModule)
   }
+
 ];
 
 @NgModule({

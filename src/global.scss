@@ -28,31 +28,55 @@
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "./theme/calendarStyle";
 
-.green-bg {
+.cabinet-confirmed-v1 {
   border-left: 4px solid #2ea81b;
   background-color: #eaf6e8;
   border-radius: 4px 0 0 4px;
 }
-.blue-bg {
+.cabinet-confirmed-v2 {
+  border-left: 4px solid #1EA5C7;
+  background-color: #E3F9FF;
+  border-radius: 4px 0 0 4px;
+}
+.online-confirmed-v1 {
   width: 100%;
   border-left: 4px solid #3093f8 !important;
   background-color: #eaf4fe !important;
   border-radius: 4px 0 0 4px;
   z-index: 100;
 }
+.online-confirmed-v2 {
+  border-left: 4px solid #9B57E0;
+  background-color: #F7EDFF;
+  border-radius: 4px 0 0 4px;
+}
 
-.yellow-bg {
+.warning-v1 {
   border-radius: 4px 0 0 4px;
   border-left: 4px solid #f77c00;
   background-color: #feecd9;
 }
-.orange-bg{
+.warning-v2 {
+  border-radius: 4px 0 0 4px;
+  border-left: 4px solid #F23D3D;
+  background-color: #FEF1E5;
+}
+.note-v1{
   background-color: #FFE9A1;
 }
-.gray-bg{
+.note-v2{
+  background-color: #E3E9EC;
+}
+.cancelled-v1{
   background: #97A1A6;
 }
-.green-pattern  {
+.cancelled-v2{
+  border: 2px solid #97A1A6;
+  border-left: 4px solid #97A1A6;
+  border-radius: 4px 0 0 4px;
+  background-color: #fff;
+}
+.cabinet-not-confirmed-v1  {
   border-left: 4px solid #EAF6E8;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
@@ -64,8 +88,32 @@
     #EAF6E8 calc(2 * 10px)
   ) !important;
 }
+.cabinet-not-confirmed-v2  {
+  border-left: 4px solid #C7F3FF;
+  border-radius: 4px 0 0 4px;
+  background-color: none !important;
+  background: repeating-linear-gradient(
+    132deg,
+    transparent,
+    transparent 10px,
+    #E3F9FF 10px,
+    #E3F9FF calc(2 * 10px)
+  ) !important;
+}
+.online-not-confirmed-v2  {
+  border-left: 4px solid #EDDBFF;
+  border-radius: 4px 0 0 4px;
+  background-color: none !important;
+  background: repeating-linear-gradient(
+    132deg,
+    transparent,
+    transparent 10px,
+    #F7EDFF 10px,
+    #F7EDFF calc(2 * 10px)
+  ) !important;
+}
 //.green-pattern   *, .green-pattern .cal-week-view .cal-event
-.blue-pattern {
+.online-not-confirmed-v1 {
   border-left: 4px solid #D6E9FE;
   border-radius: 4px 0 0 4px;
   background: repeating-linear-gradient(
@@ -74,6 +122,17 @@
     transparent 10px,
     #D6E9FE 10px,
     #D6E9FE calc(2 * 10px)
+  );
+}
+.online-not-confirmed-v2 {
+  border-left: 4px solid #C7F3FF;
+  border-radius: 4px 0 0 4px;
+  background: repeating-linear-gradient(
+    132deg,
+    transparent,
+    transparent 10px,
+    #E3F9FF 10px,
+    #E3F9FF calc(2 * 10px)
   );
 }
 .border-none{

@@ -27,7 +27,7 @@ export class SideMenuComponent implements OnInit {
   public bottomNav =  [
     { title: 'Caută', url: '/calendar/cauta', icon: 'search-custom' },
     { title: 'Pacienți', url: '/calendar/pacienti', icon: 'users', chevron: false, notify:false },
-    { title: 'Date statistice', url: '/calendar/pacienti', icon: 'bar-chart', chevron: true, notify:false },
+    { title: 'Date statistice', url: '/data-statistice', icon: 'bar-chart', chevron: true, notify:false },
     { title: 'Setări', url: '/calendar/setari', icon: 'settings-custom', chevron: false, notify:false },
     { title: 'Notificări', url: '/calendar/notificari', icon: 'notificare', chevron: false, notify:true  },
     { title: 'Ieșire', url: '/calendar/lesire', icon: 'deconectare', chevron: false, notify: false },
