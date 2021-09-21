@@ -11,6 +11,7 @@ import { persons, location } from 'src/app/core/configs/endpoints';
 import { Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { formatRFC3339 } from 'date-fns';
 @Component({
   selector: 'app-new-pacient-modal',
   templateUrl: './new-pacient-modal.component.html',
@@ -178,6 +179,8 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    const f = formatRFC3339(new Date(), { fractionDigits: 3 });
+    console.log(f);
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
     }
@@ -251,10 +254,17 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         firstName: get(this.componentFormGroup.value, 'nume', ''),
         lastName: get(this.componentFormGroup.value, 'preNume', ''),
         pid: get(this.componentFormGroup.value, 'cnp', ''),
+        birthDate: formatRFC3339(
+          new Date(
+            get(this.componentFormGroup.value, 'dateNasterii', new Date()
+            )
+          ), { fractionDigits: 3 }),
         phone: get(this.componentFormGroup.value, 'telephone', ''),
         cityID: Number(get(this.componentFormGroup.value, 'cityId', 0)),
         genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
-        passWarnnings: true
+        isActive: true,
+        wasUpdateByMobile: true,
+        mobileUpdateDate:  formatRFC3339(new Date(), { fractionDigits: 3 })
       };
       this.addUser$ = this.reqS.post(persons.addPerson, d).subscribe(
         _rep => {
