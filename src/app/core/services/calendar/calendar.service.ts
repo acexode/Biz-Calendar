@@ -14,12 +14,25 @@ export class CalendarService {
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(private reqS: RequestService) {
     this.getAppointments();
+    this.selectedDate.subscribe(e =>{
+      console.log(e);
+      const obj ={
+        startDate: new Date(e),
+        endDate: new Date(e),
+        physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
+      };
+      this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
+        console.log(res);
+        this.appointments$.next(res);
+      });
+    });
    }
 
   getUserPhysicians(){
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
+
   async  getAppointments(){
 
     const phy: any = await this.getUserPhysicians().toPromise();
@@ -35,14 +48,7 @@ export class CalendarService {
       this.appointments$.next(res);
     });
   }
-  getAppointmentEvent(){
-    const obj = {
-      startDate: new Date('2021-07-03T12:09:40.163Z'),
-      endDate: new Date('2021-09-31T12:09:40.163Z'),
-      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
-    };
-    return this.reqS.post(appointmentEndpoints.getAppointment, obj);
-  }
+
   colorCode(code){
     switch (code) {
       case '1CY':

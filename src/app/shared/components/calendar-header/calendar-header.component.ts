@@ -91,6 +91,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(format(new Date(), 'E d', { locale: ro }).split(' '));
+    this.calS.selectedDate.subscribe(e =>{
+      console.log(e);
+      this.currDay = format(new Date(e), 'E', { locale: ro });
+      this.currDate = format(new Date(e), 'd', { locale: ro });
+      // this.viewDate = new Date(e);
+    });
     this.calS.appointments$.subscribe(e => {
       this.totalAppt = e?.appointments.length;
 
