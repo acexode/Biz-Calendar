@@ -16,9 +16,13 @@ export class CalendarService {
     this.getAppointments();
     this.selectedDate.subscribe(e =>{
       console.log(e);
+      const start = new Date(e);
+      start.setHours(7);
+      const end = new Date(e);
+      end.setHours(21);
       const obj ={
-        startDate: new Date(e),
-        endDate: new Date(e),
+        startDate: start,
+        endDate: end,
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
       this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
