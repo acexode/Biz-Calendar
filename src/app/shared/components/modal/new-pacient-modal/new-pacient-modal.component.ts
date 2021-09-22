@@ -198,10 +198,15 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         }
     );
   }
-  async presentToast(message: string) {
+  async presentToast(
+    message: string = 'message',
+    cssClass: 'success' | 'error' = 'error',
+    duration: number = 3000
+  ) {
     const toast = await this.toastController.create({
+      cssClass,
       message,
-      duration: 3000
+      duration,
     });
     toast.present();
   }
@@ -271,7 +276,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         async _rep => {
           this.toggleLoadingState();
           // present toast and close modal
-          await this.presentToast('Sucessful');
+          await this.presentToast('Sucessful', 'success');
           setTimeout(() => {
             this.closeModal();
           }, 3000);
