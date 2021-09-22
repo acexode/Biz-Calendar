@@ -158,7 +158,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
   orasOptions: any;
-  addMoreField = true; // change this later
+  addMoreField = false; // change this later
   componentFormGroup: FormGroup = this.fb.group({
     nume: ['', [Validators.required]],
     preNume: ['', [Validators.required]],
