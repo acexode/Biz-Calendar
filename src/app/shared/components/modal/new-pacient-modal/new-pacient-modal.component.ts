@@ -60,23 +60,27 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   };
   telePhoneConfig = inputConfigHelper({
     label: 'Număr de telefon',
-    type: 'text',
+    type: 'number',
     placeholder: '',
     custom: {
       useIcon: {
           name: 'phone',
           classes: 'neutral-grey-medium-color'
-      }
+      },
+      // pattern: 'tel'
     }
   });
   emailConfig = inputConfigHelper({
     label: 'Email',
     type: 'email',
     placeholder: '',
+    custom: {
+      // pattern: 'email'
+    }
   });
   cnpConfig = inputConfigHelper({
     label: 'CNP',
-    type: 'text',
+    type: 'number',
     placeholder: '',
     custom: {
       useIcon: {
@@ -154,14 +158,14 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
   orasOptions: any;
-  addMoreField = false;
+  addMoreField = true; // change this later
   componentFormGroup: FormGroup = this.fb.group({
     nume: ['', [Validators.required]],
     preNume: ['', [Validators.required]],
     dateNasterii: ['', [Validators.required]],
     sex: ['', [Validators.required]],
-    telephone: '',
-    email: '',
+    telephone: ['', Validators.pattern('^[0-9]*$')],
+    email: ['', Validators.email],
     cnp:'',
     judet: [{value: '', disabled: true}],
     canalDePromovare: '',
