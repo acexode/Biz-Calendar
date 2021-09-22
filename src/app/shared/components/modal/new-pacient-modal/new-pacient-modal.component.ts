@@ -267,9 +267,13 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         mobileUpdateDate:  formatRFC3339(new Date(), { fractionDigits: 3 })
       };
       this.addUser$ = this.reqS.post(persons.addPerson, d).subscribe(
-        _rep => {
+        async _rep => {
           this.toggleLoadingState();
-          this.closeModal();
+          // present toast and close modal
+          await this.presentToast('Sucessful');
+          setTimeout(() => {
+            this.closeModal();
+          }, 3000);
         },
         _err => {
           this.presentToast('An error occur while trying to add new person. Please try again.');
