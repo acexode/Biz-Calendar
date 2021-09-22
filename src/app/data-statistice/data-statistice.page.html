@@ -45,6 +45,17 @@
           <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Martie</ion-text>
           <ion-icon name="caret-down" color="biz-primary" ></ion-icon>
         </div>
+        <div class="pt-32 px-32">
+         
+           
+            <ion-select class="primary-color-step-100 text-weight-500 s20-h28" value="brown" okText="Okay" cancelText="Dismiss">
+              <ion-select-option value="brown">Brown</ion-select-option>
+              <ion-select-option value="blonde">Blonde</ion-select-option>
+              <ion-select-option value="black">Black</ion-select-option>
+              <ion-select-option value="red">Red</ion-select-option>
+            </ion-select>
+            <ion-icon name="caret-down" color="biz-primary" ></ion-icon>
+        </div>
 
         <ion-row class="px-16 pt-16">
           <ion-col class="card px-16 pt-16">
@@ -60,15 +71,7 @@
               <ion-col size="6">
                 <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
                   <div style="display: block;">
-                    <canvas lineChart  height="80"
-                      [datasets]="lineChartData"
-                      [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
-                      [legend]="lineChartLegend"
-                      [chartType]="lineChartType"
-                      [plugins]="lineChartPlugins">
-                    </canvas>
+                    <app-custom-chart type="dougnut"></app-custom-chart>
                   </div>
 
                 </ion-text>

@@ -13,8 +13,19 @@
           <ion-title>Pacient nou</ion-title>
 
           <div slot="end">
-            <ion-button class="mr-8" [color]="(formGroupValidity ? 'biz-primary' : 'biz-disabled-primary')" size="small" (click)="add()">
-              SALVEAZĂ
+            <ion-button
+              class="mr-8"
+              [color]="(formGroupValidity ? 'biz-primary' : 'biz-disabled-primary')"
+              size="small"
+              (click)="add()"
+              [disabled]="loading">
+
+              <span>SALVEAZĂ</span>
+
+              <div class="ml-8" *ngIf="loading">
+
+                <ion-spinner name="crescent" class="icon-20" ></ion-spinner>
+              </div>
             </ion-button>
           </div>
         </ion-toolbar>
@@ -77,6 +88,9 @@
               <app-input [config]="telePhoneConfig" formControlName="telephone" class="w-100"></app-input>
             </div>
             <div class="my-32">
+              <app-input [config]="emailConfig" formControlName="email" class="w-100"></app-input>
+            </div>
+            <div class="my-32">
               <app-input [config]="cnpConfig" formControlName="cnp" class="w-100"></app-input>
             </div>
             <div>
@@ -84,7 +98,11 @@
               </app-select>
             </div>
             <div class="mt-32">
-              <app-select [config]="orasConfig" formControlName="oras" [options]="judetOption" class="w-100">
+              <app-select [config]="orasConfig" formControlName="oras" [options]="orasOptions" class="w-100">
+              </app-select>
+            </div>
+            <div class="mt-32">
+              <app-select [config]="canalDePromovareConfig" formControlName="canalDePromovare" [options]="judetOption" class="w-100">
               </app-select>
             </div>
 

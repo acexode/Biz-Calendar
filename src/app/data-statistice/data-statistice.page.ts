@@ -5,11 +5,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { PlatformService } from '../core/services/platform/platform.service';
 
-import { SelectieServiciiModalComponent } from '../shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
-import { BizCustomSelectionConfig } from '../shared/models/components/biz-custom-selection-config';
-
-import { DemoCheckList } from '../style-guide/components/selection/selection.component';
-import { ChartOptions, Color } from 'chart.js';
+import { ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-data-statistice',
@@ -33,6 +29,8 @@ export class DataStatisticePage implements OnInit {
   public lineChartLegend = true;
   public lineChartType = 'line';
   public lineChartPlugins = [];
+  months = [ 'Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August',
+  'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'];
   list = [
     {
       label:'Număr de programări',

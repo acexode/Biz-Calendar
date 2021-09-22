@@ -46,6 +46,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   locationOptions = locationOptions;
   programOptions = programOptions;
   programList = utilizatorList;
+  totalAppt = 0;
   public page: string;
   opts = {
     freeMode: true,
@@ -87,6 +88,11 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.calS.appointments$.subscribe(e => {
+      this.totalAppt = e?.appointments.length;
+
+      console.log(this.totalAppt);
+    });
     this.calS.selectedMonth.subscribe(e =>{
       this.month = e.split(' ')[0];
     });

@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { RequestService } from 'src/app/core/services/request/request.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
-
+import { get } from 'lodash';
+import { persons, location } from 'src/app/core/configs/endpoints';
+import { Subscription } from 'rxjs';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-new-pacient-modal',
   templateUrl: './new-pacient-modal.component.html',
   styleUrls: ['./new-pacient-modal.component.scss'],
 })
-export class NewPacientModalComponent implements OnInit {
+export class NewPacientModalComponent implements OnInit, OnDestroy {
+  @Input() data!: any;
   numeConfig = inputConfigHelper({
     label: 'Nume',
     type: 'text',
@@ -39,8 +45,8 @@ export class NewPacientModalComponent implements OnInit {
     }
   });
    sexOption: Array<IonRadioInputOption> = [
-    { label: 'Masculin', id: 'Masculin' },
-    { label: 'Feminin', id: 'Feminin' },
+    { label: 'Masculin', id: 0 },
+    { label: 'Feminin', id: 1 },
   ];
 
   sexRadioConfig: IonRadiosConfig = {
@@ -61,6 +67,11 @@ export class NewPacientModalComponent implements OnInit {
           classes: 'neutral-grey-medium-color'
       }
     }
+  });
+  emailConfig = inputConfigHelper({
+    label: 'Email',
+    type: 'email',
+    placeholder: '',
   });
   cnpConfig = inputConfigHelper({
     label: 'CNP',
@@ -91,7 +102,8 @@ export class NewPacientModalComponent implements OnInit {
         name: 'caret-down',
         classes: 'neutral-grey-medium-color'
       }
-   };
+  };
+
   judetOption = [
     {
       id: 'Alba',
@@ -102,6 +114,25 @@ export class NewPacientModalComponent implements OnInit {
       label: 'Arad'
     }
   ];
+  canalDePromovareConfig: IonSelectConfig = {
+      inputLabel: {
+        classes: '',
+        text: 'Canal de Promovare',
+      },
+      forceListItems: false,
+      multiple: false,
+     disabled: false,
+      placeholder: '',
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'id',
+      labelKey: 'label',
+      useIcon: {
+        name: 'caret-down',
+        classes: 'neutral-grey-medium-color'
+      }
+   };
   orasConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
@@ -121,28 +152,120 @@ export class NewPacientModalComponent implements OnInit {
         classes: 'neutral-grey-medium-color'
       }
   };
+  orasOptions: any;
   addMoreField = false;
-componentFormGroup: FormGroup = this.fb.group({
-  nume: ['', [Validators.required]],
-  preNume: ['', [Validators.required]],
-  dateNasterii: ['', [Validators.required]],
-  sex: ['', [Validators.required]],
-  telephone: '',
-  cnp:'',
-  judet: '',
-  oras: ''
+  componentFormGroup: FormGroup = this.fb.group({
+    nume: ['', [Validators.required]],
+    preNume: ['', [Validators.required]],
+    dateNasterii: ['', [Validators.required]],
+    sex: ['', [Validators.required]],
+    telephone: '',
+    email: '',
+    cnp:'',
+    judet: [{value: '', disabled: true}, Validators.required],
+    canalDePromovare: '',
+    oras: [{value: '', disabled: true}, Validators.required],
   });
-  constructor(private fb: FormBuilder, private modalController: ModalController) { }
+  loading = false;
+  addUser$: Subscription;
+  getCountries$: Subscription;
+  getCities$: Subscription;
+  constructor(
+    private fb: FormBuilder,
+    private modalController: ModalController,
+    private reqS: RequestService,
+    public toastController: ToastController
+  ) { }
 
   ngOnInit() {
-    console.log(this.formGroupValidity);
-   }
+    if (this.data) {
+      this.componentFormGroup.patchValue(this.data);
+    }
+    this.componentFormGroup.get('judet').valueChanges
+      .pipe(
+        distinctUntilChanged()
+      )
+      .subscribe(
+        d => {
+          if (d) {
+            this.getCities(d);
+          }
+        }
+    );
+  }
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000
+    });
+    toast.present();
+  }
+  getCountries() {
+    this.getCountries$ = this.reqS.post(location.getCountries, {
+      searchString: '',
+    })
+      .subscribe(
+        (d: any) => {
+          this.judetOption = d.counties.map((res: any) =>
+            ({
+                ...res,
+                label: res.name,
+                id: res.id,
+              }));
+          console.log(this.judetOption);
+          this.componentFormGroup.controls?.judet?.enable();
+        },
+        _err => this.presentToast('unable to get countries at this time. Please Check your newtwork and try again.')
+      );
+  }
+  getCities(
+    id: number = this.componentFormGroup.value.judet,
+    searchString: string = '') {
+    this.getCities$ = this.reqS.post(location.getCities, {
+      id,
+      searchString,
+    })
+    .subscribe(
+      (d: any) => {
+        this.orasOptions = d.cities.map((res: any) =>
+          ({
+              ...res,
+              label: res.name,
+        }));
+        this.componentFormGroup.controls?.oras?.enable();
+      },
+      _err => this.presentToast('An error occur while trying to get cities at this time. Please Check your newtwork and try again.')
+    );
+  }
   toggleMoreField() {
+    this.getCountries();
     this.addMoreField = !this.addMoreField;
+  }
+  toggleLoadingState() {
+    this.loading = !this.loading;
   }
   add() {
     if (this.formGroupValidity) {
-      this.closeModal();
+      this.toggleLoadingState();
+      const d = {
+        firstName: get(this.componentFormGroup.value, 'nume', ''),
+        lastName: get(this.componentFormGroup.value, 'preNume', ''),
+        pid: get(this.componentFormGroup.value, 'cnp', ''),
+        phone: get(this.componentFormGroup.value, 'telephone', ''),
+        cityID: Number(get(this.componentFormGroup.value, 'cityId', 0)),
+        genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
+        passWarnnings: true
+      };
+      this.addUser$ = this.reqS.post(persons.addPerson, d).subscribe(
+        _rep => {
+          this.toggleLoadingState();
+          this.closeModal();
+        },
+        _err => {
+          this.presentToast('An error occur while trying to add new person. Please try again.');
+          this.toggleLoadingState();
+        }
+      );
     }
   }
   closeModal() {
@@ -153,6 +276,12 @@ componentFormGroup: FormGroup = this.fb.group({
   }
   get formGroupValidity() {
     return this.componentFormGroup.valid;
+  }
+
+  ngOnDestroy() {
+    unsubscriberHelper(this.getCountries$);
+    unsubscriberHelper(this.getCities$);
+    unsubscriberHelper(this.addUser$);
   }
 
 }

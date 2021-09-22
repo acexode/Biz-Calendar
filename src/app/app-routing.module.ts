@@ -38,9 +38,9 @@ const routes: Routes = [
   },
   {
     path: 'data-statistice',
-    loadChildren: () => import('./data-statistice/data-statistice.module').then(m => m.DataStatisticePageModule),
-    canActivate: [AuthGuard]
+    loadChildren: () => import('./data-statistice/data-statistice.module').then( m => m.DataStatisticePageModule)
   }
+
 ];
 
 @NgModule({
