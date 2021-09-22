@@ -13,7 +13,9 @@ import { GrupNouModalComponent } from './grup-nou-modal/grup-nou-modal.component
 import { PacientViewModalComponent } from './pacient-view-modal/pacient-view-modal.component';
 import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { CabinetComponent } from './cabinet/cabinet.component';
-import { CalendarMainModule } from '../calendar/calendar.main.module';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgCalendarModule } from 'ionic2-calendar';
 
 
 
@@ -35,7 +37,11 @@ import { CalendarMainModule } from '../calendar/calendar.main.module';
     IonicModule,
     ReactiveFormsModule,
     BizInputsModule,
-    CalendarMainModule
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    NgCalendarModule
   ],
   exports: [
     SelectieServiciiModalComponent,

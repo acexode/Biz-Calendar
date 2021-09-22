@@ -18,6 +18,49 @@
     </div>
     </div>
     <div class="mt-60">
-      <app-calendar [display]="page"></app-calendar>
+     <!--  <app-calendar [display]="page"></app-calendar> -->
+      <mwl-calendar-week-view [headerTemplate]="customHeaderTemplate" [viewDate]="viewDate"
+        [events]="events" [eventTemplate]="eventTemplate" [refresh]="refresh"
+        (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+        [excludeDays]="excludeDays"></mwl-calendar-week-view>
     </div>
 </ion-content>
+
+
+
+<!-- header Template -->
+<ng-template #customHeaderTemplate let-days="days" let-locale="locale" let-dayHeaderClicked="dayHeaderClicked"
+  let-eventDropped="eventDropped" let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate" let-dragEnter="dragEnter">
+  <div class="cal-day-headers" role="row">
+    <div class="cal-header" *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate" [class.cal-past]="day.isPast"
+      [class.cal-today]="day.isToday" [class.cal-future]="day.isFuture" [class.cal-weekend]="day.isWeekend"
+      [ngClass]="day.cssClass" dragOverClass="cal-drag-over" tabindex="0" role="columnheader">
+      <span [ngClass]="day.isToday ? '' : 'caps'">{{ day.date | calendarDate: 'weekViewColumnHeader':locale | uppercase
+        }}</span><br />
+      <span [ngClass]="day.isToday ? 'bold' : ''" class="day-nr">{{
+        day.date | date : 'd'
+        }}</span>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #eventTemplate let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked"
+  let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate"
+  let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
+  <ion-row class="cal-event lh-none"
+    [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'"
+    (mwlClick)="eventClicked.emit({ event: weekEvent.event })">
+    <ion-col size="3">
+      <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
+    </ion-col>
+    <ion-col size="9">
+      <ion-text class="weekEvent-title">
+        {{weekEvent.event.title}}
+      </ion-text>
+
+    </ion-col>
+  </ion-row>
+
+
+</ng-template>
