@@ -163,9 +163,9 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     telephone: '',
     email: '',
     cnp:'',
-    judet: [{value: '', disabled: true}, Validators.required],
+    judet: [{value: '', disabled: true}],
     canalDePromovare: '',
-    oras: [{value: '', disabled: true}, Validators.required],
+    oras: [{value: '', disabled: true}],
   });
   loading = false;
   addUser$: Subscription;
@@ -179,8 +179,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    const f = formatRFC3339(new Date(), { fractionDigits: 3 });
-    console.log(f);
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
     }
@@ -215,7 +213,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
                 label: res.name,
                 id: res.id,
               }));
-          console.log(this.judetOption);
           this.componentFormGroup.controls?.judet?.enable();
         },
         _err => this.presentToast('unable to get countries at this time. Please Check your newtwork and try again.')
