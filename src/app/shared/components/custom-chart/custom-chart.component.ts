@@ -11,15 +11,21 @@ import { MultiDataSet, Label } from 'ng2-charts';
 })
 export class CustomChartComponent implements OnInit {
   @Input() type;
-  public doughnutChartLabels: Label[] = ['Download Sales', 'In-Store Sales', ];
+  public doughnutChartLabels: Label[] = ['', '', ];
   public doughnutChartData: MultiDataSet = [
     [350, 450]  ];
+  options = {};
   public doughnutChartType: ChartType = 'doughnut';
 
 
   constructor() { }
 
   ngOnInit(): void {
+    this.options = {
+      rotation: 1 * Math.PI,
+      curcumference: 1 * Math.PI
+    };
+
   }
 
 
