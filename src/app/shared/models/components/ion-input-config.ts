@@ -39,4 +39,5 @@ export interface IonInputConfig {
   removeInputItemBaseLine?: boolean;
   debounce?: number;
   mode?: 'ios' | 'md';
+  pattern?: 'text' | 'search' | 'tel' | 'url' | 'email' | 'date' | 'password';
 }
