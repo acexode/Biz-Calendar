@@ -16,6 +16,7 @@ import { CabinetComponent } from './cabinet/cabinet.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgCalendarModule } from 'ionic2-calendar';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 
@@ -30,7 +31,7 @@ import { NgCalendarModule } from 'ionic2-calendar';
     GrupNouModalComponent,
     PacientViewModalComponent,
     BizSearchableRadioModalComponent,
-    CabinetComponent
+    CabinetComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +42,8 @@ import { NgCalendarModule } from 'ionic2-calendar';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    NgCalendarModule
+    NgCalendarModule,
+    CoreModule
   ],
   exports: [
     SelectieServiciiModalComponent,

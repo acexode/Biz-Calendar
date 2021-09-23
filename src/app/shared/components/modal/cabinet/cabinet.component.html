@@ -2,16 +2,6 @@
   <div class="modal-div-body">
 
     <div>
-      <!-- <mwl-calendar-week-view
-        [headerTemplate]="customHeaderTemplate"
-        [viewDate]="viewDate"
-        [events]="events"
-        [eventTemplate]="eventTemplate"
-        [refresh]="refresh"
-        (eventClicked)="handleEvent('Clicked', $event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)"
-        [excludeDays]="excludeDays">
-      </mwl-calendar-week-view> -->
       <mwl-calendar-week-view
         [viewDate]="viewDate"
         [headerTemplate]="customHeaderTemplate"
@@ -31,8 +21,14 @@
 
 
 <!-- header Template -->
-<ng-template #customHeaderTemplate let-days="days" let-locale="locale" let-dayHeaderClicked="dayHeaderClicked"
-  let-eventDropped="eventDropped" let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate" let-dragEnter="dragEnter">
+<ng-template
+  #customHeaderTemplate
+  let-days="days"
+  let-locale="locale"
+  let-dayHeaderClicked="dayHeaderClicked"
+  let-eventDropped="eventDropped"
+  let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate"
+  let-dragEnter="dragEnter">
 
   <div class="modal-div-header white-bg">
     <ion-header class="header-type-a ion-no-border no-box-shadow" [translucent]="true" mode="md">
@@ -50,17 +46,33 @@
       </ion-toolbar>
     </ion-header>
 
-    <div class="cal-day-headers mt-22" role="row">
-      <div class="cal-header" *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate" [class.cal-past]="day.isPast"
-        [class.cal-today]="day.isToday" [class.cal-future]="day.isFuture" [class.cal-weekend]="day.isWeekend"
-        [ngClass]="day.cssClass" dragOverClass="cal-drag-over" tabindex="0" role="columnheader">
-        <span [ngClass]="day.isToday ? '' : 'caps'">{{ day.date | calendarDate: 'weekViewColumnHeader':locale | uppercase
-          }}</span><br />
+      <div class="mt-22 mb-6 ml-48">
+        <ion-text>{{ dd }}</ion-text>
+        <!-- <ion-text>{{ viewDate | calendarDate:(view + 'ViewTitle'):'ro' }}</ion-text> -->
+      </div>
+    <div class="cal-day-headers" role="row">
+
+      <div class="cal-header"
+      *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
+      [class.cal-past]="day.isPast"
+        [class.cal-today]="day.isToday"
+        [class.cal-future]="day.isFuture"
+        [class.cal-weekend]="day.isWeekend"
+        [ngClass]="day.cssClass"
+        dragOverClass="cal-drag-over"
+        tabindex="0"
+        role="columnheader"
+        >
+        <span [ngClass]="day.isToday ? '' : 'caps'">
+          {{ day.date | calendarDate: 'weekViewColumnHeader':locale | uppercase
+          }}
+        </span><br />
         <span [ngClass]="day.isToday ? 'bold' : ''" class="day-nr">{{
           day.date | date : 'd'
           }}</span>
       </div>
     </div>
+
   </div>
 
 

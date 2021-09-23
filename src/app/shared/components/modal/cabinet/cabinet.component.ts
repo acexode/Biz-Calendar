@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
@@ -24,9 +24,11 @@ const colors: any = {
   ],
 })
 export class CabinetComponent implements OnInit {
+  view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
   refresh: Subject<any> = new Subject();
+  dd = new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
   viewDate: Date = new Date();
   excludeDays: number[] = [0, 6];
   actions: CalendarEventAction[] = [

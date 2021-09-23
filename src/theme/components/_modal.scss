@@ -202,7 +202,7 @@
     }
 
     .cal-time-events {
-      margin-top: 150px !important;
+      margin-top: 170px !important;
     }
 
     .cal-hour-segment {
@@ -215,6 +215,22 @@
 
     .cal-day-column {
       border: none !important;
+    }
+
+    .cal-time-label-column {
+      width: 48px !important;
+    }
+
+    .cal-week-view .cal-day-headers {
+      padding-left: 48px;
+    }
+
+    .cal-week-view .cal-time {
+      width: 48px;
+    }
+
+    .cal-week-view .cal-day-headers .cal-header {
+      text-align: left;
     }
   }
 }
