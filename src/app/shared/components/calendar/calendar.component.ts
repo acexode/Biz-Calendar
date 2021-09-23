@@ -4,7 +4,7 @@
 import { AppointmentResponse, Appointment } from './../../../core/models/appointment.interface';
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, Input, OnInit,ChangeDetectionStrategy,ViewChild,
-    TemplateRef,
+    TemplateRef,ChangeDetectorRef,
     ViewEncapsulation} from '@angular/core';
 import { CalendarMode, Step } from 'ionic2-calendar/calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
@@ -53,6 +53,7 @@ function getTimezoneOffsetString(date: Date): string {
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: CalendarDateFormatter,
@@ -72,6 +73,7 @@ export class CalendarComponent implements OnInit {
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
+    events: any[];
     excludeDays: number[] = [0, 6];
     modalData: {
         action: string;
@@ -96,24 +98,29 @@ export class CalendarComponent implements OnInit {
     ];
     refresh: Subject<any> = new Subject();
 
-    events = [];
+
     events$: Observable<CalendarEvent[]>;
     activeDayIsOpen = true;
     eventSource;
     viewTitle;
     isToday: boolean;
-    constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
+    constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService,
+       private cdRef: ChangeDetectorRef) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
-      // console.log(addHours(startOfDay(new Date()), 2));
-      // console.log(addHours(new Date(), 3));
+      this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
     }
 
     ngOnInit() {
+      this.events = [];
+      this.getEventLists();
       this.calS.selectedDate.subscribe(e =>{
-        console.log(e);
+        // console.log(e);
+        if(e !== null){
+          this.getEventLists();
+        }
         this.viewDate = new Date(e);
       });
-      this.getEventLists();
+
       this.isTablet = window.innerWidth >= 768 ? true : false;
       window.addEventListener('resize', ()=>{
         this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -132,18 +139,19 @@ export class CalendarComponent implements OnInit {
         else if(this.display === 'luna'){
           this.setView(this.CalendarView.Month);
         }
-        this.refresh.next();
+        // this.refresh.next();
     }
 
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        const appt = e?.appointments.map(d => ({
-          start:  new Date(d.startTime + getTimezoneOffsetString(this.viewDate)),
-          end:  new Date(d.endTime + getTimezoneOffsetString(this.viewDate)),
+        // console.log(e);
+        this.events =   e?.appointments.map(d => ({
+          start:  new Date(d.startTime),
+          end:  new Date(d.endTime),
           title: d.personName,
           color: {
-            primary: ''
+            primary: 'red'
           },
           actions: this.actions,
           allDay: true,
@@ -153,10 +161,12 @@ export class CalendarComponent implements OnInit {
           },
           draggable: true,
         }));
-        this.events = appt;
-
+        this.cdRef.detectChanges();
+        this.refresh.next();
+        console.log(this.events);
       });
-      console.log(this.events);
+      // console.log('this.events');
+      // console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -183,6 +193,7 @@ export class CalendarComponent implements OnInit {
         newStart,
         newEnd,
       }: CalendarEventTimesChangedEvent): void {
+        console.log(this.events);
         this.events = this.events.map((iEvent) => {
           if (iEvent === event) {
             return {
@@ -218,10 +229,11 @@ export class CalendarComponent implements OnInit {
 
       beforeMonthViewRender(renderEvent: CalendarMonthViewBeforeRenderEvent): void {
         renderEvent.body.forEach((day) => {
+          // console.log(day)
           const dayOfMonth = day.date.getDate();
           const vacations = [4,11];
           if (vacations.includes(dayOfMonth) && day.inMonth) {
-            console.log(day);
+            // console.log(day);
             day.cssClass = 'vacation-bg';
           }
         });

@@ -19,7 +19,6 @@ export class CalendarListComponent implements OnInit {
     window.addEventListener('resize', ()=>{
       this.isTablet = window.innerWidth >= 768 ? true : false;
     });
-    console.log(this.eventList);
     this.getEventLists();
   }
 
@@ -28,7 +27,6 @@ export class CalendarListComponent implements OnInit {
     this.calS.appointments$.subscribe(e =>{
       const dates = e?.appointments.map(d => new Date(d.startTime).toLocaleDateString());
       const week = e?.appointments.map(d => this.weekNumber(d.startTime));
-      console.log(week);
       const uniqDates = [...new Set(week)];
       const appt = uniqDates?.map(unq =>{
         const ev = e?.appointments.filter(s => this.weekNumber(s.startTime) === unq );
@@ -55,7 +53,6 @@ export class CalendarListComponent implements OnInit {
       };
       });
       this.eventList = appt;
-      console.log(appt);
     });
   }
   weekNumber(date){
@@ -70,7 +67,6 @@ export class CalendarListComponent implements OnInit {
 
     const firstday = new Date(curr.setDate(first)).toDateString().split(' ');
     const lastday = new Date(curr.setDate(last)).toDateString().split(' ');
-    console.log(firstday);
     return firstday[1] + ' ' + firstday[2] + ' - ' + lastday[2];
   }
   getDateOfWeek(w) {

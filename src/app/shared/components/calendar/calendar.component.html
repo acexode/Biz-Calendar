@@ -20,8 +20,9 @@
       [excludeDays]="excludeDays"
       (beforeViewRender)="beforeMonthViewRender($event)"
       [cellTemplate]="customCellTemplate"
-    ></mwl-calendar-month-view> 
-      <mwl-calendar-week-view
+    ></mwl-calendar-month-view>
+
+     <mwl-calendar-week-view
       *ngSwitchCase="CalendarView.Week"
       [headerTemplate]="customHeaderTemplate"
       [viewDate]="viewDate"
@@ -32,6 +33,7 @@
       (eventTimesChanged)="eventTimesChanged($event)"
       [excludeDays]="excludeDays"
     ></mwl-calendar-week-view>
+
       <mwl-calendar-day-view
       *ngSwitchCase="CalendarView.Day"
       [hourSegments]="6"
@@ -96,8 +98,9 @@
       <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
      </ion-col>
      <ion-col size="9">
-       <ion-text class="weekEvent-title">
-         {{weekEvent.event.title}}
+       <ion-text class="weekEvent-title ion-text-dark">
+         <!-- {{weekEvent.event.title}} -->
+         Hello world
        </ion-text>
 
      </ion-col>
