@@ -142,10 +142,11 @@
         height: 64px;
         background: white;
       }
+
       .modal-body {
         width: 100%;
         position: relative;
-        margin-top:64px;
+        margin-top: 64px;
         margin-bottom: 54px;
         padding: 0 24px;
       }
@@ -161,11 +162,12 @@
         background: white;
       }
     }
+
     &.modal-wrapper-with-232px-height {
       .modal-wrapper {
         --min-height: 232px !important;
         min-height: var(--min-height) !important;
-      }      
+      }
     }
   }
 
@@ -197,6 +199,22 @@
       overflow: auto !important;
       padding-right: 16px;
       padding-left: 32px;
+    }
+
+    .cal-time-events {
+      margin-top: 150px !important;
+    }
+
+    .cal-hour-segment {
+      border-bottom: none !important;
+    }
+
+    .cal-hour {
+      border-bottom: 1px solid #D5DBDE !important;
+    }
+
+    .cal-day-column {
+      border: none !important;
     }
   }
 }
