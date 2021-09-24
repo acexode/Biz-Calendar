@@ -38,26 +38,12 @@ import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
 
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3',
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF',
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA',
-  },
-};
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: CalendarDateFormatter,
@@ -150,24 +136,25 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        this.events =   e?.appointments.map(d => ({
-          start:  new Date(d.startTime),
-          end:  new Date(d.endTime),
-          title: d.personName,
-          color: {
-            primary: this.calS.colorCode(d.colorCode)
-          },
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-        }));
-        this.cdRef.detectChanges();
-        this.refresh.next();
-        console.log(this.events);
+        if(e?.appointments.length > 0){
+          this.events =   e?.appointments.map(d => ({
+            start:  new Date(d.startTime),
+            end:  new Date(d.endTime),
+            title: d.personName,
+            color: {
+              primary: this.calS.colorCode(d.colorCode)
+            },
+            actions: this.actions,
+            allDay: true,
+            resizable: {
+              beforeStart: true,
+              afterEnd: true,
+            },
+            draggable: true,
+          }));
+          this.refresh.next();
+
+        }
       });
     }
     navigate(path){
