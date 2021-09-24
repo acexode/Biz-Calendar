@@ -49,7 +49,7 @@ export class CabinetComponent implements OnInit {
     },
   ];
   events: CalendarEvent[] = [
-    {
+   /*  {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
@@ -61,21 +61,39 @@ export class CabinetComponent implements OnInit {
         afterEnd: true,
       },
       draggable: true,
-    },
+    }, */
     {
       start: startOfDay(new Date()),
       title: 'An event with no end date',
       color:  colors.bizPrimary,
       actions: this.actions,
     },
-    {
+    /* {
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
       title: 'A long event that spans 2 months',
       color: colors.bizPrimary,
       allDay: true,
-    },
-    {
+    }, */
+    /* {
+      start: addHours(startOfDay(new Date()), 2),
+      end: addHours(new Date(), 2),
+      title: 'A draggable and resizable event',
+      color: colors.bizPrimary,
+      actions: this.actions,
+      resizable: {
+        beforeStart: true,
+        afterEnd: true,
+      },
+      draggable: true,
+    }, */
+  ];
+  constructor() { }
+
+  ngOnInit() {
+    setTimeout(() => {
+      const ev = [
+      {
       start: addHours(startOfDay(new Date()), 2),
       end: addHours(new Date(), 2),
       title: 'A draggable and resizable event',
@@ -87,10 +105,12 @@ export class CabinetComponent implements OnInit {
       },
       draggable: true,
     },
-  ];
-  constructor() { }
-
-  ngOnInit() { }
+      ];
+      this.events.push(...ev);
+      console.log(this.events);
+      this.refresh.next();
+    }, 2000);
+   }
   handleEvent(action: string, event: CalendarEvent): void {
     console.log(event);
     this.viewDate = new Date(event.start);
