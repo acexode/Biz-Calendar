@@ -4,7 +4,7 @@ import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { endOfMonth, endOfWeek, startOfMonth, startOfWeek } from 'date-fns';
+import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek, startOfYear, subBusinessDays } from 'date-fns';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -17,12 +17,11 @@ export class CalendarService {
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
-    this.getAppointments();
-    this.fetchCalendarAppointment();
     this.selectedDate.subscribe(e =>{
-      // console.log(e);
+      console.log(e);
       this.fetchCalendarAppointment(e);
     });
+
    }
 
   getUserPhysicians(){
@@ -31,59 +30,66 @@ export class CalendarService {
   }
   fetchCalendarAppointment(selectedDate = null){
     this.selectedPath.subscribe(path =>{
-      // console.log(path);
+      console.log(path);
 
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
       if(path !== null){
-        if(path === 'zi'){
+        console.log(path);
+        if(path === 'lista'){
+          const start = selectedDate ? new Date(selectedDate) : startOfYear(new Date());
+          const end = selectedDate ? new Date(selectedDate) : endOfYear(new Date());
+          obj.startDay = start;
+          obj.endDate = end;
+        }
+        else if(path === 'zi'){
           const start = selectedDate ? new Date(selectedDate) : new Date();
           start.setHours(7,0,0);
           const end = selectedDate ? new Date(selectedDate) : new Date();;
           end.setHours(21,0,0);
-          obj.startDay = start;
+          obj.startDate = start;
           obj.endDate = end;
         }else if(path === 'luna'){
           const start = selectedDate ? startOfMonth(new Date(selectedDate)) : startOfMonth(new Date());
           const end = selectedDate ? endOfMonth(new Date(selectedDate)): endOfMonth(new Date());
           obj.startDay = start;
           obj.endDate = end;
-          console.log(obj);
-        }else if(path === 'zile-lucratoare' || path === 'saptamana'){
+        }else if(path === 'saptamana'){
+          console.log(path);
           const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
-          const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date(selectedDate)) ;
-          obj.startDay = start;
+          const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date()) ;
+          obj.StartDate = start;
+          obj.EndDate = end;
+        }else if(path === 'zile-lucratoare'){
+          // console.log(subBusinessDays(endOfWeek(new Date()),1), path);
+          const start = selectedDate ? addBusinessDays(startOfWeek(new Date(selectedDate)),1) : addBusinessDays(startOfWeek(new Date()),1);
+          const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
+          obj.startDate = start;
           obj.endDate = end;
         }
-        // console.log(obj);
         this.getAppointments(obj);
 
-      }else{
-        this.getAppointments();
       }
 
     });
   }
   async  getAppointments(data = null){
-    const phy: any = await this.getUserPhysicians().toPromise();
-    let obj: any = {
-      physicianUID: phy.physicians[7].physicianUID
-    };
+    console.log(data);
     if(data !== null){
-      obj = {
-        ...obj,
+      const phy: any = await this.getUserPhysicians().toPromise();
+      const obj: any = {
+        physicianUID: phy.physicians[7].physicianUID,
         ...data
       };
-    }else{
-      obj.startDate = new Date('2021-07-03T12:09:40.163Z');
-      obj.endDate = new Date('2021-09-03T12:09:40.163Z');
+
+      // console.log(obj);
+      return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
+        // console.log(res);
+        this.appointments$.next(res);
+      });
+
     }
-    // console.log(obj);
-    return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
-      // console.log(res);
-      this.appointments$.next(res);
-    });
   }
 
 

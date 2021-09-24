@@ -5,7 +5,8 @@ import { AppointmentResponse, Appointment } from './../../../core/models/appoint
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, Input, OnInit,ChangeDetectionStrategy,ViewChild,
     TemplateRef,ChangeDetectorRef,
-    ViewEncapsulation} from '@angular/core';
+    ViewEncapsulation,
+    OnDestroy} from '@angular/core';
 import { CalendarMode, Step } from 'ionic2-calendar/calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
   import {
@@ -22,7 +23,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     startOfWeek,
     endOfWeek,
   } from 'date-fns';
-  import { Observable, Subject } from 'rxjs';
+  import { Observable, Subject, Subscription } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   import {
       CalendarDateFormatter,
@@ -37,17 +38,20 @@ import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
 
-
-function getTimezoneOffsetString(date: Date): string {
-  const timezoneOffset = date.getTimezoneOffset();
-  const hoursOffset = String(
-    Math.floor(Math.abs(timezoneOffset / 60))
-  ).padStart(2, '0');
-  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
-  const direction = timezoneOffset > 0 ? '-' : '+';
-
-  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
-}
+const colors: any = {
+  red: {
+    primary: '#ad2121',
+    secondary: '#FAE3E3',
+  },
+  blue: {
+    primary: '#1e90ff',
+    secondary: '#D1E8FF',
+  },
+  yellow: {
+    primary: '#e3bc08',
+    secondary: '#FDF1BA',
+  },
+};
 
 @Component({
   selector: 'app-calendar',
@@ -61,7 +65,7 @@ function getTimezoneOffsetString(date: Date): string {
     },
   ]
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
     @Input() display;
     @Input() calendarList;
@@ -73,7 +77,7 @@ export class CalendarComponent implements OnInit {
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
-    events: any[];
+    events: any[] =[];
     excludeDays: number[] = [0, 6];
     modalData: {
         action: string;
@@ -100,6 +104,7 @@ export class CalendarComponent implements OnInit {
 
 
     events$: Observable<CalendarEvent[]>;
+    appointments$: Subscription ;
     activeDayIsOpen = true;
     eventSource;
     viewTitle;
@@ -110,8 +115,8 @@ export class CalendarComponent implements OnInit {
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
     }
 
+
     ngOnInit() {
-      this.events = [];
       this.getEventLists();
       this.calS.selectedDate.subscribe(e =>{
         // console.log(e);
@@ -139,19 +144,18 @@ export class CalendarComponent implements OnInit {
         else if(this.display === 'luna'){
           this.setView(this.CalendarView.Month);
         }
-        // this.refresh.next();
+        this.refresh.next();
     }
 
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        // console.log(e);
         this.events =   e?.appointments.map(d => ({
           start:  new Date(d.startTime),
           end:  new Date(d.endTime),
           title: d.personName,
           color: {
-            primary: 'red'
+            primary: this.calS.colorCode(d.colorCode)
           },
           actions: this.actions,
           allDay: true,
@@ -165,8 +169,6 @@ export class CalendarComponent implements OnInit {
         this.refresh.next();
         console.log(this.events);
       });
-      // console.log('this.events');
-      // console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -248,5 +250,8 @@ export class CalendarComponent implements OnInit {
         return 'green-pattern';
 
       }
+    }
+    ngOnDestroy(): void {
+      // this.appointments$.unsubscribe();
     }
 }

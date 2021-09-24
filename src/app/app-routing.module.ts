@@ -1,3 +1,4 @@
+import { CalendarMonthComponent } from './shared/components/calendar-month/calendar-month.component';
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
@@ -7,6 +8,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'calendar',
     pathMatch: 'full'
+  },
+  {
+    path: 'month',
+    component: CalendarMonthComponent
   },
   {
     path: 'calendar',
@@ -35,7 +40,8 @@ const routes: Routes = [
     path: 'vizualiare',
     loadChildren: () => import('./vizualiare/vizualiare.module').then(m => m.VizualiarePageModule),
     canActivate: [AuthGuard]
-  },  {
+  },
+  {
     path: 'data-statistice',
     loadChildren: () => import('./data-statistice/data-statistice.module').then( m => m.DataStatisticePageModule)
   }

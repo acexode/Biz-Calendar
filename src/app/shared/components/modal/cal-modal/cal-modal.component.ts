@@ -47,7 +47,6 @@ export class CalModalComponent implements OnInit, OnDestroy {
     private calS: CalendarService) { }
 
   ngOnInit() {
-    console.log('hello');
   }
 
 
@@ -69,6 +68,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   }
 
   onTimeSelected(ev, clicked= false) {
+    console.log(ev.selectedTime, clicked);
     this.calS.selectedDate.next(ev.selectedTime);
     if(this.showPicker === true){
       this.routerS.navigate(['calendar/zi']);
@@ -76,7 +76,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  onCurrentDateChanged(event: Date) {
+  onCurrentDateChanged(event) {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
       event.setHours(0, 0, 0, 0);

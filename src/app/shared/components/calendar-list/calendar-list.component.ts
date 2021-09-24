@@ -1,7 +1,7 @@
 import { ro } from 'date-fns/locale';
 import { format } from 'date-fns';
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { CalendarEventObject } from 'src/app/core/models/events.interface';
 
 @Component({
@@ -12,7 +12,7 @@ import { CalendarEventObject } from 'src/app/core/models/events.interface';
 export class CalendarListComponent implements OnInit {
   @Input() eventList;
   isTablet: boolean;
-  constructor(private calS: CalendarService) { }
+  constructor(private calS: CalendarService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -53,6 +53,7 @@ export class CalendarListComponent implements OnInit {
       };
       });
       this.eventList = appt;
+      this.cdRef.detectChanges();
     });
   }
   weekNumber(date){
