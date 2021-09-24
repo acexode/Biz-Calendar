@@ -103,6 +103,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
+      this.events = [
+        {
+          start: addHours(new Date(), 3),
+          end: addHours(new Date(), 4),
+          title: 'A 3 day event',
+          color: {
+            primary:    'yellow'
+          },
+          actions: this.actions,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+        }
+      ];
+
       this.getEventLists();
       this.calS.selectedDate.subscribe(e =>{
         // console.log(e);
@@ -137,9 +155,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     getEventLists(){
       this.calS.eventLists$.subscribe(e =>{
         if(e?.length > 0){
-          this.events =   e?.map(d => ({
-            start:  new Date(d.startTime),
-            end:  new Date(d.endTime),
+          const event =   e?.map(d => ({
+            start:  addHours(new Date(),5),
+            end: addHours(new Date(),6),
             title: d.personName,
             color: {
               primary: this.calS.colorCode(d.colorCode)
@@ -152,9 +170,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
             },
             draggable: true,
           }));
+          this.events.push(...event);
           this.refresh.next();
 
         }
+        console.log(this.events);
       });
     }
     navigate(path){
