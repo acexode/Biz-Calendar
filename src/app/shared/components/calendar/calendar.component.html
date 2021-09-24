@@ -6,15 +6,15 @@
   <app-comparativ></app-comparativ>
 </ion-grid>
 <ion-grid *ngIf="display !== 'lista' && display !== 'comparativ'" class="calendar-m px-0">
-  <ion-row >
+  <ion-row>
     <ion-col class="w-100" [ngSwitch]="view" size="12">
      <mwl-calendar-month-view
      *ngSwitchCase="CalendarView.Month"
       [viewDate]="viewDate"
       [events]="events"
       [refresh]="refresh"
-      [activeDayIsOpen]="false"
       [cellTemplate]="customCellTemplate"
+      [activeDayIsOpen]="false"
       (dayClicked)="dayClicked($event.day)"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
@@ -43,7 +43,7 @@
       [eventTemplate]="customDayTemplate"
       [hourSegmentTemplate]="hourSegmentTemplate"
       [refresh]="refresh"
-     
+      [dayStartHour]="7"
       [dayEndHour]="23"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
@@ -94,7 +94,7 @@
   </ng-template>
 
   <ng-template #eventTemplate let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked" let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
-    <!-- <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
+    <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
      <ion-col size="3">
       <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
      </ion-col>
@@ -105,8 +105,8 @@
        </ion-text>
 
      </ion-col>
-    </ion-row> -->
-    Hello events
+    </ion-row>
+    
     
   </ng-template>
 
