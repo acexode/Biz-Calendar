@@ -1,4 +1,4 @@
-import { AppointmentResponse } from './../../models/appointment.interface';
+import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
@@ -14,6 +14,7 @@ export class CalendarService {
   selectedDate: BehaviorSubject<string> = new BehaviorSubject(null);
   selectedPath: BehaviorSubject<string> = new BehaviorSubject(null);
   appointments$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
+  eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
@@ -21,7 +22,7 @@ export class CalendarService {
       console.log(e);
       this.fetchCalendarAppointment(e);
     });
-
+    this.fetchCalendarAppointment();
    }
 
   getUserPhysicians(){
@@ -87,6 +88,7 @@ export class CalendarService {
       return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
         // console.log(res);
         this.appointments$.next(res);
+        this.eventLists$.next(res.appointments);
       });
 
     }

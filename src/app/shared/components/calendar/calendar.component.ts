@@ -135,9 +135,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
 
     getEventLists(){
-      this.calS.appointments$.subscribe(e =>{
-        if(e?.appointments.length > 0){
-          this.events =   e?.appointments.map(d => ({
+      this.calS.eventLists$.subscribe(e =>{
+        if(e?.length > 0){
+          this.events =   e?.map(d => ({
             start:  new Date(d.startTime),
             end:  new Date(d.endTime),
             title: d.personName,
