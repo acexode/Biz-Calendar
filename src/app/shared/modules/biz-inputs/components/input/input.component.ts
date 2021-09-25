@@ -7,6 +7,7 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { distinctCheckObj } from 'src/app/core/helpers/distinct-check.helper';
 import { get } from 'lodash';
 import { removeMask } from 'src/app/shared/data/input-mask-remover';
+import { listOfErrors, shouldShowErrors } from 'src/app/core/helpers/input.error.helper';
 
 @Component({
   selector: 'app-input',
@@ -183,5 +184,13 @@ export class InputComponent implements OnInit {
 
   get useIcon(): boolean {
     return this.config.hasOwnProperty('useIcon') ? true : false;
+  }
+  get isError(): boolean {
+    return shouldShowErrors(this.parentControl || this.inputControl);
+  }
+  getErrorList() {
+    if (this.isError) {
+      return listOfErrors(this.parentControl || this.inputControl);
+    }
   }
 }
