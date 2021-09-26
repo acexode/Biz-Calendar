@@ -19,10 +19,12 @@ export class CalendarService {
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
     this.selectedDate.subscribe(e =>{
-      console.log(e);
-      this.fetchCalendarAppointment(e);
+      if(e !== null){
+        console.log(e);
+        this.fetchCalendarAppointment(e);
+
+      }
     });
-    this.fetchCalendarAppointment();
    }
 
   getUserPhysicians(){

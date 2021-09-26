@@ -1,3 +1,5 @@
+import { appointmentEndpoints } from './../../../core/configs/endpoints';
+import { RequestService } from 'src/app/core/services/request/request.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 
@@ -96,7 +98,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     viewTitle;
     isToday: boolean;
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService,
-       private cdRef: ChangeDetectorRef) {
+       private cdRef: ChangeDetectorRef, private reqS: RequestService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
     }
@@ -105,8 +107,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     ngOnInit() {
       this.events = [
         {
-          start: addHours(new Date(), 3),
-          end: addHours(new Date(), 4),
+          start: addHours(new Date(),1),
+          end: addHours(new Date(),2),
           title: 'A 3 day event',
           color: {
             primary:    'yellow'
@@ -127,7 +129,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         if(e !== null){
           this.getEventLists();
         }
-        this.viewDate = new Date(e);
+        this.viewDate = new Date();
       });
 
       this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -137,45 +139,105 @@ export class CalendarComponent implements OnInit, OnDestroy {
         if(this.display === 'zi'){
             const day = new Date().getDay();
             // this.excludeDays = [3, 3];
+            this.getEventLists();
             this.setView(this.CalendarView.Day);
         }else if(this.display === 'zile-lucratoare'){
             this.excludeDays = [0, 6];
             this.setView(this.CalendarView.Week);
+            this.getEventLists();
           }else if(this.display === 'saptamana'){
             this.excludeDays = [];
             this.setView(this.CalendarView.Week);
+            this.getEventLists();
         }
         else if(this.display === 'luna'){
           this.setView(this.CalendarView.Month);
+          this.getEventLists();
         }
         this.refresh.next();
     }
 
 
     getEventLists(){
-      this.calS.eventLists$.subscribe(e =>{
-        if(e?.length > 0){
-          const event =   e?.map(d => ({
-            start:  addHours(new Date(),5),
-            end: addHours(new Date(),6),
-            title: d.personName,
-            color: {
-              primary: this.calS.colorCode(d.colorCode)
-            },
-            actions: this.actions,
-            allDay: true,
-            resizable: {
-              beforeStart: true,
-              afterEnd: true,
-            },
-            draggable: true,
-          }));
-          this.events.push(...event);
-          this.refresh.next();
-
-        }
+      const obj: any = {
+        EndDate: '2021-09-18T22:59:59.999Z',
+        StartDate: '2021-09-11T23:00:00.000Z',
+        physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      };
+      this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((e: AppointmentResponse) =>{
+        console.log(e);
+       if(e !== null){
+        const newEvents = e.appointments.map(d => ({
+          start: new Date(),
+          end: addHours(new Date(),2),
+          title: d.personName,
+          color: {
+            primary:    'yellow'
+          },
+          actions: this.actions,
+          allDay: true,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+        }));
+        newEvents.push(...this.events);
+        // this.events = newEvents;
+        console.log(newEvents);
+        this.events = newEvents;
         console.log(this.events);
+        this.refresh.next();
+        this.cdRef.detectChanges();
+       }
+          // this.events.push(...newEvents);
       });
+      // this.events$ = this.calS.appointments$
+      // .pipe(
+      //   map(( results: any ) => {
+      //     console.log(results);
+      //     return results.map((appt: Appointment) => {
+      //       console.log(appt);
+      //       return {
+      //         title: appt.personName,
+      //         start: new Date(
+      //           appt.startTime
+      //         ),
+      //         color: this.calS.colorCode(appt.colorCode),
+      //         allDay: true,
+      //         meta: {
+      //           appt,
+      //         },
+      //       };
+      //     });
+      //   })
+      // );
+
+      // this.calS.eventLists$.subscribe(e =>{
+      //   console.log(e);
+      //   if(e.length > 0){
+      //     const event =   e.map(d => ({
+      //       start:  new Date(d.startTime),
+      //       end: new Date(d.startTime),
+      //       title: d.personName,
+      //       color: {
+      //         primary: this.calS.colorCode(d.colorCode)
+      //       },
+      //       actions: this.actions,
+      //       allDay: true,
+      //       resizable: {
+      //         beforeStart: true,
+      //         afterEnd: true,
+      //       },
+      //       draggable: true,
+      //     }));
+      //     console.log(event);
+      //     this.events.push(...event);
+      //     this.refresh.next();
+
+      //   }
+      //   console.log(this.events);
+      // });
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
