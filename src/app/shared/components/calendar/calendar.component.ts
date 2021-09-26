@@ -129,7 +129,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         if(e !== null){
           this.getEventLists();
         }
-        this.viewDate = new Date();
+        this.viewDate = new Date(e);
       });
 
       this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -156,7 +156,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
         }
         this.refresh.next();
     }
-
+    refreshView(): void {
+      this.refresh.next();
+    }
 
     getEventLists(){
       const obj: any = {
@@ -164,45 +166,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
         StartDate: '2021-09-11T23:00:00.000Z',
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
       };
-      this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((e: AppointmentResponse) =>{
-        console.log(e);
-       if(e !== null){
-        const newEvents = e.appointments.map(d => ({
-          start: new Date(),
-          end: addHours(new Date(),2),
-          title: d.personName,
-          color: {
-            primary:    'yellow'
-          },
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-        }));
-        newEvents.push(...this.events);
-        // this.events = newEvents;
-        console.log(newEvents);
-        this.events = newEvents;
-        console.log(this.events);
-        this.refresh.next();
-        this.cdRef.detectChanges();
-       }
-          // this.events.push(...newEvents);
-      });
+
       // this.events$ = this.calS.appointments$
       // .pipe(
       //   map(( results: any ) => {
       //     console.log(results);
-      //     return results.map((appt: Appointment) => {
+      //     return results?.appointments?.map((appt: Appointment) => {
       //       console.log(appt);
       //       return {
       //         title: appt.personName,
-      //         start: new Date(
-      //           appt.startTime
-      //         ),
+      //         start: new Date(appt.startTime),
+      //         end: new Date(appt.endTime),
       //         color: this.calS.colorCode(appt.colorCode),
       //         allDay: true,
       //         meta: {
@@ -212,32 +186,35 @@ export class CalendarComponent implements OnInit, OnDestroy {
       //     });
       //   })
       // );
+      console.log(this.events$);
+      this.refreshView();
+      this.cdRef.detectChanges();
 
-      // this.calS.eventLists$.subscribe(e =>{
-      //   console.log(e);
-      //   if(e.length > 0){
-      //     const event =   e.map(d => ({
-      //       start:  new Date(d.startTime),
-      //       end: new Date(d.startTime),
-      //       title: d.personName,
-      //       color: {
-      //         primary: this.calS.colorCode(d.colorCode)
-      //       },
-      //       actions: this.actions,
-      //       allDay: true,
-      //       resizable: {
-      //         beforeStart: true,
-      //         afterEnd: true,
-      //       },
-      //       draggable: true,
-      //     }));
-      //     console.log(event);
-      //     this.events.push(...event);
-      //     this.refresh.next();
+      this.calS.eventLists$.subscribe(e =>{
+        console.log(e);
+        if(e.length > 0){
+          const event =   e.map(d => ({
+            start:  new Date(d.startTime),
+            end: new Date(d.startTime),
+            title: d.personName,
+            color: {
+              primary: this.calS.colorCode(d.colorCode)
+            },
+            actions: this.actions,
+            allDay: true,
+            resizable: {
+              beforeStart: true,
+              afterEnd: true,
+            },
+            draggable: true,
+          }));
+          console.log(event);
+          this.events.push(...event);
+          this.refresh.next();
 
-      //   }
-      //   console.log(this.events);
-      // });
+        }
+        console.log(this.events);
+      });
     }
     navigate(path){
       this.router.navigate(['/home' +path]);

@@ -87,7 +87,8 @@ export class CalendarService {
       };
 
       // console.log(obj);
-      return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
+      return this.reqS.post(appointmentEndpoints.getAppointment, obj)
+      .subscribe((res: any) =>{
         // console.log(res);
         this.appointments$.next(res);
         this.eventLists$.next(res.appointments);
