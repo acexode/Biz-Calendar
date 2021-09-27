@@ -20,7 +20,7 @@
       [excludeDays]="excludeDays"
       (beforeViewRender)="beforeMonthViewRender($event)"
       [cellTemplate]="customCellTemplate"
-    ></mwl-calendar-month-view> 
+    ></mwl-calendar-month-view>
       <mwl-calendar-week-view
       *ngSwitchCase="CalendarView.Week"
       [headerTemplate]="customHeaderTemplate"
@@ -45,7 +45,7 @@
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
-   
+
     </mwl-calendar-day-view>
 
     </ion-col>
@@ -54,9 +54,9 @@
     <ion-row class=" b-bottom pl-0 h-100">
       <ion-col [size]=" isTablet ? 1: 2">
         <ion-label class="h-100 w-40 cal-time">
-          
+
           {{segment.date | hour}}</ion-label>
-        
+
       </ion-col >
       <ion-col [ngClass]="setBg(segment.date)" class="b-left" [size]=" isTablet ? 11: 10">
 
@@ -71,8 +71,8 @@
   let-tooltipTemplate="tooltipTemplate"
   let-tooltipAppendToBody="tooltipAppendToBody">
   <ion-row
-  class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({ event: weekEvent.event })"
- >    
+  class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({   event: weekEvent.event })"
+ >
  <ion-col [ngClass]="weekEvent.event.meta?.cssClass" size="12">
   <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
   <ion-text class="weekEvent-title pl-3 text-dark">
@@ -81,11 +81,11 @@
  </ion-col>
 
     <!-- <span>{{weekEvent | json}}</span> -->
-  
- 
+
+
 </ion-row>
 
- 
+
   </ng-template>
 
   <ng-template #eventTemplate let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked" let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
@@ -96,10 +96,10 @@
         {{weekEvent.event.title}}
       </ion-text>
      </ion-col>
-    
+
     </ion-row>
-    
-    
+
+
   </ng-template>
 
   <!-- Month Cell Template -->
@@ -121,7 +121,7 @@
   </ng-template>
 
   <!-- header Template -->
-  <ng-template #customHeaderTemplate 
+  <ng-template #customHeaderTemplate
   let-days="days"
   let-locale="locale"
   let-dayHeaderClicked="dayHeaderClicked"
@@ -139,7 +139,7 @@
       [class.cal-weekend]="day.isWeekend"
       [ngClass]="day.cssClass"
       dragOverClass="cal-drag-over"
-      
+
       tabindex="0"
       role="columnheader"
     >
@@ -147,10 +147,10 @@
       ><br />
       <span [ngClass]="day.isToday ? 'bold' : ''" class="day-nr">{{
         day.date  | date : 'd'
-      }}</span> 
+      }}</span>
     </div>
   </div>
   </ng-template>
-  
-  
+
+
 </ion-grid>

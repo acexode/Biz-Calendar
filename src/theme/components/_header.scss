@@ -23,6 +23,7 @@
 
         ion-buttons {
           margin-inline-start: 0 !important;
+
           ion-icon {
             margin-right: 0 !important;
           }
@@ -37,6 +38,10 @@
         }
       }
 
+    }
+
+    &.no-box-shadow {
+      box-shadow: none !important;
     }
   }
 }
