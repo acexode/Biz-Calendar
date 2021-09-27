@@ -62,7 +62,8 @@ export class DataStatisticePage implements OnInit {
 
 
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
-    numar: this.list[0].label
+    numar: this.list[0].label,
+    month: this.months[0]
   });
   isWed = false;
 

@@ -41,49 +41,89 @@
           <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Ioana Anghelescu</ion-text>
           <!-- <ion-icon >Ioana Anghelescu</ion-icon> -->
         </div>
-        <div class="pt-32 px-32">
-          <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Martie</ion-text>
-          <ion-icon name="caret-down" color="biz-primary" ></ion-icon>
-        </div>
+       
         <div class="pt-32 px-32">
          
-           
-            <ion-select class="primary-color-step-100 text-weight-500 s20-h28" value="brown" okText="Okay" cancelText="Dismiss">
-              <ion-select-option value="brown">Brown</ion-select-option>
-              <ion-select-option value="blonde">Blonde</ion-select-option>
-              <ion-select-option value="black">Black</ion-select-option>
-              <ion-select-option value="red">Red</ion-select-option>
-            </ion-select>
-            <ion-icon name="caret-down" color="biz-primary" ></ion-icon>
+           <ion-row>
+             <ion-select class="primary-color-step-100 text-weight-500 s20-h28" formControlName="month" okText="Okay" cancelText="Dismiss">
+               <ion-select-option [value]="m" *ngFor="let m of months" value="brown">{{m}}</ion-select-option>
+               
+             </ion-select>
+             <ion-col class=" mt-10">
+               <ion-icon  name="caret-down" color="biz-primary" ></ion-icon>
+
+             </ion-col>
+
+           </ion-row>
         </div>
 
         <ion-row class="px-16 pt-16">
-          <ion-col class="card px-16 pt-16">
+          <ion-col class="card  pt-16">
             <ion-row>
-              <ion-col size="3">
+              <ion-col class="pl-16" size="6">
                 <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
                   TOTAL
-                  martie
-                  2021
+                 
 
                 </ion-text>
               </ion-col>
-              <ion-col size="6">
+             
+              <ion-col class="flex ion-justify-content-end pr-12" size="6">
+                <ion-text class="s14-h16 primary-color-step-110 ls-03 roboto-family-font ls-03 ion-text-right pr-6">
+                  -2,6%
+                </ion-text>
+                <ion-icon color="biz-primary" name="arrow-up"></ion-icon>
+              </ion-col>
+              <ion-col size="12">
+                  <app-custom-chart type="dougnut"></app-custom-chart>
+               
                 <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
-                  <div style="display: block;">
-                    <app-custom-chart type="dougnut"></app-custom-chart>
-                  </div>
 
                 </ion-text>
               </ion-col>
-              <ion-col size="3">
-                <ion-text class="s32-h32 text-weight-medium poppin-family-font ls-03 ">
-                  565
-
-                </ion-text>
+              <ion-col size="12" class="ion-text-center">
+                <ion-text class="s32-h32 primary-color-step-110  poppins-family-font pos-absolute total ">68,5%</ion-text>
+              </ion-col>
+              <ion-col class="text-center pb-12 pt-8 legend" size="12">
+                  <ion-text class="legend-left">Servicii C.N.A.S.</ion-text>
+                  <ion-text class="legend-right">Servicii C.N.A.S.</ion-text>
               </ion-col>
             </ion-row>
           </ion-col>
+        
+        </ion-row>
+        <ion-row class="px-16 pt-16">
+          <ion-col class="card  pt-16">
+            <ion-row>
+              <ion-col class="pl-16" size="6">
+                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                  TOTAL
+                </ion-text> <br>
+                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                  martie <br> 2021
+                </ion-text>
+              </ion-col>
+             
+             
+              <ion-col class="pr-12" offset="3" size="3">
+                <ion-text class="s32-h32 text-weight-medium ls-03 poppins-family-font ls-03 ion-text-right pr-6">
+                  565
+                </ion-text> <br>
+                <ion-text class="s14-h16 primary-color-step-110 ls-03 roboto-family-font ls-03 ion-text-right pr-6">
+                  + 11
+                </ion-text>
+               
+              </ion-col>
+              <ion-col class="px-48" size="12">
+                <app-custom-chart type="line"></app-custom-chart>
+             
+            
+            </ion-col>
+             
+              
+            </ion-row>
+          </ion-col>
+        
         </ion-row>
 
 
