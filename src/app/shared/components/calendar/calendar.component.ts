@@ -1,14 +1,11 @@
-import { appointmentEndpoints } from './../../../core/configs/endpoints';
-import { RequestService } from 'src/app/core/services/request/request.service';
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 
 import { AppointmentResponse, Appointment } from './../../../core/models/appointment.interface';
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, Input, OnInit,ChangeDetectionStrategy,ViewChild,
-    TemplateRef,ChangeDetectorRef,
-    ViewEncapsulation,
-    OnDestroy} from '@angular/core';
+    TemplateRef,
+    ViewEncapsulation} from '@angular/core';
 import { CalendarMode, Step } from 'ionic2-calendar/calendar';
 import { CustomDateFormatter } from './custom-date-formatter.provider';
   import {
@@ -25,7 +22,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     startOfWeek,
     endOfWeek,
   } from 'date-fns';
-  import { Observable, Subject, Subscription } from 'rxjs';
+  import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   import {
       CalendarDateFormatter,
@@ -41,11 +38,21 @@ import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
 
 
+function getTimezoneOffsetString(date: Date): string {
+  const timezoneOffset = date.getTimezoneOffset();
+  const hoursOffset = String(
+    Math.floor(Math.abs(timezoneOffset / 60))
+  ).padStart(2, '0');
+  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
+  const direction = timezoneOffset > 0 ? '-' : '+';
+
+  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
+}
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   providers: [
     {
       provide: CalendarDateFormatter,
@@ -53,19 +60,19 @@ import { ro } from 'date-fns/locale';
     },
   ]
 })
-export class CalendarComponent implements OnInit, OnDestroy {
+export class CalendarComponent implements OnInit {
 
-    @Input() display;
-    @Input() calendarList;
-    @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  @Input() display;
+  @Input() calendarList;
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  public calendarPages = CalendarPages;
     currentDate = new Date().getDate();
     activatedPath  = '';
     isTablet = false;
-    public calendarPages = CalendarPages;
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
-    events: any[] =[];
+    events: CalendarEvent [] = [];
     excludeDays: number[] = [0, 6];
     modalData: {
         action: string;
@@ -90,48 +97,26 @@ export class CalendarComponent implements OnInit, OnDestroy {
     ];
     refresh: Subject<any> = new Subject();
 
-
     events$: Observable<CalendarEvent[]>;
-    appointments$: Subscription ;
     activeDayIsOpen = true;
     eventSource;
     viewTitle;
     isToday: boolean;
-    constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService,
-       private cdRef: ChangeDetectorRef, private reqS: RequestService) {
+    constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
+
+      // console.log(addHours(startOfDay(new Date()), 2));
+      // console.log(addHours(new Date(), 3));
     }
 
-
     ngOnInit() {
-      this.events = [
-        {
-          start: addHours(new Date(),1),
-          end: addHours(new Date(),2),
-          title: 'A 3 day event',
-          color: {
-            primary:    'yellow'
-          },
-          actions: this.actions,
-          allDay: true,
-          resizable: {
-            beforeStart: true,
-            afterEnd: true,
-          },
-          draggable: true,
-        }
-      ];
-
-      this.getEventLists();
       this.calS.selectedDate.subscribe(e =>{
-        // console.log(e);
-        if(e !== null){
-          this.getEventLists();
-        }
+        console.log(e);
         this.viewDate = new Date(e);
+        this.getEventLists();
       });
-
+      this.getEventLists();
       this.isTablet = window.innerWidth >= 768 ? true : false;
       window.addEventListener('resize', ()=>{
         this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -139,82 +124,49 @@ export class CalendarComponent implements OnInit, OnDestroy {
         if(this.display === 'zi'){
             const day = new Date().getDay();
             // this.excludeDays = [3, 3];
-            this.getEventLists();
             this.setView(this.CalendarView.Day);
         }else if(this.display === 'zile-lucratoare'){
             this.excludeDays = [0, 6];
             this.setView(this.CalendarView.Week);
-            this.getEventLists();
           }else if(this.display === 'saptamana'){
             this.excludeDays = [];
             this.setView(this.CalendarView.Week);
-            this.getEventLists();
         }
         else if(this.display === 'luna'){
           this.setView(this.CalendarView.Month);
-          this.getEventLists();
         }
         this.refresh.next();
     }
-    refreshView(): void {
-      this.refresh.next();
-    }
+
 
     getEventLists(){
-      const obj: any = {
-        EndDate: '2021-09-18T22:59:59.999Z',
-        StartDate: '2021-09-11T23:00:00.000Z',
-        physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      };
-
-      // this.events$ = this.calS.appointments$
-      // .pipe(
-      //   map(( results: any ) => {
-      //     console.log(results);
-      //     return results?.appointments?.map((appt: Appointment) => {
-      //       console.log(appt);
-      //       return {
-      //         title: appt.personName,
-      //         start: new Date(appt.startTime),
-      //         end: new Date(appt.endTime),
-      //         color: this.calS.colorCode(appt.colorCode),
-      //         allDay: true,
-      //         meta: {
-      //           appt,
-      //         },
-      //       };
-      //     });
-      //   })
-      // );
-      console.log(this.events$);
-      this.refreshView();
-      this.cdRef.detectChanges();
-
-      this.calS.eventLists$.subscribe(e =>{
+      this.calS.appointments$.subscribe(e =>{
         console.log(e);
-        if(e.length > 0){
-          const event =   e.map(d => ({
-            start:  new Date(d.startTime),
-            end: new Date(d.startTime),
-            title: d.personName,
-            color: {
-              primary: this.calS.colorCode(d.colorCode)
-            },
-            actions: this.actions,
-            allDay: true,
-            resizable: {
-              beforeStart: true,
-              afterEnd: true,
-            },
-            draggable: true,
-          }));
-          console.log(event);
-          this.events.push(...event);
-          this.refresh.next();
-
-        }
+        this.events = e?.appointments.map(d => ({
+          start:  new Date(d.startTime ),
+          end:  new Date(d.endTime),
+          title: d.personName,
+          color: {
+            primary: '',
+            secondary:''
+          },
+          actions: this.actions,
+          allDay: false,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+          meta:{
+            cssClass: this.calS.colorCode(d.colorCode),
+            icon: this.calS.iconCode(d.icons)
+          }
+        }));
         console.log(this.events);
+        this.refresh.next();
+
       });
+      console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -222,7 +174,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     // angular calendar
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
       this.viewDate = date;
-    this.view = CalendarView.Day;
+      this.view = CalendarView.Day;
         if (isSameMonth(date, this.viewDate)) {
           if (
             (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -241,7 +193,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
         newStart,
         newEnd,
       }: CalendarEventTimesChangedEvent): void {
-        console.log(this.events);
         this.events = this.events.map((iEvent) => {
           if (iEvent === event) {
             return {
@@ -260,12 +211,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
           this.viewDate = new Date(event.start);
           this.view = CalendarView.Day;
           this.modalData = { event, action };
-        //this.modal.open(this.modalContent, { size: 'lg' });
+        // this.modal.open(this.modalContent, { size: 'lg' });
       }
 
-      deleteEvent(eventToDelete: CalendarEvent) {
-        this.events = this.events.filter((event) => event !== eventToDelete);
-      }
 
       setView(view: CalendarView) {
         this.view = view;
@@ -277,11 +225,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
       beforeMonthViewRender(renderEvent: CalendarMonthViewBeforeRenderEvent): void {
         renderEvent.body.forEach((day) => {
-          // console.log(day)
           const dayOfMonth = day.date.getDate();
           const vacations = [4,11];
           if (vacations.includes(dayOfMonth) && day.inMonth) {
-            // console.log(day);
+            console.log(day);
             day.cssClass = 'vacation-bg';
           }
         });
@@ -289,15 +236,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
     setBg(d){
       const hours = new Date(d).getHours();
       if(hours > 7 && hours <= 10){
-        return 'green-pattern';
+        return 'cabinet-not-confirmed-v1';
       }else if(hours > 10 && hours < 13){
         return 'blue-pattern';
       }else{
         return 'green-pattern';
 
       }
-    }
-    ngOnDestroy(): void {
-      // this.appointments$.unsubscribe();
     }
 }
