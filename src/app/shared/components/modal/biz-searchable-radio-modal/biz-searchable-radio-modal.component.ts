@@ -112,7 +112,6 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
         .post<Array<GetCabinetSchedulesResponseModel>>(cabinet.getCabinetsSchedules, d)
       .subscribe(
         (resps: GetCabinetSchedulesResponseModel[]) => {
-          console.log(resps[0]);
           if (resps) {
             if (resps.length > 0) {
               for (const res of resps) {
@@ -132,11 +131,12 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
                 });
                 if (!checkIsBeforeEndTime && !checkIsAfterStartTime) {
                   this.closeModal();
-                  console.log('hmmmm');
                 } else {
                   this.presentCabinentNotify();
                 }
               }
+            } else {
+              this.closeModal();
             }
           }
 

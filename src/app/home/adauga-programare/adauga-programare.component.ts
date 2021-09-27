@@ -277,7 +277,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // this.presentCabinent();
+    // this.presentNewPacientModal();
     this.getCabinets();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
@@ -364,30 +364,34 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
   }
   async presentCabinetModalRadio() {
-    console.log(!this.dataAndOraDeIncepereNotFilledStatus);
-    if (!this.dataAndOraDeIncepereNotFilledStatus) {
-        const toCompareDate = new Date(
-        `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
-      );
-      const modal = await this.modalController.create({
-        component: BizSearchableRadioModalComponent,
-        cssClass: 'biz-modal-class',
-        backdropDismiss: false,
-        componentProps: {
-          options: this.cabinetOption,
-          config: this.cabinetConfig,
-          toCompareDate,
-        },
-      });
-      await modal.present();
-      const { data } = await modal.onWillDismiss();
-      console.log(data);
-      const { dismissed, radioValue } = data;
-      if (dismissed && radioValue !== '') {
-        this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+    if (this.cabinetOption.length < 1) {
+      this.presentToast('Please wait.');
+      this.getCabinets(true);
+    } else {
+      if (!this.dataAndOraDeIncepereNotFilledStatus) {
+          const toCompareDate = new Date(
+          `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
+        );
+        const modal = await this.modalController.create({
+          component: BizSearchableRadioModalComponent,
+          cssClass: 'biz-modal-class',
+          backdropDismiss: false,
+          componentProps: {
+            options: this.cabinetOption,
+            config: this.cabinetConfig,
+            toCompareDate,
+          },
+        });
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+        const { dismissed, radioValue } = data;
+        if (dismissed && radioValue !== '') {
+          this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+        }
+      } else {
+        this.presentToast('Completează data și ora de începere de mai sus!');
       }
     }
-
   }
   async presentInfoPacientModalModal() {
     const modal = await this.modalController.create({
@@ -485,19 +489,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       return '';
     }
   }
-  getCabinets() {
+  getCabinets(callCabinetModal: boolean = false) {
     this.getCabinets$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
-        this.cabinetOption = d;
-        console.log(this.cabinetOption);
-      });
+          this.cabinetOption = d;
+          if (callCabinetModal) {
+            this.presentCabinetModalRadio();
+          }
+        },
+        _err => this.presentToast('Unable to get available cabinet at this instance. Please check your network and try again. C01')
+      );
   }
-  async presentToast() {
+  async presentToast(
+    message: string = 'message',
+    cssClass: 'success' | 'error' = 'error',
+    duration: number = 3000
+  ) {
     const toast = await this.toastController.create({
-      message: this.errorMsg,
-      duration: 5000,
-      cssClass: 'toast-bg black-color m-0 s18-h24 ion-text-center px-16 py-13 text-weight-regular roboto-family-font ls-02'
+      cssClass,
+      message,
+      duration,
     });
     toast.present();
   }

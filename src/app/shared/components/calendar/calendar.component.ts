@@ -62,16 +62,17 @@ function getTimezoneOffsetString(date: Date): string {
 })
 export class CalendarComponent implements OnInit {
 
-    @Input() display;
-    @Input() calendarList;
-    @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  @Input() display;
+  @Input() calendarList;
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  public calendarPages = CalendarPages;
     currentDate = new Date().getDate();
     activatedPath  = '';
     isTablet = false;
-    public calendarPages = CalendarPages;
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
+    events: CalendarEvent [] = [];
     excludeDays: number[] = [0, 6];
     modalData: {
         action: string;
@@ -96,7 +97,6 @@ export class CalendarComponent implements OnInit {
     ];
     refresh: Subject<any> = new Subject();
 
-    events = [];
     events$: Observable<CalendarEvent[]>;
     activeDayIsOpen = true;
     eventSource;
@@ -104,6 +104,8 @@ export class CalendarComponent implements OnInit {
     isToday: boolean;
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
+      this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
+
       // console.log(addHours(startOfDay(new Date()), 2));
       // console.log(addHours(new Date(), 3));
     }
@@ -113,6 +115,7 @@ export class CalendarComponent implements OnInit {
       this.calS.selectedDate.subscribe(e =>{
         console.log(e);
         this.viewDate = new Date(e);
+        this.getEventLists();
       });
       this.getEventLists();
       this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -139,22 +142,29 @@ export class CalendarComponent implements OnInit {
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        const appt = e?.appointments.map(d => ({
-          start:  new Date(d.startTime + getTimezoneOffsetString(this.viewDate)),
-          end:  new Date(d.endTime + getTimezoneOffsetString(this.viewDate)),
+        console.log(e);
+        this.events = e?.appointments.map(d => ({
+          start:  new Date(d.startTime ),
+          end:  new Date(d.endTime),
           title: d.personName,
           color: {
-            primary: ''
+            primary: '',
+            secondary:''
           },
           actions: this.actions,
-          allDay: true,
+          allDay: false,
           resizable: {
             beforeStart: true,
             afterEnd: true,
           },
           draggable: true,
+          meta:{
+            cssClass: this.calS.colorCode(d.colorCode),
+            icon: this.calS.iconCode(d.icons)
+          }
         }));
-        this.events = appt;
+        console.log(this.events);
+        this.refresh.next();
 
       });
       console.log(this.events);
@@ -165,7 +175,7 @@ export class CalendarComponent implements OnInit {
     // angular calendar
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
       this.viewDate = date;
-    this.view = CalendarView.Day;
+      this.view = CalendarView.Day;
         if (isSameMonth(date, this.viewDate)) {
           if (
             (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -202,12 +212,9 @@ export class CalendarComponent implements OnInit {
           this.viewDate = new Date(event.start);
           this.view = CalendarView.Day;
           this.modalData = { event, action };
-        //this.modal.open(this.modalContent, { size: 'lg' });
+        // this.modal.open(this.modalContent, { size: 'lg' });
       }
 
-      deleteEvent(eventToDelete: CalendarEvent) {
-        this.events = this.events.filter((event) => event !== eventToDelete);
-      }
 
       setView(view: CalendarView) {
         this.view = view;
@@ -230,7 +237,7 @@ export class CalendarComponent implements OnInit {
     setBg(d){
       const hours = new Date(d).getHours();
       if(hours > 7 && hours <= 10){
-        return 'green-pattern';
+        return 'cabinet-not-confirmed-v1';
       }else if(hours > 10 && hours < 13){
         return 'blue-pattern';
       }else{

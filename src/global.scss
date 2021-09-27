@@ -77,7 +77,7 @@
   background-color: #fff;
 }
 .cabinet-not-confirmed-v1  {
-  border-left: 4px solid #EAF6E8;
+  border-left: 4px solid #EAF6E8 !important;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
   background: repeating-linear-gradient(
@@ -89,7 +89,7 @@
   ) !important;
 }
 .cabinet-not-confirmed-v2  {
-  border-left: 4px solid #C7F3FF;
+  border-left: 4px solid #C7F3FF !important;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
   background: repeating-linear-gradient(
@@ -101,7 +101,7 @@
   ) !important;
 }
 .online-not-confirmed-v2  {
-  border-left: 4px solid #EDDBFF;
+  border-left: 4px solid #EDDBFF !important;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
   background: repeating-linear-gradient(
@@ -229,4 +229,8 @@
 .toast-bg{
   --background: red !important;
   --border-radius: none ;
+}
+
+.weekEvent-title{
+  color: #000;
 }
