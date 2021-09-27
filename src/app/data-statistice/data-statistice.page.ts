@@ -60,7 +60,29 @@ export class DataStatisticePage implements OnInit {
 
   selected = this.list[0].label;
 
-
+  dougnutStats = [
+    {
+      percent: '55,1%',
+      type: 'Servicii C.N.A.S.',
+      month: 'Martie',
+      increase: '4.3%',
+      decrease: null,
+    },
+    {
+      percent: '68,3%',
+      type: 'Servicii C.N.A.S.',
+      month: 'Ianuarie',
+      increase: null,
+      decrease: '-2,6%',
+    },
+    {
+      percent: '55.1%',
+      type: 'Servicii C.N.A.S.',
+      month: 'Februarie',
+      increase: '12,2%',
+      decrease: null,
+    },
+  ];
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     numar: this.list[0].label,
     month: this.months[0]

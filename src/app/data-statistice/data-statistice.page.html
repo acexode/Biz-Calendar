@@ -57,22 +57,28 @@
            </ion-row>
         </div>
 
-        <ion-row class="px-16 pt-16">
+        <ion-row *ngFor="let d of dougnutStats; let i = index" class="px-16 pt-16">
           <ion-col class="card  pt-16">
             <ion-row>
               <ion-col class="pl-16" size="6">
-                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                <ion-text *ngIf="i === 0" class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
                   TOTAL
+                 
+
+                </ion-text>
+                <ion-text *ngIf="i !== 0" class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                  {{d.month}}
                  
 
                 </ion-text>
               </ion-col>
              
               <ion-col class="flex ion-justify-content-end pr-12" size="6">
-                <ion-text class="s14-h16 primary-color-step-110 ls-03 roboto-family-font ls-03 ion-text-right pr-6">
-                  -2,6%
+                <ion-text  class="s14-h16 primary-color-step-110 ls-03 roboto-family-font ls-03 ion-text-right pr-6">
+                  {{d.increase}} {{d.decrease}}
                 </ion-text>
-                <ion-icon color="biz-primary" name="arrow-up"></ion-icon>
+                <ion-icon *ngIf="d.increase !== null" color="biz-primary" name="arrow-up"></ion-icon>
+                <ion-icon *ngIf="d.decrease !== null" color="error" name="arrow-down"></ion-icon>
               </ion-col>
               <ion-col size="12">
                   <app-custom-chart type="dougnut"></app-custom-chart>
@@ -82,7 +88,7 @@
                 </ion-text>
               </ion-col>
               <ion-col size="12" class="ion-text-center">
-                <ion-text class="s32-h32 primary-color-step-110  poppins-family-font pos-absolute total ">68,5%</ion-text>
+                <ion-text class="s32-h32 primary-color-step-110  poppins-family-font pos-absolute total ">{{d.percent}}</ion-text>
               </ion-col>
               <ion-col class="text-center pb-12 pt-8 legend" size="12">
                   <ion-text class="legend-left">Servicii C.N.A.S.</ion-text>
