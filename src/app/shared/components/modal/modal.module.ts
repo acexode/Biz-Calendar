@@ -17,6 +17,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgCalendarModule } from 'ionic2-calendar';
 import { CoreModule } from 'src/app/core/core.module';
+import { CabinetNotifyComponent } from './cabinet-notify/cabinet-notify.component';
 
 
 
@@ -32,6 +33,7 @@ import { CoreModule } from 'src/app/core/core.module';
     PacientViewModalComponent,
     BizSearchableRadioModalComponent,
     CabinetComponent,
+    CabinetNotifyComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { CoreModule } from 'src/app/core/core.module';
     GrupNouModalComponent,
     PacientViewModalComponent,
     BizSearchableRadioModalComponent,
-    CabinetComponent
+    CabinetComponent,
+    CabinetNotifyComponent
   ]
 })
 export class ModalModule { }

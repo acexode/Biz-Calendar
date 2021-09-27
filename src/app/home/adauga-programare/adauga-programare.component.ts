@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { InfoPacientModalComponent } from 'src/app/shared/components/modal/info-pacient-modal/info-pacient-modal.component';
@@ -32,6 +32,7 @@ import { cabinet } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { addHours, isAfter, isBefore, startOfDay } from 'date-fns';
 import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
+import { CabinetNotifyComponent } from 'src/app/shared/components/modal/cabinet-notify/cabinet-notify.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -254,8 +255,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
     tipServicii: ['În-cabinet', [Validators.required]],
-    data: ['', [Validators.required]],
-    oraDeIncepere: ['', [Validators.required]],
+    data: ['2021-09-27', [Validators.required]],
+    oraDeIncepere: ['09:00', [Validators.required]],
     time: ['', [Validators.required]],
     cabinet: ['', [Validators.required]],
     medic:['', [Validators.required]],
@@ -271,7 +272,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     public modalController: ModalController,
     private pS: PlatformService,
     private router: Router,
-    private reqService: RequestService
+    private reqService: RequestService,
+    public toastController: ToastController
   ) { }
 
   ngOnInit() {
@@ -361,58 +363,31 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.adaugaProgramareFormGroup.patchValue({pacient: data});
     }
   }
-  async presentModalRadio() {
-    const modal = await this.modalController.create({
-      component: BizSearchableRadioModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
-      componentProps: {
-        options: this.cabinetOption,
-        config: this.cabinetConfig
-      },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    const {dismissed, radioValue} = data;
-    if (dismissed && radioValue !== '') {
-      const d = {
-        // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        cabinetUID: radioValue // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-      };
-      this.getCabinetScheldules$ = this.reqService
-        .post<Array<GetCabinetSchedulesResponseModel>>(cabinet.getCabinetsSchedules, d)
-      .subscribe(
-        (resps: GetCabinetSchedulesResponseModel[]) => {
-          console.log(resps[0]);
-          if (resps) {
-            if (resps.length > 0) {
-              for (const res of resps) {
-                console.log(res);
-                const startTime = addHours(startOfDay(new Date()), res.startHour);
-                const endTime = addHours(startOfDay(new Date()), res.endHour);
-                const toCompareDate = new Date(
-                  `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
-                );
-                const checkIsBeforeEndTime = isBefore(endTime,
-                  toCompareDate
-                );
-                const checkIsAfterStartTime = isAfter(startTime, toCompareDate);
-                console.log({
-                  startTime,
-                  endTime,
-                  toCompareDate,
-                  checkIsBeforeEndTime,
-                  checkIsAfterStartTime,
-                });
-                if (!checkIsBeforeEndTime && !checkIsAfterStartTime) {
-                  this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
-                }else{}
-              }
-            }
-          }
-
+  async presentCabinetModalRadio() {
+    console.log(!this.dataAndOraDeIncepereNotFilledStatus);
+    if (!this.dataAndOraDeIncepereNotFilledStatus) {
+        const toCompareDate = new Date(
+        `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
+      );
+      const modal = await this.modalController.create({
+        component: BizSearchableRadioModalComponent,
+        cssClass: 'biz-modal-class',
+        backdropDismiss: false,
+        componentProps: {
+          options: this.cabinetOption,
+          config: this.cabinetConfig,
+          toCompareDate,
+        },
       });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      console.log(data);
+      const { dismissed, radioValue } = data;
+      if (dismissed && radioValue !== '') {
+        this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+      }
     }
+
   }
   async presentInfoPacientModalModal() {
     const modal = await this.modalController.create({
@@ -517,6 +492,14 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         this.cabinetOption = d;
         console.log(this.cabinetOption);
       });
+  }
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: this.errorMsg,
+      duration: 5000,
+      cssClass: 'toast-bg black-color m-0 s18-h24 ion-text-center px-16 py-13 text-weight-regular roboto-family-font ls-02'
+    });
+    toast.present();
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);

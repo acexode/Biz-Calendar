@@ -1,3 +1,33 @@
-<p>
-  cabinet-notify works!
-</p>
+<ion-content>
+  <div class="w-100">
+
+    <div class="ion-no-padding flex flex-column w-100 position-relative">
+      <div class="w-100 px-16 pt-20 pb-15 border-bottom-1px-solid-neutral-grey-light-b-color modal-header">
+        <span class="p-0 s20-h28 text-weight-medium ls-0 roboto-family-font">Cabinet 1 indisponibil</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="mt-32">
+          <ion-text class="s16-h24 ls-0 roboto-family-font text-weight-regular">
+            Spațiu indisponibil la ora selectată
+          </ion-text>
+        </div>
+      </div>
+
+      <div
+        class="w-100 px-16 py-12 flex ion-justify-content-end ion-align-items-center border-top-1px-solid-neutral-grey-light-b-color modal-footer">
+        <div class="mr-16">
+          <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal()">
+            RENUNȚĂ
+          </ion-button>
+        </div>
+        <div>
+          <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal()">
+            VEZI PROGRAM
+          </ion-button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
