@@ -1,48 +1,103 @@
-import { AppointmentResponse } from './../../models/appointment.interface';
+import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek, startOfYear, subBusinessDays } from 'date-fns';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
   selectedDate: BehaviorSubject<string> = new BehaviorSubject(null);
+  selectedPath: BehaviorSubject<string> = new BehaviorSubject(null);
   appointments$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
+  eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  constructor(private reqS: RequestService) {
-    this.getAppointments();
+  constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
+    this.selectedDate.subscribe(e =>{
+      if(e !== null){
+        console.log(e);
+        this.fetchCalendarAppointment(e);
+
+      }
+    });
    }
 
   getUserPhysicians(){
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
-  async  getAppointments(){
+  fetchCalendarAppointment(selectedDate = null){
+    this.selectedPath.subscribe(path =>{
+      console.log(path);
 
-    const phy: any = await this.getUserPhysicians().toPromise();
-    console.log(phy.physicians);
-    const obj = {
-      startDate: new Date('2021-07-03T12:09:40.163Z'),
-      endDate: new Date('2021-09-03T12:09:40.163Z'),
-      physicianUID: phy.physicians[7].physicianUID
-    };
-    return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
-      console.log(res);
-      console.log(res);
-      this.appointments$.next(res);
+      const obj: any = {
+        physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
+      };
+      if(path !== null){
+        console.log(path);
+        if(path === 'lista'){
+          const start = selectedDate ? new Date(selectedDate) : startOfYear(new Date());
+          const end = selectedDate ? new Date(selectedDate) : endOfYear(new Date());
+          obj.startDay = start;
+          obj.endDate = end;
+        }
+        else if(path === 'zi'){
+          const start = selectedDate ? new Date(selectedDate) : new Date();
+          start.setHours(7,0,0);
+          const end = selectedDate ? new Date(selectedDate) : new Date();;
+          end.setHours(21,0,0);
+          obj.startDate = start;
+          obj.endDate = end;
+        }else if(path === 'luna'){
+          const start = selectedDate ? startOfMonth(new Date(selectedDate)) : startOfMonth(new Date());
+          const end = selectedDate ? endOfMonth(new Date(selectedDate)): endOfMonth(new Date());
+          obj.startDay = start;
+          obj.endDate = end;
+        }else if(path === 'saptamana'){
+          console.log(path);
+          const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
+          const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date()) ;
+          obj.StartDate = start;
+          obj.EndDate = end;
+        }else if(path === 'zile-lucratoare'){
+          // console.log(subBusinessDays(endOfWeek(new Date()),1), path);
+          const start = selectedDate ? addBusinessDays(startOfWeek(new Date(selectedDate)),1) : addBusinessDays(startOfWeek(new Date()),1);
+          const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
+          obj.startDate = start;
+          obj.endDate = end;
+        }
+        this.getAppointments(obj);
+
+      }
+
     });
   }
-  getAppointmentEvent(){
-    const obj = {
-      startDate: new Date('2021-07-03T12:09:40.163Z'),
-      endDate: new Date('2021-09-31T12:09:40.163Z'),
-      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
-    };
-    return this.reqS.post(appointmentEndpoints.getAppointment, obj);
+  async  getAppointments(data = null){
+    console.log(data);
+    if(data !== null){
+      const phy: any = await this.getUserPhysicians().toPromise();
+      const obj: any = {
+        physicianUID: phy.physicians[7].physicianUID,
+        ...data
+      };
+
+      // console.log(obj);
+      return this.reqS.post(appointmentEndpoints.getAppointment, obj)
+      .subscribe((res: any) =>{
+        // console.log(res);
+        this.appointments$.next(res);
+        this.eventLists$.next(res.appointments);
+      });
+
+    }
   }
+
+
   colorCode(code){
     switch (code) {
       case '1CY':

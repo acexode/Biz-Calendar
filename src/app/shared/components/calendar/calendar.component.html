@@ -73,15 +73,13 @@
   <ion-row
   class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({ event: weekEvent.event })"
  >    
- <ion-col size="1">
+ <ion-col [ngClass]="weekEvent.event.meta?.cssClass" size="12">
   <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
+  <ion-text class="weekEvent-title pl-3 text-dark">
+    {{weekEvent.event.title}}
+  </ion-text>
  </ion-col>
- <ion-col size="11">
-   <ion-text class="weekEvent-title">
-     {{weekEvent.event.title}}
-   </ion-text>
 
- </ion-col>
     <!-- <span>{{weekEvent | json}}</span> -->
   
  
@@ -91,16 +89,14 @@
   </ng-template>
 
   <ng-template #eventTemplate let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked" let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
-    <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
-     <ion-col size="3">
+    <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
+     <ion-col [ngClass]="weekEvent.event.meta?.cssClass" size="12">
       <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
+      <ion-text class="weekEvent-title">
+        {{weekEvent.event.title}}
+      </ion-text>
      </ion-col>
-     <ion-col size="9">
-       <ion-text class="weekEvent-title">
-         {{weekEvent.event.title}}
-       </ion-text>
-
-     </ion-col>
+    
     </ion-row>
     
     
