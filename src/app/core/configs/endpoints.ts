@@ -28,3 +28,8 @@ export const location = {
   getCountries: baseEndpoints.bizCalendarService + '/GetCounties',
   getCities: baseEndpoints.bizCalendarService + '/GetCities',
 };
+
+export const cabinet = {
+  getCabinets: baseEndpoints.bizCalendarService + '/GetCabinets',
+  getCabinetsSchedules: baseEndpoints.bizCalendarService + '/GetCabinetsSchedules'
+};

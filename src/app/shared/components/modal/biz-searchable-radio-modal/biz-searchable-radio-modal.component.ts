@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import { Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
@@ -53,11 +53,14 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     private modalController: ModalController,
     private cdRef: ChangeDetectorRef,
   ) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.updateItems();
+  }
   closeModal() {
     this.modalController.dismiss({
       dismissed: true,
       radioValue: this.controlValue,
+      selectedData: find(this.items, ['id', this.controlValue])
     });
   }
   checkRadio(event: any) {
@@ -75,6 +78,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     }
     this.controlI.setValue(data);
     this.cdRef.markForCheck();
+    this.closeModal();
   }
   updateItems() {
     const labelK = get(this.config, 'labelKey', 'label');

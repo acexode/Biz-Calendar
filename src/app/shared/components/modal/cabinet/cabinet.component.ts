@@ -109,7 +109,7 @@ export class CabinetComponent implements OnInit {
       this.events.push(...ev);
       console.log(this.events);
       this.refresh.next();
-    }, 2000);
+    }, 3000);
    }
   handleEvent(action: string, event: CalendarEvent): void {
     console.log(event);

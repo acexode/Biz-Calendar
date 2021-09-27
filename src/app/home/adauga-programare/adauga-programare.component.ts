@@ -27,6 +27,11 @@ import
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
+import { RequestService } from 'src/app/core/services/request/request.service';
+import { cabinet } from 'src/app/core/configs/endpoints';
+import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
+import { addHours, isAfter, isBefore, startOfDay } from 'date-fns';
+import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -136,7 +141,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
-  cabinetConfig = inputConfigHelper({
+  cabinetConfig = {
     label: 'Cabinet',
     type: 'text',
     placeholder: '',
@@ -147,8 +152,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         classes: 'neutral-grey-medium-color'
       },
       readonly: true
-    }
-  });
+    },
+    labelKey: 'cabinetName',
+    idKey: 'cabinetUID'
+  };
   medicConfig: IonSelectConfig = {
     inputLabel: {
       classes: '',
@@ -228,13 +235,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       checked: false
     },
   ];
-  cabinetOption:  Array<IonRadioInputOption> = [
-    { label: 'Cabinet 1', id: 'Cabinet 1' },
-    { label: 'Cabinet 2', id: 'Cabinet 2' },
-    { label: 'Cabinet 3', id: 'Cabinet 3' },
-    { label: 'Sala de Operație 1', id: 'Sala de Operație 1' },
-    { label: 'Sala de Operație 2', id: 'Sala de Operație 2' },
-  ];
+  cabinetOption: GetCabinetsModel[] = [];
   adugaOptions:  Array<IonRadioInputOption> = [
     { label: 'O persoană', id: 'O persoană' },
     { label: 'Un grup', id: 'Un grup' },
@@ -263,15 +264,19 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   isWed = false;
   locatieConfigPlaceholder: string;
   recurentaDetails!: RecurentaModel;
+  getCabinets$: Subscription;
+  getCabinetScheldules$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
     private pS: PlatformService,
     private router: Router,
+    private reqService: RequestService
   ) { }
 
   ngOnInit() {
-    this.presentCabinent();
+    // this.presentCabinent();
+    this.getCabinets();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -285,7 +290,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   async presentCabinent() {
     const modal = await this.modalController.create({
       component: CabinetComponent,
-      cssClass: 'biz-modal-class',
+      cssClass: 'biz-modal-class width-md-100',
       backdropDismiss: true,
       componentProps: {},
     });
@@ -310,17 +315,21 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       },
     });
      await modal.present();
-      const {data} = await modal.onWillDismiss();
-     const { radioValue } = data;
-     switch (radioValue) {
-       case this.adugaOptions[0].label:
-         this.presentNewPacientModal();
-         break;
-       case this.adugaOptions[1].label:
-         this.presentGrupModal();
-         break;
-       default:
-         break;
+     const { data } = await modal.onWillDismiss();
+     if (data) {
+       const { radioValue } = data;
+      if (radioValue) {
+          switch (radioValue) {
+            case this.adugaOptions[0].label:
+              this.presentNewPacientModal();
+              break;
+            case this.adugaOptions[1].label:
+              this.presentGrupModal();
+              break;
+            default:
+              break;
+          }
+        }
      }
   }
   async presentGrupModal() {
@@ -358,14 +367,51 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       cssClass: 'biz-modal-class',
       backdropDismiss: false,
       componentProps: {
-        options: this.cabinetOption
+        options: this.cabinetOption,
+        config: this.cabinetConfig
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     const {dismissed, radioValue} = data;
-    if(dismissed && radioValue !== '') {
-      this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+    if (dismissed && radioValue !== '') {
+      const d = {
+        // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        cabinetUID: radioValue // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      };
+      this.getCabinetScheldules$ = this.reqService
+        .post<Array<GetCabinetSchedulesResponseModel>>(cabinet.getCabinetsSchedules, d)
+      .subscribe(
+        (resps: GetCabinetSchedulesResponseModel[]) => {
+          console.log(resps[0]);
+          if (resps) {
+            if (resps.length > 0) {
+              for (const res of resps) {
+                console.log(res);
+                const startTime = addHours(startOfDay(new Date()), res.startHour);
+                const endTime = addHours(startOfDay(new Date()), res.endHour);
+                const toCompareDate = new Date(
+                  `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
+                );
+                const checkIsBeforeEndTime = isBefore(endTime,
+                  toCompareDate
+                );
+                const checkIsAfterStartTime = isAfter(startTime, toCompareDate);
+                console.log({
+                  startTime,
+                  endTime,
+                  toCompareDate,
+                  checkIsBeforeEndTime,
+                  checkIsAfterStartTime,
+                });
+                if (!checkIsBeforeEndTime && !checkIsAfterStartTime) {
+                  this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+                }else{}
+              }
+            }
+          }
+
+      });
     }
   }
   async presentInfoPacientModalModal() {
@@ -450,8 +496,32 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   save(): void {
 
   }
+  get getChoosenCabinet(): string {
+    if (this.cabinetOption.length > 0) {
+      const getCabinet: any = this.cabinetOption.find(
+        (v) => v.cabinetUID === this.adaugaProgramareFormGroup.value.cabinet
+      );
+      if(typeof getCabinet !== 'undefined') {
+        return getCabinet.cabinetName;
+      } else {
+        return '';
+      }
+    } else {
+      return '';
+    }
+  }
+  getCabinets() {
+    this.getCabinets$ = this.reqService.get(cabinet.getCabinets)
+      .subscribe(
+        (d: any) => {
+        this.cabinetOption = d;
+        console.log(this.cabinetOption);
+      });
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
+    unsubscriberHelper(this.getCabinets$);
+    unsubscriberHelper(this.getCabinetScheldules$);
   }
 
 }

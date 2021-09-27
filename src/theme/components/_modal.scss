@@ -107,6 +107,12 @@
 
   @media (min-width: $desktop-width) {
     .biz-modal-class {
+      &.width-md-100 {
+        .modal-wrapper {
+          width: 100% !important;
+        }
+      }
+
       .modal-wrapper {
         height: 100vh !important;
       }

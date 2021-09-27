@@ -165,8 +165,9 @@
                 <ion-label>Cabinet</ion-label>
                 <div [class]="'biz-custom-select border-light-grey'">
                   <div class="input-select-display">
+                    <!-- formControlName="cabinet" -->
 
-                    <input type="text" formControlName="cabinet" readonly>
+                    <input type="text" [value]="getChoosenCabinet" readonly>
 
                   </div>
                   <div class="icon">
