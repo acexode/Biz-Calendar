@@ -21,11 +21,10 @@ export class CalendarService {
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute, private authS: AuthService) {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
-      // this.authS.getParameters();
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      console.log(e);
+      // console.log(e);
       if(e !== null){
-        console.log(e);
+        // console.log(e);
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
 
       }
@@ -37,15 +36,14 @@ export class CalendarService {
 
   }
   fetchCalendarAppointment(selectedDate = null, appStartHour, appEndHour){
-    console.log(selectedDate);
+    // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-      console.log(path);
 
+      console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
       if(path !== null){
-        console.log(path);
         if(path === 'lista'){
           obj.startDay = startOfYear(new Date());
           obj.endDate = endOfYear(new Date());

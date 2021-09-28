@@ -88,18 +88,6 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
   getParameters(){
-    return this.reqS.get(authEndpoints.getParameters).subscribe((e: any) =>{
-      console.log(e.parameters);
-      const obj: any = {};
-      e.parameters.forEach(params =>{
-        if(params.code === 'appEndHour'){
-          obj.end = parseInt(params.value, 10);
-        }else if(params.code === 'appStartHour'){
-          obj.start = parseInt(params.value, 10);
-        }
-      });
-      localStorage.setItem('workHours', JSON.stringify(obj));
-      console.log(obj);
-    });
+    return this.reqS.get(authEndpoints.getParameters);
   }
 }

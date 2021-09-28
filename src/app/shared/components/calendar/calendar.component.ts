@@ -36,6 +36,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 
 @Component({
@@ -97,14 +98,12 @@ export class CalendarComponent implements OnInit {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
       this.startEndTime = JSON.parse(localStorage.getItem('workHours'));
-      // console.log(addHours(startOfDay(new Date()), 2));
-      // console.log(addHours(new Date(), 3));
+      console.log(this.startEndTime);
+      this.refresh.next();
     }
 
   ngOnInit() {
-    console.log(this.display, this.viewDate, this.events);
       this.calS.selectedDate.subscribe(e =>{
-        console.log(e);
         this.viewDate = new Date(e);
         this.getEventLists();
       });
@@ -133,7 +132,6 @@ export class CalendarComponent implements OnInit {
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        console.log(e);
         this.schedules = e?.schedules ? e?.schedules : [];
         this.events = e?.appointments.map(d => ({
           start:  new Date(d.startTime ),
@@ -159,7 +157,7 @@ export class CalendarComponent implements OnInit {
         this.refresh.next();
 
       });
-      console.log(this.events);
+      // console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -242,7 +240,7 @@ export class CalendarComponent implements OnInit {
           }
         });
         if(allBreak.includes(hours) ){
-          return 'vacation-bg';
+          return '';
         }else  if(allPrivate.includes(hours)){
           return 'cabinet-not-confirmed-v2';
         }else if(allCnas.includes(hours)){

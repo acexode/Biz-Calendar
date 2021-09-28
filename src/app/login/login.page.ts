@@ -94,14 +94,25 @@ export class LoginPage implements OnInit {
       console.log(res);
       console.log(this.returnUrl);
       // this.authS.getParameters();
-      setTimeout(() => {
-        this.authS.getParameters();
+      this.authS.getParameters().subscribe((e: any) =>{
+        console.log(e.parameters);
+        const obj: any = {};
+        e.parameters.forEach(params =>{
+          if(params.code === 'appEndHour'){
+            obj.appEndHour = parseInt(params.value, 10);
+          }else if(params.code === 'appStartHour'){
+            obj.appStartHour = parseInt(params.value, 10);
+          }
+        });
+        localStorage.setItem('workHours', JSON.stringify(obj));
+        console.log(obj);
         if(this.returnUrl === '/'){
           this.router.navigate(['selectie-spatiu']);
         }else{
           this.router.navigate([this.returnUrl]);
         }
-      }, 1500);
+      });
+
     }, err =>{
       console.log(err);
       this.presentToast();
