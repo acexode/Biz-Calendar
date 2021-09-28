@@ -93,12 +93,15 @@ export class LoginPage implements OnInit {
     }).pipe(first()).subscribe(res => {
       console.log(res);
       console.log(this.returnUrl);
-      this.authS.getParameters();
-      if(this.returnUrl === '/'){
-        this.router.navigate(['selectie-spatiu']);
-      }else{
-        this.router.navigate([this.returnUrl]);
-      }
+      // this.authS.getParameters();
+      setTimeout(() => {
+        this.authS.getParameters();
+        if(this.returnUrl === '/'){
+          this.router.navigate(['selectie-spatiu']);
+        }else{
+          this.router.navigate([this.returnUrl]);
+        }
+      }, 1500);
     }, err =>{
       console.log(err);
       this.presentToast();

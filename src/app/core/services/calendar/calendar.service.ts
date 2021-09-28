@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
@@ -17,10 +18,11 @@ export class CalendarService {
   eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
-    const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-    console.log(appStartHour, appEndHour);
+  constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute, private authS: AuthService) {
+    // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
+      // this.authS.getParameters();
+      const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
       console.log(e);
       if(e !== null){
         console.log(e);
@@ -50,14 +52,16 @@ export class CalendarService {
         }
         else if(path === 'zi'){
           const start = selectedDate ? new Date(selectedDate) : new Date();
-          start.setHours(appStartHour,0,0);
           const end = selectedDate ? new Date(selectedDate) : new Date();;
+          start.setHours(appStartHour,0,0);
           end.setHours(appEndHour,0,0);
           obj.startDate = start;
           obj.endDate = end;
         }else if(path === 'luna'){
           const start = selectedDate ? startOfMonth(new Date(selectedDate)) : startOfMonth(new Date());
           const end = selectedDate ? endOfMonth(new Date(selectedDate)): endOfMonth(new Date());
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.startDay = start;
           obj.endDate = end;
         }else if(path === 'saptamana'){
