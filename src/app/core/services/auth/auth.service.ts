@@ -22,6 +22,7 @@ export class AuthService {
     // this.user = this.userSubject.asObservable();
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
+
   }
   public get userValue(): User {
     return this.userSubject.value;
@@ -80,9 +81,13 @@ export class AuthService {
     }
     return this.routerS.createUrlTree(['/']);
   }
+
   logout(){
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.router.navigate(['/login']);
+  }
+  getParameters(){
+    return this.reqS.get(authEndpoints.getParameters);
   }
 }

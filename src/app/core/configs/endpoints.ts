@@ -10,6 +10,7 @@ export const baseEndpoints = {
 export const authEndpoints = {
   auth: serverBaseUrl + '/Users/authenticate',
   getUsers: serverBaseUrl + '/Users',
+  getParameters: baseEndpoints.bizCalendarService + '/GetParameters'
 };
 
 export const appointment = {

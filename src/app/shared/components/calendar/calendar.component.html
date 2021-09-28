@@ -26,7 +26,11 @@
       [headerTemplate]="customHeaderTemplate"
       [viewDate]="viewDate"
       [events]="events"
+
+      [dayStartHour]="startEndTime.appStartHour"
+      [dayEndHour]="startEndTime.appEndHour"
       [eventTemplate]="eventTemplate"
+      [hourSegmentTemplate]="weekHoursTemplate"
       [refresh]="refresh"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
@@ -40,8 +44,8 @@
       [eventTemplate]="customDayTemplate"
       [hourSegmentTemplate]="hourSegmentTemplate"
       [refresh]="refresh"
-      [dayStartHour]="7"
-      [dayEndHour]="23"
+      [dayStartHour]="startEndTime.appStartHour"
+      [dayEndHour]="startEndTime.appEndHour"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
@@ -90,17 +94,37 @@
 
   <ng-template #eventTemplate let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked" let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
     <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
-     <ion-col [ngClass]="weekEvent.event.meta?.cssClass" size="12">
+     <ion-col  [ngClass]="weekEvent.event.meta?.cssClass" size="12">
       <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
       <ion-text class="weekEvent-title">
+        
         {{weekEvent.event.title}}
       </ion-text>
      </ion-col>
 
     </ion-row>
 
+  </ng-template>
+  <ng-template #weekHoursTplate  let-daysInWeek="daysInWeek" let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked" let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
+    <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
+     <ion-col style="background-color: bisque;" [ngClass]="weekEvent.event.meta?.cssClass" size="12">
+      <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
+      <ion-text  class="weekEvent-title">
+        
+      </ion-text>
+     </ion-col>
+
+    </ion-row>
 
   </ng-template>
+  <ng-template #weekHoursTemplate let-daysInWeek="daysInWeek" let-segment="segment" let-locale="locale" let-isTimeLabel="isTimeLabel">
+
+    <span class="cal-time text-center" *ngIf="isTimeLabel">
+     
+      {{ segment.date | calendarDate:'dayViewHour':locale }}
+    </span>
+    <h1>{{daysInWeek }}</h1>
+   </ng-template>
 
   <!-- Month Cell Template -->
   <ng-template class="pt-0" #customCellTemplate let-day="day" let-locale="locale">
