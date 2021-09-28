@@ -101,7 +101,8 @@ export class CalendarComponent implements OnInit {
       // console.log(addHours(new Date(), 3));
     }
 
-    ngOnInit() {
+  ngOnInit() {
+    console.log(this.display, this.viewDate, this.events);
       this.calS.selectedDate.subscribe(e =>{
         console.log(e);
         this.viewDate = new Date(e);

@@ -22,6 +22,7 @@ import { DayViewSchedulerComponent } from './components/comparativ/day-view-sche
 import { ModalModule } from './components/modal/modal.module';
 import { AddServiceSelectionComponent } from './components/add-service-selection/add-service-selection.component';
 import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
+import { CoreModule } from '../core/core.module';
 
 registerLocaleData(localeDe);
 
@@ -38,7 +39,6 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
-    HourPipe
   ],
   imports: [
     CommonModule,
@@ -52,7 +52,8 @@ registerLocaleData(localeDe);
     }),
     NgCalendarModule,
     BizInputsModule,
-    ModalModule
+    ModalModule,
+    CoreModule
   ],
   exports: [
     CalendarComponent,
@@ -67,7 +68,6 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
-    HourPipe
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }

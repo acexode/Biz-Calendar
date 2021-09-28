@@ -35,8 +35,13 @@ export class LoginPage implements OnInit {
     bgwhite: false,
     disabled: false,
   };
-  constructor(private fb: FormBuilder, private router: Router, private menu: MenuController,
-    private aRoute: ActivatedRoute, private authS: AuthService,public toastController: ToastController
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private menu: MenuController,
+    private aRoute: ActivatedRoute,
+    private authS: AuthService,
+    public toastController: ToastController
     ) {
       console.log(this.authS.userValue);
       if (this.authS.userValue) {
