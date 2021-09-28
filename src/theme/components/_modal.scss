@@ -208,15 +208,7 @@
     }
 
     .cal-time-events {
-      margin-top: 170px !important;
-    }
-
-    .cal-hour-segment {
-      border-bottom: none !important;
-    }
-
-    .cal-hour {
-      border-bottom: 1px solid #D5DBDE !important;
+      margin-top: 180px !important;
     }
 
     .cal-day-column {
@@ -237,6 +229,14 @@
 
     .cal-week-view .cal-day-headers .cal-header {
       text-align: left;
+    }
+
+    .cal-hour-start {
+      border: none !important;
+    }
+
+    .cal-after-hour-start {
+      border-bottom: 1px solid #D5DBDE !important;
     }
   }
 }

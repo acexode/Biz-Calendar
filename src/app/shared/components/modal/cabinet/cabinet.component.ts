@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
 import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
@@ -7,7 +8,7 @@ import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provid
 const colors: any = {
   bizPrimary: {
     primary: '#ffffff',
-    secondary: '#3093F8',
+    secondary: '#1EA5C7',
   }
 };
 
@@ -29,7 +30,7 @@ export class CabinetComponent implements OnInit {
   page = 'zile-lucratoare';
   refresh: Subject<any> = new Subject();
   dd = new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
-  viewDate: Date = new Date();
+  viewDate: Date = new Date(); // '2021/09/26'
   excludeDays: number[] = [0, 6];
   actions: CalendarEventAction[] = [
     {
@@ -67,6 +68,7 @@ export class CabinetComponent implements OnInit {
       title: 'An event with no end date',
       color:  colors.bizPrimary,
       actions: this.actions,
+      draggable: true,
     },
     /* {
       start: subDays(endOfMonth(new Date()), 3),
@@ -88,14 +90,36 @@ export class CabinetComponent implements OnInit {
       draggable: true,
     }, */
   ];
-  constructor() { }
+  dummyData = [
+    {
+      title: 'User Name',
+      cabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb',
+      cabinetsScheduleUID: '4ce71467-4410-47b3-88a7-35b801411238',
+      dayID: 1,
+      endHour: 13,
+      endMin: 0,
+      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      startHour: 9,
+      startMin: 0,
+      start: addHours(startOfDay(new Date('2021-09-27')), 9),
+      end: addHours(startOfDay(new Date('2021-09-27')), 13),
+      color: colors.bizPrimary,
+      actions: this.actions,
+      resizable: {
+        beforeStart: false,
+        afterEnd: false,
+      },
+      draggable: true,
+    }
+  ];
+  constructor(private modalController: ModalController) { }
 
   ngOnInit() {
-    setTimeout(() => {
+    /* setTimeout(() => {
       const ev = [
       {
       start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
+      end: addHours(startOfDay(new Date()), 3),
       title: 'A draggable and resizable event',
       color: colors.bizPrimary,
       actions: this.actions,
@@ -106,10 +130,13 @@ export class CabinetComponent implements OnInit {
       draggable: true,
     },
       ];
-      this.events.push(...ev);
+      this.events.push(...this.dummyData);
       console.log(this.events);
       this.refresh.next();
-    }, 3000);
+    }, 3000); */
+    this.events.push(...this.dummyData);
+    console.log(this.events);
+    this.refresh.next();
    }
   handleEvent(action: string, event: CalendarEvent): void {
     console.log(event);
@@ -134,6 +161,11 @@ export class CabinetComponent implements OnInit {
       return iEvent;
     });
     this.handleEvent('Dropped or resized', event);
+  }
+  closeModal() {
+    this.modalController.dismiss({
+      dismissed: true,
+    });
   }
 
 }

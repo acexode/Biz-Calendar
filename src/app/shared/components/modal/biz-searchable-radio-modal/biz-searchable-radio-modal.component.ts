@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { addHours, isAfter, isBefore, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
 import { Subscription } from 'rxjs';
@@ -12,6 +12,7 @@ import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
+import { CabinetComponent } from '../cabinet/cabinet.component';
 
 @Component({
   selector: 'app-biz-searchable-radio-modal',
@@ -51,6 +52,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   customRadioForm: FormGroup = this.fb.group({
     radio: ['', [Validators.required]],
   });
+  cabinetOfEvent: GetCabinetSchedulesResponseModel[] = [];
 
   public subscriptions = new Subscription();
 
@@ -60,7 +62,8 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private modalController: ModalController,
     private cdRef: ChangeDetectorRef,
-    private reqService: RequestService
+    private reqService: RequestService,
+    public loadingController: LoadingController,
   ) {}
   ngOnInit(): void {
     this.updateItems();
@@ -102,7 +105,18 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       .filter((vv) => get(vv, 'id', null) !== null);
     this.cdRef.markForCheck();
   }
-  callCabinetProcess(cabinetUID: string = this.controlValue) {
+  async callCabinetProcess(cabinetUID: string = this.controlValue) {
+
+    const loading = await this.loadingController.create({
+            spinner: 'crescent',
+            mode: 'md',
+            // duration: 2000,
+            message: 'Checking Cabinet...',
+            translucent: true,
+            cssClass: 'custom-class custom-loading'
+        });
+    await loading.present();
+
     if (cabinetUID) {
       const d = {
         // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
@@ -113,24 +127,26 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       .subscribe(
         (resps: GetCabinetSchedulesResponseModel[]) => {
           if (resps) {
+            // dismiss loader
+            loading.dismiss();
+            /*  */
             if (resps.length > 0) {
-              for (const res of resps) {
-                console.log(res);
-                const startTime = addHours(startOfDay(new Date()), res.startHour);
-                const endTime = addHours(startOfDay(new Date()), res.endHour);
-                const checkIsBeforeEndTime = isBefore(endTime,
+              this.cabinetOfEvent = resps.map(
+                (v: GetCabinetSchedulesResponseModel) => ({
+                    ...v,
+                    startTime: addHours(startOfDay(new Date()), v.startHour),
+                    endTime: addHours(startOfDay(new Date()), v.endHour)
+                  })
+              );
+              console.log(this.cabinetOfEvent);
+              for (const res of this.cabinetOfEvent) {
+                const checkIsBeforeEndTime = isBefore(res.endTime,
                   this.toCompareDate
                 );
-                const checkIsAfterStartTime = isAfter(startTime, this.toCompareDate);
-                console.log({
-                  startTime,
-                  endTime,
-                  toCompareDate: this.toCompareDate,
-                  checkIsBeforeEndTime,
-                  checkIsAfterStartTime,
-                });
+                const checkIsAfterStartTime = isAfter(res.startTime, this.toCompareDate);
                 if (!checkIsBeforeEndTime && !checkIsAfterStartTime) {
-                  this.closeModal();
+                  this.presentCabinentNotify();
+                  // this.closeModal();
                 } else {
                   this.presentCabinentNotify();
                 }
@@ -151,7 +167,24 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       componentProps: {},
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    const { dismissed, renita, veziProgram } = data;
+    if (dismissed && veziProgram) {
+      this.presentCabinent();
+    }
   }
+
+  async presentCabinent() {
+    const modal = await this.modalController.create({
+      component: CabinetComponent,
+      cssClass: 'biz-modal-class width-md-100',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
+  }
+
   ngOnDestroy() {
     unsubscriberHelper(this.getCabinets$);
     unsubscriberHelper(this.getCabinetScheldules$);

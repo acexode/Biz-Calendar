@@ -28,4 +28,6 @@ export interface GetCabinetSchedulesResponseModel {
   physicianUID: string;
   startHour: Range<0, 24>;
   startMin: number;
+  startTime?: Date;
+  endTime?: Date;
 }
