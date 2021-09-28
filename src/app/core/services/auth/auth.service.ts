@@ -22,6 +22,7 @@ export class AuthService {
     // this.user = this.userSubject.asObservable();
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
+
   }
   public get userValue(): User {
     return this.userSubject.value;
@@ -80,9 +81,25 @@ export class AuthService {
     }
     return this.routerS.createUrlTree(['/']);
   }
+
   logout(){
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.router.navigate(['/login']);
+  }
+  getParameters(){
+    return this.reqS.get(authEndpoints.getParameters).subscribe((e: any) =>{
+      console.log(e.parameters);
+      const obj: any = {};
+      e.parameters.forEach(params =>{
+        if(params.code === 'appEndHour'){
+          obj.end = parseInt(params.value, 10);
+        }else if(params.code === 'appStartHour'){
+          obj.start = parseInt(params.value, 10);
+        }
+      });
+      localStorage.setItem('workHours', JSON.stringify(obj));
+      console.log(obj);
+    });
   }
 }

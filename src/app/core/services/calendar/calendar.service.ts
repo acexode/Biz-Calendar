@@ -1,5 +1,5 @@
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
-import { appointmentEndpoints } from './../../configs/endpoints';
+import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -18,10 +18,13 @@ export class CalendarService {
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
+    const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
+    console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
+      console.log(e);
       if(e !== null){
         console.log(e);
-        this.fetchCalendarAppointment(e);
+        this.fetchCalendarAppointment(e, appStartHour, appEndHour);
 
       }
     });
@@ -31,7 +34,8 @@ export class CalendarService {
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
-  fetchCalendarAppointment(selectedDate = null){
+  fetchCalendarAppointment(selectedDate = null, appStartHour, appEndHour){
+    console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
       console.log(path);
 
@@ -41,16 +45,14 @@ export class CalendarService {
       if(path !== null){
         console.log(path);
         if(path === 'lista'){
-          const start = selectedDate ? new Date(selectedDate) : startOfYear(new Date());
-          const end = selectedDate ? new Date(selectedDate) : endOfYear(new Date());
-          obj.startDay = start;
-          obj.endDate = end;
+          obj.startDay = startOfYear(new Date());
+          obj.endDate = endOfYear(new Date());
         }
         else if(path === 'zi'){
           const start = selectedDate ? new Date(selectedDate) : new Date();
-          start.setHours(7,0,0);
+          start.setHours(appStartHour,0,0);
           const end = selectedDate ? new Date(selectedDate) : new Date();;
-          end.setHours(21,0,0);
+          end.setHours(appEndHour,0,0);
           obj.startDate = start;
           obj.endDate = end;
         }else if(path === 'luna'){
@@ -62,12 +64,16 @@ export class CalendarService {
           console.log(path);
           const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
           const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date()) ;
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.StartDate = start;
           obj.EndDate = end;
         }else if(path === 'zile-lucratoare'){
           // console.log(subBusinessDays(endOfWeek(new Date()),1), path);
           const start = selectedDate ? addBusinessDays(startOfWeek(new Date(selectedDate)),1) : addBusinessDays(startOfWeek(new Date()),1);
           const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.startDate = start;
           obj.endDate = end;
         }
@@ -96,7 +102,6 @@ export class CalendarService {
 
     }
   }
-
 
   colorCode(code){
     switch (code) {

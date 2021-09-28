@@ -88,6 +88,7 @@ export class LoginPage implements OnInit {
     }).pipe(first()).subscribe(res => {
       console.log(res);
       console.log(this.returnUrl);
+      this.authS.getParameters();
       if(this.returnUrl === '/'){
         this.router.navigate(['selectie-spatiu']);
       }else{
