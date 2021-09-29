@@ -135,6 +135,15 @@
     #E3F9FF calc(2 * 10px)
   );
 }
+.holidays{
+  background: repeating-linear-gradient(
+    132deg,
+    transparent,
+    transparent 10px,
+    #FFE9A1 10px,
+    #FFE9A1 calc(2 * 10px)
+  );
+}
 .border-none{
     border: none !important;
 }

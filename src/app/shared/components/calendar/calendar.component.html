@@ -30,7 +30,7 @@
       [dayStartHour]="startEndTime.appStartHour"
       [dayEndHour]="startEndTime.appEndHour"
       [eventTemplate]="eventTemplate"
-      [hourSegmentTemplate]="weekHoursTemplate"
+      (beforeViewRender)="beforeWeekViewRender($event)"
       [refresh]="refresh"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
