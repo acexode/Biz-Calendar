@@ -10,6 +10,8 @@
         [refresh]="refresh"
         (eventClicked)="handleEvent('Clicked', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
+      [hourSegmentTemplate]="hourSegmentTemplate"
+        (beforeViewRender)="beforeWeekViewRender($event)"
         >
         </mwl-calendar-week-view>
     </div>
@@ -48,7 +50,6 @@
 
       <div class="w-100 mt-22 mb-6 ml-48 ml-md-48 ml-lg-100">
         <ion-text>{{ dd }}</ion-text>
-        <!-- <ion-text>{{ viewDate | calendarDate:(view + 'ViewTitle'):'ro' }}</ion-text> -->
       </div>
     <div class="w-100 cal-day-headers" role="row">
 
@@ -76,4 +77,23 @@
   </div>
 
 
+</ng-template>
+
+
+<ng-template
+  #hourSegmentTemplate
+  let-label="label"
+  let-segment="segment"
+  let-isTimeLabel="isTimeLabel"
+>
+  <ion-row [class]="'b-bottom pl-0 h-100 ' + (!segment.isStart && ' cal-after-hour-start ')">
+    <ion-col>
+      <ion-label [class]="'h-100 w-40 cal-time'" *ngIf="isTimeLabel">
+
+        {{segment.date | hour}}</ion-label>
+    </ion-col>
+     <!--<ion-col *ngIf="!isTimeLabel">
+      jsfhsf
+    </ion-col>-->
+  </ion-row>
 </ng-template>

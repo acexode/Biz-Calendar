@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
+import {
+  CalendarDateFormatter,
+  CalendarEvent,
+  CalendarEventAction,
+  CalendarEventTimesChangedEvent,
+  CalendarView,
+  CalendarWeekViewBeforeRenderEvent
+} from 'angular-calendar';
 import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
@@ -62,14 +69,14 @@ export class CabinetComponent implements OnInit {
         afterEnd: true,
       },
       draggable: true,
-    }, */
+    },
     {
       start: startOfDay(new Date()),
       title: 'An event with no end date',
       color:  colors.bizPrimary,
       actions: this.actions,
       draggable: true,
-    },
+    },*/
     /* {
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
@@ -165,6 +172,25 @@ export class CabinetComponent implements OnInit {
   closeModal() {
     this.modalController.dismiss({
       dismissed: true,
+    });
+  }
+  log(d) {
+    console.log(d);
+  }
+  beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+    console.log(renderEvent);
+    renderEvent.hourColumns.forEach((hourColumn) => {
+      hourColumn.hours.forEach((hour) => {
+        hour.segments.forEach((segment) => {
+          if (
+            segment.date.getHours() >= 2 &&
+            segment.date.getHours() <= 5 &&
+            segment.date.getDay() === 2
+          ) {
+            segment.cssClass = 'bg-pink';
+          }
+        });
+      });
     });
   }
 

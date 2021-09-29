@@ -274,7 +274,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.presentCabinent();
+    // this.presentCabinent();
     // this.presentCabinetModalRadio();
     // this.getCabinets();
     this.process();
