@@ -22,6 +22,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     startOfWeek,
     endOfWeek,
     getDay,
+    differenceInHours,
   } from 'date-fns';
   import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -96,6 +97,7 @@ export class CalendarComponent implements OnInit {
     isToday: boolean;
     startEndTime: any = {};
     schedules = [];
+    holidays = [];
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
@@ -135,6 +137,7 @@ export class CalendarComponent implements OnInit {
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
         this.schedules = e?.schedules ? e?.schedules : [];
+        this.holidays = e?.phyFreeDays ? e?.phyFreeDays : [];
         this.events = e?.appointments.map(d => ({
           start:  new Date(d.startTime ),
           end:  new Date(d.endTime),
@@ -220,10 +223,14 @@ export class CalendarComponent implements OnInit {
         renderEvent.body.forEach((day) => {
           const dayOfMonth = day.date.getDate();
           const vacations = [4,11];
-          if (vacations.includes(dayOfMonth) && day.inMonth) {
-            // console.log(day);
-            day.cssClass = 'vacation-bg';
-          }
+          this.holidays.forEach(hol =>{
+            const diff = differenceInHours(hol.startDay, hol.endDate);
+            const phyHours = [...new Array(diff)].map((e, i) => i+1);
+            const isSame = isSameDay(hol.startDay, day.date);
+            if(isSame){
+              day.cssClass = 'holidays';
+            }
+          });
         });
       }
       beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
@@ -231,6 +238,7 @@ export class CalendarComponent implements OnInit {
         console.log(renderEvent);
         renderEvent.hourColumns.forEach((hourColumn) => {
           const dow = this.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
+          const hols = this.holidays.map(h =>({startdate: h.startDate, enddate: h.endDate}));
           console.log(dow, hourColumn);
           dow.forEach(day =>{
             const starttime = parseInt(day.start, 10);
@@ -262,7 +270,25 @@ export class CalendarComponent implements OnInit {
             });
           });
 
-          })
+          });
+        renderEvent.header.forEach(head =>{
+          this.holidays.forEach(hol =>{
+            const diff = differenceInHours(hol.startDay, hol.endDate);
+            const phyHours = [...new Array(diff)].map((e, i) => i+1);
+            const isSame = isSameDay(hol.startDay, head.date);
+            renderEvent.hourColumns.forEach((hourColumn) => {
+              hourColumn.hours.forEach((hour) => {
+                hour.segments.forEach((segment) => {
+                  if (
+                   isSame
+                  ) {
+                    segment.cssClass = 'holidays';
+                  }
+                });
+              });
+            });
+          });
+        });
       }
     setBg(d){
       // console.log(d);
@@ -287,8 +313,16 @@ export class CalendarComponent implements OnInit {
           return 'cabinet-not-confirmed-v1';
         }
 
-      }else{
-        return '';
+      }
+      if(this.holidays?.length){
+        this.holidays.forEach(hol =>{
+          const diff = differenceInHours(hol.startDay, hol.endDate);
+          const phyHours = [...new Array(diff)].map((e, i) => i+1);
+          const isSame = isSameDay(hol.startDay, d);
+          if(isSame){
+            return 'holidays';
+          }
+        });
       }
     }
     range(start, end, step = 1) {
