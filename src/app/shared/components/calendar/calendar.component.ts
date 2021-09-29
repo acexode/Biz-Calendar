@@ -239,7 +239,7 @@ export class CalendarComponent implements OnInit {
         renderEvent.hourColumns.forEach((hourColumn) => {
           const dow = this.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
           const hols = this.holidays.map(h =>({startdate: h.startDate, enddate: h.endDate}));
-          console.log(dow, hourColumn);
+
           dow.forEach(day =>{
             const starttime = parseInt(day.start, 10);
             const endtime = parseInt(day.end, 10);
@@ -263,32 +263,30 @@ export class CalendarComponent implements OnInit {
                   segment.date.getDay() <= endtime && !day.isPrivate
                 ) {
                   segment.cssClass = 'cabinet-not-confirmed-v1';
-                }else{
-                  segment.cssClass = '';
                 }
               });
             });
           });
 
           });
-        renderEvent.header.forEach(head =>{
-          this.holidays.forEach(hol =>{
-            const diff = differenceInHours(hol.startDay, hol.endDate);
-            const phyHours = [...new Array(diff)].map((e, i) => i+1);
-            const isSame = isSameDay(hol.startDay, head.date);
-            renderEvent.hourColumns.forEach((hourColumn) => {
-              hourColumn.hours.forEach((hour) => {
-                hour.segments.forEach((segment) => {
-                  if (
-                   isSame
-                  ) {
-                    segment.cssClass = 'holidays';
-                  }
+          renderEvent.header.forEach(head =>{
+            this.holidays.forEach(hol =>{
+              const diff = differenceInHours(hol.startDay, hol.endDate);
+              const phyHours = [...new Array(diff)].map((e, i) => i+1);
+              const isSame = isSameDay(hol.startDay, head.date);
+              renderEvent.hourColumns.forEach((hourColumn) => {
+                hourColumn.hours.forEach((hour) => {
+                  hour.segments.forEach((segment) => {
+                    if (
+                     isSame
+                    ) {
+                      segment.cssClass = 'holidays';
+                    }
+                  });
                 });
               });
             });
           });
-        });
       }
     setBg(d){
       // console.log(d);
