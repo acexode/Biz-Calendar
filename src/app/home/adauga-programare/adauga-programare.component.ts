@@ -26,13 +26,10 @@ import
   from
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
-import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { cabinet } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
-import { addHours, isAfter, isBefore, startOfDay } from 'date-fns';
-import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
-import { CabinetNotifyComponent } from 'src/app/shared/components/modal/cabinet-notify/cabinet-notify.component';
+import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -277,8 +274,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // this.presentNewPacientModal();
-    this.getCabinets();
+    // this.presentCabinent();
+    // this.presentCabinetModalRadio();
+    // this.getCabinets();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -365,7 +363,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   async presentCabinetModalRadio() {
     if (this.cabinetOption.length < 1) {
-      this.presentToast('Please wait.');
+      this.presentToast('Please wait.', 'success');
       this.getCabinets(true);
     } else {
       if (!this.dataAndOraDeIncepereNotFilledStatus) {
