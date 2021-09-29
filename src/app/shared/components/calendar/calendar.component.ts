@@ -21,6 +21,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     startOfMonth,
     startOfWeek,
     endOfWeek,
+    getDay,
   } from 'date-fns';
   import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,6 +32,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     CalendarEventTimesChangedEvent,
     CalendarMonthViewBeforeRenderEvent,
     CalendarView,
+    CalendarWeekViewBeforeRenderEvent,
   } from 'angular-calendar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
@@ -157,7 +159,7 @@ export class CalendarComponent implements OnInit {
         this.refresh.next();
 
       });
-      // console.log(this.events);
+      console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -224,6 +226,44 @@ export class CalendarComponent implements OnInit {
           }
         });
       }
+      beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+        // console.log(this.schedules);
+        console.log(renderEvent);
+        renderEvent.hourColumns.forEach((hourColumn) => {
+          const dow = this.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
+          console.log(dow, hourColumn);
+          dow.forEach(day =>{
+            const starttime = parseInt(day.start, 10);
+            const endtime = parseInt(day.end, 10);
+            hourColumn.hours.forEach((hour) => {
+              hour.segments.forEach((segment) => {
+                if(day.isBreakTime &&
+                  segment.date.getHours() >=
+                  starttime && segment.date.getDay() <= endtime){
+                  segment.cssClass = '';
+                }else
+                if (
+                  segment.date.getHours() >= starttime &&
+
+                  segment.date.getDay() <= endtime && day.isPrivate
+                ) {
+                  segment.cssClass = 'cabinet-not-confirmed-v2';
+                }else
+                if (
+                  segment.date.getHours() >= starttime &&
+
+                  segment.date.getDay() <= endtime && !day.isPrivate
+                ) {
+                  segment.cssClass = 'cabinet-not-confirmed-v1';
+                }else{
+                  segment.cssClass = '';
+                }
+              });
+            });
+          });
+
+          })
+      }
     setBg(d){
       // console.log(d);
       const hours = new Date(d).getHours();
@@ -244,7 +284,7 @@ export class CalendarComponent implements OnInit {
         }else  if(allPrivate.includes(hours)){
           return 'cabinet-not-confirmed-v2';
         }else if(allCnas.includes(hours)){
-          return 'online-not-confirmed-v2';
+          return 'cabinet-not-confirmed-v1';
         }
 
       }else{
