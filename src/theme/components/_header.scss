@@ -36,6 +36,15 @@
         ion-button {
           margin: 0 !important;
         }
+
+
+      }
+
+      @media (min-width: $desktop-width) {
+        &.no-border-lg {
+          border: none !important;
+        }
+
       }
 
     }

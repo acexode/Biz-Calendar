@@ -199,6 +199,15 @@
       &.white-bg {
         background: white;
       }
+
+      @media (min-width: $desktop-width) {
+        width: 100%;
+        @include flexbox;
+        @include flex-direction(column);
+        @include align-items(center);
+        @include justify-content(center);
+
+      }
     }
 
     .modal-div-body {

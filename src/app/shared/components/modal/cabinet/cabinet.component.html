@@ -31,7 +31,7 @@
   let-dragEnter="dragEnter">
 
   <div class="modal-div-header white-bg">
-    <ion-header class="header-type-a ion-no-border no-box-shadow" [translucent]="true" mode="md">
+    <ion-header class="header-type-a w-lg-600px no-border-lg ion-no-border no-box-shadow" [translucent]="true" mode="md">
       <ion-toolbar class="ion-no-padding">
 
         <ion-buttons slot="start" class="slot-start" mode="md" (click)="closeModal()">
@@ -46,13 +46,13 @@
       </ion-toolbar>
     </ion-header>
 
-      <div class="mt-22 mb-6 ml-48">
+      <div class="w-100 mt-22 mb-6 ml-48 ml-md-48 ml-lg-100">
         <ion-text>{{ dd }}</ion-text>
         <!-- <ion-text>{{ viewDate | calendarDate:(view + 'ViewTitle'):'ro' }}</ion-text> -->
       </div>
-    <div class="cal-day-headers" role="row">
+    <div class="w-100 cal-day-headers" role="row">
 
-      <div class="cal-header"
+      <div class="w-100 cal-header"
       *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
       [class.cal-past]="day.isPast"
         [class.cal-today]="day.isToday"
