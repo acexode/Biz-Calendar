@@ -1,5 +1,6 @@
+import { AuthService } from './../auth/auth.service';
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
-import { appointmentEndpoints } from './../../configs/endpoints';
+import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -17,11 +18,14 @@ export class CalendarService {
   eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute) {
+  constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute, private authS: AuthService) {
+    // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
+      const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
+      // console.log(e);
       if(e !== null){
-        console.log(e);
-        this.fetchCalendarAppointment(e);
+        // console.log(e);
+        this.fetchCalendarAppointment(e, appStartHour, appEndHour);
 
       }
     });
@@ -31,43 +35,47 @@ export class CalendarService {
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
-  fetchCalendarAppointment(selectedDate = null){
+  fetchCalendarAppointment(selectedDate = null, appStartHour, appEndHour){
+    // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-      console.log(path);
 
+      console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
       if(path !== null){
-        console.log(path);
         if(path === 'lista'){
-          const start = selectedDate ? new Date(selectedDate) : startOfYear(new Date());
-          const end = selectedDate ? new Date(selectedDate) : endOfYear(new Date());
-          obj.startDay = start;
-          obj.endDate = end;
+          obj.startDay = startOfYear(new Date());
+          obj.endDate = endOfYear(new Date());
         }
         else if(path === 'zi'){
           const start = selectedDate ? new Date(selectedDate) : new Date();
-          start.setHours(7,0,0);
           const end = selectedDate ? new Date(selectedDate) : new Date();;
-          end.setHours(21,0,0);
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.startDate = start;
           obj.endDate = end;
         }else if(path === 'luna'){
           const start = selectedDate ? startOfMonth(new Date(selectedDate)) : startOfMonth(new Date());
           const end = selectedDate ? endOfMonth(new Date(selectedDate)): endOfMonth(new Date());
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.startDay = start;
           obj.endDate = end;
         }else if(path === 'saptamana'){
           console.log(path);
           const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
           const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date()) ;
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.StartDate = start;
           obj.EndDate = end;
         }else if(path === 'zile-lucratoare'){
           // console.log(subBusinessDays(endOfWeek(new Date()),1), path);
           const start = selectedDate ? addBusinessDays(startOfWeek(new Date(selectedDate)),1) : addBusinessDays(startOfWeek(new Date()),1);
           const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
+          start.setHours(appStartHour,0,0);
+          end.setHours(appEndHour,0,0);
           obj.startDate = start;
           obj.endDate = end;
         }
@@ -96,7 +104,6 @@ export class CalendarService {
 
     }
   }
-
 
   colorCode(code){
     switch (code) {

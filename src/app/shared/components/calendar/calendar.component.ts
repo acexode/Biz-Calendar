@@ -36,18 +36,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
-
-function getTimezoneOffsetString(date: Date): string {
-  const timezoneOffset = date.getTimezoneOffset();
-  const hoursOffset = String(
-    Math.floor(Math.abs(timezoneOffset / 60))
-  ).padStart(2, '0');
-  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
-  const direction = timezoneOffset > 0 ? '-' : '+';
-
-  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
-}
 
 @Component({
   selector: 'app-calendar',
@@ -102,18 +92,18 @@ export class CalendarComponent implements OnInit {
     eventSource;
     viewTitle;
     isToday: boolean;
+    startEndTime: any = {};
+    schedules = [];
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
-
-      // console.log(addHours(startOfDay(new Date()), 2));
-      // console.log(addHours(new Date(), 3));
+      this.startEndTime = JSON.parse(localStorage.getItem('workHours'));
+      console.log(this.startEndTime);
+      this.refresh.next();
     }
 
   ngOnInit() {
-    console.log(this.display, this.viewDate, this.events);
       this.calS.selectedDate.subscribe(e =>{
-        console.log(e);
         this.viewDate = new Date(e);
         this.getEventLists();
       });
@@ -142,7 +132,7 @@ export class CalendarComponent implements OnInit {
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        console.log(e);
+        this.schedules = e?.schedules ? e?.schedules : [];
         this.events = e?.appointments.map(d => ({
           start:  new Date(d.startTime ),
           end:  new Date(d.endTime),
@@ -163,11 +153,11 @@ export class CalendarComponent implements OnInit {
             icon: this.calS.iconCode(d.icons)
           }
         }));
-        console.log(this.events);
+        // console.log(this.events);
         this.refresh.next();
 
       });
-      console.log(this.events);
+      // console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -208,7 +198,7 @@ export class CalendarComponent implements OnInit {
       }
 
       handleEvent(action: string, event: CalendarEvent): void {
-          console.log(event);
+          // console.log(event);
           this.viewDate = new Date(event.start);
           this.view = CalendarView.Day;
           this.modalData = { event, action };
@@ -229,20 +219,47 @@ export class CalendarComponent implements OnInit {
           const dayOfMonth = day.date.getDate();
           const vacations = [4,11];
           if (vacations.includes(dayOfMonth) && day.inMonth) {
-            console.log(day);
+            // console.log(day);
             day.cssClass = 'vacation-bg';
           }
         });
       }
     setBg(d){
+      // console.log(d);
       const hours = new Date(d).getHours();
-      if(hours > 7 && hours <= 10){
-        return 'cabinet-not-confirmed-v1';
-      }else if(hours > 10 && hours < 13){
-        return 'blue-pattern';
-      }else{
-        return 'green-pattern';
+      if(this.schedules?.length > 0){
+        const breakTime = this.schedules?.filter(e => e.isBreakTime)[0];
+        const allPrivate = [];
+        const allCnas = [];
+        const allBreak = [parseInt(breakTime.start,10), parseInt(breakTime.end,10)-1];
+        this.schedules?.forEach(e => {
+          if(e.isPrivate && !e.isBreak){
+            allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }else if(!e.isPrivate && !e.isBreak){
+            allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }
+        });
+        if(allBreak.includes(hours) ){
+          return '';
+        }else  if(allPrivate.includes(hours)){
+          return 'cabinet-not-confirmed-v2';
+        }else if(allCnas.includes(hours)){
+          return 'online-not-confirmed-v2';
+        }
 
+      }else{
+        return '';
       }
     }
+    range(start, end, step = 1) {
+      const output = [];
+      if (typeof end === 'undefined') {
+        end = start;
+        start = 0;
+      }
+      for (let i = start; i < end; i += step) {
+        output.push(i);
+      }
+      return output;
+    };
 }
