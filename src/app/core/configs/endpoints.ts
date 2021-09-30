@@ -35,3 +35,8 @@ export const cabinet = {
   getCabinets: baseEndpoints.bizCalendarService + '/GetCabinets',
   getCabinetsSchedules: baseEndpoints.bizCalendarService + '/GetCabinetsSchedules'
 };
+
+export const tipServicii = {
+  getMedicalServices: baseEndpoints.bizCalendarService + '/GetMedicalServices',
+  getClinicCNASMedicalServices: baseEndpoints.bizCalendarService + '/GetClinicCNASMedicalServices',
+};

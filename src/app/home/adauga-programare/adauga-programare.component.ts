@@ -27,7 +27,7 @@ import
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { cabinet } from 'src/app/core/configs/endpoints';
+import { cabinet, tipServicii } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 @Component({
@@ -82,7 +82,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   tipServiciiConfig: IonRadiosConfig = {
     mode: 'chip',
     inputLabel: {
-      text: 'Tip programare',
+      text: 'Tip servicii',
       classes: ''
     },
     itemClasses: 'mr-12'
@@ -263,8 +263,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
-    // this.getCabinets();
+    /* services */
+    this.getCNASServices();
+    this.getCuplataServices();
     this.getLocations();
+    this.getCabinets();
+    /*  */
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -498,6 +502,36 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         },
         _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
       );
+  }
+  getCuplataServices() {
+    const optionalData = {
+      // serviceName: 'string',
+      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      // specialityCode: 'string',
+      // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    };
+    this.getLocations$ = this.reqService.post(tipServicii.getMedicalServices, optionalData)
+    .subscribe(
+      (d: any) => {
+        console.log(d);
+      },
+      _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
+    );
+  }
+  getCNASServices() {
+    const optionalData = {
+      // serviceName: 'string',
+      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      // specialityCode: 'string',
+      // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    };
+    this.getLocations$ = this.reqService.post(tipServicii.getClinicCNASMedicalServices, optionalData)
+    .subscribe(
+      (d: any) => {
+        console.log(d);
+      },
+      _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
+    );
   }
   async presentToast(
     message: string = 'message',
