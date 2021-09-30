@@ -251,6 +251,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
   getLocations$: Subscription;
+  getCNASServices$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -445,7 +446,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.locatieFormControl.updateValueAndValidity();
   }
   get locatiePlaceHolder(): string {
-    return this.isAparaturaOnLine ? 'required' : 'Opțional';
+    return this.locatieConfigPlaceholder || '';
   }
   get isAparaturaOnLineStatus() {
     return this.isAparaturaOnLine;
@@ -525,7 +526,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       // specialityCode: 'string',
       // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     };
-    this.getLocations$ = this.reqService.post(tipServicii.getClinicCNASMedicalServices, optionalData)
+    this.getCNASServices$ = this.reqService.post(tipServicii.getClinicCNASMedicalServices, optionalData)
     .subscribe(
       (d: any) => {
         console.log(d);
@@ -550,6 +551,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getCabinets$);
     unsubscriberHelper(this.getCabinetScheldules$);
     unsubscriberHelper(this.getLocations$);
+    unsubscriberHelper(this.getCNASServices$);
   }
 
 }
