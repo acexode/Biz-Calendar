@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content *ngIf="notifyTypes.typeA === notifyTypeToUse">
   <div class="w-100">
 
     <div class="ion-no-padding flex flex-column w-100 position-relative">
@@ -24,6 +24,55 @@
         <div>
           <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal('VEZI PROGRAM')">
             VEZI PROGRAM
+          </ion-button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="notifyTypes.typeB === notifyTypeToUse">
+  <div class="w-100">
+
+    <div class="ion-no-padding flex flex-column w-100 position-relative">
+      <div class="w-100 px-16 pt-20 pb-15 border-bottom-1px-solid-neutral-grey-light-b-color modal-header">
+        <span class="p-0 s20-h28 text-weight-medium ls-0 roboto-family-font">Rezervare Cabinet 1</span>
+      </div>
+
+      <div class="modal-body">
+        <div class="mt-16">
+
+
+          <div class="flex flex-row ion-align-items-center mb-32">
+            <div class="mr-16">
+              <ion-icon name="today-v-1" class="icon-24 black-color" slot="icon-only"></ion-icon>
+            </div>
+            <ion-label class="s18-h24 text-weight-medium roboto-family-font ls-02">Marți, 9 martie 2021</ion-label>
+          </div>
+
+
+          <div class="flex flex-row ion-align-items-center">
+            <div class="mr-16">
+              <ion-icon name="clock" class="icon-24 black-color" slot="icon-only"></ion-icon>
+            </div>
+            <ion-label class="s18-h24 text-weight-medium roboto-family-font ls-02">11:00 - 11:30</ion-label>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div
+        class="w-100 px-16 py-12 flex ion-justify-content-end ion-align-items-center border-top-1px-solid-neutral-grey-light-b-color modal-footer">
+        <div class="mr-16">
+          <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal('RENUNȚĂ')">
+            RENUNȚĂ
+          </ion-button>
+        </div>
+        <div>
+          <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal('SELECTEAZA')">
+            SELECTEAZA
           </ion-button>
         </div>
       </div>

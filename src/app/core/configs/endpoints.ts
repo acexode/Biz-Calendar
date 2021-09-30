@@ -28,9 +28,15 @@ export const persons = {
 export const location = {
   getCountries: baseEndpoints.bizCalendarService + '/GetCounties',
   getCities: baseEndpoints.bizCalendarService + '/GetCities',
+  getLocations: baseEndpoints.bizCalendarService + '/GetLocations',
 };
 
 export const cabinet = {
   getCabinets: baseEndpoints.bizCalendarService + '/GetCabinets',
   getCabinetsSchedules: baseEndpoints.bizCalendarService + '/GetCabinetsSchedules'
+};
+
+export const tipServicii = {
+  getMedicalServices: baseEndpoints.bizCalendarService + '/GetMedicalServices',
+  getClinicCNASMedicalServices: baseEndpoints.bizCalendarService + '/GetClinicCNASMedicalServices',
 };

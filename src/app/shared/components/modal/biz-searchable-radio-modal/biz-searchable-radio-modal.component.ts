@@ -164,7 +164,9 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       component: CabinetNotifyComponent,
       cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
       backdropDismiss: true,
-      componentProps: {},
+      componentProps: {
+        notifyType: 'typeA'
+      },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
