@@ -36,29 +36,6 @@ import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabine
   styleUrls: ['./adauga-programare.component.scss'],
 })
 export class AdaugaProgramareComponent implements OnInit, OnDestroy {
-  get l(): IonSelectConfig {
-    const locatie: IonSelectConfig = {
-      inputLabel: {
-        classes: '',
-        text: 'Locație',
-      },
-      forceListItems: false,
-      multiple: false,
-      disabled: false,
-      alertOptions: {
-        cssClass: '',
-      },
-      idKey: 'id',
-      labelKey: 'label',
-      useIcon: {
-        name: 'doctor',
-        classes: 'neutral-grey-medium-color'
-      }
-    };
-    return this.isAparaturaOnLine ?
-    {...locatie, placeholder: 'required'} :
-    {...locatie, placeholder: 'Opțional'};
-  }
   pacientInputConfig = inputConfigHelper({
     label: 'Pacient',
     type: 'text',
@@ -101,16 +78,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: 'În cabinet', id: 'În-cabinet' },
     { label: 'On-line', id: 'On-line' },
   ];
-  locatieOption = [
-    {
-      id: 'fcghhjhk',
-      label: 'Option 1'
-    },
-    {
-      id: 'kcghhjhkss',
-      label: 'Option 2'
-    }
-  ];
+  locatieOption: any[] = [];
   tipServiciiConfig: IonRadiosConfig = {
     mode: 'chip',
     inputLabel: {
@@ -154,6 +122,24 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     labelKey: 'cabinetName',
     idKey: 'cabinetUID'
   };
+  locatie: IonSelectConfig = {
+      inputLabel: {
+        classes: '',
+        text: 'Locație',
+      },
+      forceListItems: false,
+      multiple: false,
+      disabled: false,
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'locationUID',
+      labelKey: 'locationName',
+      useIcon: {
+        name: 'doctor',
+        classes: 'neutral-grey-medium-color'
+      }
+    };
   medicConfig: IonSelectConfig = {
     inputLabel: {
       classes: '',
@@ -264,6 +250,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   recurentaDetails!: RecurentaModel;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
+  getLocations$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -277,6 +264,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
     // this.getCabinets();
+    this.getLocations();
     this.process();
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -452,6 +440,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
     this.locatieFormControl.updateValueAndValidity();
   }
+  get locatiePlaceHolder(): string {
+    return this.isAparaturaOnLine ? 'required' : 'Opțional';
+  }
   get isAparaturaOnLineStatus() {
     return this.isAparaturaOnLine;
   }
@@ -499,6 +490,15 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         _err => this.presentToast('Unable to get available cabinet at this instance. Please check your network and try again. C01')
       );
   }
+  getLocations() {
+    this.getLocations$ = this.reqService.get(cabinet.getCabinets)
+      .subscribe(
+        (d: any) => {
+          this.locatieOption = d;
+        },
+        _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
+      );
+  }
   async presentToast(
     message: string = 'message',
     cssClass: 'success' | 'error' = 'error',
@@ -515,6 +515,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
     unsubscriberHelper(this.getCabinets$);
     unsubscriberHelper(this.getCabinetScheldules$);
+    unsubscriberHelper(this.getLocations$);
   }
 
 }

@@ -28,6 +28,7 @@ export const persons = {
 export const location = {
   getCountries: baseEndpoints.bizCalendarService + '/GetCounties',
   getCities: baseEndpoints.bizCalendarService + '/GetCities',
+  getLocations: baseEndpoints.bizCalendarService + '/GetLocations',
 };
 
 export const cabinet = {

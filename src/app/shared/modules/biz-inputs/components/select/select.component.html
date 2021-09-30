@@ -33,7 +33,7 @@
         'disabled-input-ph': config?.disabled || inputReadonly || formGroup?.disabled
       }"
       [interfaceOptions]="config?.alertOptions"
-      [placeholder]="config?.placeholder"
+      [placeholder]="getPlaceholder || config?.placeholder"
       (ionChange)="selectChange()"
     >
       <ion-select-option
