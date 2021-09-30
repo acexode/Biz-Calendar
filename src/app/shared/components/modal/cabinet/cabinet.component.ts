@@ -11,6 +11,7 @@ import {
 import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
 import { Subject } from 'rxjs';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
+import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
 
 const colors: any = {
   bizPrimary: {
@@ -192,6 +193,22 @@ export class CabinetComponent implements OnInit {
         });
       });
     });
+  }
+
+  async presentCabinentNotify() {
+    const modal = await this.modalController.create({
+      component: CabinetNotifyComponent,
+      cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
+      backdropDismiss: true,
+      componentProps: {
+        notifyType: 'typeB'
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    const { dismissed, renita, veziProgram } = data;
+    if (dismissed && veziProgram) {}
   }
 
 }
