@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { InfoPacientModalComponent } from 'src/app/shared/components/modal/info-pacient-modal/info-pacient-modal.component';
 import { SelectieServiciiModalComponent } from 'src/app/shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
@@ -30,6 +30,8 @@ import { RequestService } from 'src/app/core/services/request/request.service';
 import { cabinet, tipServicii } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
+import { CNAS } from 'src/app/core/models/cnas.service.model';
+import { Cuplata } from 'src/app/core/models/cuplata.service.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -88,9 +90,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     itemClasses: 'mr-12'
   };
   tipServiciiOption: Array<IonRadioInputOption> = [
-    { label: 'Cu plată', id: 'Cuplată' },
-    { label: 'C.N.A.S.', id: 'C.N.A.S.' },
+    {
+      label: 'Cu plată',
+      id: 'Cuplată'
+    },
+    {
+      label: 'C.N.A.S.',
+      id: 'C.N.A.S.'
+    },
   ];
+  tipServiciiData: Cuplata[] | CNAS[];
 
   timeRadioConfig: IonRadiosConfig = {
     mode: 'chip',
@@ -237,7 +246,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
-    tipServicii: ['În-cabinet', [Validators.required]],
+    tipServicii: ['Cuplată', [Validators.required]],
     data: ['2021-09-27', [Validators.required]],
     oraDeIncepere: ['09:00', [Validators.required]],
     time: ['', [Validators.required]],
@@ -251,7 +260,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
   getLocations$: Subscription;
-  getCNASServices$: Subscription;
+  getTipServices$: Subscription;
+  adaugaProgramareTipServicii$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -260,24 +270,36 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private reqService: RequestService,
     public toastController: ToastController
   ) { }
+  onInitializeLoadData() {
+    this.locatieFormControlProcess();
+  }
 
   ngOnInit() {
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
     /* services */
-    this.getCNASServices();
-    this.getCuplataServices();
-    this.getLocations();
-    this.getCabinets();
+    // this.getCuplataServices();
+    // this.getLocations();
+    // this.getCabinets();
     /*  */
-    this.process();
+    this.onInitializeLoadData();
+
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
-    this.adaugaProgramareFormGroup$ = this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
+
+    this.adaugaProgramareFormGroup$ = this.adaugaProgramareFormGroup
+      .get('tipprogramare').valueChanges
       .pipe(distinctUntilChanged())
       .subscribe(data => {
-        this.process(data);
+        this.locatieFormControlProcess(data);
+      });
+
+    this.adaugaProgramareTipServicii$ = this.adaugaProgramareFormGroup
+      .get('tipServicii').valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(data => {
+        this.getTipServicii(data);
       });
   }
   async presentCabinent() {
@@ -403,6 +425,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       },
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
   }
   async presentModalRecurentaComponentModal() {
     const modal = await this.modalController.create({
@@ -433,7 +457,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.adaugaProgramareFormGroup.patchValue({medic: data});
     }
   }
-  process(data: string = this.locatieFormControl.value) {
+  locatieFormControlProcess(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
       this.isAparaturaOnLine = true;
       this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
@@ -504,35 +528,41 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
       );
   }
-  getCuplataServices() {
-    const optionalData = {
+  getTipServiciiType(
+    type: string = this.tipServiciiOption[0].id,
+    optionalData: any = {}
+  ): Observable<Array<Cuplata | CNAS>> {
+    switch (type) {
+      case  this.tipServiciiOption[0].id:
+        return this.reqService
+          .post<Cuplata[]>(tipServicii.getMedicalServices, optionalData);
+      case this.tipServiciiOption[1].id:
+        return this.reqService
+          .post<CNAS[]>(tipServicii.getClinicCNASMedicalServices, optionalData);
+      default:
+        return this.reqService
+          .post<Cuplata[]>(tipServicii.getMedicalServices, optionalData);
+    }
+  }
+  getTipServicii(data: string = this.tipServiciiOption[0].id) {
+     const optionalData = {
       // serviceName: 'string',
       // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       // specialityCode: 'string',
       // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     };
-    this.getLocations$ = this.reqService.post(tipServicii.getMedicalServices, optionalData)
+    console.log(data);
+    this.getTipServices$ = this.getTipServiciiType(data)
     .subscribe(
-      (d: any) => {
+      (d: Cuplata[] | CNAS[]) => {
         console.log(d);
+        this.tipServiciiData = d;
       },
       _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
     );
   }
-  getCNASServices() {
-    const optionalData = {
-      // serviceName: 'string',
-      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      // specialityCode: 'string',
-      // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-    };
-    this.getCNASServices$ = this.reqService.post(tipServicii.getClinicCNASMedicalServices, optionalData)
-    .subscribe(
-      (d: any) => {
-        console.log(d);
-      },
-      _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
-    );
+  get tipServiciiFormGroup() {
+    return this.adaugaProgramareFormGroup.get('tipServicii') as FormControl;
   }
   async presentToast(
     message: string = 'message',
@@ -551,7 +581,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getCabinets$);
     unsubscriberHelper(this.getCabinetScheldules$);
     unsubscriberHelper(this.getLocations$);
-    unsubscriberHelper(this.getCNASServices$);
+    unsubscriberHelper(this.getTipServices$);
+    unsubscriberHelper(this.adaugaProgramareTipServicii$);
   }
 
 }
