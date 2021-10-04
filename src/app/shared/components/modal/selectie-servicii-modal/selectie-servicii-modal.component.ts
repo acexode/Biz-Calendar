@@ -175,7 +175,7 @@ export class SelectieServiciiModalComponent implements OnInit, OnDestroy {
       dismissed: true,
       //...this.ionicForm.value
       checkList: this.items$.value || [],
-      checkedValue: this.ionicForm.value.checkboxArrayList || []
+      checkedValue: this.ionicForm.value.checkboxArrayList || [],
     });
   }
   searching(st: string) {

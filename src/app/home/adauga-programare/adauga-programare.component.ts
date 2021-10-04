@@ -552,15 +552,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
   }
   getTipServicii(data: string = this.tipServiciiOption[0].id) {
-    this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
-     const optionalData = {
+    let optionData =  {
       // serviceName: 'string',
       // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       // specialityCode: 'string',
-      locationUID: 'ec9faa71-e00a-482a-801d-520af369de85',
+      // locationUID: 'ec9faa71-e00a-482a-801d-520af369de85',
     };
-    console.log(data);
-    this.getTipServices$ = this.getTipServiciiType(data, optionalData)
+    if (!this.isAparaturaOnLineStatus && this.locatieFormControl.value === '') {
+      this.toastService
+        .presentToastWithDurationDismiss(
+          'Location is Required'
+      );
+      // clear input
+      this.adaugaProgramareFormGroup.patchValue({tipServicii: ''});
+    } else {
+      this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+      if (this.locatieFormControl.value !== '') {
+        optionData = {
+          locationUID: this.locatieFormControl.value
+        };
+      }
+      this.getTipServices$ = this.getTipServiciiType(data, optionData)
     .subscribe(
       (d: Cuplata[] | CNAS[]) => {
         console.log(d);
@@ -570,6 +582,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       _err => this.toastService
         .presentToastWithDurationDismiss('Unable to get available locations at this instance. Please check your network and try again. C02')
     );
+    }
+
   }
   get tipServiciiFormGroup() {
     return this.adaugaProgramareFormGroup.get('tipServicii') as FormControl;
