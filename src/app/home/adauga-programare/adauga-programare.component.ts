@@ -33,6 +33,8 @@ import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabine
 import { CNAS } from 'src/app/core/models/cnas.service.model';
 import { Cuplata } from 'src/app/core/models/cuplata.service.model';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -263,6 +265,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getLocations$: Subscription;
   getTipServices$: Subscription;
   adaugaProgramareTipServicii$: Subscription;
+  tipServiciiParameter = {
+    uid: '12bdc0ba-24c0-4fbc-992f-ceb9c0230d31',
+    name: 'Foloseste modulul mixt de CNAS CLN si clinica privata?',
+    code: 'useMixtCLN',
+    value: ''
+  };
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -270,9 +278,24 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private router: Router,
     private reqService: RequestService,
     public toastController: ToastController,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private authS: AuthService
   ) { }
   onInitializeLoadData() {
+    this.authS.getParameterState()
+      .subscribe(
+        (v: ParameterState) => {
+          if (v.parameters.length > 0) {
+            const getTipsParameter = v.parameters.filter(
+              (p: Parameter) => p.code === this.tipServiciiParameter.code
+            );
+            if (getTipsParameter.length > 0) {
+              this.tipServiciiParameter.value = getTipsParameter[0].value;
+            }
+          }
+          console.log(this.tipServiciiParameter);
+        }
+      );
     this.locatieFormControlProcess();
   }
 

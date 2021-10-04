@@ -8,7 +8,7 @@ import { authEndpoints } from '../../configs/endpoints';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { User } from '../../models';
-import { Parameter } from '../../models/parameter.model';
+import { Parameter, ParameterState } from '../../models/parameter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +19,9 @@ export class AuthService {
   token = '';
   public user: Observable<User>;
   private userSubject: BehaviorSubject<User>;
-  private parameters$: BehaviorSubject<Parameter> = new BehaviorSubject<Parameter>({
+  private parameters$: BehaviorSubject<ParameterState> = new BehaviorSubject<ParameterState>({
     init: false,
-   code: '',
-    uid: '',
-    name: '',
-    value: '',
+    parameters: null
   });
   constructor(private reqS: RequestService,private router: Router, private customS: CustomStorageService, private routerS: Router,) {
     // this.user = this.userSubject.asObservable();
@@ -32,7 +29,9 @@ export class AuthService {
     this.user = this.userSubject.asObservable();
     this.parameters$.next(
       {
-        ...JSON.parse(localStorage.getItem('user')),
+        parameters: [
+          ...JSON.parse(localStorage.getItem('parameters')),
+        ],
         ...{ init: true }
       }
     );
@@ -112,9 +111,9 @@ export class AuthService {
         })
       );
   }
-  getAuthState() {
+  getParameterState() {
     return this.parameters$.pipe(
-      filter((val: Parameter) => val && val.hasOwnProperty('init') && val.init),
+      filter((val: ParameterState) => val && val.hasOwnProperty('init') && val.init),
       distinctUntilChanged()
     );
   }

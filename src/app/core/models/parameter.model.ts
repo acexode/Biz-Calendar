@@ -1,7 +1,10 @@
 export interface Parameter {
-  init?: boolean;
    code: string;
     uid: string;
     name: string;
-    value: string | number;
+    value: string | any;
+}
+export interface ParameterState {
+  init: boolean;
+  parameters: Array<Parameter> | null;
 }
