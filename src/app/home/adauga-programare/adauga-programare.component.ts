@@ -32,6 +32,7 @@ import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model'
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
 import { Cuplata } from 'src/app/core/models/cuplata.service.model';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -246,7 +247,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
-    tipServicii: ['Cuplată', [Validators.required]],
+    tipServicii: ['', [Validators.required]],
     data: ['2021-09-27', [Validators.required]],
     oraDeIncepere: ['09:00', [Validators.required]],
     time: ['', [Validators.required]],
@@ -268,7 +269,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private pS: PlatformService,
     private router: Router,
     private reqService: RequestService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private toastService: ToastService
   ) { }
   onInitializeLoadData() {
     this.locatieFormControlProcess();
@@ -279,8 +281,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     // this.presentCabinetModalRadio();
     /* services */
     // this.getCuplataServices();
-    // this.getLocations();
-    // this.getCabinets();
+    this.getLocations();
+    this.getCabinets();
     /*  */
     this.onInitializeLoadData();
 
@@ -378,7 +380,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   async presentCabinetModalRadio() {
     if (this.cabinetOption.length < 1) {
-      this.presentToast('Please wait.', 'success');
+      this.toastService.presentToastWithDurationDismiss('Please wait.', 'success');
       this.getCabinets(true);
     } else {
       if (!this.dataAndOraDeIncepereNotFilledStatus) {
@@ -402,7 +404,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
         }
       } else {
-        this.presentToast('Completează data și ora de începere de mai sus!');
+        this.toastService.presentToastWithDurationDismiss('Completează data și ora de începere de mai sus!');
       }
     }
   }
@@ -516,16 +518,21 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
             this.presentCabinetModalRadio();
           }
         },
-        _err => this.presentToast('Unable to get available cabinet at this instance. Please check your network and try again. C01')
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get available cabinet at this instance. Please check your network and try again. C01'
+        )
       );
   }
   getLocations() {
     this.getLocations$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
+          console.log(d);
           this.locatieOption = d;
         },
-        _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get available locations at this instance. Please check your network and try again. C02'
+        )
       );
   }
   getTipServiciiType(
@@ -545,36 +552,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
   }
   getTipServicii(data: string = this.tipServiciiOption[0].id) {
+    this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
      const optionalData = {
       // serviceName: 'string',
       // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       // specialityCode: 'string',
-      // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      locationUID: 'ec9faa71-e00a-482a-801d-520af369de85',
     };
     console.log(data);
-    this.getTipServices$ = this.getTipServiciiType(data)
+    this.getTipServices$ = this.getTipServiciiType(data, optionalData)
     .subscribe(
       (d: Cuplata[] | CNAS[]) => {
         console.log(d);
         this.tipServiciiData = d;
+        this.toastService.dismissToast();
       },
-      _err => this.presentToast('Unable to get available locations at this instance. Please check your network and try again. C02')
+      _err => this.toastService
+        .presentToastWithDurationDismiss('Unable to get available locations at this instance. Please check your network and try again. C02')
     );
   }
   get tipServiciiFormGroup() {
     return this.adaugaProgramareFormGroup.get('tipServicii') as FormControl;
-  }
-  async presentToast(
-    message: string = 'message',
-    cssClass: 'success' | 'error' = 'error',
-    duration: number = 3000
-  ) {
-    const toast = await this.toastController.create({
-      cssClass,
-      message,
-      duration,
-    });
-    toast.present();
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
