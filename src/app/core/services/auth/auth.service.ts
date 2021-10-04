@@ -1,4 +1,4 @@
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Login } from './../../models/login.interface';
 import { CustomStorageService } from './../custom-storage/custom-storage.service';
@@ -8,6 +8,7 @@ import { authEndpoints } from '../../configs/endpoints';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { User } from '../../models';
+import { Parameter } from '../../models/parameter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,23 @@ export class AuthService {
   token = '';
   public user: Observable<User>;
   private userSubject: BehaviorSubject<User>;
+  private parameters$: BehaviorSubject<Parameter> = new BehaviorSubject<Parameter>({
+    init: false,
+   code: '',
+    uid: '',
+    name: '',
+    value: '',
+  });
   constructor(private reqS: RequestService,private router: Router, private customS: CustomStorageService, private routerS: Router,) {
     // this.user = this.userSubject.asObservable();
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
+    this.parameters$.next(
+      {
+        ...JSON.parse(localStorage.getItem('user')),
+        ...{ init: true }
+      }
+    );
 
   }
   public get userValue(): User {
@@ -84,10 +98,24 @@ export class AuthService {
 
   logout(){
     localStorage.removeItem('user');
+    localStorage.removeItem('parameters');
     this.userSubject.next(null);
     this.router.navigate(['/login']);
   }
   getParameters(){
-    return this.reqS.get(authEndpoints.getParameters);
+    return this.reqS.get(authEndpoints.getParameters)
+      .pipe(
+        tap((v: any) => {
+          // save parameters
+          localStorage.setItem('parameters', JSON.stringify(v.parameters));
+          // -------
+        })
+      );
+  }
+  getAuthState() {
+    return this.parameters$.pipe(
+      filter((val: Parameter) => val && val.hasOwnProperty('init') && val.init),
+      distinctUntilChanged()
+    );
   }
 }

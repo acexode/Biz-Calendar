@@ -95,10 +95,7 @@ export class LoginPage implements OnInit {
       console.log(this.returnUrl);
       // this.authS.getParameters();
       this.authS.getParameters().subscribe((e: any) =>{
-        console.log('parameters', e.parameters);
-        // save parameters
-        localStorage.setItem('parameters', JSON.stringify(e.parameters));
-        // -------
+        console.log(e.parameters);
         const obj: any = {};
         e.parameters.forEach(params =>{
           if(params.code === 'appEndHour'){
