@@ -45,23 +45,23 @@ export class CalendarService {
       };
       if(path !== null){
         if(path === 'lista'){
-          obj.startDay = startOfYear(new Date());
-          obj.endDate = endOfYear(new Date());
+          obj.StartDate = startOfYear(new Date());
+          obj.EndDate = endOfYear(new Date());
         }
         else if(path === 'zi'){
           const start = selectedDate ? new Date(selectedDate) : new Date();
           const end = selectedDate ? new Date(selectedDate) : new Date();;
           start.setHours(appStartHour,0,0);
           end.setHours(appEndHour,0,0);
-          obj.startDate = start;
-          obj.endDate = end;
+          obj.StartDate = start;
+          obj.EndDate = end;
         }else if(path === 'luna'){
           const start = selectedDate ? startOfMonth(new Date(selectedDate)) : startOfMonth(new Date());
           const end = selectedDate ? endOfMonth(new Date(selectedDate)): endOfMonth(new Date());
           start.setHours(appStartHour,0,0);
           end.setHours(appEndHour,0,0);
-          obj.startDay = start;
-          obj.endDate = end;
+          obj.StartDate = start;
+          obj.EndDate = end;
         }else if(path === 'saptamana'){
           console.log(path);
           const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
@@ -76,8 +76,8 @@ export class CalendarService {
           const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
           start.setHours(appStartHour,0,0);
           end.setHours(appEndHour,0,0);
-          obj.startDate = start;
-          obj.endDate = end;
+          obj.StartDate = start;
+          obj.EndDate = end;
         }
         this.getAppointments(obj);
 
