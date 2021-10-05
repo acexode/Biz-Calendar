@@ -28,7 +28,7 @@
         isPrivateCLN: boolean;
         consultationID: number;
         colorCode: string;
-        icons: [];
+        icons: any;
         infPacient: string;
         subject: string;
         priorityOrder: number;
