@@ -117,6 +117,10 @@ export class AuthService {
           // save parameters
           localStorage.setItem('parameters', JSON.stringify(v.parameters));
           // -------
+          this.parameters$.next({
+            init: true,
+            parameters: v.parameters,
+          });
         })
       );
   }
