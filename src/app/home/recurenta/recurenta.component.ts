@@ -200,6 +200,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     return this.timeChooseFormControl.value;
   }
   setZileValue(data: string) {
+    console.log(data, this.timeChooseFormControl.value === this.seRepetaLaFiecareOption[0].label);
     this.timeChooseFormControl.setValue(data);
   }
   setZileValueAndToggle(data: string) {
