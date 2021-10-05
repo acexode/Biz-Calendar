@@ -112,30 +112,37 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     {
       label: 'L',
       selected: false,
+      value: 'L'
     },
     {
       label: 'M',
       selected: false,
+      value: 'M'
     },
     {
       label: 'M',
       selected: false,
+       value: 'm'
     },
     {
       label: 'J',
       selected: false,
+       value: 'J'
     },
     {
       label: 'V',
       selected: false,
+       value: 'V'
     },
     {
       label: 'S',
       selected: false,
+       value: 'S'
     },
     {
       label: 'D',
       selected: false,
+       value: 'D'
     }
   ];
   lunaRadioConfig: IonRadiosConfig = {
@@ -344,7 +351,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     this.backAction();
   }
   toggleRadio(item: any) {
-    const d = this.dateList.find(x => x.label === item.label);
+    const d = this.dateList.find(x => x.value === item.value);
     if (typeof d !== 'undefined') {
       d.selected = !d.selected;
     }

@@ -6,7 +6,7 @@
       'hasError': config?.inputHasError || false,
       'item-has-focus': config?.isInputFocused || false
     }">
-      <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color" position="stacked" [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
+      <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color ls-0" position="stacked" [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
       <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
       [ngClass]="{
                     ' isFocused':
