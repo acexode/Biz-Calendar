@@ -117,9 +117,6 @@ export class CalendarService {
       case '1CN':
         return view === 'list' ? 'cabinet-not-confirmed-v1' : 'cabinet-not-confirmed-v1-weekmonth';
         break;
-      case '1CS':
-        return 'green-10';
-        break;
       case '2CN':
         return view === 'list' ? 'cabinet-not-confirmed-v2': 'cabinet-not-confirmed-v2-weekmonth';
         break;
