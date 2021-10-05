@@ -289,6 +289,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   onInitializeLoadData(): void {
 
     this.locatieFormControlProcess();
+    this.getTipsOptionTypeFromParameter();
   }
   getTipsOptionTypeFromParameter(): void {
     this.authS.getParameterState()
