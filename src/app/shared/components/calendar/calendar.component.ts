@@ -100,9 +100,9 @@ export class CalendarComponent implements OnInit {
     holidays = [];
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
+      console.log(this.display);
       this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
       this.startEndTime = JSON.parse(localStorage.getItem('workHours'));
-      console.log(this.startEndTime);
       this.refresh.next();
     }
 
@@ -154,15 +154,15 @@ export class CalendarComponent implements OnInit {
           },
           draggable: true,
           meta:{
-            cssClass: this.calS.colorCode(d.colorCode === '1CN' ? '1CS': d.colorCode),
+            cssClass: this.calS.colorCode(d.colorCode, 'weekMonth'),
             icon: this.calS.iconCode(d?.icons[0])
           }
         }));
-        console.log(this.events);
+        // console.log(this.events);
         this.refresh.next();
 
       });
-      console.log(this.events);
+      // console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -203,11 +203,9 @@ export class CalendarComponent implements OnInit {
       }
 
       handleEvent(action: string, event: CalendarEvent): void {
-          // console.log(event);
           this.viewDate = new Date(event.start);
           this.view = CalendarView.Day;
           this.modalData = { event, action };
-        // this.modal.open(this.modalContent, { size: 'lg' });
       }
 
 
@@ -224,11 +222,7 @@ export class CalendarComponent implements OnInit {
           const dayOfMonth = day.date.getDate();
           const vacations = [4,11];
           this.holidays.forEach(hol =>{
-            // const diff = differenceInHours(hol.startDay, hol.endDate);
-            // const phyHours = [...new Array(diff)].map((e, i) => i+1);
             const isSame = isSameDay(new Date(hol.startDate), new Date(day.date)) || isSameDay(new Date(hol.endDate), new Date(day.date));
-            console.log(hol, day.date);
-            console.log(isSame);
             if(isSame){
               day.cssClass = 'holidays';
             }
@@ -236,9 +230,6 @@ export class CalendarComponent implements OnInit {
         });
       }
       beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-        // console.log(this.schedules);
-        // console.log(renderEvent);
-
         renderEvent.hourColumns.forEach((hourColumn) => {
           const dow = this.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
           const breakTime = dow?.filter(e => e.isBreakTime)[0];
@@ -253,7 +244,6 @@ export class CalendarComponent implements OnInit {
             }
           });
           const hols = this.holidays.map(h =>({startDate: h.startDate,endDate: h.endDate} ))[0];
-          console.log(hols);
           dow.forEach(day =>{
             const starttime = parseInt(day.start, 10);
             const endtime = parseInt(day.end, 10);
@@ -298,12 +288,11 @@ export class CalendarComponent implements OnInit {
           });
       }
     setBg(d){
-      // console.log(d);
+
       const hours = new Date(d).getHours();
       if(this.holidays?.length){
         this.holidays.forEach(hol =>{
           const diff = differenceInHours(hol.startDay, hol.endDate);
-          // const phyHours = [...new Array(diff)].map((e, i) => i+1);
           const isSame = isSameDay(hol.startDate, d);
           if(isSame){
             return 'holidays';

@@ -22,7 +22,6 @@ export class CalendarService {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      // console.log(e);
       if(e !== null){
         // console.log(e);
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
@@ -38,8 +37,6 @@ export class CalendarService {
   fetchCalendarAppointment(selectedDate = null, appStartHour, appEndHour){
     // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-
-      console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
@@ -63,7 +60,6 @@ export class CalendarService {
           obj.StartDate = start;
           obj.EndDate = end;
         }else if(path === 'saptamana'){
-          console.log(path);
           const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
           const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date()) ;
           start.setHours(appStartHour,0,0);
@@ -71,7 +67,6 @@ export class CalendarService {
           obj.StartDate = start;
           obj.EndDate = end;
         }else if(path === 'zile-lucratoare'){
-          // console.log(subBusinessDays(endOfWeek(new Date()),1), path);
           const start = selectedDate ? addBusinessDays(startOfWeek(new Date(selectedDate)),1) : addBusinessDays(startOfWeek(new Date()),1);
           const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
           start.setHours(appStartHour,0,0);
@@ -86,7 +81,7 @@ export class CalendarService {
     });
   }
   async  getAppointments(data = null){
-    console.log(data);
+    // csonsole.log(data);
     if(data !== null){
       const phy: any = await this.getUserPhysicians().toPromise();
       const obj: any = {
@@ -105,34 +100,34 @@ export class CalendarService {
     }
   }
 
-  colorCode(code){
+  colorCode(code, view = 'list'){
     switch (code) {
       case '1CY':
-        return 'cabinet-confirmed-v1';
+        return  view === 'list' ?  'cabinet-confirmed-v1' : 'cabinet-confirmed-v1-weekmonth' ;
         break;
       case '2CY':
-        return 'cabinet-confirmed-v2';
+        return view === 'list' ? 'cabinet-confirmed-v2': 'cabinet-confirmed-v2-weekMonth';
         break;
       case '1OY':
-        return 'online-confirmed-v1';
+        return view === 'list' ? 'online-confirmed-v1' : 'online-confirmed-v1-weekmonth';
         break;
       case '2OY':
-        return 'online-confirmed-v2';
+        return view === 'list' ? 'online-confirmed-v2' : 'online-confirmed-v2-weekmonth';
         break;
       case '1CN':
-        return 'cabinet-not-confirmed-v1';
+        return view === 'list' ? 'cabinet-not-confirmed-v1' : 'cabinet-not-confirmed-v1-weekmonth';
         break;
       case '1CS':
         return 'green-10';
         break;
       case '2CN':
-        return 'cabinet-not-confirmed-v2';
+        return view === 'list' ? 'cabinet-not-confirmed-v2': 'cabinet-not-confirmed-v2-weekmonth';
         break;
       case '1ON':
-        return 'online-not-confirmed-v1';
+        return  view === 'list' ? 'online-not-confirmed-v1' : 'online-not-confirmed-v1-weekMonth';
         break;
       case '2ON':
-        return 'online-not-confirmed-v2';
+        return view === 'list' ? 'online-not-confirmed-v2': 'online-not-confirmed-v2-weekMonth';
         break;
       case '1N':
         return 'note-v1';
@@ -153,7 +148,6 @@ export class CalendarService {
     }
   }
   iconCode(code){
-    console.log(code);
     switch (code) {
       case 1:
         return 'partially-paid';

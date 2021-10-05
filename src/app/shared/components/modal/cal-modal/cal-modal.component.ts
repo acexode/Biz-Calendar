@@ -56,7 +56,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   }
 
   onEventSelected(event) {
-      console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
+      // console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
   }
 
   changeMode(mode) {
@@ -68,7 +68,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   }
 
   onTimeSelected(ev, clicked= false) {
-    console.log(ev.selectedTime, clicked);
+    // console.log(ev.selectedTime, clicked);
     this.calS.selectedDate.next(ev.selectedTime);
     if(this.showPicker === true){
       this.routerS.navigate(['calendar/zi']);
