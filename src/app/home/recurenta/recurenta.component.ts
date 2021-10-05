@@ -7,6 +7,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { dateDifference, getDateInYearMonthDay } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { ConflictProgramariComponent } from 'src/app/shared/components/modal/conflict-programari/conflict-programari.component';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
@@ -165,6 +166,7 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.presentConflictProgramariModal();
 
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -356,6 +358,15 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     if (typeof d !== 'undefined') {
       d.selected = !d.selected;
     }
+  }
+  async presentConflictProgramariModal() {
+    const modal = await this.modalController.create({
+      component: ConflictProgramariComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
   }
   ngOnDestroy() {
     unsubscriberHelper(this.recurendtaFormGroup$);
