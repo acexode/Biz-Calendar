@@ -70,6 +70,10 @@
 .cancelled-v1{
   background: #97A1A6;
 }
+.green-10{
+  background: #eaf6e8;
+  color: #eaf6e8;
+}
 .cancelled-v2{
   border: 2px solid #97A1A6;
   border-left: 4px solid #97A1A6;
@@ -77,7 +81,7 @@
   background-color: #fff;
 }
 .cabinet-not-confirmed-v1  {
-  border-left: 4px solid #EAF6E8 !important;
+  border-left: 4px solid #d5eed1 !important;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
   background: repeating-linear-gradient(

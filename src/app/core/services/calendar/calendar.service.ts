@@ -122,6 +122,9 @@ export class CalendarService {
       case '1CN':
         return 'cabinet-not-confirmed-v1';
         break;
+      case '1CS':
+        return 'green-10';
+        break;
       case '2CN':
         return 'cabinet-not-confirmed-v2';
         break;
@@ -150,6 +153,7 @@ export class CalendarService {
     }
   }
   iconCode(code){
+    console.log(code);
     switch (code) {
       case 1:
         return 'partially-paid';
@@ -167,7 +171,7 @@ export class CalendarService {
         return 'nou';
         break;
       case 6:
-        return 'recurrenta';
+        return 'recurenta';
         break;
       case 7:
         return 'note';

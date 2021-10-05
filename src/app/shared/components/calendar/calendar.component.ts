@@ -154,11 +154,11 @@ export class CalendarComponent implements OnInit {
           },
           draggable: true,
           meta:{
-            cssClass: this.calS.colorCode(d.colorCode),
-            icon: this.calS.iconCode(d.icons)
+            cssClass: this.calS.colorCode(d.colorCode === '1CN' ? '1CS': d.colorCode),
+            icon: this.calS.iconCode(d?.icons[0])
           }
         }));
-        // console.log(this.events);
+        console.log(this.events);
         this.refresh.next();
 
       });
