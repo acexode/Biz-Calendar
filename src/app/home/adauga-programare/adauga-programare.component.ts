@@ -265,10 +265,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
     /* services */
-    this.getCNASServices();
+    /* this.getCNASServices();
     this.getCuplataServices();
     this.getLocations();
-    this.getCabinets();
+    this.getCabinets(); */
     /*  */
     this.process();
     this.pS.isDesktopWidth$.subscribe(

@@ -2,13 +2,15 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { timeStamp } from 'console';
 import { of, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { dateDifference, getDateInYearMonthDay } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
+import { ConflictProgramariComponent } from 'src/app/shared/components/modal/conflict-programari/conflict-programari.component';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
+import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-input-option';
+import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { inputStyleGuideConfigurations } from 'src/app/style-guide/input-config-data/input-config-data';
 import { RecurentaService } from './services/recurenta.service';
 
@@ -102,10 +104,59 @@ export class RecurentaComponent implements OnInit, OnDestroy {
     seTermina: [this.radioGroupOptions.pa],
     dupa: [0, [Validators.required]],
     pa: ['', [Validators.required]],
+    lunaRadio: ''
   });
   recurendtaFormGroup$: Subscription;
   dupaInputChanges$: Subscription;
   paInputChamges$: Subscription;
+  dateList = [
+    {
+      label: 'L',
+      selected: false,
+      value: 'L'
+    },
+    {
+      label: 'M',
+      selected: false,
+      value: 'M'
+    },
+    {
+      label: 'M',
+      selected: false,
+       value: 'm'
+    },
+    {
+      label: 'J',
+      selected: false,
+       value: 'J'
+    },
+    {
+      label: 'V',
+      selected: false,
+       value: 'V'
+    },
+    {
+      label: 'S',
+      selected: false,
+       value: 'S'
+    },
+    {
+      label: 'D',
+      selected: false,
+       value: 'D'
+    }
+  ];
+  lunaRadioConfig: IonRadiosConfig = {
+    mode: 'item',
+    inputLabel: {
+      text: 'Se repetă lunar',
+    },
+    itemClasses: 'mr-12'
+  };
+  lunaRadioOption: Array<IonRadioInputOption> = [
+    { label: 'în data de 8 a lunii', id: '15' },
+    { label: 'a doua zi de luni din lună', id: '20' },
+  ];
   constructor(
     private pS: PlatformService,
     private fb: FormBuilder,
@@ -115,7 +166,6 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
@@ -299,6 +349,21 @@ export class RecurentaComponent implements OnInit, OnDestroy {
   computeAndNavigate() {
     this.compute();
     this.backAction();
+  }
+  toggleRadio(item: any) {
+    const d = this.dateList.find(x => x.value === item.value);
+    if (typeof d !== 'undefined') {
+      d.selected = !d.selected;
+    }
+  }
+  async presentConflictProgramariModal() {
+    const modal = await this.modalController.create({
+      component: ConflictProgramariComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
   }
   ngOnDestroy() {
     unsubscriberHelper(this.recurendtaFormGroup$);
