@@ -30,7 +30,17 @@
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
 
-          <div [class]="'w-100 px-30 py-30 ' ">
+          <div
+            class="px-16 flex ion-justify-content-end mt-6 mb-8"
+            *ngIf="zileFormControlValue === seRepetaLaFiecareOption[1].label"
+            (click)="presentConflictProgramariModal()"
+            >
+            <ion-label class="s12pt8-h16 roboto-family-font text-weight-400 ls-0 primary-color-step-100">
+              simulare conflict
+            </ion-label>
+          </div>
+
+          <div [class]="'w-100 px-30 pb-30 ' + (!(zileFormControlValue === seRepetaLaFiecareOption[1].label) &&'pt-30') ">
 
             <div class="mb-16">
               <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Se repetă la fiecare</ion-label>

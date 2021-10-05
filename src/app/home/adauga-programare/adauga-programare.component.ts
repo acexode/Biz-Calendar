@@ -265,7 +265,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
     /* services */
-    this.presentModalRecurentaComponentModal();
     /* this.getCNASServices();
     this.getCuplataServices();
     this.getLocations();
