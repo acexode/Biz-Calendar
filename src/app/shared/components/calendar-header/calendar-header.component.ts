@@ -135,8 +135,10 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   toggleMenu(){
     this.menu.toggle();
   }
-  navigate(path){
+  navigate(path: string){
+    console.log(path.split('/')[2]);
     this.router.navigate([path]);
+    this.calS.selectedPath.next(path.split('/')[2]);
   }
   segmentChanged(id){
   }

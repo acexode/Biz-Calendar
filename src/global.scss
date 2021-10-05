@@ -33,10 +33,16 @@
   background-color: #eaf6e8;
   border-radius: 4px 0 0 4px;
 }
+.cabinet-confirmed-v1-weekmonth{
+  background-color: #2EA81B;
+}
 .cabinet-confirmed-v2 {
   border-left: 4px solid #1EA5C7;
   background-color: #E3F9FF;
   border-radius: 4px 0 0 4px;
+}
+.cabinet-confirmed-v2-weekmonth{
+  background: #1EA5C7;
 }
 .online-confirmed-v1 {
   width: 100%;
@@ -45,10 +51,17 @@
   border-radius: 4px 0 0 4px;
   z-index: 100;
 }
+.online-confirmed-v1-weekmonth {
+  background:#3093f8 ;
+
+}
 .online-confirmed-v2 {
   border-left: 4px solid #9B57E0;
   background-color: #F7EDFF;
   border-radius: 4px 0 0 4px;
+}
+.online-confirmed-v2-weekmonth {
+  background: #9B57E0;
 }
 
 .warning-v1 {
@@ -77,7 +90,7 @@
   background-color: #fff;
 }
 .cabinet-not-confirmed-v1  {
-  border-left: 4px solid #EAF6E8 !important;
+  border-left: 4px solid #d5eed1 !important;
   border-radius: 4px 0 0 4px;
   background-color: none !important;
   background: repeating-linear-gradient(
@@ -87,6 +100,10 @@
     #EAF6E8 10px,
     #EAF6E8 calc(2 * 10px)
   ) !important;
+}
+.cabinet-not-confirmed-v1-weekmonth  {
+  background:  #d5eed1;
+ 
 }
 .cabinet-not-confirmed-v2  {
   border-left: 4px solid #C7F3FF !important;
@@ -99,6 +116,9 @@
     #E3F9FF 10px,
     #E3F9FF calc(2 * 10px)
   ) !important;
+}
+.cabinet-not-confirmed-v2-weekmonth  {
+  background:  #C7F3FF;
 }
 .online-not-confirmed-v2  {
   border-left: 4px solid #EDDBFF !important;
@@ -120,9 +140,13 @@
     132deg,
     transparent,
     transparent 10px,
-    #D6E9FE 10px,
-    #D6E9FE calc(2 * 10px)
+    #EAF4FE 10px,
+    #EAF4FE calc(2 * 10px)
   );
+}
+.online-not-confirmed-v1-weekMonth {
+  background:  #D6E9FE;
+ 
 }
 .online-not-confirmed-v2 {
   border-left: 4px solid #C7F3FF;
@@ -134,6 +158,9 @@
     #E3F9FF 10px,
     #E3F9FF calc(2 * 10px)
   );
+}
+.online-not-confirmed-v2-weekMonth {
+  background:  #C7F3FF;
 }
 .holidays{
   background: repeating-linear-gradient(
@@ -243,3 +270,4 @@
 .weekEvent-title{
   color: #000;
 }
+
