@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { InfoPacientModalComponent } from 'src/app/shared/components/modal/info-pacient-modal/info-pacient-modal.component';
 import { SelectieServiciiModalComponent } from 'src/app/shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
@@ -265,12 +265,17 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getLocations$: Subscription;
   getTipServices$: Subscription;
   adaugaProgramareTipServicii$: Subscription;
-  tipServiciiParameter = {
+  tipServiciiParameterInitialData: Parameter = {
     uid: '12bdc0ba-24c0-4fbc-992f-ceb9c0230d31',
     name: 'Foloseste modulul mixt de CNAS CLN si clinica privata?',
     code: 'useMixtCLN',
-    value: ''
+    value: '',
   };
+  tipServiciiParameter$: BehaviorSubject<Parameter> = new BehaviorSubject<Parameter>(
+    {
+   ...this.tipServiciiParameterInitialData
+    }
+  );
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -281,31 +286,38 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private toastService: ToastService,
     private authS: AuthService
   ) { }
-  onInitializeLoadData() {
+  onInitializeLoadData(): void {
+
+    this.locatieFormControlProcess();
+  }
+  getTipsOptionTypeFromParameter(): void {
     this.authS.getParameterState()
       .subscribe(
         (v: ParameterState) => {
           if (v.parameters.length > 0) {
             const getTipsParameter = v.parameters.filter(
-              (p: Parameter) => p.code === this.tipServiciiParameter.code
+              (p: Parameter) => p.code === this.tipServiciiParameter$.value.code
             );
             if (getTipsParameter.length > 0) {
-              this.tipServiciiParameter.value = getTipsParameter[0].value;
+              this.tipServiciiParameter$.next({
+                ...this.tipServiciiParameterInitialData,
+                value: getTipsParameter[0].value
+              });
             }
           }
-          console.log(this.tipServiciiParameter);
         }
       );
-    this.locatieFormControlProcess();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
     /* services */
     // this.getCuplataServices();
+    /* this.getCNASServices();
+    this.getCuplataServices();
     this.getLocations();
-    this.getCabinets();
+    this.getCabinets(); */
     /*  */
     this.onInitializeLoadData();
 
@@ -610,6 +622,15 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
   get tipServiciiFormGroup() {
     return this.adaugaProgramareFormGroup.get('tipServicii') as FormControl;
+  }
+  get availbleTipServiciiOptions(): Array<IonRadioInputOption>{
+    if(Number(this.tipServiciiParameter$.value.value) === 1) {
+      return this.tipServiciiOption;
+    } else {
+      return [
+        this.tipServiciiOption[0]
+      ];
+    }
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
