@@ -1,12 +1,18 @@
-<ion-item [formGroup]="formGroup" lines="full" class="form-group w-100 p-0" [ngClass]="{
+<ion-item [formGroup]="formGroup" lines="full" class="form-group w-100 p-0 item-label-stacked" [ngClass]="{
     'hasError': config?.hasError || false,
     'item-has-focus isFocused': config?.isFocused || false
   }">
- <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
+ <!-- <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" position="stacked" [ngClass]="
       config?.disabled || inputReadonly || formGroup?.disabled
         ? 'input-label'
         : 'input-label-2'
-    " [color]="config?.textAreaLabel?.color" *ngIf="config?.textAreaLabel?.text">{{ config?.textAreaLabel?.text }}</ion-label>
+    " [color]="config?.textAreaLabel?.color" *ngIf="config?.textAreaLabel?.text">{{ config?.textAreaLabel?.text }}</ion-label> -->
+    <label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8" [ngClass]="
+          config?.disabled || inputReadonly || formGroup?.disabled
+            ? 'input-label'
+            : 'input-label-2'
+        " *ngIf="config?.textAreaLabel?.text">{{ config?.textAreaLabel?.text }}
+    </label>
    <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative biz-custom-form-group-textarea"
     [ngClass]="{
                   ' isFocused':

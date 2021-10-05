@@ -112,3 +112,13 @@
   --ion-color-shade: var(--ion-color-base);
   padding: 0 !important;
 }
+
+.ion-color-biz-chip-secondary-c-no-outline {
+  --ion-color-base: #1EA5C7;
+  background: #FFFFFF;
+  --background: #FFFFFF;
+  --color: var(--ion-color-base);
+  --ion-color-base-rgb: rgb(30, 165, 199);
+  --ion-color-shade: var(--ion-color-base);
+  padding: 0 !important;
+}
