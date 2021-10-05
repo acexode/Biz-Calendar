@@ -78,7 +78,7 @@
   class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({   event: weekEvent.event })"
  >
  <ion-col [ngClass]="weekEvent.event.meta?.cssClass" size="12">
-  <ion-icon  [name]="weekEvent.event.meta?.icon"></ion-icon>
+  <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
   <ion-text class="weekEvent-title pl-3 text-dark">
     {{weekEvent.event.title}}
   </ion-text>
