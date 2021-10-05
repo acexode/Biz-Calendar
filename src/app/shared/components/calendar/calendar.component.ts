@@ -258,7 +258,8 @@ export class CalendarComponent implements OnInit {
                     segment.cssClass = '';
                   }else  if(allPrivate.includes(segment.date.getHours())){
                     segment.cssClass = 'online-not-confirmed-v2';
-                  }else if(allCnas.includes(segment.date.getHours())){
+                  }else{
+                    // if(allCnas.includes(segment.date.getHours()))
                     segment.cssClass = 'cabinet-not-confirmed-v1';
                   }
 
