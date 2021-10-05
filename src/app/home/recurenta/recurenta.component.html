@@ -30,7 +30,17 @@
 
         <div class="w-100 bottom-1px-solid-grey-default-color">
 
-          <div class="w-100 p-30">
+          <div
+            class="px-16 flex ion-justify-content-end mt-6 mb-8"
+            *ngIf="zileFormControlValue === seRepetaLaFiecareOption[1].label"
+            (click)="presentConflictProgramariModal()"
+            >
+            <ion-label class="s12pt8-h16 roboto-family-font text-weight-400 ls-0 primary-color-step-100">
+              simulare conflict
+            </ion-label>
+          </div>
+
+          <div [class]="'w-100 px-30 pb-30 ' + (!(zileFormControlValue === seRepetaLaFiecareOption[1].label) &&'pt-30') ">
 
             <div class="mb-16">
               <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Se repetă la fiecare</ion-label>
@@ -69,6 +79,37 @@
             </div>
 
           </div>
+
+          <div class="pl-30 pb-30" *ngIf="timeChooseFormControl.value === seRepetaLaFiecareOption[1].label">
+            <div class="mb-8">
+              <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0">Se repetă</ion-label>
+            </div>
+            <div>
+              <ng-container *ngFor="let item of dateList; first as isFirst; last as isLast">
+                <ion-chip [class]="'mr-8 chip-radio'" [color]="
+                                  !item?.selected ? 'biz-radio-chip-default' : 'biz-radio-chip-active'
+                                " [ngClass]="{
+                                  'ml-0': isFirst,
+                                  'mr-0': isLast
+                                }" [outline]="true" (click)="toggleRadio(item)">
+                  <ion-label [color]="
+                                   !item?.selected ? 'default' : 'selected'
+                                  " class="text-weight-medium">{{ item?.label }}</ion-label>
+                </ion-chip>
+              </ng-container>
+
+            </div>
+          </div>
+
+
+          <div class="px-30 pb-30" *ngIf="timeChooseFormControl.value === seRepetaLaFiecareOption[2].label">
+            <div>
+              <app-radios [config]="lunaRadioConfig" [options]="lunaRadioOption" formControlName="lunaRadio" class="w-100">
+              </app-radios>
+
+            </div>
+          </div>
+
 
         </div>
 
