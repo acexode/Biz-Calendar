@@ -1,12 +1,19 @@
 <div class="w-100 p-0 flex flex-column biz-form-group">
-  <ion-item class="w-100 p-0" [formGroup]="formGroup" [lines]="config?.removeInputItemBaseLine ? 'none': 'full'" [ngClass]="{
+  <ion-item class="form-group w-100 p-0 item-label-stacked" [formGroup]="formGroup" [lines]="config?.removeInputItemBaseLine ? 'none': 'full'" [ngClass]="{
       'item-mh-40': !config?.inputLabel?.text,
       'disabled-border': config?.disabled || inputReadonly,
       'bg-white': config?.bgwhite,
       'hasError': config?.inputHasError || false,
       'item-has-focus': config?.isInputFocused || false
     }">
-      <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium ls-0 mb-8 black-color" position="stacked" [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label>
+      <!-- <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color" position="stacked" [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label> -->
+      <label
+        class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color label-stacked"
+        [ngClass]="
+          config?.disabled || inputReadonly || formGroup?.disabled
+            ? 'input-label'
+            : 'input-label-2'"
+         *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</label>
       <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
       [ngClass]="{
                     ' isFocused':

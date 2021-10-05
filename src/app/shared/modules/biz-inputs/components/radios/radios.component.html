@@ -2,14 +2,16 @@
   class="form-group w-100 bg-inherit item-label-stacked"
   [formGroup]="formGroup"
 >
-  <ion-label
+  <!-- <ion-label
     class="s12pt8-h16 roboto-family-font text-weight-medium ls-0 mb-8"
     position="stacked"
     [ngClass]="config?.inputLabel?.classes"
     [color]="config?.inputLabel?.color"
     *ngIf="config?.inputLabel?.text"
     >{{ config?.inputLabel?.text }}</ion-label
-  >
+  > -->
+  <label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color label-stacked"
+    *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</label>
   <ion-radio-group
     formControlName="radio"
     class="w-100"
@@ -120,5 +122,5 @@
 </ng-template>
 
 <ng-template #rRef let-item="item" let-last="last" let-first="first">
-  
+
 </ng-template>
