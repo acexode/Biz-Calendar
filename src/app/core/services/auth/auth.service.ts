@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { User } from '../../models';
 import { Parameter, ParameterState } from '../../models/parameter.model';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,18 +24,26 @@ export class AuthService {
     init: false,
     parameters: null
   });
-  constructor(private reqS: RequestService,private router: Router, private customS: CustomStorageService, private routerS: Router,) {
+  constructor(
+    private reqS: RequestService,
+    private router: Router,
+    private customS: CustomStorageService,
+    private routerS: Router,
+    private toastS: ToastService
+  ) {
     // this.user = this.userSubject.asObservable();
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
-    this.parameters$.next(
-      {
-        parameters: [
-          ...JSON.parse(localStorage.getItem('parameters')),
-        ],
-        ...{ init: true }
-      }
-    );
+    const parameters = JSON.parse(localStorage.getItem('parameters'));
+    if(parameters){
+      this.parameters$.next({
+        init: true,
+        parameters,
+      });
+    } else {
+      this.toastS.presentToastWithDurationDismiss('Parameter not found. Please signin again');
+      this.logout();
+    }
 
   }
   public get userValue(): User {
