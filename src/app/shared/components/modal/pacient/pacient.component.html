@@ -38,24 +38,26 @@
     <div *ngIf="segment.one === currentSegement">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="list" class="">
+          <div *ngIf="personsList$ | async">
             <ion-list>
 
-              <ion-item *ngFor="let item of list; let i=index" (click)="submit(item)">
+              <ion-item *ngFor="let item of personsList$ | async as items" (click)="submit(item)">
 
                 <div class="flex flex-column">
                   <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
-                    {{item.first}}
+                    {{item?.firstName}} {{item?.lastName}}
                   </p>
                   <p class="m-0 flex flex-row ion-align-items-center">
                     <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-                      {{item.second}}
+                      {{item?.genderID === 0 ? 'M' : 'F'}}
                     </ion-text>
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
+                    <ion-text
+                    class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4"
+                    *ngIf="item?.phone">
                       /
                     </ion-text>
                     <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-                      {{item.third}}
+                      {{item?.phone}}
                     </ion-text>
                   </p>
                 </div>
