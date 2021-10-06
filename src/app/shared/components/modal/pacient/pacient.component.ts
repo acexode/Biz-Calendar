@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { persons } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { Person } from 'src/app/core/models/person.model';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { IonInputConfig } from 'src/app/shared/models/components/ion-input-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
@@ -194,6 +195,7 @@ export class PacientComponent implements OnInit, OnDestroy {
   });
   currentSegement: any = this.segment.one;
   getPersons$: Subscription;
+  personsList$: BehaviorSubject<Array<Person>> = new BehaviorSubject<Array<Person>>([]);
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -278,12 +280,15 @@ export class PacientComponent implements OnInit, OnDestroy {
     }
   }
   getPersons() {
-    this.getPersons$ = this.reqS.post(persons.getPersons, {
+    this.getPersons$ = this.reqS.post<any>(persons.getPersons, {
       searchString: '',
     })
       .subscribe(
         (d: any) => {
           console.log(d);
+          this.personsList$.next(
+            [...d.persons]
+          );
         },
         _err => console.log(_err)
 
