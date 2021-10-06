@@ -64,10 +64,10 @@
           </ion-col>
       </ion-row>
   </ion-item>
-  <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="config?.inputAssistiveText?.text">
+  <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="config?.inputAssistiveText?.text && !config?.hidAssistiveText">
     <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right">{{config?.inputAssistiveText?.text}}</ion-text>
   </div>
-  <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="getErrorList()">
+  <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="getErrorList() && !config?.hidAssistiveText">
     <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right" *ngFor="let error of getErrorList()">{{error}}
     </ion-text>
   </div>
