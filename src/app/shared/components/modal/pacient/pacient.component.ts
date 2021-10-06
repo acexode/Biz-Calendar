@@ -193,7 +193,7 @@ export class PacientComponent implements OnInit, OnDestroy {
     medicOptionTip: ['', [Validators.required]],
     optionValue: ['', [Validators.required]],
   });
-  currentSegement: any = this.segment.one;
+  currentSegement: any = this.segment.two;
   getPersons$: Subscription;
   personsList$: BehaviorSubject<Array<Person>> = new BehaviorSubject<Array<Person>>([]);
   constructor(
@@ -226,7 +226,10 @@ export class PacientComponent implements OnInit, OnDestroy {
      }
   }
   ngOnInit(): void {
-    this.getPersons();
+
+    this.presentGrupNouModal();
+    // load GetPersons
+    // this.getPersons();
     // load check list to list
     this.dataSwitch();
     //
@@ -243,7 +246,7 @@ export class PacientComponent implements OnInit, OnDestroy {
       ));
   }
   dataSwitch(data: any = this.currentSegement) {
-    switch (this.currentSegement) {
+    switch (data) {
       case this.segment.one:
         this.list = this.pacientData;
         break;
@@ -282,6 +285,7 @@ export class PacientComponent implements OnInit, OnDestroy {
   getPersons() {
     this.getPersons$ = this.reqS.post<any>(persons.getPersons, {
       searchString: '',
+      // personUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
     })
       .subscribe(
         (d: any) => {

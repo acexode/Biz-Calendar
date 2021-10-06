@@ -4,7 +4,7 @@ export interface Person {
   cityID: number | string;
   email: string;
   firstName: string;
-  genderID: 0 | 1 | 2;
+  genderID: 0 | 1;
   isActive: boolean;
   lastName: string;
   mobileUpdateDate: null | any;
@@ -12,4 +12,5 @@ export interface Person {
   pid: string;
   uid: string;
   wasUpdateByMobile: null | any;
+  gender: 'M' | 'F';
 }

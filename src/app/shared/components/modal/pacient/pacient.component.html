@@ -24,7 +24,7 @@
 
         </ion-toolbar>
       </ion-header>
-      <ion-segment [value]="segment.one" (ionChange)="segmentChanged($event)" color="biz-primary" mode="md" class="position-sticky">
+      <ion-segment [value]="currentSegement" (ionChange)="segmentChanged($event)" color="biz-primary" mode="md" class="position-sticky">
         <ion-segment-button [value]="segment.one">
           <ion-label>{{segment.one}}</ion-label>
         </ion-segment-button>
@@ -35,7 +35,7 @@
     </div>
 
 
-    <div *ngIf="segment.one === currentSegement">
+    <div *ngIf="currentSegement === segment.one">
       <div class="modal-div-body modal-view mt-150">
         <div>
           <div *ngIf="personsList$ | async">
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div *ngIf="segment.two === currentSegement">
+    <div *ngIf="currentSegement === segment.two">
       <div class="modal-div-body modal-view mt-150">
         <div>
           <div *ngIf="grupuris" class="">

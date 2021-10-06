@@ -41,3 +41,8 @@ export const tipServicii = {
   getMedicalServices: baseEndpoints.bizCalendarService + '/GetMedicalServices',
   getClinicCNASMedicalServices: baseEndpoints.bizCalendarService + '/GetClinicCNASMedicalServices',
 };
+
+export const group = {
+  createGroup: baseEndpoints.bizCalendarService + '/CreateGroup',
+  updateGroup: baseEndpoints.bizCalendarService + '/UpdateGroup',
+};

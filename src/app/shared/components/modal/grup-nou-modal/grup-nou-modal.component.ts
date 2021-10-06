@@ -1,7 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { group, persons } from 'src/app/core/configs/endpoints';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { CreateGroup } from 'src/app/core/models/createGroup.model';
+import { Person } from 'src/app/core/models/person.model';
+import { RequestService } from 'src/app/core/services/request/request.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
+import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
 import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
 import { NewPacientModalComponent } from '../new-pacient-modal/new-pacient-modal.component';
 import { PacientViewModalComponent } from '../pacient-view-modal/pacient-view-modal.component';
@@ -12,7 +19,7 @@ import { SelectieServiciiModalComponent } from '../selectie-servicii-modal/selec
   templateUrl: './grup-nou-modal.component.html',
   styleUrls: ['./grup-nou-modal.component.scss'],
 })
-export class GrupNouModalComponent implements OnInit {
+export class GrupNouModalComponent implements OnInit, OnDestroy {
   checkList: DemoCheckList[] = [
     {
       first: 'Adam Abitei',
@@ -108,9 +115,25 @@ export class GrupNouModalComponent implements OnInit {
   componentFormGroup: FormGroup = this.fb.group({
     numeGrup: ['', [Validators.required]],
   });
-  constructor(private fb: FormBuilder, private modalController: ModalController) { }
+  createGroup$: Subscription;
+  getPersons$: Subscription;
+  personsList$: BehaviorSubject<Array<Person>> = new BehaviorSubject<Array<Person>>([]);
+  personSelectServiciiOptionConfig: BizSelectieServiciiConfig = {
+      firstKey: 'firstName',
+      secondKey: 'gender',
+      thirdKey: 'phone',
+      idKey: 'uid'
 
-  ngOnInit() {}
+    };
+  constructor(
+    private fb: FormBuilder,
+    private modalController: ModalController,
+     private reqS: RequestService,
+  ) { }
+
+  ngOnInit() {
+    this.getPersons();
+  }
   add() {
     if (this.formGroupValidity) {
       this.closeModal({
@@ -135,7 +158,13 @@ export class GrupNouModalComponent implements OnInit {
       component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        checkList: this.checkList,
+        checkList: this.personsList$.value ? this.personsList$.value.map(
+          (v: Person) => ({
+              ...v,
+              gender: v.genderID === 0 ? 'M' : 'F',
+            })
+        ) : [],
+        config: this.personSelectServiciiOptionConfig
       },
     });
     await modal.present();
@@ -194,6 +223,40 @@ export class GrupNouModalComponent implements OnInit {
         this.checkList[indexOfData].checked = false;
       }
     }
+  }
+  createGroup() {
+    const payload: CreateGroup = {
+      groupName: '',
+    };
+    this.createGroup$ = this.reqS.post<any>(group.createGroup, payload)
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+        },
+        _err => console.log(_err)
+
+      );
+  }
+  getPersons() {
+    console.log('get persons');
+    this.getPersons$ = this.reqS.post<any>(persons.getPersons, {
+      searchString: '',
+      // personUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+    })
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+          this.personsList$.next(
+            [...d.persons]
+          );
+        },
+        _err => console.log(_err)
+
+      );
+  }
+  ngOnDestroy(): void {
+    unsubscriberHelper(this.createGroup$);
+    unsubscriberHelper(this.getPersons$);
   }
 
 }
