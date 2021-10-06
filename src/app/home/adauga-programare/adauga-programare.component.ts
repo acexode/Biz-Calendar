@@ -32,9 +32,9 @@ import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model'
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
 import { Cuplata } from 'src/app/core/models/cuplata.service.model';
-import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
