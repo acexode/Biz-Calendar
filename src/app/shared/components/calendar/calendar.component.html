@@ -25,9 +25,9 @@
       [headerTemplate]="customHeaderTemplate"
       [viewDate]="viewDate"
       [events]="events"
-
+      [hourSegmentTemplate]="weekView"
       [dayStartHour]="startEndTime.appStartHour"
-      [dayEndHour]="startEndTime.appEndHour"
+      [dayEndHour]="22"
       [eventTemplate]="eventTemplate"
       (beforeViewRender)="beforeWeekViewRender($event)"
       [refresh]="refresh"
@@ -53,6 +53,11 @@
 
     </ion-col>
   </ion-row>
+  <ng-template #weekView let-segment="segment" let-locale="locale" let-isTimeLabel="isTimeLabel">
+    <div *ngIf="isTimeLabel">
+      {{ segment.date | calendarDate:'dayViewHour':locale }}
+    </div>
+   </ng-template>
   <ng-template #hourSegmentTemplate let-hour="hour" let-segment="segment">
     <ion-row class=" b-bottom pl-0 h-100">
       <ion-col [size]=" isTablet ? 1: 2">
