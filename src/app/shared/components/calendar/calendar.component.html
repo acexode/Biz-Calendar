@@ -1,13 +1,13 @@
 
-<ion-grid class="calendar-m px-0" *ngIf="display === 'lista'" >
+<ion-grid  class="calendar-m px-0 vh-100" *ngIf="display === 'lista'" >
   <app-calendar-list [eventList]="calendarList" ></app-calendar-list>
 </ion-grid>
 <ion-grid class="calendar-m px-0" *ngIf="display === 'comparativ'" >
   <app-comparativ></app-comparativ>
 </ion-grid>
-<ion-grid *ngIf="display !== 'lista' && display !== 'comparativ'" class="calendar-m px-0">
-  <ion-row>
-    <ion-col class="w-100" [ngSwitch]="view" size="12">
+<ion-grid *ngIf="display !== 'lista' && display !== 'comparativ'" class="calendar-m px-0 mb-64">
+  <ion-row class="mb-64 ">
+    <ion-col class="w-100 mb-64" [ngSwitch]="view" size="12">
      <mwl-calendar-month-view
      *ngSwitchCase="CalendarView.Month"
       [viewDate]="viewDate"
@@ -26,7 +26,7 @@
       [viewDate]="viewDate"
       [events]="events"
       [dayStartHour]="startEndTime.appStartHour"
-      [dayEndHour]="22"
+      [dayEndHour]="startEndTime.appEndHour"
       [eventTemplate]="eventTemplate"
       (beforeViewRender)="beforeWeekViewRender($event)"
       [refresh]="refresh"
