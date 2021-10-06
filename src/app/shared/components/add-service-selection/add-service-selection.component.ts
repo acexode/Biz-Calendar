@@ -1,112 +1,109 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
+import { CNAS } from 'src/app/core/models/cnas.service.model';
+import { Cuplata } from 'src/app/core/models/cuplata.service.model';
 import { SelectieServiciiModalComponent } from '../modal/selectie-servicii-modal/selectie-servicii-modal.component';
-
+import { BizSelectieServiciiConfig } from '../../models/components/biz-selectie-servicii.config';
+import { get } from 'lodash';
 @Component({
   selector: 'app-add-service-selection',
   templateUrl: './add-service-selection.component.html',
   styleUrls: ['./add-service-selection.component.scss'],
 })
 export class AddServiceSelectionComponent implements OnInit {
-  checkList: DemoCheckList[] = [
+  @Input() serviceType: string;
+  @Input() set tipServicesData(d: Cuplata[] | CNAS[]) {
+    this.servicesData = d ? d : [];
+  };
+
+  @Input()
+  set config(c: any) {
+    this.vConfig = c;
+  }
+  get config() {
+    return this.vConfig;
+  }
+
+  toUseConfig = {
+    idKey: 'locationUID',
+    labelKey: 'locationName',
+  };
+  tipServiciiOptionConfig: Array<BizSelectieServiciiConfig> = [
     {
-      first: 'Consultație peste vârsta de 4 ani',
-      second: 'Servicii paraclinice',
-      third: '10,80 pt.',
-      fourth: '1x Consult control pneumologie',
-      fifth: '80 lei',
-      sixth: 'Numerar/card în clinică',
-      value: 'Consultație',
-      checked: false
+      firstKey: 'serviceName',
+      secondKey: 'price',
+      currencyKey: 'currency',
+      idKey: 'serviceUID'
+
     },
     {
-      first: 'Ecografie generală (abdomen + pelvis)',
-      second: 'Servicii paraclinice',
-      third: '23,45 pt.',
-      fourth: '1x Endoscopie digestivă superioară - interpretare și stabilire tratament (urgență)',
-      fifth: '350 lei',
-      sixth: 'Printr-o companie de asigurări',
-      value: 'Ecografie generală',
-      checked: false
-    },
-    {
-      first: 'Ecografie abdominală',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      fourth: '1x Consult control pneumologie',
-      fifth: '80 lei',
-      sixth: 'Numerar/card în clinică',
-      value: 'Ecografie abdominală',
-      checked: false
-    },
-    {
-      first: 'EKG standard',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      fourth: '1x Consult control pneumologie',
-      fifth: '80 lei',
-      sixth: 'Numerar/card în clinică',
-      value: 'EKG',
-      checked: false
-    },
-    {
-      first: 'Consult peste 4 ani',
-      second: 'Consultație',
-      third: '5 pt.',
-      fourth: '1x Consult control pneumologie',
-      fifth: '80 lei',
-      sixth: 'Numerar/card în clinică',
-      value: 'Consult',
-      checked: false
-    },
-    {
-      first: 'Spirometrie',
-      second: 'Servicii paraclinice',
-      third: '23 pt.',
-      fourth: '2x Spirometrie',
-      fifth: '2x 120 lei',
-      sixth: 'Pachet servicii',
-      value: 'Spirometrie',
-      checked: false
-    },
-    {
-      first: 'Pulsoximetrie',
-      second: 'Servicii paraclinice',
-      third: '10 pt.',
-      fourth: '1x Consult control pneumologie',
-      fifth: '80 lei',
-      sixth: 'Numerar/card în clinică',
-      value: 'Pulsoximetrie',
-      checked: false
-    },
+      firstKey: 'cnasMedicalServiceName',
+      secondKey: 'medicalServiceCategory',
+      thirdKey: '',
+      idKey: 'cnasMedicalServiceUID'
+
+    }
   ];
 
-  constructor(public modalController: ModalController) { }
+  selectedValue: any[] = [];
+  private servicesData: Array<any> = [];
+  private vConfig: any;
+  constructor(
+    public modalController: ModalController,
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {}
   async presentModal() {
     const modal = await this.modalController.create({
       component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        checkList: this.checkList,
+        checkList: this.servicesData,
+        config: this.getTipServiciiConfigType(this.serviceType),
+        selectedValue: this.selectedValue
       },
     });
     await modal.present();
-    /* const { data } = await modal.onWillDismiss();
-    console.log(data, this.checkList); */
+    const { data } = await modal.onWillDismiss();
+    const { checkedValue } = data;
+    this.selectedValue = checkedValue;
+    console.log(this.selectedValue);
+    console.log(this.servicesData);
+    console.log('sdfdss',this.selectedServices);
   }
-  get filtercustomComponentData() {
-    return this.checkList.filter((v: DemoCheckList) => v.checked === true);
+  get selectedServices() {
+    return this.servicesData.filter(
+      (v: any) => this.selectedValue
+          .includes(
+            v[`${this.getTipServiciiConfigType(this.serviceType).idKey}`]
+          )
+    ).map((v) => ({
+        first: get(v, `${this.getTipServiciiConfigType(this.serviceType).firstKey}`, ''),
+        // eslint-disable-next-line max-len
+        second: `${get(v, `${this.getTipServiciiConfigType(this.serviceType).secondKey}`, '')} ${get(v, `${this.getTipServiciiConfigType(this.serviceType)?.currencyKey}`, '')}`,
+        third: get(v, `${this.getTipServiciiConfigType(this.serviceType).thirdKey}`, null),
+        id: get(v, `${this.getTipServiciiConfigType(this.serviceType).idKey}`, ''),
+    })
+    );
   }
   unCheckItem(data: string): void {
-    if (typeof data !== null && data !== '') {
-      const indexOfData = this.checkList.findIndex(
-        (v: DemoCheckList) => v.value === data);
+    console.log(data);
+   if (typeof data !== null && data !== '') {
+      const indexOfData = this.selectedValue.findIndex(
+        (v: string) => v === data);
       if (indexOfData > -1) {
-        this.checkList[indexOfData].checked = false;
+        this.selectedValue.splice(indexOfData, 1);
       }
+    }
+  }
+  getTipServiciiConfigType(d: string = 'Cuplată') {
+    switch (d) {
+      case  'Cuplată':
+        return this.tipServiciiOptionConfig[0];
+      case 'C.N.A.S.':
+        return this.tipServiciiOptionConfig[1];
+      default:
+        return this.tipServiciiOptionConfig[1];
     }
   }
 

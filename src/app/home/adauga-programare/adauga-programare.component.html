@@ -123,7 +123,7 @@
 
             <app-radios
                 [config]="tipServiciiConfig"
-                [options]="tipServiciiOption"
+                [options]="availbleTipServiciiOptions"
                 formControlName="tipServicii"
                 class="w-100"
               >
@@ -133,7 +133,11 @@
 
           <div class="w-100 px-32">
 
-            <app-add-service-selection></app-add-service-selection>
+            <app-add-service-selection
+              [tipServicesData]="tipServiciiData"
+              [serviceType]="tipServiciiFormGroup.value"
+            >
+            </app-add-service-selection>
 
           </div>
 
