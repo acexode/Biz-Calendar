@@ -3,7 +3,9 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { persons } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { RequestService } from 'src/app/core/services/request/request.service';
 import { IonInputConfig } from 'src/app/shared/models/components/ion-input-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
@@ -191,9 +193,11 @@ export class PacientComponent implements OnInit, OnDestroy {
     optionValue: ['', [Validators.required]],
   });
   currentSegement: any = this.segment.one;
+  getPersons$: Subscription;
   constructor(
     private fb: FormBuilder,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private reqS: RequestService,
   ) {
   }
   async presentPacientnew() {
@@ -220,6 +224,7 @@ export class PacientComponent implements OnInit, OnDestroy {
      }
   }
   ngOnInit(): void {
+    this.getPersons();
     // load check list to list
     this.dataSwitch();
     //
@@ -272,8 +277,21 @@ export class PacientComponent implements OnInit, OnDestroy {
       return d.filter((v: any) => (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1));
     }
   }
+  getPersons() {
+    this.getPersons$ = this.reqS.post(persons.getPersons, {
+      searchString: '',
+    })
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+        },
+        _err => console.log(_err)
+
+      );
+  }
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
+    unsubscriberHelper(this.getPersons$);
   }
 
 }
