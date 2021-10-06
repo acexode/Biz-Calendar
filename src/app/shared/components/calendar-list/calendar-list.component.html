@@ -20,7 +20,7 @@
                       </div>
                       <div  class="pt-4">
                         <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
-                        <ion-icon *ngFor="let icon of cal.icons" class="mr-5 event-icon" color="success" [name]="icon" ></ion-icon>   
+                        <ion-icon *ngFor="let icon of cal.icons" class="mr-5 event-icon"   [name]="icon" ></ion-icon>   
                       </div>  
                     </div>
                     <ion-text class="title">
@@ -74,7 +74,7 @@
                       <ion-col size="4"  class="pt-10">
                         
                         <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
-                        <ion-icon  *ngFor="let icon of cal.icons; let i = index" class="mr-5 event-icon" color="success" [name]="icon" ></ion-icon>          
+                        <ion-icon  *ngFor="let icon of cal.icons; let i = index" class="mr-5 event-icon"  [name]="icon" ></ion-icon>          
                       </ion-col>
                     </ion-row>
                     <ion-text class="title">

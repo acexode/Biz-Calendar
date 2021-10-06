@@ -133,10 +133,10 @@ export class CalendarService {
         return 'note-v2';
         break;
       case '1WM':
-        return 'warning-v1';
+        return view === 'list' ? 'warning-v1': 'warning-v1-weekMonth';
         break;
       case '2WM':
-        return 'warning-v2';
+        return view === 'list' ? 'warning-v2': 'warning-v2-weekMonth';
         break;
       case '1NUL':
         return 'cancelled-v1';
