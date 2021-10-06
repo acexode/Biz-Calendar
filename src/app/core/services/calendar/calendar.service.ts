@@ -22,8 +22,8 @@ export class CalendarService {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
+      console.log(e);
       if(e !== null){
-        // console.log(e);
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
 
       }
@@ -74,6 +74,7 @@ export class CalendarService {
           obj.StartDate = start;
           obj.EndDate = end;
         }
+        // console.log(obj);
         this.getAppointments(obj);
 
       }
@@ -81,7 +82,7 @@ export class CalendarService {
     });
   }
   async  getAppointments(data = null){
-    // csonsole.log(data);
+    // console.log(data);
     if(data !== null){
       const phy: any = await this.getUserPhysicians().toPromise();
       const obj: any = {

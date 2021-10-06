@@ -19,6 +19,7 @@ export class CustomDateFormatter extends CalendarDateFormatter {
   }
 
   public dayViewHour({ date, locale }: DateFormatterParams): string {
-    return formatDate(date, 'HH:mm', locale);
+    const minutes = new Date(date).getMinutes();
+    return minutes === 0 ?  formatDate(date, 'h a', locale) : '';
   }
 }
