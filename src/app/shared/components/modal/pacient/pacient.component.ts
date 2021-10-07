@@ -110,9 +110,9 @@ export class PacientComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.presentGrupNouModal();
     // get groups
-    this.getGroups();
+    // this.getGroups();
     // load GetPersons
-    this.getPersons();
+    // this.getPersons();
     // load check list to list
     this.updateData();
     //
