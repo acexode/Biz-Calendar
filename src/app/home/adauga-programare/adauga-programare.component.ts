@@ -287,7 +287,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
-
+    /* services */
+    this.getLocations();
+    this.getCabinets();
+    /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
   }
@@ -311,17 +314,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.presentPacient();
+    // this.presentPacient();
     // this.getLocations();
     // this.presentCabinent();
     // this.presentCabinetModalRadio();
-    /* services */
-    // this.getCuplataServices();
-    /* this.getCNASServices();
-    this.getCuplataServices();
-    this.getLocations();
-    this.getCabinets(); */
-    /*  */
     this.onInitializeLoadData();
 
     this.pS.isDesktopWidth$.subscribe(
