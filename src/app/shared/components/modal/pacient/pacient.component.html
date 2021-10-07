@@ -38,10 +38,10 @@
     <div *ngIf="currentSegement === segment.one">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="(personsList$ | async)?.length > 0; else loadingTemplate">
+          <div *ngIf="(this.list$ | async)?.length > 0; else loadingTemplate">
             <ion-list>
 
-              <ion-item *ngFor="let item of personsList$ | async as items" (click)="submit(item)">
+              <ion-item *ngFor="let item of this.list$ | async as items" (click)="submit(item)">
 
                 <div class="flex flex-column">
                   <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
@@ -86,7 +86,7 @@
           <div *ngIf="(groupList$ | async)?.length > 0; else loadingTemplate">
             <ion-list>
 
-              <ion-item *ngFor="let grupuri of groupList$ | async as items" (click)="submit(grupuri)">
+              <ion-item *ngFor="let grupuri of this.list$ | async as items" (click)="submit(grupuri)">
 
                 <div class="flex flex-column">
                   <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">

@@ -75,7 +75,7 @@ export class PacientComponent implements OnInit, OnDestroy {
   getPersons$: Subscription;
   personsList$: BehaviorSubject<Array<Person>> = new BehaviorSubject<Array<Person>>([]);
   groupList$: BehaviorSubject<Array<GroupList>> = new BehaviorSubject<Array<GroupList>>([]);
-  list$: BehaviorSubject<Array<Person> | Array<GroupList>> = new BehaviorSubject<Array<Person> | Array<GroupList>>([]);
+  list$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   getGroups$: Subscription;
   constructor(
     private fb: FormBuilder,
@@ -103,7 +103,7 @@ export class PacientComponent implements OnInit, OnDestroy {
     });
     await modal.present();
      const { data } = await modal.onWillDismiss();
-     if (data.data) {
+     if (data.dismis) {
       // this.grupuris.push(data.data);
      }
   }
@@ -121,7 +121,7 @@ export class PacientComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.search !== '') {
-            this.list = this.searching(data.search);
+           this.list$.next([...this.searching(data.search)]);
           } else {
             this.updateData();
           }
@@ -173,9 +173,19 @@ export class PacientComponent implements OnInit, OnDestroy {
     });
   }
   searching(st: string) {
-    if (st) {
-      const d = this.list;
-      return d.filter((v: any) => (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1));
+    console.log(st);
+    switch (this.currentSegement) {
+      case this.segment.one:
+        return this.list$.value
+          .filter((v: any) =>
+            (v.firstName.toLowerCase().indexOf(st.toLowerCase()) > -1) ||
+            (v.lastName.toLowerCase().indexOf(st.toLowerCase()) > -1)
+          );
+      case this.segment.two:
+        return this.list$.value
+          .filter((v: any) => (v.groupName.toLowerCase().indexOf(st.toLowerCase()) > -1));
+      default:
+        this.updateData();
     }
   }
   getPersons() {
