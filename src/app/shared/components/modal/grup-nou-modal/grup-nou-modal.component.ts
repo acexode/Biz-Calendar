@@ -177,6 +177,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     this.selectedValue = data?.checkedValue;
   }
   async presentPacientViewModal(item: any) {
+    console.log(item);
     const modal = await this.modalController.create({
       component: PacientViewModalComponent,
       cssClass: 'biz-modal-class',

@@ -70,13 +70,9 @@
 
             <div class="flex flex-row ion-justify-content-center ion-align-items-center">
               <ion-icon name="user-new"></ion-icon>
-              <ion-spinner name="dots" color="biz-primary" *ngIf="disableAddMemberButton; else addMemeber">
+              <ion-spinner name="dots" color="biz-primary" *ngIf="disableAddMemberButton">
               </ion-spinner>
             </div>
-
-            <ng-template #addMemeber>
-              <ion-icon name="user-new"></ion-icon>
-            </ng-template>
 
           </ion-chip>
         </div>

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Person } from 'src/app/core/models/person.model';
 
 @Component({
   selector: 'app-pacient-view-modal',
@@ -7,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./pacient-view-modal.component.scss'],
 })
 export class PacientViewModalComponent implements OnInit {
-  @Input() data!: any;
+  @Input() data!: Person;
 
   constructor( private modalController: ModalController) { }
   ngOnInit() { }
