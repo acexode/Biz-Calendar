@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController, ToastController } from '@ionic/angular';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -41,6 +41,7 @@ import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
   styleUrls: ['./adauga-programare.component.scss'],
 })
 export class AdaugaProgramareComponent implements OnInit, OnDestroy {
+  @ViewChild('locaion', {read: ElementRef, static: false }) location: ElementRef;
   pacientInputConfig = inputConfigHelper({
     label: 'Pacient',
     type: 'text',
@@ -266,9 +267,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getTipServices$: Subscription;
   adaugaProgramareTipServicii$: Subscription;
   tipServiciiParameterInitialData: Parameter = {
-    uid: '12bdc0ba-24c0-4fbc-992f-ceb9c0230d31',
-    name: 'Foloseste modulul mixt de CNAS CLN si clinica privata?',
-    code: 'useMixtCLN',
+    uid: '',
+    name: '',
+    code: 'clinicType',
     value: '',
   };
   tipServiciiParameter$: BehaviorSubject<Parameter> = new BehaviorSubject<Parameter>(
@@ -276,6 +277,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
    ...this.tipServiciiParameterInitialData
     }
   );
+  getTipServicesParameter$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -287,40 +289,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
-
+    this.getLocations(true); // get location
+    this.getCabinets(); // get cabinete
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
   }
-  getTipsOptionTypeFromParameter(): void {
-    this.authS.getParameterState()
-      .subscribe(
-        (v: ParameterState) => {
-          if (v.parameters.length > 0) {
-            const getTipsParameter = v.parameters.filter(
-              (p: Parameter) => p.code === this.tipServiciiParameter$.value.code
-            );
-            if (getTipsParameter.length > 0) {
-              this.tipServiciiParameter$.next({
-                ...this.tipServiciiParameterInitialData,
-                value: getTipsParameter[0].value
-              });
-            }
-          }
-        }
-      );
-  }
 
   ngOnInit(): void {
-    // this.presentCabinent();
-    // this.presentCabinetModalRadio();
-    /* services */
-    // this.getCuplataServices();
-    /* this.getCNASServices();
-    this.getCuplataServices();
-    this.getLocations();
-    this.getCabinets(); */
-    /*  */
+    // initialize load
     this.onInitializeLoadData();
+    /*  */
 
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
@@ -559,12 +537,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         )
       );
   }
-  getLocations() {
+  getLocations(calLocationModal: boolean = false) {
     this.getLocations$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
           console.log(d);
           this.locatieOption = d;
+          if (calLocationModal) {
+            this.location.nativeElement.focus();
+            // this.locatieFormControl.nativeElement.focus();
+          }
         },
         _err => this.toastService.presentToastWithDurationDismiss(
           'Unable to get available locations at this instance. Please check your network and try again. C02'
@@ -624,13 +606,42 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   get tipServiciiFormGroup() {
     return this.adaugaProgramareFormGroup.get('tipServicii') as FormControl;
   }
+  getTipsOptionTypeFromParameter(): void {
+    this.getTipServicesParameter$ = this.authS.getParameterState()
+      .subscribe(
+        (v: ParameterState) => {
+          if (v.parameters.length > 0) {
+            const getTipsParameter = v.parameters.filter(
+              (p: Parameter) => p.code === this.tipServiciiParameter$.value.code
+            );
+            if (getTipsParameter.length > 0) {
+              this.tipServiciiParameter$.next({
+                ...getTipsParameter[0],
+                value: getTipsParameter[0].value
+              });
+            }
+          }
+        }
+      );
+  }
   get availbleTipServiciiOptions(): Array<IonRadioInputOption>{
-    if(Number(this.tipServiciiParameter$.value.value) === 1) {
-      return this.tipServiciiOption;
-    } else {
-      return [
-        this.tipServiciiOption[0]
-      ];
+    const tipServicciParameterValue = Number(this.tipServiciiParameter$.value.value);
+    switch (tipServicciParameterValue) {
+      case 1:
+        return [
+          this.tipServiciiOption[1] // return C.N.A.S
+        ];
+      case 2:
+        return [
+          this.tipServiciiOption[0]
+        ]; // return Cuplata
+      case 3:
+        return this.tipServiciiOption; // return all
+
+      default:
+        return [
+          this.tipServiciiOption[1] // return C.N.A.S
+        ];
     }
   }
   ngOnDestroy() {
@@ -640,6 +651,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getLocations$);
     unsubscriberHelper(this.getTipServices$);
     unsubscriberHelper(this.adaugaProgramareTipServicii$);
+    unsubscriberHelper(this.getTipServicesParameter$);
   }
 
 }
