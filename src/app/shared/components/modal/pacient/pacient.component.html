@@ -38,7 +38,7 @@
     <div *ngIf="currentSegement === segment.one">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="personsList$ | async">
+          <div *ngIf="(personsList$ | async)?.length > 0; else loadingTemplate">
             <ion-list>
 
               <ion-item *ngFor="let item of personsList$ | async as items" (click)="submit(item)">
@@ -66,6 +66,8 @@
             </ion-list>
 
           </div>
+
+
         </div>
       </div>
       <div class="w-100 flex ion-justify-content-center ion-align-items-center mt-10 mb-24">
@@ -81,25 +83,25 @@
     <div *ngIf="currentSegement === segment.two">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="grupuris" class="">
+          <div *ngIf="(groupList$ | async)?.length > 0; else loadingTemplate">
             <ion-list>
 
-              <ion-item *ngFor="let grupuri of list; let i=index" (click)="submit(grupuri)">
+              <ion-item *ngFor="let grupuri of groupList$ | async as items" (click)="submit(grupuri)">
 
                 <div class="flex flex-column">
                   <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
-                    {{grupuri.first}} 
+                    {{grupuri.groupName}}
                   </p>
                   <p class="m-0 flex flex-row ion-align-items-center">
                     <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-                      {{grupuri.second}}
+                      4 membri
                     </ion-text>
                     <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
 
                     </ion-text>
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-                      {{grupuri.third}}
-                    </ion-text>
+                    <!-- <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                      {{grupuri.groupName}}
+                    </ion-text> -->
                   </p>
                 </div>
 
@@ -107,6 +109,7 @@
             </ion-list>
 
           </div>
+
         </div>
       </div>
       <div class="w-100 flex ion-justify-content-center ion-align-items-center mt-10 mb-24">
@@ -123,4 +126,10 @@
 
 
 </ion-content>
+
+<ng-template #loadingTemplate>
+  <div class="w-100 flex ion-justify-content-center ion-align-items-center">
+    <ion-spinner name="crescent" color="biz-primary"></ion-spinner>
+  </div>
+</ng-template>
 

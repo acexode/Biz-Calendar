@@ -43,6 +43,7 @@ export const tipServicii = {
 };
 
 export const group = {
+  getGroups: baseEndpoints.bizCalendarService + '/GetGroups',
   createGroup: baseEndpoints.bizCalendarService + '/CreateGroup',
   updateGroup: baseEndpoints.bizCalendarService + '/UpdateGroup',
   addMembersToGroup: baseEndpoints.bizCalendarService + '/AddMembersToGroup',

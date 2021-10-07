@@ -7,6 +7,7 @@ import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { CreateGroup } from 'src/app/core/models/createGroup.model';
 import { Person } from 'src/app/core/models/person.model';
 import { RequestService } from 'src/app/core/services/request/request.service';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
 import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
@@ -124,11 +125,13 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       secondKey: 'gender',
       thirdKey: 'phone',
       idKey: 'uid'
-    };
+  };
+  disableAddMemberButton = true;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
-     private reqS: RequestService,
+    private reqS: RequestService,
+     private toastService: ToastService,
   ) { }
 
   ngOnInit() {
@@ -235,7 +238,9 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
             console.log(d);
             this.addMemberToGroup(d.insertedUID);
           },
-          _err => console.log(_err)
+          _err => this.toastService.presentToastWithDurationDismiss(
+            'Unable to create group at this instance. Please check your network and try again. C0G'
+          )
 
         );
     }
@@ -252,7 +257,9 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
         (d: any) => {
           console.log(d);
         },
-        _err => console.log(_err)
+        _err => this.toastService.presentToastWithDurationDismiss(
+            'Unable to add memeber to group at this instance. Please check your network and try again. C09'
+          )
 
       );
 
@@ -266,11 +273,19 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       .subscribe(
         (d: any) => {
           console.log(d);
+          // enable button
+          this.disableAddMemberButton = false;
+          /*  */
           this.personsList$.next(
             [...d.persons]
           );
         },
-        _err => console.log(_err)
+        _err => {
+          this.disableAddMemberButton = true;
+          this.toastService.presentToastWithDurationDismiss(
+            'Unable to get list of persons at this instance. Please check your network and try again. C08'
+          );
+        }
 
       );
   }

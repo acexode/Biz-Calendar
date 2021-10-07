@@ -57,11 +57,27 @@
         </div>
 
         <div class="mt-32">
-          <ion-chip class="chip" outline="true" color="biz-chip-secondary" (click)="presentSelectModal()">
+          <ion-chip
+            class="chip"
+            outline="true"
+            color="biz-chip-secondary"
+            (click)="presentSelectModal()"
+            [disabled]="disableAddMemberButton"
+            >
             <ion-label>
               ADAUGĂ MEMBRI
             </ion-label>
-            <ion-icon name="user-new"></ion-icon>
+
+            <div class="flex flex-row ion-justify-content-center ion-align-items-center">
+              <ion-icon name="user-new"></ion-icon>
+              <ion-spinner name="dots" color="biz-primary" *ngIf="disableAddMemberButton; else addMemeber">
+              </ion-spinner>
+            </div>
+
+            <ng-template #addMemeber>
+              <ion-icon name="user-new"></ion-icon>
+            </ng-template>
+
           </ion-chip>
         </div>
 
