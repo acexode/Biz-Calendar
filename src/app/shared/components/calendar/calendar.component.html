@@ -1,13 +1,13 @@
 
-<ion-grid class="calendar-m px-0" *ngIf="display === 'lista'" >
+<ion-grid  class="calendar-m px-0 vh-100" *ngIf="display === 'lista'" >
   <app-calendar-list [eventList]="calendarList" ></app-calendar-list>
 </ion-grid>
 <ion-grid class="calendar-m px-0" *ngIf="display === 'comparativ'" >
   <app-comparativ></app-comparativ>
 </ion-grid>
-<ion-grid *ngIf="display !== 'lista' && display !== 'comparativ'" class="calendar-m px-0">
-  <ion-row>
-    <ion-col class="w-100" [ngSwitch]="view" size="12">
+<ion-grid *ngIf="display !== 'lista' && display !== 'comparativ'" class="calendar-m px-0 mb-64">
+  <ion-row class="mb-64 ">
+    <ion-col class="w-100 mb-64" [ngSwitch]="view" size="12">
      <mwl-calendar-month-view
      *ngSwitchCase="CalendarView.Month"
       [viewDate]="viewDate"
@@ -25,9 +25,8 @@
       [headerTemplate]="customHeaderTemplate"
       [viewDate]="viewDate"
       [events]="events"
-
       [dayStartHour]="startEndTime.appStartHour"
-      [dayEndHour]="startEndTime.appEndHour"
+      [dayEndHour]="startEndTime.appEndHour -1"
       [eventTemplate]="eventTemplate"
       (beforeViewRender)="beforeWeekViewRender($event)"
       [refresh]="refresh"
@@ -44,7 +43,7 @@
       [hourSegmentTemplate]="hourSegmentTemplate"
       [refresh]="refresh"
       [dayStartHour]="startEndTime.appStartHour"
-      [dayEndHour]="startEndTime.appEndHour"
+      [dayEndHour]="startEndTime.appEndHour -1"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
@@ -53,12 +52,13 @@
 
     </ion-col>
   </ion-row>
-  <ng-template #hourSegmentTemplate let-hour="hour" let-segment="segment">
+
+  <ng-template #hourSegmentTemplate let-hour="hour" let-locale="locale" let-segment="segment">
     <ion-row class=" b-bottom pl-0 h-100">
       <ion-col [size]=" isTablet ? 1: 2">
         <ion-label class="h-100 w-40 cal-time">
 
-          {{segment.date | hour}}</ion-label>
+          {{segment.date | calendarDate:'dayViewHour'}}</ion-label>
 
       </ion-col >
       <ion-col [ngClass]="setBg(segment.date)" class="b-left" [size]=" isTablet ? 11: 10">
@@ -83,9 +83,6 @@
   </ion-text>
  </ion-col>
 
-    <!-- <span>{{weekEvent | json}}</span> -->
-
-
 </ion-row>
 
 
@@ -103,26 +100,7 @@
     </ion-row>
 
   </ng-template>
-  <ng-template #weekHoursTplate  let-daysInWeek="daysInWeek" let-weekEvent="weekEvent" let-locale="locale" let-eventClicked="eventClicked" let-tooltipPlacement="tooltipPlacement" let-tooltipTemplate="tooltipTemplate" let-tooltipAppendToBody="tooltipAppendToBody" let-tooltipDisabled="tooltipDisabled">
-    <ion-row class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass" (mwlClick)="eventClicked.emit({ event: weekEvent.event })" >
-     <ion-col style="background-color: bisque;" [ngClass]="weekEvent.event.meta?.cssClass" size="12">
-      <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
-      <ion-text  class="weekEvent-title">
-        
-      </ion-text>
-     </ion-col>
 
-    </ion-row>
-
-  </ng-template>
-  <ng-template #weekHoursTemplate let-daysInWeek="daysInWeek" let-segment="segment" let-locale="locale" let-isTimeLabel="isTimeLabel">
-
-    <span class="cal-time text-center" *ngIf="isTimeLabel">
-     
-      {{ segment.date | calendarDate:'dayViewHour':locale }}
-    </span>
-    <h1>{{daysInWeek }}</h1>
-   </ng-template>
 
   <!-- Month Cell Template -->
   <ng-template class="pt-0" #customCellTemplate let-day="day" let-locale="locale">

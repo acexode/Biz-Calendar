@@ -1,6 +1,6 @@
 
 <app-calendar-header></app-calendar-header>
-<ion-content  [scrollEvents]="true" [fullscreen]="true">
+<ion-content  >
   
   <app-calendar [calendarList]="calendarList" [display]="page"></app-calendar>
   <!-- <app-calendar-month [calendarList]="calendarList" [display]="page"></app-calendar-month> -->
@@ -16,7 +16,7 @@
         </ion-button>
       </li>
       <li>
-      
+
         <ion-button fill="outline" size="large" color="biz-primary" class="bg-white" (click)="navigate('/adauga-nota')">
           <ion-text class="ion-color-biz-primary pr-12 upper">Notă </ion-text>
           <ion-icon class="icon-24" name="note" color="ion-color-biz-primary"></ion-icon>

@@ -1,5 +1,5 @@
 
-<ion-grid  *ngIf="!isTablet">
+<ion-grid   *ngIf="!isTablet">
   <ion-row  *ngFor="let ev of eventList" class="card-row">
     <ion-col class="flex flex-column pl-64 " size="12">
       <ion-text  class="ev-day current-day">{{ev.week}}, {{ev.events.length}} programari</ion-text>
@@ -102,4 +102,5 @@
   </ion-row> -->
 
 </ion-grid>
+<ion-grid class="mh-100"></ion-grid>
 
