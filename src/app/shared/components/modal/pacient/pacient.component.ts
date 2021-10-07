@@ -104,15 +104,13 @@ export class PacientComponent implements OnInit, OnDestroy {
     await modal.present();
      const { data } = await modal.onWillDismiss();
      if (data.dismis) {
-      // this.grupuris.push(data.data);
      }
   }
   ngOnInit(): void {
-    // this.presentGrupNouModal();
-    // get groups
-    this.getGroups();
     // load GetPersons
     this.getPersons();
+    // get groups
+    this.getGroups();
     // load check list to list
     this.updateData();
     //

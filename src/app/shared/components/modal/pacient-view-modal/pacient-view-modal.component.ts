@@ -19,7 +19,7 @@ export class PacientViewModalComponent implements OnInit {
   closeModal(closeStatus: boolean = false, action: string = '') {
       this.modalController.dismiss({
         dismissed: true,
-        data: closeStatus ? this.data : null,
+        personData: closeStatus ? this.data : null,
         action,
     });
   }

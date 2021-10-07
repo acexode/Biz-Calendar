@@ -24,6 +24,7 @@ export const appointmentEndpoints = {
 export const persons = {
   addPerson: baseEndpoints.bizCalendarService + '/AddNewPerson',
   getPersons: baseEndpoints.bizCalendarService + '/GetPersons',
+  updatePerson: baseEndpoints.bizCalendarService + '/UpdatePerson'
 };
 
 export const location = {

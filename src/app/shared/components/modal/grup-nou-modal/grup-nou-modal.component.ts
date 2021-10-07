@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { format, getDate, getMonth, getYear } from 'date-fns';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { group, persons } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
@@ -176,8 +177,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     console.log(data);
     this.selectedValue = data?.checkedValue;
   }
-  async presentPacientViewModal(item: any) {
-    console.log(item);
+  async presentPacientViewModal(item: Person) {
     const modal = await this.modalController.create({
       component: PacientViewModalComponent,
       cssClass: 'biz-modal-class',
@@ -187,17 +187,10 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    if (typeof data?.data !== null) {
+    if (data?.personData) {
       switch (data?.action) {
         case 'edit':
-          this.presentNewPacientModal(
-            {
-              nume: data?.data?.first,
-              preNume: 'Dummy',
-              dateNasterii: '2021-08-08',
-              sex: 'Feminin',
-            }
-          );
+          this.presentNewPacientModal(data?.personData);
           break;
         case 'delete':
           this.unCheckItem(data?.data?.value);
@@ -207,13 +200,34 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       }
     }
   }
-  async presentNewPacientModal(data: any) {
+  async presentNewPacientModal(personData: any) {
+    const {
+        firstName,
+        lastName,
+        birthDate,
+        genderID,
+        email,
+        phone,
+        pid,
+        cityID
+    } = personData;
+    const data = {
+      nume: firstName,
+      preNume: lastName,
+      dateNasterii: format(new Date(birthDate), 'yyyy-MM-dd'),
+      sex: genderID,
+      telephone: Number(phone),
+      email,
+      cnp: pid,
+      oras: cityID || '',
+    };
     const modal = await this.modalController.create({
       component: NewPacientModalComponent,
       cssClass: 'biz-modal-class',
       backdropDismiss: true,
       componentProps: {
         data,
+        isEdit: true,
       },
     });
     await modal.present();

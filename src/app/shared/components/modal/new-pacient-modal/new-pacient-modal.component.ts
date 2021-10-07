@@ -8,7 +8,7 @@ import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-con
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { get } from 'lodash';
 import { persons, location } from 'src/app/core/configs/endpoints';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { formatRFC3339 } from 'date-fns';
@@ -19,6 +19,7 @@ import { formatRFC3339 } from 'date-fns';
 })
 export class NewPacientModalComponent implements OnInit, OnDestroy {
   @Input() data!: any;
+  @Input() isEdit: boolean;
   numeConfig = inputConfigHelper({
     label: 'Nume',
     type: 'text',
@@ -175,6 +176,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   addUser$: Subscription;
   getCountries$: Subscription;
   getCities$: Subscription;
+  judet$: Subscription;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -184,9 +186,10 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.data) {
+      console.log(this.data);
       this.componentFormGroup.patchValue(this.data);
     }
-    this.componentFormGroup.get('judet').valueChanges
+    this.judet$ = this.componentFormGroup.get('judet').valueChanges
       .pipe(
         distinctUntilChanged()
       )
@@ -266,13 +269,22 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
             )
           ), { fractionDigits: 3 }),
         phone: get(this.componentFormGroup.value, 'telephone', ''),
-        cityID: Number(get(this.componentFormGroup.value, 'cityId', 0)),
+        cityID: get(this.data, 'cityId', null) || Number(get(this.componentFormGroup.value, 'cityId', 0)),
         genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
         isActive: true,
         wasUpdateByMobile: true,
         mobileUpdateDate:  formatRFC3339(new Date(), { fractionDigits: 3 })
       };
-      this.addUser$ = this.reqS.post(persons.addPerson, d).subscribe(
+
+      let postAction: Observable<any>;
+      if (this.isEdit && this.data?.uid) {
+        // update
+        postAction = this.reqS.post(persons.updatePerson, d);
+      } else {
+       postAction =  this.reqS.post(persons.addPerson, d);
+      }
+
+      this.addUser$ = postAction.subscribe(
         async _rep => {
           this.toggleLoadingState();
           // present toast and close modal
@@ -288,6 +300,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       );
     }
   }
+
   closeModal() {
       this.modalController.dismiss({
       dismissed: true,
@@ -302,6 +315,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getCountries$);
     unsubscriberHelper(this.getCities$);
     unsubscriberHelper(this.addUser$);
+    unsubscriberHelper(this.judet$);
   }
 
 }
