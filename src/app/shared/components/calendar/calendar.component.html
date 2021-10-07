@@ -26,7 +26,7 @@
       [viewDate]="viewDate"
       [events]="events"
       [dayStartHour]="startEndTime.appStartHour"
-      [dayEndHour]="startEndTime.appEndHour"
+      [dayEndHour]="startEndTime.appEndHour -1"
       [eventTemplate]="eventTemplate"
       (beforeViewRender)="beforeWeekViewRender($event)"
       [refresh]="refresh"
@@ -43,7 +43,7 @@
       [hourSegmentTemplate]="hourSegmentTemplate"
       [refresh]="refresh"
       [dayStartHour]="startEndTime.appStartHour"
-      [dayEndHour]="startEndTime.appEndHour"
+      [dayEndHour]="startEndTime.appEndHour -1"
       (eventClicked)="handleEvent('Clicked', $event.event)"
       (eventTimesChanged)="eventTimesChanged($event)"
     >
