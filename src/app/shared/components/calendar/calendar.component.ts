@@ -101,7 +101,7 @@ export class CalendarComponent implements OnInit {
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       console.log(this.display);
-      this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
+      // this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
       this.startEndTime = JSON.parse(localStorage.getItem('workHours'));
       this.refresh.next();
     }
@@ -257,10 +257,10 @@ export class CalendarComponent implements OnInit {
                   if(allBreak.includes(segment.date.getHours()) ){
                     segment.cssClass = '';
                   }else  if(allPrivate.includes(segment.date.getHours())){
-                    segment.cssClass = 'online-not-confirmed-v2';
+                    segment.cssClass = 'online-not-confirmed-v2 no-border';
                   }else{
                     // if(allCnas.includes(segment.date.getHours()))
-                    segment.cssClass = 'cabinet-not-confirmed-v1';
+                    segment.cssClass = 'cabinet-not-confirmed-v1 no-border';
                   }
 
                 }
@@ -314,9 +314,10 @@ export class CalendarComponent implements OnInit {
         if(allBreak.includes(hours) ){
           return '';
         }else  if(allPrivate.includes(hours)){
-          return 'online-not-confirmed-v2';
-        }else if(allCnas.includes(hours)){
-          return 'cabinet-not-confirmed-v1';
+          return 'online-not-confirmed-v2 no-border';
+        }else {
+          //if(allCnas.includes(hours))
+          return 'cabinet-not-confirmed-v1 no-border';
         }
 
       }

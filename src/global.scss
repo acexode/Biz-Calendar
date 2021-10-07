@@ -289,8 +289,14 @@
 .weekEvent-title{
   color: #000;
 }
+.no-border{
+  border-left: none !important;
+}
 .bb-none{
   background: none !important;
   border: none !important;
+}
+.cal-week-view .cal-hour-odd {
+  background-color: #fff !important;
 }
 

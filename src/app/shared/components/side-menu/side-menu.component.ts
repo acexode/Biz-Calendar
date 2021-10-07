@@ -38,7 +38,6 @@ export class SideMenuComponent implements OnInit {
     // { title: 'Comparativ', url: '/calendar/comparativ', icon: 'coparativ' },
   ];
   constructor(platform: Platform, private menu: MenuController) {
-    console.log(window.innerWidth);
     this.isTablet = window.innerWidth >= 768 ? true : false;
     window.addEventListener('resize', ()=>{
       if (window.innerWidth >= 768) {
