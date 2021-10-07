@@ -118,12 +118,12 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
   createGroup$: Subscription;
   getPersons$: Subscription;
   personsList$: BehaviorSubject<Array<Person>> = new BehaviorSubject<Array<Person>>([]);
+  selectedValue: any[] = [];
   personSelectServiciiOptionConfig: BizSelectieServiciiConfig = {
       firstKey: 'firstName',
       secondKey: 'gender',
       thirdKey: 'phone',
       idKey: 'uid'
-
     };
   constructor(
     private fb: FormBuilder,
@@ -138,7 +138,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     if (this.formGroupValidity) {
       this.closeModal({
       first: this.componentFormGroup.value.numeGrup,
-      second: this.checkedData.length,
+      second: this.selectedValue.length,
       third: ' ',
       value: 'this.componentFormGroup.value.numeGrup',
     });
@@ -151,7 +151,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
   }
   get formGroupValidity() {
-    return this.componentFormGroup.valid && this.checkedData.length > 0;
+    return this.componentFormGroup.valid && this.selectedValue.length > 0;
   }
   async presentSelectModal() {
     const modal = await this.modalController.create({
@@ -164,12 +164,14 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
               gender: v.genderID === 0 ? 'M' : 'F',
             })
         ) : [],
-        config: this.personSelectServiciiOptionConfig
+        config: this.personSelectServiciiOptionConfig,
+        selectedValue: this.selectedValue
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     console.log(data);
+    this.selectedValue = data?.checkedValue;
   }
   async presentPacientViewModal(item: any) {
     const modal = await this.modalController.create({
@@ -212,23 +214,40 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
     await modal.present();
   }
-  get checkedData() {
-    return this.checkList.filter((v: DemoCheckList) => v.checked === true);
-  }
   unCheckItem(data: string): void {
+    console.log(data);
     if (typeof data !== null && data !== '') {
-      const indexOfData = this.checkList.findIndex(
-        (v: DemoCheckList) => v.value === data);
+      const indexOfData = this.selectedValue.findIndex(
+        (v: any) => v === data);
       if (indexOfData > -1) {
-        this.checkList[indexOfData].checked = false;
+       this.selectedValue.splice(indexOfData, 1);
       }
     }
   }
   createGroup() {
-    const payload: CreateGroup = {
-      groupName: '',
+    if (this.componentFormGroup.valid) {
+      const payload: CreateGroup = {
+        groupName: this.componentFormGroup.value.numeGrup,
+      };
+      this.createGroup$ = this.reqS.post<any>(group.createGroup, payload)
+        .subscribe(
+          (d: any) => {
+            console.log(d);
+            this.addMemberToGroup(d.insertedUID);
+          },
+          _err => console.log(_err)
+
+        );
+    }
+
+  }
+   addMemberToGroup(personsGroupUID: string) {
+
+    const payload: any = {
+      personsGroupUID,
+      personsUIDs: this.selectedValue
     };
-    this.createGroup$ = this.reqS.post<any>(group.createGroup, payload)
+    this.reqS.post<any>(group.addMembersToGroup, payload)
       .subscribe(
         (d: any) => {
           console.log(d);
@@ -236,6 +255,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
         _err => console.log(_err)
 
       );
+
   }
   getPersons() {
     console.log('get persons');
@@ -253,6 +273,14 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
         _err => console.log(_err)
 
       );
+  }
+  get selectedPersons() {
+    return this.personsList$.value.length > 0 ? this.personsList$.value.filter(
+      (v: any) => this.selectedValue
+        .includes(
+          v[`${this.personSelectServiciiOptionConfig.idKey}`]
+        )
+    ) : [];
   }
   ngOnDestroy(): void {
     unsubscriberHelper(this.createGroup$);
