@@ -19,7 +19,8 @@ import { formatRFC3339 } from 'date-fns';
 })
 export class NewPacientModalComponent implements OnInit, OnDestroy {
   @Input() data!: any;
-  @Input() isEdit: boolean;
+  @Input() isEdit!: boolean;
+  @Input() uid!: boolean;
   numeConfig = inputConfigHelper({
     label: 'Nume',
     type: 'text',
@@ -177,6 +178,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('isEdit: ', this.isEdit);
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
       if (this.data.oras && this.data.oras !== 0) {
@@ -242,9 +244,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     });
   }
   getCitiesByCityId(cityID: number) {
-     this.getCities({
-      cityID
-    });
+     this.getCities();
   }
   getCities(payload: any = {}) {
     this.getCities$ = this.reqS.post(location.getCities, payload)
@@ -283,6 +283,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
             )
           ), { fractionDigits: 3 }),
         phone: get(this.componentFormGroup.value, 'telephone', ''),
+        email: get(this.componentFormGroup.value, 'email', ''),
         cityID: Number(get(this.componentFormGroup.value, 'oras', 0)),
         genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
         isActive: true,
@@ -292,11 +293,10 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       this.personData = d;
 
       let postAction: Observable<any>;
-      if (this.isEdit && this.data?.uid) {
-        // update
-        postAction = this.reqS.post(persons.updatePerson, d);
+      if (this.isEdit && this.uid) {
+        postAction = this.reqS.put(persons.updatePerson, { ...d, uid: this.uid });
       } else {
-       postAction =  this.reqS.post(persons.addPerson, d);
+        postAction =  this.reqS.post(persons.addPerson, d);
       }
 
       this.addUser$ = postAction.subscribe(
@@ -309,6 +309,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
           }, 3000);
         },
         _err => {
+          console.log(_err);
           this.presentToast('An error occur while trying to add new person. Please try again.');
           this.toggleLoadingState();
         }

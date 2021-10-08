@@ -40,12 +40,12 @@ export class PacientViewModalComponent implements OnInit, OnDestroy {
     return getYear(new Date(this.data?.birthDate));
   }
   get birthDay() {
-    return getDay(new Date(this.data?.birthDate));
+    return new Date(this.data?.birthDate)?.getDate();
   }
   get birthAge() {
     return differenceInCalendarYears(
+      new Date(),
       new Date(this.data?.birthDate),
-      new Date()
     );
   }
   getCities() {
@@ -55,6 +55,7 @@ export class PacientViewModalComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (d: any) => {
+          console.log(d);
           this.address = d?.cities?.[0]?.name;
           this.addressLoader = false;
         },
@@ -65,6 +66,8 @@ export class PacientViewModalComponent implements OnInit, OnDestroy {
           this.addressLoader = false;
         }
       );
+    } else {
+      this.addressLoader = false;
     }
   }
   get userAddress() {

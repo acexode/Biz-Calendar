@@ -51,7 +51,7 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            {{ birthDay }} {{ birthMonth }} {{ birthYear }} ( {{ birthAge }} {{ birthAge > 1 ? 'ani' : 'an' }} )
+            {{ birthDay }} {{ birthMonth }} {{ birthYear }} ({{ birthAge }} {{ birthAge > 1 ? 'ani' : 'an' }})
           </ion-label>
         </div>
       </div>
@@ -140,8 +140,8 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            <ng-container *ngIf="addressLoader; else loading">
-              {{userAddress || 'user have no address'}}
+            <ng-container *ngIf="!addressLoader; else loading">
+              {{userAddress}}
             </ng-container>
             <ng-template #loading>
               <ion-spinner name="dots" color="biz-primary" class="icon-20"></ion-spinner>

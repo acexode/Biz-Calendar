@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { format, getDate, getMonth, getYear } from 'date-fns';
+import { differenceInCalendarYears, format, getDate, getMonth, getYear } from 'date-fns';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { group, persons } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
@@ -35,9 +35,9 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
   personsList$: BehaviorSubject<Array<Person>> = new BehaviorSubject<Array<Person>>([]);
   selectedValue: any[] = [];
   personSelectServiciiOptionConfig: BizSelectieServiciiConfig = {
-      firstKey: 'firstName',
+      firstKey: 'name',
       secondKey: 'gender',
-      thirdKey: 'phone',
+      thirdKey: 'age',
       idKey: 'uid'
   };
   disableAddMemberButton = true;
@@ -76,8 +76,13 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       componentProps: {
         checkList: this.personsList$.value ? this.personsList$.value.map(
           (v: Person) => ({
-              ...v,
-              gender: v.genderID === 0 ? 'M' : 'F',
+            ...v,
+            name: `${v.firstName} ${v.lastName}`,
+            gender: v.genderID === 0 ? 'M' : 'F',
+              age: differenceInCalendarYears(
+                new Date(),
+                new Date(v?.birthDate),
+              ),
             })
         ) : [],
         config: this.personSelectServiciiOptionConfig,
@@ -120,7 +125,8 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
         email,
         phone,
         pid,
-        cityID
+      cityID,
+        uid
     } = personData;
     const data = {
       nume: firstName,
@@ -139,6 +145,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       componentProps: {
         data,
         isEdit: true,
+        uid,
       },
     });
     await modal.present();
