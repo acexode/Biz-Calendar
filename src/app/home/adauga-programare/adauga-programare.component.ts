@@ -276,6 +276,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
    ...this.tipServiciiParameterInitialData
     }
   );
+  pacientName = '';
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -403,9 +404,18 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     await modal.present();
     const d = await modal.onWillDismiss();
     console.log(d);
-    const {dismissed , data} = d?.data;
-    if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({pacient: data});
+    const {dismissed , data, isPerson, isGroup} = d?.data;
+    console.log(data);
+    if(dismissed && data !== null) {
+      this.adaugaProgramareFormGroup.patchValue(
+        {
+          pacient: isPerson ? data?.uid : (isGroup ? data?.personsGroupUID : '')
+        }
+      );
+      this.pacientName = isPerson ?
+        `${data?.firstName} ${data?.lastName}` :
+        (isGroup ? data?.groupName : '');
+        console.log(this.pacientName);
     }
   }
   async presentCabinetModalRadio() {

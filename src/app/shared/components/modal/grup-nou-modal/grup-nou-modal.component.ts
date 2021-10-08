@@ -11,7 +11,6 @@ import { RequestService } from 'src/app/core/services/request/request.service';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { inputConfigHelper } from 'src/app/shared/data/input-config-helper';
 import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
-import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
 import { NewPacientModalComponent } from '../new-pacient-modal/new-pacient-modal.component';
 import { PacientViewModalComponent } from '../pacient-view-modal/pacient-view-modal.component';
 import { SelectieServiciiModalComponent } from '../selectie-servicii-modal/selectie-servicii-modal.component';
@@ -22,92 +21,6 @@ import { SelectieServiciiModalComponent } from '../selectie-servicii-modal/selec
   styleUrls: ['./grup-nou-modal.component.scss'],
 })
 export class GrupNouModalComponent implements OnInit, OnDestroy {
-  checkList: DemoCheckList[] = [
-    {
-      first: 'Adam Abitei',
-      second: 'M',
-      third: '67',
-      value: 'Adam Abitei',
-      checked: false
-    },
-    {
-      first: 'Alina Adam',
-      second: 'F',
-      third: '67',
-      value: 'Alina Adam',
-      checked: false
-    },
-    {
-      first: 'Aliona Alexandru',
-      second: 'F',
-      third: '35',
-      value: 'Aliona Alexandru',
-      checked: false
-    },
-    {
-      first: 'Paul Anton',
-      second: '-',
-      third: '**** *** 843',
-      value: 'Paul Anton',
-      checked: false
-    },
-    {
-      first: 'Carla Aurel Ioanid',
-      second: 'F',
-      third: '35',
-      value: 'Carla Aurel Ioanid',
-      checked: false
-    },
-    {
-      first: 'Mariana Romascanu',
-      second: 'F',
-      third: '47',
-      value: 'Mariana Romascanu',
-      checked: false
-    },
-    {
-      first: 'Marin Voroncea',
-      second: 'M',
-      third: '67',
-      value: 'Marin Voroncea',
-      checked: false
-    },
-    {
-      first: 'Ciprian Costescu',
-      second: '-',
-      third: '**** *** 843',
-      value: 'Ciprian Costescu',
-      checked: false
-    },
-    {
-      first: 'Dan Preoteasa',
-      second: 'M',
-      third: '67',
-      value: 'Dan Preoteasa',
-      checked: false
-    },
-    {
-      first: 'Mario Andrea Zanardi',
-      second: '-',
-      third: '**** *** 843',
-      value: 'Mario Andrea Zanardi',
-      checked: false
-    },
-    {
-      first: 'Marin Voroncea',
-      second: 'M',
-      third: '67',
-      value: 'Marin Voroncea',
-      checked: false
-    },
-    {
-      first: 'Ciprian Costescu',
-      second: '-',
-      third: '**** *** 843',
-      value: 'Ciprian Costescu',
-      checked: false
-    },
-  ];
   numeGrupConfig = inputConfigHelper({
     label: 'Nume grup',
     type: 'text',

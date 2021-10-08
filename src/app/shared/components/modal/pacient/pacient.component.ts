@@ -159,9 +159,12 @@ export class PacientComponent implements OnInit, OnDestroy {
      return this.currentSegement;
   }
   submit(data: any) {
+    console.log(data);
     this.modalController.dismiss({
       dismissed: true,
-      data: data?.first
+      data,
+      isPerson: this.currentSegement === this.segment.one,
+      isGroup: this.currentSegement === this.segment.two,
     });
   }
   closeModal() {
