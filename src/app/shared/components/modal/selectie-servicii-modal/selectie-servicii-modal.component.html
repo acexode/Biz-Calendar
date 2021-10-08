@@ -1,7 +1,7 @@
 <ion-header class="ion-no-border" [translucent]="true" mode="md">
   <ion-toolbar class="ion-no-padding">
 
-    <ion-buttons slot="start" (click)="closeModal()">
+    <ion-buttons slot="start" (click)="dismiss()">
       <ion-icon
         name="arrow-left"
         class="icon-24 black-color"
@@ -12,7 +12,7 @@
     <ion-row class="ion-no-padding">
       <ion-col class="ion-no-padding" [formGroup]="searchForm">
         <app-input
-          [config]="config"
+          [config]="searchConfig"
           formControlName="search"
         ></app-input>
       </ion-col>
@@ -30,10 +30,10 @@
   <div class="modal-view">
     <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
 
-    <ng-container *ngIf="list">
+    <ng-container *ngIf="items$ | async">
       <ion-list>
 
-      <ion-item *ngFor="let item of list; let i=index">
+      <ion-item  *ngFor="let item of items$ | async as items">
 
         <div class="flex flex-column">
           <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0"
@@ -45,10 +45,13 @@
             <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
             {{item.second}}
           </ion-text>
-          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+          <ion-text
+          class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor"
+          *ngIf="item.third"
+          >
             /
           </ion-text>
-          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item.third">
             {{item.third}}
           </ion-text>
           </p>
@@ -59,9 +62,9 @@
         color="biz-primary"
         class="margin-inline-end-12"
         mode="md"
-        [value]="item.value"
+        [value]="item?.value"
         [checked]="item.checked"
-        (ionChange)="onSelectionChange($event,i)"
+        (ionChange)="onSelectionChange($event)"
         ></ion-checkbox>
 
 

@@ -31,6 +31,8 @@ export class CustomChartComponent implements OnInit {
   public lineChartLabels: Label[] = ['29', '32', '32', '33', '45'];
   public lineChartOptions = {
     responsive: true,
+    bezierCurve: false,
+    lineTension: 0,
     scales: {
       // We use this empty structure as a placeholder for dynamic theming.
       xAxes : [{
@@ -44,7 +46,7 @@ export class CustomChartComponent implements OnInit {
           id: 'y-axis-0',
           gridLines: {
             lineWidth: 0,
-            color: 'rgba(255,255,255,0)'
+            // color: 'rgba(0,0,0,0)'
         }
         },
       ]

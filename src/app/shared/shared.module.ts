@@ -25,6 +25,7 @@ import { AddServiceSelectionComponent } from './components/add-service-selection
 import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
 import { NumarDeProgramariComponent } from './components/numar-de-programari/numar-de-programari.component';
 import { ChartsModule } from 'ng2-charts';
+import { CoreModule } from '../core/core.module';
 
 registerLocaleData(localeDe);
 
@@ -41,7 +42,7 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
-    HourPipe,
+    // HourPipe,
     NumarDeProgramariComponent,
     CustomChartComponent
   ],
@@ -58,7 +59,8 @@ registerLocaleData(localeDe);
     NgCalendarModule,
     BizInputsModule,
     ModalModule,
-    ChartsModule
+    ChartsModule,
+    CoreModule
   ],
   exports: [
     CalendarComponent,
@@ -73,7 +75,7 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
-    HourPipe,
+    // HourPipe,
     NumarDeProgramariComponent,
     CustomChartComponent
   ],

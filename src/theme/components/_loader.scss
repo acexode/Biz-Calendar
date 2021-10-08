@@ -1,0 +1,10 @@
+
+@import '../variables.scss';
+@import '../mixins/mixins';
+
+.biz {
+  ion-loading {
+    --spinner-color: var(--ion-primary-color-step-100);
+  }
+
+}

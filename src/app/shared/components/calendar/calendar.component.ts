@@ -21,6 +21,8 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     startOfMonth,
     startOfWeek,
     endOfWeek,
+    getDay,
+    differenceInHours,
   } from 'date-fns';
   import { Observable, Subject } from 'rxjs';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -31,23 +33,14 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
     CalendarEventTimesChangedEvent,
     CalendarMonthViewBeforeRenderEvent,
     CalendarView,
+    CalendarWeekViewBeforeRenderEvent,
   } from 'angular-calendar';
 import { ActivatedRoute, Router } from '@angular/router';
 import {map} from 'rxjs/operators';
 import { CalendarPages } from './calendarPages';
 import { ro } from 'date-fns/locale';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
-
-function getTimezoneOffsetString(date: Date): string {
-  const timezoneOffset = date.getTimezoneOffset();
-  const hoursOffset = String(
-    Math.floor(Math.abs(timezoneOffset / 60))
-  ).padStart(2, '0');
-  const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, '0');
-  const direction = timezoneOffset > 0 ? '-' : '+';
-
-  return `T00:00:00${direction}${hoursOffset}:${minutesOffset}`;
-}
 
 @Component({
   selector: 'app-calendar',
@@ -62,16 +55,17 @@ function getTimezoneOffsetString(date: Date): string {
 })
 export class CalendarComponent implements OnInit {
 
-    @Input() display;
-    @Input() calendarList;
-    @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  @Input() display;
+  @Input() calendarList;
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+  public calendarPages = CalendarPages;
     currentDate = new Date().getDate();
     activatedPath  = '';
     isTablet = false;
-    public calendarPages = CalendarPages;
     view: CalendarView = CalendarView.Month;
     CalendarView = CalendarView;
     viewDate: Date = new Date();
+    events: CalendarEvent [] = [];
     excludeDays: number[] = [0, 6];
     modalData: {
         action: string;
@@ -96,22 +90,26 @@ export class CalendarComponent implements OnInit {
     ];
     refresh: Subject<any> = new Subject();
 
-    events = [];
     events$: Observable<CalendarEvent[]>;
     activeDayIsOpen = true;
     eventSource;
     viewTitle;
     isToday: boolean;
+    startEndTime: any = {};
+    schedules = [];
+    holidays = [];
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
-      // console.log(addHours(startOfDay(new Date()), 2));
-      // console.log(addHours(new Date(), 3));
+      console.log(this.display);
+      // this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
+      this.startEndTime = JSON.parse(localStorage.getItem('workHours'));
+      this.refresh.next();
     }
 
-    ngOnInit() {
+  ngOnInit() {
       this.calS.selectedDate.subscribe(e =>{
-        console.log(e);
         this.viewDate = new Date(e);
+        this.getEventLists();
       });
       this.getEventLists();
       this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -138,25 +136,33 @@ export class CalendarComponent implements OnInit {
 
     getEventLists(){
       this.calS.appointments$.subscribe(e =>{
-        const appt = e?.appointments.map(d => ({
-          start:  new Date(d.startTime + getTimezoneOffsetString(this.viewDate)),
-          end:  new Date(d.endTime + getTimezoneOffsetString(this.viewDate)),
+        this.schedules = e?.schedules ? e?.schedules : [];
+        this.holidays = e?.phyFreeDays ? e?.phyFreeDays : [];
+        this.events = e?.appointments.map(d => ({
+          start:  new Date(d.startTime ),
+          end:  new Date(d.endTime),
           title: d.personName,
           color: {
-            primary: ''
+            primary: '',
+            secondary:''
           },
           actions: this.actions,
-          allDay: true,
+          allDay: false,
           resizable: {
             beforeStart: true,
             afterEnd: true,
           },
           draggable: true,
+          meta:{
+            cssClass: this.calS.colorCode(d.colorCode, 'weekMonth'),
+            icon: this.calS.iconCode(d?.icons[0])
+          }
         }));
-        this.events = appt;
+        // console.log(this.events);
+        this.refresh.next();
 
       });
-      console.log(this.events);
+      // console.log(this.events);
     }
     navigate(path){
       this.router.navigate(['/home' +path]);
@@ -164,7 +170,7 @@ export class CalendarComponent implements OnInit {
     // angular calendar
     dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
       this.viewDate = date;
-    this.view = CalendarView.Day;
+      this.view = CalendarView.Day;
         if (isSameMonth(date, this.viewDate)) {
           if (
             (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -197,16 +203,11 @@ export class CalendarComponent implements OnInit {
       }
 
       handleEvent(action: string, event: CalendarEvent): void {
-          console.log(event);
           this.viewDate = new Date(event.start);
           this.view = CalendarView.Day;
           this.modalData = { event, action };
-        //this.modal.open(this.modalContent, { size: 'lg' });
       }
 
-      deleteEvent(eventToDelete: CalendarEvent) {
-        this.events = this.events.filter((event) => event !== eventToDelete);
-      }
 
       setView(view: CalendarView) {
         this.view = view;
@@ -220,21 +221,117 @@ export class CalendarComponent implements OnInit {
         renderEvent.body.forEach((day) => {
           const dayOfMonth = day.date.getDate();
           const vacations = [4,11];
-          if (vacations.includes(dayOfMonth) && day.inMonth) {
-            console.log(day);
-            day.cssClass = 'vacation-bg';
-          }
+          this.holidays.forEach(hol =>{
+            const isSame = isSameDay(new Date(hol.startDate), new Date(day.date)) || isSameDay(new Date(hol.endDate), new Date(day.date));
+            if(isSame){
+              day.cssClass = 'holidays';
+            }
+          });
         });
       }
+      beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+        renderEvent.hourColumns.forEach((hourColumn) => {
+          const dow = this.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
+          const breakTime = dow?.filter(e => e.isBreakTime)[0];
+          const allPrivate = [];
+          const allCnas = [];
+          const allBreak = [parseInt(breakTime?.start,10), parseInt(breakTime?.end,10)-1];
+          dow.forEach(e => {
+            if(e.isPrivate && !e.isBreak){
+              allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+            }else if(!e.isPrivate && !e.isBreak){
+              allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+            }
+          });
+          const hols = this.holidays.map(h =>({startDate: h.startDate,endDate: h.endDate} ))[0];
+          dow.forEach(day =>{
+            const starttime = parseInt(day.start, 10);
+            const endtime = parseInt(day.end, 10);
+            hourColumn.hours.forEach((hour) => {
+              hour.segments.forEach((segment) => {
+                const isSame = isSameDay(new Date(hols?.startDate), new Date(segment.date)) ||
+                isSameDay(new Date(hols?.endDate), new Date(segment.date));
+                if(isSame){
+                  segment.cssClass = 'holidays';
+                }else{
+                  if(allBreak.includes(segment.date.getHours()) ){
+                    segment.cssClass = '';
+                  }else  if(allPrivate.includes(segment.date.getHours())){
+                    segment.cssClass = 'online-not-confirmed-v2 no-border';
+                  }else{
+                    // if(allCnas.includes(segment.date.getHours()))
+                    segment.cssClass = 'cabinet-not-confirmed-v1 no-border';
+                  }
+
+                }
+              });
+            });
+          });
+
+          });
+          renderEvent.header.forEach(head =>{
+            this.holidays.forEach(hol =>{
+              const diff = differenceInHours(hol.startDay, hol.endDate);
+              // const phyHours = [...new Array(diff)].map((e, i) => i+1);
+              const isSame = isSameDay(hol.startDay, head.date);
+              renderEvent.hourColumns.forEach((hourColumn) => {
+                hourColumn.hours.forEach((hour) => {
+                  hour.segments.forEach((segment) => {
+                    if (
+                     isSame
+                    ) {
+                      segment.cssClass = 'holidays';
+                    }
+                  });
+                });
+              });
+            });
+          });
+      }
     setBg(d){
+
       const hours = new Date(d).getHours();
-      if(hours > 7 && hours <= 10){
-        return 'green-pattern';
-      }else if(hours > 10 && hours < 13){
-        return 'blue-pattern';
-      }else{
-        return 'green-pattern';
+      if(this.holidays?.length){
+        this.holidays.forEach(hol =>{
+          const diff = differenceInHours(hol.startDay, hol.endDate);
+          const isSame = isSameDay(hol.startDate, d);
+          if(isSame){
+            return 'holidays';
+          }
+        });
+      }else if(this.schedules?.length > 0){
+        const breakTime = this.schedules?.filter(e => e.isBreakTime)[0];
+        const allPrivate = [];
+        const allCnas = [];
+        const allBreak = [parseInt(breakTime.start,10), parseInt(breakTime.end,10)-1];
+        this.schedules?.forEach(e => {
+          if(e.isPrivate && !e.isBreak){
+            allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }else if(!e.isPrivate && !e.isBreak){
+            allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }
+        });
+        if(allBreak.includes(hours) ){
+          return '';
+        }else  if(allPrivate.includes(hours)){
+          return 'online-not-confirmed-v2 no-border';
+        }else {
+          //if(allCnas.includes(hours))
+          return 'cabinet-not-confirmed-v1 no-border';
+        }
 
       }
+
     }
+    range(start, end, step = 1) {
+      const output = [];
+      if (typeof end === 'undefined') {
+        end = start;
+        start = 0;
+      }
+      for (let i = start; i < end; i += step) {
+        output.push(i);
+      }
+      return output;
+    };
 }

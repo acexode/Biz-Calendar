@@ -12,6 +12,13 @@ import { NewPacientModalComponent } from './new-pacient-modal/new-pacient-modal.
 import { GrupNouModalComponent } from './grup-nou-modal/grup-nou-modal.component';
 import { PacientViewModalComponent } from './pacient-view-modal/pacient-view-modal.component';
 import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/biz-searchable-radio-modal.component';
+import { CabinetComponent } from './cabinet/cabinet.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgCalendarModule } from 'ionic2-calendar';
+import { CoreModule } from 'src/app/core/core.module';
+import { CabinetNotifyComponent } from './cabinet-notify/cabinet-notify.component';
+import { ConflictProgramariComponent } from './conflict-programari/conflict-programari.component';
 
 
 
@@ -25,13 +32,22 @@ import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/b
     NewPacientModalComponent,
     GrupNouModalComponent,
     PacientViewModalComponent,
-    BizSearchableRadioModalComponent
+    BizSearchableRadioModalComponent,
+    CabinetComponent,
+    CabinetNotifyComponent,
+    ConflictProgramariComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     ReactiveFormsModule,
-    BizInputsModule
+    BizInputsModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    NgCalendarModule,
+    CoreModule
   ],
   exports: [
     SelectieServiciiModalComponent,
@@ -42,7 +58,10 @@ import { BizSearchableRadioModalComponent } from './biz-searchable-radio-modal/b
     NewPacientModalComponent,
     GrupNouModalComponent,
     PacientViewModalComponent,
-    BizSearchableRadioModalComponent
+    BizSearchableRadioModalComponent,
+    CabinetComponent,
+    CabinetNotifyComponent,
+    ConflictProgramariComponent
   ]
 })
 export class ModalModule { }

@@ -3,6 +3,9 @@
 
 .biz {
   ion-item {
+    label {
+      display: block !important;
+    }
     &.item-mh-40 {
       --min-height: 40px;
     }
@@ -53,8 +56,8 @@
     &.item-interactive-disabled {
       &:not(.item-has-focus) {
         .input-label {
-          --color: var(--ion-neutral-grey-default-color);
-          color: var(--color);
+          --color: var(--ion-neutral-grey-default-color) !important;
+          color: var(--color) !important;
           opacity: 1 !important;
           --ion-border-color: var(--ion-primary-color-step-30);
         }

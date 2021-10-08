@@ -35,8 +35,13 @@ export class LoginPage implements OnInit {
     bgwhite: false,
     disabled: false,
   };
-  constructor(private fb: FormBuilder, private router: Router, private menu: MenuController,
-    private aRoute: ActivatedRoute, private authS: AuthService,public toastController: ToastController
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private menu: MenuController,
+    private aRoute: ActivatedRoute,
+    private authS: AuthService,
+    public toastController: ToastController
     ) {
       console.log(this.authS.userValue);
       if (this.authS.userValue) {
@@ -88,11 +93,26 @@ export class LoginPage implements OnInit {
     }).pipe(first()).subscribe(res => {
       console.log(res);
       console.log(this.returnUrl);
-      if(this.returnUrl === '/'){
-        this.router.navigate(['selectie-spatiu']);
-      }else{
-        this.router.navigate([this.returnUrl]);
-      }
+      // this.authS.getParameters();
+      this.authS.getParameters().subscribe((e: any) =>{
+        console.log(e.parameters);
+        const obj: any = {};
+        e.parameters.forEach(params =>{
+          if(params.code === 'appEndHour'){
+            obj.appEndHour = parseInt(params.value, 10);
+          }else if(params.code === 'appStartHour'){
+            obj.appStartHour = parseInt(params.value, 10);
+          }
+        });
+        localStorage.setItem('workHours', JSON.stringify(obj));
+        console.log(obj);
+        if(this.returnUrl === '/'){
+          this.router.navigate(['selectie-spatiu']);
+        }else{
+          this.router.navigate([this.returnUrl]);
+        }
+      });
+
     }, err =>{
       console.log(err);
       this.presentToast();

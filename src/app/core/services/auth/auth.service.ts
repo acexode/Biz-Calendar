@@ -1,4 +1,4 @@
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, tap } from 'rxjs/operators';
 
 import { Login } from './../../models/login.interface';
 import { CustomStorageService } from './../custom-storage/custom-storage.service';
@@ -8,6 +8,8 @@ import { authEndpoints } from '../../configs/endpoints';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { User } from '../../models';
+import { Parameter, ParameterState } from '../../models/parameter.model';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +20,31 @@ export class AuthService {
   token = '';
   public user: Observable<User>;
   private userSubject: BehaviorSubject<User>;
-  constructor(private reqS: RequestService,private router: Router, private customS: CustomStorageService, private routerS: Router,) {
+  private parameters$: BehaviorSubject<ParameterState> = new BehaviorSubject<ParameterState>({
+    init: false,
+    parameters: null
+  });
+  constructor(
+    private reqS: RequestService,
+    private router: Router,
+    private customS: CustomStorageService,
+    private routerS: Router,
+    private toastS: ToastService
+  ) {
     // this.user = this.userSubject.asObservable();
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
+    const parameters = JSON.parse(localStorage.getItem('parameters'));
+    if(parameters){
+      this.parameters$.next({
+        init: true,
+        parameters,
+      });
+    } else {
+      this.toastS.presentToastWithDurationDismiss('Parameter not found. Please signin again');
+      this.logout();
+    }
+
   }
   public get userValue(): User {
     return this.userSubject.value;
@@ -80,9 +103,31 @@ export class AuthService {
     }
     return this.routerS.createUrlTree(['/']);
   }
+
   logout(){
     localStorage.removeItem('user');
+    localStorage.removeItem('parameters');
     this.userSubject.next(null);
     this.router.navigate(['/login']);
+  }
+  getParameters(){
+    return this.reqS.get(authEndpoints.getParameters)
+      .pipe(
+        tap((v: any) => {
+          // save parameters
+          localStorage.setItem('parameters', JSON.stringify(v.parameters));
+          // -------
+          this.parameters$.next({
+            init: true,
+            parameters: v.parameters,
+          });
+        })
+      );
+  }
+  getParameterState() {
+    return this.parameters$.pipe(
+      filter((val: ParameterState) => val && val.hasOwnProperty('init') && val.init),
+      distinctUntilChanged()
+    );
   }
 }

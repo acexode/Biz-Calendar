@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-info-pacient-modal',
@@ -7,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InfoPacientModalComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modalController: ModalController,) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
+  closeModal() {
+    this.modalController.dismiss({
+      dismissed: true,
+    });
+  }
 
 }

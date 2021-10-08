@@ -1,12 +1,12 @@
 <ion-item
-  class="form-group w-100"
+  class="form-group w-100 item-label-stacked"
   [ngClass]="{
     'disabled-border': config?.disabled || inputReadonly || formGroup?.disabled
   }"
   [formGroup]="formGroup"
   lines="none"
 >
-  <ion-label
+  <!-- <ion-label
     [class]="'s12pt8-h16 roboto-family-font text-weight-medium mb-16 ' + config?.inputLabel?.classes"
     position="stacked"
     [ngClass]="
@@ -16,7 +16,13 @@
     "
     [color]="config?.inputLabel?.color"
     >{{ config?.inputLabel?.text }}</ion-label
-  >
+  > -->
+<ion-label [class]="'s12pt8-h16 roboto-family-font text-weight-medium mb-16 ' + config?.inputLabel?.classes"
+  [ngClass]="
+      config?.disabled || inputReadonly || formGroup?.disabled
+        ? 'input-label'
+        : 'input-label-2'
+    ">{{ config?.inputLabel?.text }}</ion-label>
   <div class="select-wrapper w-100">
     <ion-select
       appCustomSelect
@@ -33,7 +39,7 @@
         'disabled-input-ph': config?.disabled || inputReadonly || formGroup?.disabled
       }"
       [interfaceOptions]="config?.alertOptions"
-      [placeholder]="config?.placeholder"
+      [placeholder]="getPlaceholder || config?.placeholder"
       (ionChange)="selectChange()"
     >
       <ion-select-option

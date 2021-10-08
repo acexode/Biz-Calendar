@@ -32,6 +32,7 @@ import { IonSelectListOption } from 'src/app/shared/models/components/ion-select
   ],
 })
 export class SelectComponent implements OnInit, ControlValueAccessor {
+  @Input() placeholder: string;
   // Avoid custom code that may break Ionic stuff.;
   // Capture Angular parent control
   @Input() formControl: FormControl;
@@ -235,6 +236,9 @@ export class SelectComponent implements OnInit, ControlValueAccessor {
   }
   get useIcon(): boolean {
     return this.config.hasOwnProperty('useIcon') ? true : false;
+  }
+  get getPlaceholder() {
+    return this.placeholder || get(this.config, 'placeholder', '');
   }
 
 }

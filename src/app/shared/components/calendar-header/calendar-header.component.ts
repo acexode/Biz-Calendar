@@ -90,11 +90,16 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    console.log(format(new Date(), 'E d', { locale: ro }).split(' '));
+    this.calS.selectedDate.subscribe(e =>{
+      if(e){
+        this.currDay = format(new Date(e), 'E', { locale: ro });
+        this.currDate = format(new Date(e), 'd', { locale: ro });
+
+      }
+      // this.viewDate = new Date(e);
+    });
     this.calS.appointments$.subscribe(e => {
       this.totalAppt = e?.appointments.length;
-
-      console.log(this.totalAppt);
     });
     this.calS.selectedMonth.subscribe(e =>{
       this.month = e.split(' ')[0];
@@ -130,8 +135,10 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   toggleMenu(){
     this.menu.toggle();
   }
-  navigate(path){
+  navigate(path: string){
+    console.log(path.split('/')[2]);
     this.router.navigate([path]);
+    this.calS.selectedPath.next(path.split('/')[2]);
   }
   segmentChanged(id){
   }

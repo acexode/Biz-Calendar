@@ -1,5 +1,5 @@
 
-<ion-grid  *ngIf="!isTablet">
+<ion-grid   *ngIf="!isTablet">
   <ion-row  *ngFor="let ev of eventList" class="card-row">
     <ion-col class="flex flex-column pl-64 " size="12">
       <ion-text  class="ev-day current-day">{{ev.week}}, {{ev.events.length}} programari</ion-text>
@@ -20,7 +20,7 @@
                       </div>
                       <div  class="pt-4">
                         <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
-                        <ion-icon *ngFor="let icon of cal.icons" class="mr-5 event-icon" color="success" [name]="icon" ></ion-icon>   
+                        <ion-icon *ngFor="let icon of cal.icons" class="mr-5 event-icon"   [name]="icon" ></ion-icon>   
                       </div>  
                     </div>
                     <ion-text class="title">
@@ -43,9 +43,9 @@
 
     
   </ion-row>
-  <ion-row class="ev-month    text-white">
+  <!-- <ion-row class="ev-month    text-white">
     <ion-text>Aprilie 2021</ion-text>
-  </ion-row>
+  </ion-row> -->
 
 </ion-grid>
 
@@ -74,7 +74,7 @@
                       <ion-col size="4"  class="pt-10">
                         
                         <!-- <ion-icon name="today-v-2" class="mr-8" ></ion-icon> -->
-                        <ion-icon  *ngFor="let icon of cal.icons; let i = index" class="mr-5 event-icon" color="success" [name]="icon" ></ion-icon>          
+                        <ion-icon  *ngFor="let icon of cal.icons; let i = index" class="mr-5 event-icon"  [name]="icon" ></ion-icon>          
                       </ion-col>
                     </ion-row>
                     <ion-text class="title">
@@ -97,9 +97,10 @@
 
     
   </ion-row>
-  <ion-row class="ev-month    text-white">
+  <!-- <ion-row class="ev-month    text-white">
     <ion-text>Aprilie 2021</ion-text>
-  </ion-row>
+  </ion-row> -->
 
 </ion-grid>
+<ion-grid class="mh-100"></ion-grid>
 

@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { ModalController, ToastController } from '@ionic/angular';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { InfoPacientModalComponent } from 'src/app/shared/components/modal/info-pacient-modal/info-pacient-modal.component';
 import { SelectieServiciiModalComponent } from 'src/app/shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
@@ -26,35 +26,22 @@ import
   from
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
+import { RequestService } from 'src/app/core/services/request/request.service';
+import { cabinet, tipServicii } from 'src/app/core/configs/endpoints';
+import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
+import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
+import { CNAS } from 'src/app/core/models/cnas.service.model';
+import { Cuplata } from 'src/app/core/models/cuplata.service.model';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
   styleUrls: ['./adauga-programare.component.scss'],
 })
 export class AdaugaProgramareComponent implements OnInit, OnDestroy {
-  get l(): IonSelectConfig {
-    const locatie: IonSelectConfig = {
-      inputLabel: {
-        classes: '',
-        text: 'Locație',
-      },
-      forceListItems: false,
-      multiple: false,
-      disabled: false,
-      alertOptions: {
-        cssClass: '',
-      },
-      idKey: 'id',
-      labelKey: 'label',
-      useIcon: {
-        name: 'doctor',
-        classes: 'neutral-grey-medium-color'
-      }
-    };
-    return this.isAparaturaOnLine ?
-    {...locatie, placeholder: 'required'} :
-    {...locatie, placeholder: 'Opțional'};
-  }
+  @ViewChild('locaion', {read: ElementRef, static: false }) location: ElementRef;
   pacientInputConfig = inputConfigHelper({
     label: 'Pacient',
     type: 'text',
@@ -97,28 +84,26 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: 'În cabinet', id: 'În-cabinet' },
     { label: 'On-line', id: 'On-line' },
   ];
-  locatieOption = [
-    {
-      id: 'fcghhjhk',
-      label: 'Option 1'
-    },
-    {
-      id: 'kcghhjhkss',
-      label: 'Option 2'
-    }
-  ];
+  locatieOption: any[] = [];
   tipServiciiConfig: IonRadiosConfig = {
     mode: 'chip',
     inputLabel: {
-      text: 'Tip programare',
+      text: 'Tip servicii',
       classes: ''
     },
     itemClasses: 'mr-12'
   };
   tipServiciiOption: Array<IonRadioInputOption> = [
-    { label: 'Cu plată', id: 'Cuplată' },
-    { label: 'C.N.A.S.', id: 'C.N.A.S.' },
+    {
+      label: 'Cu plată',
+      id: 'Cuplată'
+    },
+    {
+      label: 'C.N.A.S.',
+      id: 'C.N.A.S.'
+    },
   ];
+  tipServiciiData: Cuplata[] | CNAS[];
 
   timeRadioConfig: IonRadiosConfig = {
     mode: 'chip',
@@ -135,7 +120,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
-  cabinetConfig = inputConfigHelper({
+  cabinetConfig = {
     label: 'Cabinet',
     type: 'text',
     placeholder: '',
@@ -146,8 +131,28 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         classes: 'neutral-grey-medium-color'
       },
       readonly: true
-    }
-  });
+    },
+    labelKey: 'cabinetName',
+    idKey: 'cabinetUID'
+  };
+  locatie: IonSelectConfig = {
+      inputLabel: {
+        classes: '',
+        text: 'Locație',
+      },
+      forceListItems: false,
+      multiple: false,
+      disabled: false,
+      alertOptions: {
+        cssClass: '',
+      },
+      idKey: 'locationUID',
+      labelKey: 'locationName',
+      useIcon: {
+        name: 'doctor',
+        classes: 'neutral-grey-medium-color'
+      }
+    };
   medicConfig: IonSelectConfig = {
     inputLabel: {
       classes: '',
@@ -227,13 +232,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       checked: false
     },
   ];
-  cabinetOption:  Array<IonRadioInputOption> = [
-    { label: 'Cabinet 1', id: 'Cabinet 1' },
-    { label: 'Cabinet 2', id: 'Cabinet 2' },
-    { label: 'Cabinet 3', id: 'Cabinet 3' },
-    { label: 'Sala de Operație 1', id: 'Sala de Operație 1' },
-    { label: 'Sala de Operație 2', id: 'Sala de Operație 2' },
-  ];
+  cabinetOption: GetCabinetsModel[] = [];
   adugaOptions:  Array<IonRadioInputOption> = [
     { label: 'O persoană', id: 'O persoană' },
     { label: 'Un grup', id: 'Un grup' },
@@ -251,9 +250,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
-    tipServicii: ['În-cabinet', [Validators.required]],
-    data: ['', [Validators.required]],
-    oraDeIncepere: ['', [Validators.required]],
+    tipServicii: ['', [Validators.required]],
+    data: ['2021-09-27', [Validators.required]],
+    oraDeIncepere: ['09:00', [Validators.required]],
     time: ['', [Validators.required]],
     cabinet: ['', [Validators.required]],
     medic:['', [Validators.required]],
@@ -262,24 +261,71 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   isWed = false;
   locatieConfigPlaceholder: string;
   recurentaDetails!: RecurentaModel;
+  getCabinets$: Subscription;
+  getCabinetScheldules$: Subscription;
+  getLocations$: Subscription;
+  getTipServices$: Subscription;
+  adaugaProgramareTipServicii$: Subscription;
+  tipServiciiParameterInitialData: Parameter = {
+    uid: '',
+    name: '',
+    code: 'clinicType',
+    value: '',
+  };
+  tipServiciiParameter$: BehaviorSubject<Parameter> = new BehaviorSubject<Parameter>(
+    {
+   ...this.tipServiciiParameterInitialData
+    }
+  );
+  getTipServicesParameter$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
     private pS: PlatformService,
     private router: Router,
+    private reqService: RequestService,
+    public toastController: ToastController,
+    private toastService: ToastService,
+    private authS: AuthService
   ) { }
+  onInitializeLoadData(): void {
+    this.getLocations(true); // get location
+    this.getCabinets(); // get cabinete
+    this.locatieFormControlProcess();
+    this.getTipsOptionTypeFromParameter();
+  }
 
-  ngOnInit() {
-    // this.presentNewPacientModal();
-    this.process();
+  ngOnInit(): void {
+    // initialize load
+    this.onInitializeLoadData();
+    /*  */
+
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
-    this.adaugaProgramareFormGroup$ = this.adaugaProgramareFormGroup.get('tipprogramare').valueChanges
+
+    this.adaugaProgramareFormGroup$ = this.adaugaProgramareFormGroup
+      .get('tipprogramare').valueChanges
       .pipe(distinctUntilChanged())
       .subscribe(data => {
-        this.process(data);
+        this.locatieFormControlProcess(data);
       });
+
+    this.adaugaProgramareTipServicii$ = this.adaugaProgramareFormGroup
+      .get('tipServicii').valueChanges
+      .pipe(distinctUntilChanged())
+      .subscribe(data => {
+        this.getTipServicii(data);
+      });
+  }
+  async presentCabinent() {
+    const modal = await this.modalController.create({
+      component: CabinetComponent,
+      cssClass: 'biz-modal-class width-md-100',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
   }
   async presentNewPacientModal() {
     const modal = await this.modalController.create({
@@ -300,17 +346,21 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       },
     });
      await modal.present();
-      const {data} = await modal.onWillDismiss();
-     const { radioValue } = data;
-     switch (radioValue) {
-       case this.adugaOptions[0].label:
-         this.presentNewPacientModal();
-         break;
-       case this.adugaOptions[1].label:
-         this.presentGrupModal();
-         break;
-       default:
-         break;
+     const { data } = await modal.onWillDismiss();
+     if (data) {
+       const { radioValue } = data;
+      if (radioValue) {
+          switch (radioValue) {
+            case this.adugaOptions[0].label:
+              this.presentNewPacientModal();
+              break;
+            case this.adugaOptions[1].label:
+              this.presentGrupModal();
+              break;
+            default:
+              break;
+          }
+        }
      }
   }
   async presentGrupModal() {
@@ -342,20 +392,34 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.adaugaProgramareFormGroup.patchValue({pacient: data});
     }
   }
-  async presentModalRadio() {
-    const modal = await this.modalController.create({
-      component: BizSearchableRadioModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
-      componentProps: {
-        options: this.cabinetOption
-      },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    const {dismissed, radioValue} = data;
-    if(dismissed && radioValue !== '') {
-      this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+  async presentCabinetModalRadio() {
+    if (this.cabinetOption.length < 1) {
+      this.toastService.presentToastWithDurationDismiss('Please wait.', 'success');
+      this.getCabinets(true);
+    } else {
+      if (!this.dataAndOraDeIncepereNotFilledStatus) {
+          const toCompareDate = new Date(
+          `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
+        );
+        const modal = await this.modalController.create({
+          component: BizSearchableRadioModalComponent,
+          cssClass: 'biz-modal-class',
+          backdropDismiss: false,
+          componentProps: {
+            options: this.cabinetOption,
+            config: this.cabinetConfig,
+            toCompareDate,
+          },
+        });
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+        const { dismissed, radioValue } = data;
+        if (dismissed && radioValue !== '') {
+          this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+        }
+      } else {
+        this.toastService.presentToastWithDurationDismiss('Completează data și ora de începere de mai sus!');
+      }
     }
   }
   async presentInfoPacientModalModal() {
@@ -377,6 +441,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       },
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
   }
   async presentModalRecurentaComponentModal() {
     const modal = await this.modalController.create({
@@ -407,7 +473,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.adaugaProgramareFormGroup.patchValue({medic: data});
     }
   }
-  process(data: string = this.locatieFormControl.value) {
+  locatieFormControlProcess(data: string = this.locatieFormControl.value) {
     if (data === 'On-line') {
       this.isAparaturaOnLine = true;
       this.adaugaProgramareFormGroup.controls.locatie.clearValidators();
@@ -418,6 +484,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.locatieConfigPlaceholder = 'Required';
     }
     this.locatieFormControl.updateValueAndValidity();
+  }
+  get locatiePlaceHolder(): string {
+    return this.locatieConfigPlaceholder || '';
   }
   get isAparaturaOnLineStatus() {
     return this.isAparaturaOnLine;
@@ -440,8 +509,149 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   save(): void {
 
   }
+  get getChoosenCabinet(): string {
+    if (this.cabinetOption.length > 0) {
+      const getCabinet: any = this.cabinetOption.find(
+        (v) => v.cabinetUID === this.adaugaProgramareFormGroup.value.cabinet
+      );
+      if(typeof getCabinet !== 'undefined') {
+        return getCabinet.cabinetName;
+      } else {
+        return '';
+      }
+    } else {
+      return '';
+    }
+  }
+  getCabinets(callCabinetModal: boolean = false) {
+    this.getCabinets$ = this.reqService.get(cabinet.getCabinets)
+      .subscribe(
+        (d: any) => {
+          this.cabinetOption = d;
+          if (callCabinetModal) {
+            this.presentCabinetModalRadio();
+          }
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get available cabinet at this instance. Please check your network and try again. C01'
+        )
+      );
+  }
+  getLocations(calLocationModal: boolean = false) {
+    this.getLocations$ = this.reqService.get(cabinet.getCabinets)
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+          this.locatieOption = d;
+          if (calLocationModal) {
+            this.location.nativeElement.focus();
+            // this.locatieFormControl.nativeElement.focus();
+          }
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get available locations at this instance. Please check your network and try again. C02'
+        )
+      );
+  }
+  getTipServiciiType(
+    type: string = this.tipServiciiOption[0].id,
+    optionalData: any = {}
+  ): Observable<Array<Cuplata | CNAS>> {
+    switch (type) {
+      case  this.tipServiciiOption[0].id:
+        return this.reqService
+          .post<Cuplata[]>(tipServicii.getMedicalServices, optionalData);
+      case this.tipServiciiOption[1].id:
+        return this.reqService
+          .post<CNAS[]>(tipServicii.getClinicCNASMedicalServices, optionalData);
+      default:
+        return this.reqService
+          .post<Cuplata[]>(tipServicii.getMedicalServices, optionalData);
+    }
+  }
+  getTipServicii(data: string = this.tipServiciiOption[0].id) {
+    let optionData =  {
+      // serviceName: 'string',
+      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      // specialityCode: 'string',
+      // locationUID: 'ec9faa71-e00a-482a-801d-520af369de85',
+    };
+    if (!this.isAparaturaOnLineStatus && this.locatieFormControl.value === '') {
+      this.toastService
+        .presentToastWithDurationDismiss(
+          'Location is Required'
+      );
+      // clear input
+      this.adaugaProgramareFormGroup.patchValue({tipServicii: ''});
+    } else {
+      this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+      if (this.locatieFormControl.value !== '') {
+        optionData = {
+          locationUID: this.locatieFormControl.value
+        };
+      }
+      this.getTipServices$ = this.getTipServiciiType(data, optionData)
+    .subscribe(
+      (d: Cuplata[] | CNAS[]) => {
+        console.log(d);
+        this.tipServiciiData = d;
+        this.toastService.dismissToast();
+      },
+      _err => this.toastService
+        .presentToastWithDurationDismiss('Unable to get available locations at this instance. Please check your network and try again. C02')
+    );
+    }
+
+  }
+  get tipServiciiFormGroup() {
+    return this.adaugaProgramareFormGroup.get('tipServicii') as FormControl;
+  }
+  getTipsOptionTypeFromParameter(): void {
+    this.getTipServicesParameter$ = this.authS.getParameterState()
+      .subscribe(
+        (v: ParameterState) => {
+          if (v.parameters.length > 0) {
+            const getTipsParameter = v.parameters.filter(
+              (p: Parameter) => p.code === this.tipServiciiParameter$.value.code
+            );
+            if (getTipsParameter.length > 0) {
+              this.tipServiciiParameter$.next({
+                ...getTipsParameter[0],
+                value: getTipsParameter[0].value
+              });
+            }
+          }
+        }
+      );
+  }
+  get availbleTipServiciiOptions(): Array<IonRadioInputOption>{
+    const tipServicciParameterValue = Number(this.tipServiciiParameter$.value.value);
+    switch (tipServicciParameterValue) {
+      case 1:
+        return [
+          this.tipServiciiOption[1] // return C.N.A.S
+        ];
+      case 2:
+        return [
+          this.tipServiciiOption[0]
+        ]; // return Cuplata
+      case 3:
+        return this.tipServiciiOption; // return all
+
+      default:
+        return [
+          this.tipServiciiOption[1] // return C.N.A.S
+        ];
+    }
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
+    unsubscriberHelper(this.getCabinets$);
+    unsubscriberHelper(this.getCabinetScheldules$);
+    unsubscriberHelper(this.getLocations$);
+    unsubscriberHelper(this.getTipServices$);
+    unsubscriberHelper(this.adaugaProgramareTipServicii$);
+    unsubscriberHelper(this.getTipServicesParameter$);
   }
 
 }

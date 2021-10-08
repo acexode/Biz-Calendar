@@ -6,11 +6,13 @@
     &.error {
       --background: var(--ion-primary-error-color) !important;
       --color: #000 !important;
+      color: #000 !important;
     }
 
     &.success {
       --background: var(--ion-primary-color-step-100) !important;
       --color: #ffffff !important;
+      color: #fff !important;
     }
 
     --border-radius: 0;

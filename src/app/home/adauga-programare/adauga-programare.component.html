@@ -107,7 +107,9 @@
 
         <div class="w-100 px-32 pb-32 bottom-1px-solid-grey-default-color">
           <app-select
-          [config]="l"
+          #locaion
+          [placeholder]="locatiePlaceHolder"
+          [config]="locatie"
           formControlName="locatie"
           [options]="locatieOption"
           class="w-100"
@@ -122,7 +124,7 @@
 
             <app-radios
                 [config]="tipServiciiConfig"
-                [options]="tipServiciiOption"
+                [options]="availbleTipServiciiOptions"
                 formControlName="tipServicii"
                 class="w-100"
               >
@@ -132,7 +134,11 @@
 
           <div class="w-100 px-32">
 
-            <app-add-service-selection></app-add-service-selection>
+            <app-add-service-selection
+              [tipServicesData]="tipServiciiData"
+              [serviceType]="tipServiciiFormGroup.value"
+            >
+            </app-add-service-selection>
 
           </div>
 
@@ -161,12 +167,13 @@
           <div class="w-100 px-32 pb-32">
 
             <ng-container>
-              <div class="biz-custom-select-div" (click)="presentModalRadio()">
+              <div class="biz-custom-select-div" (click)="presentCabinetModalRadio()">
                 <ion-label>Cabinet</ion-label>
                 <div [class]="'biz-custom-select border-light-grey'">
                   <div class="input-select-display">
+                    <!-- formControlName="cabinet" -->
 
-                    <input type="text" formControlName="cabinet" readonly>
+                    <input type="text" [value]="getChoosenCabinet" readonly>
 
                   </div>
                   <div class="icon">

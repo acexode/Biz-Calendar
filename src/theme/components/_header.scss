@@ -23,6 +23,7 @@
 
         ion-buttons {
           margin-inline-start: 0 !important;
+
           ion-icon {
             margin-right: 0 !important;
           }
@@ -35,8 +36,21 @@
         ion-button {
           margin: 0 !important;
         }
+
+
       }
 
+      @media (min-width: $desktop-width) {
+        &.no-border-lg {
+          border: none !important;
+        }
+
+      }
+
+    }
+
+    &.no-box-shadow {
+      box-shadow: none !important;
     }
   }
 }

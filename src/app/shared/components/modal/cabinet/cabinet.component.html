@@ -1,0 +1,99 @@
+<ion-content [scrollEvents]="true" [fullscreen]="true">
+  <div class="modal-div-body">
+
+    <div>
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        [headerTemplate]="customHeaderTemplate"
+        [events]="events"
+        [excludeDays]="excludeDays"
+        [refresh]="refresh"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
+      [hourSegmentTemplate]="hourSegmentTemplate"
+        (beforeViewRender)="beforeWeekViewRender($event)"
+        >
+        </mwl-calendar-week-view>
+    </div>
+
+    </div>
+
+</ion-content>
+
+
+
+<!-- header Template -->
+<ng-template
+  #customHeaderTemplate
+  let-days="days"
+  let-locale="locale"
+  let-dayHeaderClicked="dayHeaderClicked"
+  let-eventDropped="eventDropped"
+  let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate"
+  let-dragEnter="dragEnter">
+
+  <div class="modal-div-header white-bg">
+    <ion-header class="header-type-a w-lg-600px no-border-lg ion-no-border no-box-shadow" [translucent]="true" mode="md">
+      <ion-toolbar class="ion-no-padding">
+
+        <ion-buttons slot="start" class="slot-start" mode="md" (click)="closeModal()">
+          <ion-icon name="arrow-left" class="icon-24 black-color" slot="icon-only"></ion-icon>
+        </ion-buttons>
+
+        <ion-title class="s20-h28 roboto-family-font text-weight-500 ls-0">Cabinet 1</ion-title>
+
+        <div slot="end">
+          <ion-icon name="close" class="icon-24 black-color" slot="icon-only" (click)="closeModal()"></ion-icon>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+      <div class="w-100 mt-22 mb-6 ml-48 ml-md-48 ml-lg-100">
+        <ion-text>{{ dd }}</ion-text>
+      </div>
+    <div class="w-100 cal-day-headers" role="row">
+
+      <div class="w-100 cal-header"
+      *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
+      [class.cal-past]="day.isPast"
+        [class.cal-today]="day.isToday"
+        [class.cal-future]="day.isFuture"
+        [class.cal-weekend]="day.isWeekend"
+        [ngClass]="day.cssClass"
+        dragOverClass="cal-drag-over"
+        tabindex="0"
+        role="columnheader"
+        >
+        <span [ngClass]="day.isToday ? '' : 'caps'">
+          {{ day.date | calendarDate: 'weekViewColumnHeader':locale | uppercase
+          }}
+        </span><br />
+        <span [ngClass]="day.isToday ? 'bold' : ''" class="day-nr">{{
+          day.date | date : 'd'
+          }}</span>
+      </div>
+    </div>
+
+  </div>
+
+
+</ng-template>
+
+
+<ng-template
+  #hourSegmentTemplate
+  let-label="label"
+  let-segment="segment"
+  let-isTimeLabel="isTimeLabel"
+>
+  <ion-row [class]="'b-bottom pl-0 h-100 ' + (!segment.isStart && ' cal-after-hour-start ')">
+    <ion-col>
+      <ion-label [class]="'h-100 w-40 cal-time'" *ngIf="isTimeLabel">
+
+        {{segment.date | hour}}</ion-label>
+    </ion-col>
+     <!--<ion-col *ngIf="!isTimeLabel">
+      jsfhsf
+    </ion-col>-->
+  </ion-row>
+</ng-template>
