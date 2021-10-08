@@ -41,30 +41,24 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       idKey: 'uid'
   };
   disableAddMemberButton = true;
+  loading = false;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
     private reqS: RequestService,
      private toastService: ToastService,
   ) { }
+  toggleLoadingState() {
+    this.loading = !this.loading;
+  }
 
   ngOnInit() {
     this.getPersons();
   }
-  add() {
-    if (this.formGroupValidity) {
-      this.closeModal({
-      first: this.componentFormGroup.value.numeGrup,
-      second: this.selectedValue.length,
-      third: ' ',
-      value: 'this.componentFormGroup.value.numeGrup',
-    });
-    }
-  }
-  closeModal(data: any = null) {
+  closeModal(groupCreated: boolean = false) {
       this.modalController.dismiss({
-      dismissed: true,
-      data,
+        dismissed: true,
+        groupCreated,
     });
   }
   get formGroupValidity() {
@@ -87,7 +81,6 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
     this.selectedValue = data?.checkedValue;
   }
   async presentPacientViewModal(item: Person) {
@@ -106,7 +99,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
           this.presentNewPacientModal(data?.personData);
           break;
         case 'delete':
-          this.unCheckItem(data?.data?.value);
+          this.unCheckItem(data?.personData?.uid);
           break;
         default:
           break;
@@ -132,7 +125,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       telephone: Number(phone),
       email,
       cnp: pid,
-      oras: cityID || '',
+      oras: cityID,
     };
     const modal = await this.modalController.create({
       component: NewPacientModalComponent,
@@ -145,11 +138,10 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
     await modal.present();
   }
-  unCheckItem(data: string): void {
-    console.log(data);
-    if (typeof data !== null && data !== '') {
+  unCheckItem(uid: string): void {
+    if (typeof uid !== null && uid !== '') {
       const indexOfData = this.selectedValue.findIndex(
-        (v: any) => v === data);
+        (v: any) => v === uid);
       if (indexOfData > -1) {
        this.selectedValue.splice(indexOfData, 1);
       }
@@ -157,13 +149,13 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
   }
   createGroup() {
     if (this.componentFormGroup.valid) {
+       this.toggleLoadingState();
       const payload: CreateGroup = {
         groupName: this.componentFormGroup.value.numeGrup,
       };
       this.createGroup$ = this.reqS.post<any>(group.createGroup, payload)
         .subscribe(
           (d: any) => {
-            console.log(d);
             this.addMemberToGroup(d.insertedUID);
           },
           _err => this.toastService.presentToastWithDurationDismiss(
@@ -183,11 +175,15 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     this.reqS.post<any>(group.addMembersToGroup, payload)
       .subscribe(
         (d: any) => {
-          console.log(d);
+          this.toggleLoadingState();
+          this.closeModal(true);
         },
-        _err => this.toastService.presentToastWithDurationDismiss(
+        _err => {
+          this.toggleLoadingState();
+          this.toastService.presentToastWithDurationDismiss(
             'Unable to add memeber to group at this instance. Please check your network and try again. C09'
-          )
+          );
+        }
 
       );
 
@@ -200,7 +196,6 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     })
       .subscribe(
         (d: any) => {
-          console.log(d);
           // enable button
           this.disableAddMemberButton = false;
           /*  */

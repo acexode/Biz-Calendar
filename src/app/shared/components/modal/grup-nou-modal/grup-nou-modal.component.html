@@ -14,8 +14,14 @@
 
           <div slot="end">
             <ion-button class="mr-8" [color]="(formGroupValidity ? 'biz-primary' : 'biz-disabled-primary')" size="small"
-              (click)="createGroup()">
-              SALVEAZĂ
+              (click)="createGroup()" [disabled]="!formGroupValidity || loading">
+
+              <span>SALVEAZĂ</span>
+
+              <div class="ml-8" *ngIf="loading">
+                <ion-spinner name="crescent" class="icon-20"></ion-spinner>
+              </div>
+
             </ion-button>
           </div>
         </ion-toolbar>

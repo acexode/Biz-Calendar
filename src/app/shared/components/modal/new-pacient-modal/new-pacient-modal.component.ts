@@ -110,16 +110,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
 
-  judetOption = [
-    {
-      id: 'Alba',
-      label: 'Alba'
-    },
-    {
-      id: 'Arad',
-      label: 'Arad'
-    }
-  ];
+  judetOption = [];
   canalDePromovareConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
@@ -159,7 +150,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
   orasOptions: any;
-  addMoreField = false; // change this later
+  addMoreField = true; // change this later
   componentFormGroup: FormGroup = this.fb.group({
     nume: ['', [Validators.required]],
     preNume: ['', [Validators.required]],
@@ -168,9 +159,9 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     telephone: ['', Validators.pattern('^[0-9]*$')],
     email: ['', Validators.email],
     cnp:'',
-    judet: [{value: '', disabled: true}],
-    canalDePromovare: '',
+    judet: [{ value: '', disabled: true }],
     oras: [{value: '', disabled: true}],
+    canalDePromovare: '',
   });
   loading = false;
   addUser$: Subscription;
@@ -186,20 +177,26 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.data) {
-      console.log(this.data);
       this.componentFormGroup.patchValue(this.data);
-    }
-    this.judet$ = this.componentFormGroup.get('judet').valueChanges
+      if (this.data.oras && this.data.oras !== 0) {
+        this.getCitiesByCityId(this.data.oras);
+      } else {
+        // there is need for user to updatte counttries
+        this.getCountries();
+      }
+    } // check for changes in counry field
+      this.judet$ = this.componentFormGroup.get('judet').valueChanges
       .pipe(
         distinctUntilChanged()
       )
       .subscribe(
         d => {
           if (d) {
-            this.getCities(d);
+            this.getCitiesByCountryId(d);
           }
         }
-    );
+      );
+
   }
   async presentToast(
     message: string = 'message',
@@ -213,10 +210,11 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     });
     toast.present();
   }
-  getCountries() {
-    this.getCountries$ = this.reqS.post(location.getCountries, {
-      searchString: '',
-    })
+  getCountries(toUpdateCountyID: number = 0) {
+    this.getCountries$ = this.reqS.post(location.getCountries,
+      {
+        searchString: '',
+      })
       .subscribe(
         (d: any) => {
           this.judetOption = d.counties.map((res: any) =>
@@ -226,17 +224,29 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
                 id: res.id,
               }));
           this.componentFormGroup.controls?.judet?.enable();
+          if (toUpdateCountyID) {
+            this.componentFormGroup.patchValue({judet: toUpdateCountyID});
+          }
         },
         _err => this.presentToast('unable to get countries at this time. Please Check your newtwork and try again.')
       );
   }
-  getCities(
-    id: number = this.componentFormGroup.value.judet,
-    searchString: string = '') {
-    this.getCities$ = this.reqS.post(location.getCities, {
-      id,
+  getCitiesByCountryId(
+    countyID: number = this.componentFormGroup.value.judet,
+    searchString: string = ''
+  ) {
+    this.getCities({
+      countyID,
       searchString,
-    })
+    });
+  }
+  getCitiesByCityId(cityID: number) {
+     this.getCities({
+      cityID
+    });
+  }
+  getCities(payload: any = {}) {
+    this.getCities$ = this.reqS.post(location.getCities, payload)
     .subscribe(
       (d: any) => {
         this.orasOptions = d.cities.map((res: any) =>
@@ -245,6 +255,9 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
               label: res.name,
         }));
         this.componentFormGroup.controls?.oras?.enable();
+        if(this.judetOption.length < 1){
+          this.getCountries(d?.cities?.[0].countyID);
+        }
       },
       _err => this.presentToast('An error occur while trying to get cities at this time. Please Check your newtwork and try again.')
     );
@@ -269,7 +282,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
             )
           ), { fractionDigits: 3 }),
         phone: get(this.componentFormGroup.value, 'telephone', ''),
-        cityID: get(this.data, 'cityId', null) || Number(get(this.componentFormGroup.value, 'cityId', 0)),
+        cityID: Number(get(this.componentFormGroup.value, 'oras', 0)),
         genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
         isActive: true,
         wasUpdateByMobile: true,

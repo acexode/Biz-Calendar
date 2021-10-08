@@ -77,6 +77,7 @@ export class PacientComponent implements OnInit, OnDestroy {
   groupList$: BehaviorSubject<Array<GroupList>> = new BehaviorSubject<Array<GroupList>>([]);
   list$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   getGroups$: Subscription;
+  isFetchingGroups = false;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -103,14 +104,16 @@ export class PacientComponent implements OnInit, OnDestroy {
     });
     await modal.present();
      const { data } = await modal.onWillDismiss();
-     if (data.dismis) {
+     if (data?.dismissed && data?.groupCreated) {
+       this.currentSegement = this.segment.two;
+       this.getGroups(true);
      }
   }
   ngOnInit(): void {
     // load GetPersons
-    this.getPersons();
+    // this.getPersons();
     // get groups
-    this.getGroups();
+    // this.getGroups();
     // load check list to list
     this.updateData();
     //
@@ -211,7 +214,7 @@ export class PacientComponent implements OnInit, OnDestroy {
 
       );
   }
-  getGroups() {
+  getGroups(isFetchingGroups: boolean = this.isFetchingGroups) {
     this.getGroups$ = this.reqS.get<any>(group.getGroups)
       .subscribe(
         (d: GroupList[]) => {
@@ -223,10 +226,14 @@ export class PacientComponent implements OnInit, OnDestroy {
             // call update
            this.updateData();
           }
+          this.isFetchingGroups = false;
         },
-        _err => this.toastService.presentToastWithDurationDismiss(
-          'Unable to get group at this instance. Please check your network and try again. C07'
-        )
+        _err => {
+          this.toastService.presentToastWithDurationDismiss(
+            'Unable to get group at this instance. Please check your network and try again. C07'
+          );
+          this.isFetchingGroups = false;
+        }
 
       );
   }

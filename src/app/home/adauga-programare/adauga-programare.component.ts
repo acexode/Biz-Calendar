@@ -290,9 +290,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
+    this.presentPacient();
     /* services */
-    this.getLocations();
-    this.getCabinets();
+    // this.getLocations();
+    // this.getCabinets();
     /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
