@@ -111,9 +111,9 @@ export class PacientComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     // load GetPersons
-    // this.getPersons();
+    this.getPersons();
     // get groups
-    // this.getGroups();
+    this.getGroups();
     // load check list to list
     this.updateData();
     //
