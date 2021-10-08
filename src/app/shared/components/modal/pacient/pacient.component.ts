@@ -77,7 +77,8 @@ export class PacientComponent implements OnInit, OnDestroy {
   groupList$: BehaviorSubject<Array<GroupList>> = new BehaviorSubject<Array<GroupList>>([]);
   list$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   getGroups$: Subscription;
-  isFetchingGroups = false;
+  isFetchingGroups = true;
+  isFetchingPerson = true;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -93,7 +94,12 @@ export class PacientComponent implements OnInit, OnDestroy {
       componentProps: {},
     });
     await modal.present();
-    const d = await modal.onWillDismiss();
+    const { data } = await modal.onWillDismiss();
+     if (data?.dismissed && data?.isPersonCreated) {
+       this.currentSegement = this.segment.one;
+       this.isFetchingPerson = true;
+       this.getPersons();
+     }
   }
    async presentGrupNouModal() {
     const modal = await this.modalController.create({
@@ -106,7 +112,8 @@ export class PacientComponent implements OnInit, OnDestroy {
      const { data } = await modal.onWillDismiss();
      if (data?.dismissed && data?.groupCreated) {
        this.currentSegement = this.segment.two;
-       this.getGroups(true);
+       this.isFetchingGroups = true;
+       this.getGroups();
      }
   }
   ngOnInit(): void {
@@ -132,7 +139,6 @@ export class PacientComponent implements OnInit, OnDestroy {
   updateData(data: any = this.currentSegement) {
     switch (data) {
       case this.segment.one:
-        console.log(this.personsList$.value);
         if (this.personsList$.value.length > 0) {
           this.list$.next(
             [...this.personsList$.value]
@@ -162,7 +168,6 @@ export class PacientComponent implements OnInit, OnDestroy {
      return this.currentSegement;
   }
   submit(data: any) {
-    console.log(data);
     this.modalController.dismiss({
       dismissed: true,
       data,
@@ -177,7 +182,6 @@ export class PacientComponent implements OnInit, OnDestroy {
     });
   }
   searching(st: string) {
-    console.log(st);
     switch (this.currentSegement) {
       case this.segment.one:
         return this.list$.value
@@ -199,7 +203,6 @@ export class PacientComponent implements OnInit, OnDestroy {
     })
       .subscribe(
         (d: any) => {
-          console.log(d);
           this.personsList$.next(
             [...d.persons]
           );
@@ -207,18 +210,21 @@ export class PacientComponent implements OnInit, OnDestroy {
             // call update
            this.updateData();
           }
+          this.isFetchingPerson = false;
         },
-        _err => this.toastService.presentToastWithDurationDismiss(
-          'Unable to get persons at this instance. Please check your network and try again. C06'
-        )
+        _err => {
+          this.toastService.presentToastWithDurationDismiss(
+            'Unable to get persons at this instance. Please check your network and try again. C06'
+          );
+          this.isFetchingPerson = false;
+        }
 
       );
   }
-  getGroups(isFetchingGroups: boolean = this.isFetchingGroups) {
+  getGroups() {
     this.getGroups$ = this.reqS.get<any>(group.getGroups)
       .subscribe(
         (d: GroupList[]) => {
-          console.log(d);
           this.groupList$.next(
             [...d]
           );

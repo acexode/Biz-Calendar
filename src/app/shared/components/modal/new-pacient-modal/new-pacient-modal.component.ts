@@ -150,7 +150,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
   orasOptions: any;
-  addMoreField = true; // change this later
+  addMoreField = false;
   componentFormGroup: FormGroup = this.fb.group({
     nume: ['', [Validators.required]],
     preNume: ['', [Validators.required]],
@@ -168,6 +168,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   getCountries$: Subscription;
   getCities$: Subscription;
   judet$: Subscription;
+  personData: any;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -180,11 +181,11 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       this.componentFormGroup.patchValue(this.data);
       if (this.data.oras && this.data.oras !== 0) {
         this.getCitiesByCityId(this.data.oras);
-      } else {
-        // there is need for user to updatte counttries
-        this.getCountries();
       }
-    } // check for changes in counry field
+    }
+
+      this.getCountries();
+
       this.judet$ = this.componentFormGroup.get('judet').valueChanges
       .pipe(
         distinctUntilChanged()
@@ -288,6 +289,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         wasUpdateByMobile: true,
         mobileUpdateDate:  formatRFC3339(new Date(), { fractionDigits: 3 })
       };
+      this.personData = d;
 
       let postAction: Observable<any>;
       if (this.isEdit && this.data?.uid) {
@@ -303,7 +305,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
           // present toast and close modal
           await this.presentToast('Sucessful', 'success');
           setTimeout(() => {
-            this.closeModal();
+            this.closeModal(true);
           }, 3000);
         },
         _err => {
@@ -314,10 +316,11 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  closeModal() {
+  closeModal(isPersonCreated: boolean = false) {
       this.modalController.dismiss({
       dismissed: true,
-      data: null
+      isPersonCreated,
+      data: this.personData ||= null
     });
   }
   get formGroupValidity() {

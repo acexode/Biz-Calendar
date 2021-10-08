@@ -42,6 +42,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
   };
   disableAddMemberButton = true;
   loading = false;
+  personsGroupUID = '';
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -59,6 +60,10 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       this.modalController.dismiss({
         dismissed: true,
         groupCreated,
+        data: this.personsGroupUID !== '' ? {
+          groupName: this.componentFormGroup.value.numeGrup,
+          personsGroupUID: this.personsGroupUID,
+        } : null
     });
   }
   get formGroupValidity() {
@@ -156,6 +161,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       this.createGroup$ = this.reqS.post<any>(group.createGroup, payload)
         .subscribe(
           (d: any) => {
+            this.personsGroupUID = d.insertedUID;
             this.addMemberToGroup(d.insertedUID);
           },
           _err => this.toastService.presentToastWithDurationDismiss(
@@ -189,7 +195,6 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
 
   }
   getPersons() {
-    console.log('get persons');
     this.getPersons$ = this.reqS.post<any>(persons.getPersons, {
       searchString: '',
       // personUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6'

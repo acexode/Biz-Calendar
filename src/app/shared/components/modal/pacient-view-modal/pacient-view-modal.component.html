@@ -140,7 +140,12 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            <!-- Bacău, Bacău -->
+            <ng-container *ngIf="addressLoader; else loading">
+              {{userAddress || 'user have no address'}}
+            </ng-container>
+            <ng-template #loading>
+              <ion-spinner name="dots" color="biz-primary" class="icon-20"></ion-spinner>
+            </ng-template>
           </ion-label>
         </div>
       </div>

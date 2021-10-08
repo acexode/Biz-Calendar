@@ -38,7 +38,7 @@
     <div *ngIf="currentSegement === segment.one">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="(this.list$ | async)?.length > 0; else loadingTemplate">
+          <div *ngIf="(this.list$ | async)?.length > 0 && !isFetchingPerson; else loadingTemplate">
             <ion-list>
 
               <ion-item *ngFor="let item of this.list$ | async as items" (click)="submit(item)">
@@ -83,7 +83,7 @@
     <div *ngIf="currentSegement === segment.two">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="(groupList$ | async)?.length > 0 || isFetchingGroups; else loadingTemplate">
+          <div *ngIf="(groupList$ | async)?.length > 0 && !isFetchingGroups; else loadingTemplate">
             <ion-list>
 
               <ion-item *ngFor="let grupuri of this.list$ | async as items" (click)="submit(grupuri)">
