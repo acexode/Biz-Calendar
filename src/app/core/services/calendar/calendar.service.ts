@@ -24,6 +24,7 @@ export class CalendarService {
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
       console.log(e);
       if(e !== null){
+        console.log('fetch')
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
 
       }
@@ -40,6 +41,7 @@ export class CalendarService {
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
+      console.log(path);
       if(path !== null){
         if(path === 'lista'){
           obj.StartDate = startOfYear(new Date());
@@ -82,7 +84,6 @@ export class CalendarService {
     });
   }
   async  getAppointments(data = null){
-    // console.log(data);
     if(data !== null){
       const phy: any = await this.getUserPhysicians().toPromise();
       const obj: any = {
