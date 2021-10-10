@@ -128,7 +128,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       cityID,
         uid
     } = personData;
-    const data = {
+    const d = {
       nume: firstName,
       preNume: lastName,
       dateNasterii: format(new Date(birthDate), 'yyyy-MM-dd'),
@@ -143,12 +143,17 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       cssClass: 'biz-modal-class',
       backdropDismiss: true,
       componentProps: {
-        data,
+        data: d,
         isEdit: true,
         uid,
       },
     });
     await modal.present();
+    const { data } = await modal.onWillDismiss();
+    console.log(data);
+    if (data?.dismissed && data?.isPersonUpdated) {
+      this.getPersons();
+     }
   }
   unCheckItem(uid: string): void {
     if (typeof uid !== null && uid !== '') {

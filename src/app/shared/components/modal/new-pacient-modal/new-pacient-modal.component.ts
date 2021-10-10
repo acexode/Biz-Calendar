@@ -305,7 +305,12 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
           // present toast and close modal
           await this.presentToast('Sucessful', 'success');
           setTimeout(() => {
-            this.closeModal(true);
+            if(this.isEdit){
+             this.closeModal(false, true);
+            }else{
+              this.closeModal(true);
+            }
+
           }, 3000);
         },
         _err => {
@@ -317,11 +322,15 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  closeModal(isPersonCreated: boolean = false) {
+  closeModal(
+    isPersonCreated: boolean = false,
+    isPersonUpdated: boolean = false
+  ) {
       this.modalController.dismiss({
-      dismissed: true,
-      isPersonCreated,
-      data: this.personData ||= null
+        dismissed: true,
+        isPersonCreated,
+        isPersonUpdated,
+        data: this.personData ||= null
     });
   }
   get formGroupValidity() {
