@@ -1,4 +1,3 @@
-import { NumarDeProgramariComponent } from './../shared/components/numar-de-programari/numar-de-programari.component';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { PlatformService } from '../core/services/platform/platform.service';
 
 import { ChartOptions } from 'chart.js';
+import { NumarDeProgramariComponent } from '../shared/components/numar-de-programari/numar-de-programari.component';
 
 @Component({
   selector: 'app-data-statistice',
@@ -34,31 +34,43 @@ export class DataStatisticePage implements OnInit {
   list = [
     {
       label:'Număr de programări',
+      value: 'numarProgram',
+      type: 'line',
       icon: 'bar-chart',
     },
     {
       label:'Încasări',
+      value: 'incasari',
+      type: 'pie',
       icon: 'paid',
     },
     {
       label:'Servicii C.N.A.S. vs. Cu plată',
+      value: 'cnasCuPlata',
+      type: 'pie',
       icon: 'privat',
     },
     {
       label:'Programări active vs. anulate',
+      value: 'activeProgram',
+      type: 'pie',
       icon: 'default',
     },
     {
       label:'Programări vs. consultații efectuate',
+      value: 'consultProgram',
+      type: 'pie',
       icon: 'consult',
     },
     {
       label:'Pacienți noi vs. recurenți',
+      value: 'pacientRecurent',
+      type: 'pie',
       icon: 'users',
     }
   ];
 
-  selected = this.list[0].label;
+  selected = this.list[1].label;
 
   dougnutStats = [
     {
@@ -84,11 +96,11 @@ export class DataStatisticePage implements OnInit {
     },
   ];
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
-    numar: this.list[0].label,
+    tipDate: this.list[0].label,
     month: this.months[0]
   });
   isWed = false;
-
+  chartType = 'line';
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -116,8 +128,9 @@ export class DataStatisticePage implements OnInit {
     modal.onDidDismiss()
     .then((data) => {
       console.log(data);
+      this.chartType = data.data.type;
       console.log(data.data.label);
-      this.adaugaProgramareFormGroup.get('numar').setValue(data.data.label);
+      this.adaugaProgramareFormGroup.get('tipDate').setValue(data.data.label);
   });
     await modal.present();
   }
