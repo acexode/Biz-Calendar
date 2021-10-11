@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { physicians } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { RequestService } from 'src/app/core/services/request/request.service';
@@ -111,26 +111,34 @@ export class MedicModalComponent implements OnInit, OnDestroy {
     // load check list to list
     //
     this.subscriptions.add(this.searchForm.valueChanges
-      .pipe(distinctUntilChanged()) // makes sure the value has actually changed.
+      .pipe(
+        distinctUntilChanged(),
+         debounceTime(1000) // debounce value
+      ) // makes sure the value has actually changed.
       .subscribe(
         data => {
-          /* if (data.search !== '') {
-            this.list = this.searching(data.search);
+          console.log(data.search);
+          if (data.search !== '') {
+            // this.list = this.searching(data.search);
+            this.getTipServiciiType(
+              this.medicOptionFormControl.value,
+              data.search
+            );
           } else {
-            this.list = this.medicData;
-          } */
+            // this.list = this.medicData;
+          }
         }
     ));
-    this.medicOptionTipSubscription$ = this.componentFormGroup
-      .get('medicOptionTip')
+    this.medicOptionTipSubscription$ = this.medicOptionFormControl
       .valueChanges
       .subscribe(
         b => {
-          this.toastService.dismissToast();
-          this.isFetching = true;
           this.getTipServiciiType(b);
         }
       );
+  }
+  get medicOptionFormControl() {
+    return this.componentFormGroup.get('medicOptionTip');
   }
   submit(data: any) {
     this.modalController.dismiss({
@@ -186,9 +194,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       );
   }
-  getThirdPartyPhysicians() {
+  getThirdPartyPhysicians(searchString: string) {
     const payload = {
-       name: 'Am',
+       name: searchString,
     };
     this.reqService
       .post(physicians.getThirdPartyPhysicians, payload)
@@ -243,21 +251,41 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       );
   }
-  getTipServiciiType(d: string): void {
-    switch (d) {
-      case this.medicOption[0].id:
-        this.getPhysicians();
-        break;
-      case this.medicOption[1].id:
-        this.getThirdPartyPhysicians();
-        break;
-      case this.medicOption[2].id:
-        this.getExternalPhysiciansNoCNAS();
-        break;
-      default:
-        this.getPhysicians();
-        break;
-    }
+  getThirdPartyPhysiciansNotify() {
+    this.toastService.presentToastWithNoDurationDismiss(
+        'Use the search input to search by Name', 'success'
+      );
+  }
+  getTipServiciiType(
+    d: string = this.medicOptionFormControl.value,
+    searchString: string = ''
+  ): void {
+    if (d) {
+      this.toastService.dismissToast();
+      this.isFetching = true;
+      switch (d) {
+        case this.medicOption[0].id:
+          this.getPhysicians();
+          break;
+        case this.medicOption[1].id:
+          if (searchString) {
+            this.getThirdPartyPhysicians(searchString);
+          } else {
+            this.getThirdPartyPhysiciansNotify();
+          }
+          break;
+        case this.medicOption[2].id:
+          this.getExternalPhysiciansNoCNAS();
+          break;
+        default:
+          this.getPhysicians();
+          break;
+        }
+      } else {
+        this.toastService.presentToastWithNoDurationDismiss(
+          'Select an option', 'success'
+        );
+      }
   }
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
