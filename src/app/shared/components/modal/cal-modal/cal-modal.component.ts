@@ -68,7 +68,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   }
 
   onTimeSelected(ev, clicked= false) {
-    // console.log(ev.selectedTime, clicked);
+    console.log(ev.selectedTime, clicked);
     this.calS.selectedDate.next(ev.selectedTime);
     if(this.showPicker === true){
       this.routerS.navigate(['calendar/zi']);

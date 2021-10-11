@@ -28,6 +28,7 @@ import { CustomDateFormatter } from './custom-date-formatter.provider';
 //   import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   import {
       CalendarDateFormatter,
+    CalendarDayViewBeforeRenderEvent,
     CalendarEvent,
     CalendarEventAction,
     CalendarEventTimesChangedEvent,
@@ -288,41 +289,47 @@ export class CalendarComponent implements OnInit {
             });
           });
       }
-    setBg(d){
+      beforeDayViewRender(renderEvent: CalendarDayViewBeforeRenderEvent) {
+        renderEvent.hourColumns.forEach((hourColumn) => {
+          const dow = this.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
+          const breakTime = dow?.filter(e => e.isBreakTime)[0];
+          const allPrivate = [];
+          const allCnas = [];
+          const allBreak = [parseInt(breakTime?.start,10), parseInt(breakTime?.end,10)-1];
+          dow.forEach(e => {
+            if(e.isPrivate && !e.isBreak){
+              allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+            }else if(!e.isPrivate && !e.isBreak){
+              allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+            }
+          });
+          const hols = this.holidays.map(h =>({startDate: h.startDate,endDate: h.endDate} ))[0];
+          dow.forEach(day =>{
+            const starttime = parseInt(day.start, 10);
+            const endtime = parseInt(day.end, 10);
+            hourColumn.hours.forEach((hour) => {
+              hour.segments.forEach((segment) => {
+                const isSame = isSameDay(new Date(hols?.startDate), new Date(segment.date)) ||
+                isSameDay(new Date(hols?.endDate), new Date(segment.date));
+                if(isSame){
+                  segment.cssClass = 'holidays';
+                }else{
+                  if(allBreak.includes(segment.date.getHours()) ){
+                    segment.cssClass = '';
+                  }else  if(allPrivate.includes(segment.date.getHours())){
+                    segment.cssClass = 'online-not-confirmed-v2 no-border';
+                  }else{
+                    // if(allCnas.includes(segment.date.getHours()))
+                    segment.cssClass = 'cabinet-not-confirmed-v1 no-border';
+                  }
 
-      const hours = new Date(d).getHours();
-      if(this.holidays?.length){
-        this.holidays.forEach(hol =>{
-          const diff = differenceInHours(hol.startDay, hol.endDate);
-          const isSame = isSameDay(hol.startDate, d);
-          if(isSame){
-            return 'holidays';
-          }
+                }
+              });
+            });
+          });
         });
-      }else if(this.schedules?.length > 0){
-        const breakTime = this.schedules?.filter(e => e.isBreakTime)[0];
-        const allPrivate = [];
-        const allCnas = [];
-        const allBreak = [parseInt(breakTime.start,10), parseInt(breakTime.end,10)-1];
-        this.schedules?.forEach(e => {
-          if(e.isPrivate && !e.isBreak){
-            allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
-          }else if(!e.isPrivate && !e.isBreak){
-            allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
-          }
-        });
-        if(allBreak.includes(hours) ){
-          return '';
-        }else  if(allPrivate.includes(hours)){
-          return 'online-not-confirmed-v2 no-border';
-        }else {
-          //if(allCnas.includes(hours))
-          return 'cabinet-not-confirmed-v1 no-border';
-        }
-
       }
 
-    }
     range(start, end, step = 1) {
       const output = [];
       if (typeof end === 'undefined') {
