@@ -36,23 +36,23 @@
         </app-select>
       </div>
 
-      <div *ngIf="list" class="mb-32">
+      <div *ngIf="(this.list$ | async)?.length > 0 || !isFetching; else loadingTemplate" class="mb-32">
         <ion-list>
 
-        <ion-item *ngFor="let item of list; let i=index" (click)="submit(item)">
+        <ion-item *ngFor="let item of this.list$ | async as items" (click)="submit(item)">
 
           <div class="flex flex-column">
             <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
               {{item.first}}
             </p>
-            <p class="m-0 flex flex-row ion-align-items-center">
+            <p class="m-0 flex flex-row ion-align-items-center" *ngIf="item.second">
               <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
               {{item.second}}
             </ion-text>
-            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor mx-4 mt-n8">
+            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor mx-4 mt-n8" *ngIf="item.third">
               .
             </ion-text>
-            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item.third">
               {{item.third}}
             </ion-text>
             </p>
@@ -67,3 +67,10 @@
 
 </ion-content>
 
+
+
+<ng-template #loadingTemplate>
+  <div class="w-100 flex ion-justify-content-center ion-align-items-center">
+    <ion-spinner name="crescent" color="biz-primary"></ion-spinner>
+  </div>
+</ng-template>

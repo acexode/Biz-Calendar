@@ -300,6 +300,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.presentMedicModal();
     this.onInitializeLoadData();
     /*  */
 
@@ -564,7 +565,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.getLocations$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
-          console.log(d);
           this.locatieOption = d;
           if (calLocationModal) {
             this.location.nativeElement.focus();
