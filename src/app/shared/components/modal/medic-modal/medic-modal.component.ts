@@ -158,20 +158,15 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       return d.filter((v: any) => (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1));
     }
   }
-  getPhysicians() {
+  getPhysicians(searchString: string = '') {
     const payload = {
-      // lastName: 'string',
-      // firstName: 'string',
-      // name: 'string',
-      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      // physicianID: 0,
-      // specialityCode: 'string',
-      // paymentType: 0,
-      // locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      // serviceUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+       firstName: searchString,
     };
+    console.log('payload: ', payload);
+    // search by payload not working
+
     this.reqService
-      .post(physicians.getPhysicians, payload)
+      .post(physicians.getPhysicians, {})
       .subscribe(
         (d: any) => {
           console.log(d);
@@ -180,7 +175,10 @@ export class MedicModalComponent implements OnInit, OnDestroy {
               (y: any) => ({
                 first: y.name,
               })
-            );
+            ).filter(
+              (v: any) => v.first.toLowerCase().indexOf(searchString.toLowerCase()) > -1
+
+              );
             this.list$.next(
               [...p]
             );
@@ -194,7 +192,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       );
   }
-  getThirdPartyPhysicians(searchString: string) {
+  getThirdPartyPhysicians(searchString: string = '') {
     const payload = {
        name: searchString,
     };
@@ -224,10 +222,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       );
   }
-  getExternalPhysiciansNoCNAS() {
-    const payload = {};
+  getExternalPhysiciansNoCNAS(searchString: string = '') {
     this.reqService
-      .post(physicians.getExternalPhysiciansNoCNAS, payload)
+      .post(physicians.getExternalPhysiciansNoCNAS, {})
       .subscribe(
         (d: any) => {
           console.log('getExternalPhysiciansNoCNAS: ', d);
@@ -237,7 +234,10 @@ export class MedicModalComponent implements OnInit, OnDestroy {
                 first: `${y.firstName} ${y.lastName}`,
                 second: y.stencilNo,
               })
-            );
+            ).filter(
+              (v: any) => v.first.toLowerCase().indexOf(searchString.toLowerCase()) > -1
+
+              );
             this.list$.next(
               [...p]
             );
@@ -265,7 +265,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       this.isFetching = true;
       switch (d) {
         case this.medicOption[0].id:
-          this.getPhysicians();
+          this.getPhysicians(searchString);
           break;
         case this.medicOption[1].id:
           if (searchString) {
@@ -275,10 +275,10 @@ export class MedicModalComponent implements OnInit, OnDestroy {
           }
           break;
         case this.medicOption[2].id:
-          this.getExternalPhysiciansNoCNAS();
+          this.getExternalPhysiciansNoCNAS(searchString);
           break;
         default:
-          this.getPhysicians();
+          this.getPhysicians(searchString);
           break;
         }
       } else {
