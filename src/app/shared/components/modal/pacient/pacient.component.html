@@ -53,11 +53,11 @@
                     </ion-text>
                     <ion-text
                     class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4"
-                    *ngIf="item?.phone">
+                    *ngIf="item?.birthDate">
                       /
                     </ion-text>
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-                      {{item?.phone}}
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item?.birthDate">
+                      {{getAge(item?.birthDate)}}
                     </ion-text>
                   </p>
                 </div>

@@ -244,6 +244,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       text: 'Aparatură asociată'
     }
   };
+  aparaturaSelectedValue: any[] = [];
   adaugaProgramareFormGroup$: Subscription;
   isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
@@ -455,11 +456,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       backdropDismiss: false,
       componentProps: {
         checkList: this.checkList,
+        selectedValue: this.aparaturaSelectedValue
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     console.log(data);
+    const { dismissed, checkedValue } = data;
+    if(checkedValue.length > 0) {
+      this.aparaturaSelectedValue = checkedValue;
+    }
   }
   async presentModalRecurentaComponentModal() {
     const modal = await this.modalController.create({

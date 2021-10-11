@@ -11,6 +11,7 @@ import { DemoCheckList } from 'src/app/style-guide/components/selection/selectio
 export class BizCustomSelectionComponent implements OnInit {
   @Input() data!: DemoCheckList[];
   @Input() config: BizCustomSelectionConfig;
+  @Input() selectedValue: any[] = [];
   @Output() modalOpenEvent = new EventEmitter<any>();
   @Output() removeItemEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   constructor() { }
@@ -32,7 +33,7 @@ export class BizCustomSelectionComponent implements OnInit {
     return this.config.hasOwnProperty('useIcon') ? true : false;
   } // caret-down
   get filtercustomComponentData() {
-    return this.data.filter((v: DemoCheckList) => v.checked === true)
+    return this.data.filter((v: DemoCheckList) => this.selectedValue.includes(v.value))
       .map((v: DemoCheckList) => v.value);
   }
   unCheckItem(data: string): void {
