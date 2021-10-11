@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { differenceInCalendarYears } from 'date-fns';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { group, persons } from 'src/app/core/configs/endpoints';
@@ -13,18 +14,6 @@ import { IonInputConfig } from 'src/app/shared/models/components/ion-input-confi
 import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
 import { GrupNouModalComponent } from '../grup-nou-modal/grup-nou-modal.component';
 import { NewPacientModalComponent } from '../new-pacient-modal/new-pacient-modal.component';
-
-
-export interface DemoPatientData {
-  first: string;
-  second: string;
-  third: string;
-  fourth?: string;
-  fifth?: string;
-  sixth?: string;
-  value: string;
-  list?: Array<any>;
-}
 
 
 @Component({
@@ -203,6 +192,7 @@ export class PacientComponent implements OnInit, OnDestroy {
     })
       .subscribe(
         (d: any) => {
+          console.log(d);
           this.personsList$.next(
             [...d.persons]
           );
@@ -242,6 +232,12 @@ export class PacientComponent implements OnInit, OnDestroy {
         }
 
       );
+  }
+  getAge(birthDate: string) {
+    return differenceInCalendarYears(
+      new Date(),
+      new Date(birthDate),
+    );
   }
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
