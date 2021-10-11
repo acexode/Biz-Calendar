@@ -24,7 +24,6 @@ export class CalendarService {
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
       console.log(e);
       if(e !== null){
-        console.log('fetch')
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
 
       }
