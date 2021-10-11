@@ -1,81 +1,72 @@
-<ion-header class="ion-no-border" [translucent]="true" mode="md">
-  <ion-toolbar class="ion-no-padding">
-
-    <ion-buttons slot="start" (click)="dismiss()">
-      <ion-icon
-        name="arrow-left"
-        class="icon-24 black-color"
-        slot="icon-only"
-      ></ion-icon>
-    </ion-buttons>
-
-    <ion-row class="ion-no-padding">
-      <ion-col class="ion-no-padding" [formGroup]="searchForm">
-        <app-input
-          [config]="searchConfig"
-          formControlName="search"
-        ></app-input>
-      </ion-col>
-    </ion-row>
-
-     <ion-buttons slot="end">
-      <ion-button class="primary-color-step-100" (click)="dismiss()">
-        ADAUGĂ
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [scrollEvents]="true" [fullscreen]="true">
-  <div class="modal-view">
-    <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
 
-    <ng-container *ngIf="items$ | async">
-      <ion-list>
+  <div class="modal-div-body">
 
-      <ion-item  *ngFor="let item of items$ | async as items">
+    <div class="modal-div-header white-bg">
 
-        <div class="flex flex-column">
-          <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0"
-            [ngClass]="{'primary-color-step-110': item.checked}
-          ">
-            {{item.first}}
-          </p>
-          <p class="m-0">
-            <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            {{item.second}}
-          </ion-text>
-          <ion-text
-          class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor"
-          *ngIf="item.third"
-          >
-            /
-          </ion-text>
-          <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item.third">
-            {{item.third}}
-          </ion-text>
-          </p>
-        </div>
+      <ion-header class="ion-no-border" [translucent]="true" mode="md">
+        <ion-toolbar class="ion-no-padding">
 
-        <ion-checkbox
-        slot="start"
-        color="biz-primary"
-        class="margin-inline-end-12"
-        mode="md"
-        [value]="item?.value"
-        [checked]="item.checked"
-        (ionChange)="onSelectionChange($event)"
-        ></ion-checkbox>
+          <ion-buttons slot="start" (click)="dismiss()">
+            <ion-icon name="arrow-left" class="icon-24 black-color" slot="icon-only"></ion-icon>
+          </ion-buttons>
+
+          <ion-row class="ion-no-padding">
+            <ion-col class="ion-no-padding" [formGroup]="searchForm">
+              <app-input [config]="searchConfig" formControlName="search"></app-input>
+            </ion-col>
+          </ion-row>
+
+          <ion-buttons slot="end">
+            <ion-button class="primary-color-step-100" (click)="dismiss()">
+              ADAUGĂ
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+    </div>
 
 
-      </ion-item>
-      </ion-list>
-    </ng-container>
+    <div class="modal-view mt-80">
+      <form [formGroup]="ionicForm" (ngSubmit)="submitForm()">
+
+        <ng-container *ngIf="items$ | async">
+          <ion-list>
+
+            <ion-item *ngFor="let item of items$ | async as items">
+
+              <div class="flex flex-column">
+                <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0" [ngClass]="{'primary-color-step-110': item.checked}
+              ">
+                  {{item.first}}
+                </p>
+                <p class="m-0">
+                  <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+                    {{item.second}}
+                  </ion-text>
+                  <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item.third">
+                    /
+                  </ion-text>
+                  <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item.third">
+                    {{item.third}}
+                  </ion-text>
+                </p>
+              </div>
+
+              <ion-checkbox slot="start" color="biz-primary" class="margin-inline-end-12" mode="md" [value]="item?.value"
+                [checked]="item.checked" (ionChange)="onSelectionChange($event)"></ion-checkbox>
+
+
+            </ion-item>
+          </ion-list>
+        </ng-container>
 
 
 
-  </form>
+      </form>
+    </div>
+
   </div>
 
 </ion-content>
-

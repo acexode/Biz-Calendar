@@ -14,8 +14,14 @@
 
           <div slot="end">
             <ion-button class="mr-8" [color]="(formGroupValidity ? 'biz-primary' : 'biz-disabled-primary')" size="small"
-              (click)="add()">
-              SALVEAZĂ
+              (click)="createGroup()" [disabled]="!formGroupValidity || loading">
+
+              <span>SALVEAZĂ</span>
+
+              <div class="ml-8" *ngIf="loading">
+                <ion-spinner name="crescent" class="icon-20"></ion-spinner>
+              </div>
+
             </ion-button>
           </div>
         </ion-toolbar>
@@ -30,24 +36,25 @@
           <app-input [config]="numeGrupConfig" formControlName="numeGrup" class="w-100"></app-input>
         </div>
 
-        <div class="py-16" *ngIf="checkedData">
-          <div class="flex flex-row ion-align-items-start my-16" *ngFor="let item of checkedData">
+        <div class="py-16" *ngIf="selectedPersons">
+          <div class="flex flex-row ion-align-items-start my-16" *ngFor="let item of selectedPersons">
             <div class="mr-24">
-              <ion-icon name="delete" class="icon-24 defaultGrayColor" (click)="unCheckItem(item.value)"></ion-icon>
+              <ion-icon name="delete" class="icon-24 defaultGrayColor" (click)="unCheckItem(item.uid)"></ion-icon>
             </div>
             <div class="flex flex-column" (click)="presentPacientViewModal(item)">
               <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
-                {{item.first}}
+              {{item?.firstName}} {{item?.lastName}}
               </p>
               <p class="m-0">
                 <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-                  {{item.second}}
+                {{item?.genderID === 0 ? 'M' : 'F'}}
                 </ion-text>
-                <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor"
+                *ngIf="item?.phone">
                   /
                 </ion-text>
                 <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-                  {{item.third}}
+                  {{item?.phone}}
                 </ion-text>
               </p>
             </div>
@@ -56,11 +63,23 @@
         </div>
 
         <div class="mt-32">
-          <ion-chip class="chip" outline="true" color="biz-chip-secondary" (click)="presentSelectModal()">
+          <ion-chip
+            class="chip"
+            outline="true"
+            color="biz-chip-secondary"
+            (click)="presentSelectModal()"
+            [disabled]="disableAddMemberButton"
+            >
             <ion-label>
               ADAUGĂ MEMBRI
             </ion-label>
-            <ion-icon name="user-new"></ion-icon>
+
+            <div class="flex flex-row ion-justify-content-center ion-align-items-center">
+              <ion-icon name="user-new"></ion-icon>
+              <ion-spinner name="dots" color="biz-primary" *ngIf="disableAddMemberButton">
+              </ion-spinner>
+            </div>
+
           </ion-chip>
         </div>
 

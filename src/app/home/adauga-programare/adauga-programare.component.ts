@@ -32,9 +32,9 @@ import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model'
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
 import { Cuplata } from 'src/app/core/models/cuplata.service.model';
-import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -277,6 +277,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
    ...this.tipServiciiParameterInitialData
     }
   );
+  pacientName = '';
   getTipServicesParameter$: Subscription;
   constructor(
     private fb: FormBuilder,
@@ -289,14 +290,15 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
-    this.getLocations(true); // get location
-    this.getCabinets(); // get cabinete
+    /* services */
+    this.getLocations();
+    this.getCabinets();
+    /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
   }
 
   ngOnInit(): void {
-    // initialize load
     this.onInitializeLoadData();
     /*  */
 
@@ -335,6 +337,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       componentProps: {},
     });
     await modal.present();
+    const d = await modal.onWillDismiss();
+    const { dismissed, data } = d?.data;
+    if(dismissed && data !== null) {
+      this.adaugaProgramareFormGroup.patchValue({ pacient: data?.uid });
+      this.pacientName =  `${data?.firstName} ${data?.lastName}`;
+    }
+  }
+  async presentGrupModal() {
+    const modal = await this.modalController.create({
+      component: GrupNouModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: false,
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    const { dismissed, data } = d?.data;
+    if(dismissed && data !== null) {
+      this.adaugaProgramareFormGroup.patchValue({ pacient: data?.personsGroupUID });
+      this.pacientName = data?.groupName;
+    }
   }
    async presentBizRadioModal() {
     const modal = await this.modalController.create({
@@ -363,20 +386,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         }
      }
   }
-  async presentGrupModal() {
-    const modal = await this.modalController.create({
-      component: GrupNouModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
-      componentProps: {},
-    });
-    await modal.present();
-    const d = await modal.onWillDismiss();
-    const { dismissed, data } = d?.data;
-    if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({pacient: data?.first});
-    }
-  }
   async presentPacient() {
     const modal = await this.modalController.create({
       component: PacientComponent,
@@ -387,9 +396,17 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     await modal.present();
     const d = await modal.onWillDismiss();
     console.log(d);
-    const {dismissed , data} = d?.data;
+    const {dismissed , data, isPerson, isGroup} = d?.data;
     if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({pacient: data});
+      this.adaugaProgramareFormGroup.patchValue(
+        {
+          pacient: isPerson ? data?.uid : (isGroup ? data?.personsGroupUID : '')
+        }
+      );
+      this.pacientName = isPerson ?
+        `${data?.firstName} ${data?.lastName}` :
+        (isGroup ? data?.groupName : '');
+        console.log(this.pacientName);
     }
   }
   async presentCabinetModalRadio() {

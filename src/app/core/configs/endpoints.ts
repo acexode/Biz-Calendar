@@ -23,6 +23,8 @@ export const appointmentEndpoints = {
 
 export const persons = {
   addPerson: baseEndpoints.bizCalendarService + '/AddNewPerson',
+  getPersons: baseEndpoints.bizCalendarService + '/GetPersons',
+  updatePerson: baseEndpoints.bizCalendarService + '/UpdatePerson'
 };
 
 export const location = {
@@ -39,4 +41,11 @@ export const cabinet = {
 export const tipServicii = {
   getMedicalServices: baseEndpoints.bizCalendarService + '/GetMedicalServices',
   getClinicCNASMedicalServices: baseEndpoints.bizCalendarService + '/GetClinicCNASMedicalServices',
+};
+
+export const group = {
+  getGroups: baseEndpoints.bizCalendarService + '/GetGroups',
+  createGroup: baseEndpoints.bizCalendarService + '/CreateGroup',
+  updateGroup: baseEndpoints.bizCalendarService + '/UpdateGroup',
+  addMembersToGroup: baseEndpoints.bizCalendarService + '/AddMembersToGroup',
 };
