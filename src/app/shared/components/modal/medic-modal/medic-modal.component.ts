@@ -117,7 +117,6 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       ) // makes sure the value has actually changed.
       .subscribe(
         data => {
-          console.log(data.search);
           if (data.search !== '') {
             // this.list = this.searching(data.search);
             this.getTipServiciiType(
@@ -162,14 +161,12 @@ export class MedicModalComponent implements OnInit, OnDestroy {
     const payload = {
        firstName: searchString,
     };
-    console.log('payload: ', payload);
     // search by payload not working
 
     this.reqService
       .post(physicians.getPhysicians, {})
       .subscribe(
         (d: any) => {
-          console.log(d);
           if(d?.physicians?.length > 0) {
             const p = d?.physicians.map(
               (y: any) => ({
@@ -200,7 +197,6 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       .post(physicians.getThirdPartyPhysicians, payload)
       .subscribe(
         (d: any) => {
-          console.log('getThirdPartyPhysicians:', d);
           if(d?.length > 0) {
             const p = d?.map(
               (y: any) => ({
@@ -227,7 +223,6 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       .post(physicians.getExternalPhysiciansNoCNAS, {})
       .subscribe(
         (d: any) => {
-          console.log('getExternalPhysiciansNoCNAS: ', d);
           if(d?.length > 0) {
             const p = d?.map(
               (y: any) => ({
