@@ -13,4 +13,5 @@ export interface Person {
   uid: string;
   wasUpdateByMobile: null | any;
   gender?: 'M' | 'F';
+  age?: number;
 }

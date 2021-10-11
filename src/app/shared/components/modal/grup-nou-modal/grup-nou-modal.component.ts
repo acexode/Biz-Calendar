@@ -2,7 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { differenceInCalendarYears, format, getDate, getMonth, getYear } from 'date-fns';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, of, Subscription } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 import { group, persons } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { CreateGroup } from 'src/app/core/models/createGroup.model';
@@ -74,17 +75,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        checkList: this.personsList$.value ? this.personsList$.value.map(
-          (v: Person) => ({
-            ...v,
-            name: `${v.firstName} ${v.lastName}`,
-            gender: v.genderID === 0 ? 'M' : 'F',
-              age: differenceInCalendarYears(
-                new Date(),
-                new Date(v?.birthDate),
-              ),
-            })
-        ) : [],
+        checkList: this.personsList$.value || [],
         config: this.personSelectServiciiOptionConfig,
         selectedValue: this.selectedValue
       },
@@ -217,7 +208,17 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
           this.disableAddMemberButton = false;
           /*  */
           this.personsList$.next(
-            [...d.persons]
+            [...d.persons].map(
+          (v: Person) => ({
+            ...v,
+            name: `${v.firstName} ${v.lastName}`,
+            gender: v.genderID === 0 ? 'M' : 'F',
+              age: differenceInCalendarYears(
+                new Date(),
+                new Date(v?.birthDate),
+              ),
+            })
+        )
           );
         },
         _err => {
