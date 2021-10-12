@@ -27,7 +27,7 @@ import
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { cabinet, tipServicii } from 'src/app/core/configs/endpoints';
+import { cabinet, medicalSpecialities, tipServicii } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
@@ -300,6 +300,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getMedicalSpecialities();
     this.onInitializeLoadData();
     /*  */
 
@@ -644,6 +645,17 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
             }
           }
         }
+      );
+  }
+  getMedicalSpecialities(): void {
+    this.getLocations$ = this.reqService.get(medicalSpecialities.getMedicalSpecialities)
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get medical specialities at this instance. Please check your network and try again. C14'
+        )
       );
   }
   get availbleTipServiciiOptions(): Array<IonRadioInputOption>{
