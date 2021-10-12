@@ -185,7 +185,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   aparaturaData: AparaturaAsociataModel[] = [];
   aparaturaSelectServiciiOptionConfig: BizSelectieServiciiConfig = {
       firstKey: 'equipmentName',
-      secondKey: 'equipmentCategoryDescription',
+      secondKey: '',
       // thirdKey: '',
       idKey: 'uid'
   };

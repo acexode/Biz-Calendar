@@ -96,7 +96,7 @@ export class SelectieServiciiModalComponent implements OnInit, OnDestroy {
     const items = this.opts
       .map((v) => ({
         first: get(v, first, null),
-        second: `${get(v, second, null)} ${get(v, secondForCurrency, '')}`,
+        second: `${get(v, second, '')} ${get(v, secondForCurrency, '')}`,
         third: get(v, third, null),
         checked: includes(
           this.selctedOpts,
