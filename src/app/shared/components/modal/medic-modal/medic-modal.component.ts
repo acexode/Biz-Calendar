@@ -96,6 +96,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   });
   medicOptionTipSubscription$: Subscription;
   list$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  getPhysiciansList$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  getExternalPhysiciansNoCNASList$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  getThirdPartyPhysiciansList$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   isFetching = true;
   constructor(
     private fb: FormBuilder,
@@ -108,6 +111,14 @@ export class MedicModalComponent implements OnInit, OnDestroy {
      this.toastService.presentToastWithNoDurationDismiss(
         'Select an option', 'success'
       );
+    this.medicOptionTipSubscription$ = this.medicOptionFormControl
+      .valueChanges
+      .subscribe(
+        (b: string) => {
+          this.searchForm.reset();
+          this.getTipServiciiType(b);
+        }
+      );
     // load check list to list
     //
     this.subscriptions.add(this.searchForm.valueChanges
@@ -117,72 +128,45 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       ) // makes sure the value has actually changed.
       .subscribe(
         data => {
-          if (data.search !== '') {
-            // this.list = this.searching(data.search);
-            this.getTipServiciiType(
-              this.medicOptionFormControl.value,
-              data.search
-            );
+          if (data.search && data.search !== '') {
+            this.searching(data.search);
           } else {
-            // this.list = this.medicData;
+            this.updateData();
           }
         }
     ));
-    this.medicOptionTipSubscription$ = this.medicOptionFormControl
-      .valueChanges
-      .subscribe(
-        b => {
-          this.getTipServiciiType(b);
-        }
-      );
   }
   get medicOptionFormControl() {
     return this.componentFormGroup.get('medicOptionTip');
   }
   submit(data: any) {
+    this.toastService.dismissToast();
     this.modalController.dismiss({
       dismissed: true,
       data: data?.first
     });
   }
   closeModal() {
+    this.toastService.dismissToast();
     this.modalController.dismiss({
       dismissed: true,
       data: null
     });
   }
-  searching(st: string) {
-    if (st) {
-      const d = this.list;
-      return d.filter((v: any) => (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1));
-    }
-  }
-  getPhysicians(searchString: string = '') {
-    const payload = {
-       firstName: searchString,
-    };
+  getPhysicians(_searchString: string = '') {
     // search by payload not working
 
     this.reqService
       .post(physicians.getPhysicians, {})
       .subscribe(
         (d: any) => {
-          if(d?.physicians?.length > 0) {
-            const p = d?.physicians.map(
-              (y: any) => ({
-                first: y.name,
-              })
-            ).filter(
-              (v: any) => v.first.toLowerCase().indexOf(searchString.toLowerCase()) > -1
-
-              );
-            this.list$.next(
-              [...p]
-            );
+          if (d?.physicians?.length > 0) {
+            this.getPhysiciansList$.next(d?.physicians);
           } else {
-            this.list$.next([]);
+            this.getPhysiciansList$.next([]);
           }
           this.isFetching = false;
+          this.updateData();
         },
         _err => {
           this.isFetching = false;
@@ -197,49 +181,32 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       .post(physicians.getThirdPartyPhysicians, payload)
       .subscribe(
         (d: any) => {
-          if(d?.length > 0) {
-            const p = d?.map(
-              (y: any) => ({
-                first: y.name,
-                second: y.contractNo,
-                third: y.stencilNo,
-              })
-            );
-            this.list$.next(
-              [...p]
-            );
+          if (d?.length > 0) {
+            this.getThirdPartyPhysiciansList$.next(d);
           } else {
-            this.list$.next([]);
+            this.getThirdPartyPhysiciansList$.next([]);
           }
-           this.isFetching = false;
+          this.isFetching = false;
+          this.updateData();
+          this.toastService.dismissToast();
         },
          _err => {
           this.isFetching = false;
         }
       );
   }
-  getExternalPhysiciansNoCNAS(searchString: string = '') {
+  getExternalPhysiciansNoCNAS(_searchString: string = '') {
     this.reqService
       .post(physicians.getExternalPhysiciansNoCNAS, {})
       .subscribe(
         (d: any) => {
-          if(d?.length > 0) {
-            const p = d?.map(
-              (y: any) => ({
-                first: `${y.firstName} ${y.lastName}`,
-                second: y.stencilNo,
-              })
-            ).filter(
-              (v: any) => v.first.toLowerCase().indexOf(searchString.toLowerCase()) > -1
-
-              );
-            this.list$.next(
-              [...p]
-            );
+          if (d?.length > 0) {
+            this.getExternalPhysiciansNoCNASList$.next(d);
           } else {
-            this.list$.next([]);
+            this.getExternalPhysiciansNoCNASList$.next([]);
           }
-           this.isFetching = false;
+          this.isFetching = false;
+          this.updateData();
         },
          _err => {
           this.isFetching = false;
@@ -260,20 +227,21 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       this.isFetching = true;
       switch (d) {
         case this.medicOption[0].id:
-          this.getPhysicians(searchString);
+          this.getPhysicians();
           break;
         case this.medicOption[1].id:
-          if (searchString) {
+          if (searchString !== '') {
             this.getThirdPartyPhysicians(searchString);
           } else {
+            this.isFetching = true;
             this.getThirdPartyPhysiciansNotify();
           }
           break;
         case this.medicOption[2].id:
-          this.getExternalPhysiciansNoCNAS(searchString);
+          this.getExternalPhysiciansNoCNAS();
           break;
         default:
-          this.getPhysicians(searchString);
+          this.getPhysicians();
           break;
         }
       } else {
@@ -281,6 +249,85 @@ export class MedicModalComponent implements OnInit, OnDestroy {
           'Select an option', 'success'
         );
       }
+  }
+  searching(st: string) {
+    switch (this.medicOptionFormControl.value) {
+      case this.medicOption[0].id:
+        if (this.list$.value.length > 0) {
+          const filt = this.list$.value.filter(
+          (item: any) => item.first.toLowerCase().includes(st.toLowerCase())
+          );
+          this.list$.next(filt);
+        }
+        break;
+      case this.medicOption[1].id:
+        this.isFetching = true;
+        this.getThirdPartyPhysicians(st);
+        break;
+      case this.medicOption[2].id:
+        if (this.list$.value.length > 0) {
+          const filt = this.list$.value
+          .filter((v: any) =>
+            (v.first.toLowerCase().indexOf(st.toLowerCase()) > -1)
+          );
+          this.list$.next(filt);
+         }
+        break;
+      default:
+        this.updateData();
+    }
+  }
+  updateData(data: any = this.medicOptionFormControl.value) {
+    switch (data) {
+      case this.medicOption[0].id:
+        if (this.getPhysiciansList$.value.length > 0) {
+          const p = this.getPhysiciansList$.value.map(
+            (y: any) => ({
+              first: y.name,
+            })
+          );
+          this.list$.next(
+            [...p]
+          );
+        }
+        break;
+      case this.medicOption[1].id:
+        if (this.searchForm.value.search) {
+          if (this.getThirdPartyPhysiciansList$.value.length > 0) {
+            const p = this.getThirdPartyPhysiciansList$.value.map(
+              (y: any) => ({
+                first: y.name,
+                second: y.contractNo,
+                third: y.stencilNo,
+              })
+            );
+            this.list$.next(
+              [...p]
+            );
+          } else {
+            this.list$.next([]);
+          }
+        } else {
+          this.isFetching = true;
+          this.getThirdPartyPhysiciansNotify();
+          this.list$.next([]);
+        }
+        break;
+      case this.medicOption[2].id:
+        if (this.getExternalPhysiciansNoCNASList$.value.length > 0) {
+          const p = this.getExternalPhysiciansNoCNASList$.value.map(
+            (y: any) => ({
+              first: `${y.firstName} ${y.lastName}`,
+              second: y.stencilNo,
+            })
+          );
+          this.list$.next(
+            [...p]
+          );
+        }
+        break;
+      default:
+    }
   }
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
