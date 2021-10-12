@@ -300,7 +300,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.presentMedicModal();
     this.onInitializeLoadData();
     /*  */
 

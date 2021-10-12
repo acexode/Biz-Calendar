@@ -5,6 +5,7 @@ import { Cuplata } from 'src/app/core/models/cuplata.service.model';
 import { SelectieServiciiModalComponent } from '../modal/selectie-servicii-modal/selectie-servicii-modal.component';
 import { BizSelectieServiciiConfig } from '../../models/components/biz-selectie-servicii.config';
 import { get } from 'lodash';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 @Component({
   selector: 'app-add-service-selection',
   templateUrl: './add-service-selection.component.html',
@@ -50,26 +51,34 @@ export class AddServiceSelectionComponent implements OnInit {
   private vConfig: any;
   constructor(
     public modalController: ModalController,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit() {}
   async presentModal() {
-    const modal = await this.modalController.create({
-      component: SelectieServiciiModalComponent,
-      cssClass: 'biz-modal-class',
-      componentProps: {
-        checkList: this.servicesData,
-        config: this.getTipServiciiConfigType(this.serviceType),
-        selectedValue: this.selectedValue
-      },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    const { checkedValue } = data;
-    this.selectedValue = checkedValue;
-    console.log(this.selectedValue);
-    console.log(this.servicesData);
-    console.log('sdfdss',this.selectedServices);
+    if (this.servicesData.length > 0) {
+      const modal = await this.modalController.create({
+        component: SelectieServiciiModalComponent,
+        cssClass: 'biz-modal-class',
+        componentProps: {
+          checkList: this.servicesData,
+          config: this.getTipServiciiConfigType(this.serviceType),
+          selectedValue: this.selectedValue
+        },
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      const { checkedValue } = data;
+      this.selectedValue = checkedValue;
+      console.log(this.selectedValue);
+      console.log(this.servicesData);
+      console.log('sdfdss',this.selectedServices);
+    } else {
+      this.toastService.presentToastWithDurationDismiss(
+        'Select a servicii', 'error'
+      );
+    }
+
   }
   get selectedServices() {
     return this.servicesData.filter(
