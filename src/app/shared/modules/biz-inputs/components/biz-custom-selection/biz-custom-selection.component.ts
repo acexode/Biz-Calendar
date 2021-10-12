@@ -41,7 +41,6 @@ export class BizCustomSelectionComponent implements OnInit {
     if (typeof uid !== null && uid !== '') {
       const indexOfData = this.selectedValue.findIndex(
         (v: string) => v === uid);
-      console.log('index: ', indexOfData);
      if (indexOfData > -1) {
        this.selectedValue.splice(indexOfData, 1);
        console.log(this.selectedValue);

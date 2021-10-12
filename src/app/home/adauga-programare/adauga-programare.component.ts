@@ -634,7 +634,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.getMedicalEquipment$ = this.reqService.post(equipments.getMedicalEquipment, {})
       .subscribe(
         (d: any) => {
-          console.log(d);
           this.aparaturaData = d;
           if (callGetMedicalEquipment) {
             this.presentAparaturaDataModal();
