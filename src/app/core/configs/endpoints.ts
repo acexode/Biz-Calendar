@@ -55,3 +55,7 @@ export const physicians = {
   getThirdPartyPhysicians: baseEndpoints.bizCalendarService + '/GetThirdPartyPhysicians',
   getExternalPhysiciansNoCNAS: baseEndpoints.bizCalendarService + '/GetExternalPhysiciansNoCNAS',
 };
+
+export const equipments = {
+  getMedicalEquipment: baseEndpoints.bizCalendarService + '/GetMedicalEquipment'
+};

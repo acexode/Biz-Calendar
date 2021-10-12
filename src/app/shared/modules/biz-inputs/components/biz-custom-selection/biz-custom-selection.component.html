@@ -11,13 +11,13 @@
           (click)="stopModalPropagation($event)"
 
         >
-          <ion-label>{{item}}</ion-label>
+          <ion-label>{{item?.equipmentName}}</ion-label>
 
           <ion-icon
               name="close"
               class="icon-16"
               color="biz-primary"
-              (click)="removeChips($event,item)"
+              (click)="removeChips($event,item?.uid)"
             ></ion-icon>
 
         </ion-chip>
