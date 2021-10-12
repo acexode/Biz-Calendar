@@ -130,7 +130,7 @@ export class SelectionComponent implements OnInit {
     { label: '45', id: '45' },
     { label: 'Alta', id: 'Alta' },
   ];
-  checkList: DemoCheckList[] = [
+  checkList: any[] = [
     {
       first: 'Consultație peste vârsta de 4 ani',
       second: 'Servicii paraclinice',

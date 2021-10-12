@@ -42,7 +42,7 @@
                   {{item.first}}
                 </p>
                 <p class="m-0">
-                  <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
+                  <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0" *ngIf="item.second">
                     {{item.second}}
                   </ion-text>
                   <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item.third">

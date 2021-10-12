@@ -11,7 +11,6 @@ import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { TextAreaConfig } from 'src/app/shared/models/components/ion-textarea-config';
-import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { Router } from '@angular/router';
@@ -27,7 +26,7 @@ import
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { cabinet, medicalSpecialities, tipServicii } from 'src/app/core/configs/endpoints';
+import { cabinet, equipments, medicalSpecialities, tipServicii } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
@@ -35,6 +34,8 @@ import { Cuplata } from 'src/app/core/models/cuplata.service.model';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
+import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
+import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -181,57 +182,13 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     placeholder: '',
     disabled: false,
   };
-  checkList: DemoCheckList[] = [
-    {
-      first: 'Consultație peste vârsta de 4 ani',
-      second: 'Servicii paraclinice',
-      third: '10,80 pt.',
-      value: 'Consultație',
-      checked: false
-    },
-    {
-      first: 'Ecografie generală (abdomen + pelvis)',
-      second: 'Servicii paraclinice',
-      third: '23,45 pt.',
-      value: 'Ecografie generală',
-      checked: false
-    },
-    {
-      first: 'Ecografie abdominală',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'Ecografie abdominală',
-      checked: false
-    },
-    {
-      first: 'EKG standard',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'EKG',
-      checked: false
-    },
-    {
-      first: 'Consult peste 4 ani',
-      second: 'Consultație',
-      third: '5 pt.',
-      value: 'Consult',
-      checked: false
-    },
-    {
-      first: 'Spirometrie',
-      second: 'Servicii paraclinice',
-      third: '23 pt.',
-      value: 'Spirometrie',
-      checked: false
-    },
-    {
-      first: 'Pulsoximetrie',
-      second: 'Servicii paraclinice',
-      third: '10 pt.',
-      value: 'Pulsoximetrie',
-      checked: false
-    },
-  ];
+  aparaturaData: AparaturaAsociataModel[] = [];
+  aparaturaSelectServiciiOptionConfig: BizSelectieServiciiConfig = {
+      firstKey: 'equipmentName',
+      secondKey: '',
+      // thirdKey: '',
+      idKey: 'uid'
+  };
   cabinetOption: GetCabinetsModel[] = [];
   adugaOptions:  Array<IonRadioInputOption> = [
     { label: 'O persoană', id: 'O persoană' },
@@ -280,6 +237,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   );
   pacientName = '';
   getTipServicesParameter$: Subscription;
+  getMedicalEquipment$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -294,6 +252,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     /* services */
     this.getLocations();
     this.getCabinets();
+    this.getMedicalEquipment();
     /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
@@ -450,22 +409,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
   }
-  async presentModalB() {
-    const modal = await this.modalController.create({
-      component: SelectieServiciiModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
-      componentProps: {
-        checkList: this.checkList,
-        selectedValue: this.aparaturaSelectedValue
-      },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    console.log(data);
-    const { dismissed, checkedValue } = data;
-    if(checkedValue.length > 0) {
-      this.aparaturaSelectedValue = checkedValue;
+  async presentAparaturaDataModal() {
+    if (this.aparaturaData.length > 0) {
+      const modal = await this.modalController.create({
+        component: SelectieServiciiModalComponent,
+        cssClass: 'biz-modal-class',
+        backdropDismiss: false,
+        componentProps: {
+          checkList: this.aparaturaData,
+          selectedValue: this.aparaturaSelectedValue,
+          config: this.aparaturaSelectServiciiOptionConfig
+        },
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      const { dismissed, checkedValue } = data;
+      if(dismissed && checkedValue.length > 0) {
+        this.aparaturaSelectedValue = checkedValue;
+      }
+    } else {
+      this.getMedicalEquipment(true);
+      this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
     }
   }
   async presentModalRecurentaComponentModal() {
@@ -647,17 +611,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         }
       );
   }
-  getMedicalSpecialities(): void {
-    this.getLocations$ = this.reqService.get(medicalSpecialities.getMedicalSpecialities)
-      .subscribe(
-        (d: any) => {
-          console.log(d);
-        },
-        _err => this.toastService.presentToastWithDurationDismiss(
-          'Unable to get medical specialities at this instance. Please check your network and try again. C14'
-        )
-      );
-  }
   get availbleTipServiciiOptions(): Array<IonRadioInputOption>{
     const tipServicciParameterValue = Number(this.tipServiciiParameter$.value.value);
     switch (tipServicciParameterValue) {
@@ -678,6 +631,31 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         ];
     }
   }
+  getMedicalEquipment(callGetMedicalEquipment: boolean = false) {
+    this.getMedicalEquipment$ = this.reqService.post(equipments.getMedicalEquipment, {})
+      .subscribe(
+        (d: any) => {
+          this.aparaturaData = d;
+          if (callGetMedicalEquipment) {
+            this.presentAparaturaDataModal();
+          }
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get get medical equipment at this instance. Please check your network and try again. C13'
+        )
+      );
+  }
+  getMedicalSpecialities(): void {
+    this.getLocations$ = this.reqService.get(medicalSpecialities.getMedicalSpecialities)
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get medical specialities at this instance. Please check your network and try again. C14'
+        )
+      );
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
     unsubscriberHelper(this.getCabinets$);
@@ -686,6 +664,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getTipServices$);
     unsubscriberHelper(this.adaugaProgramareTipServicii$);
     unsubscriberHelper(this.getTipServicesParameter$);
+    unsubscriberHelper(this.getMedicalEquipment$);
   }
 
 }
