@@ -152,8 +152,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   getPhysicians(searchString: string = '') {
     // search by payload not working
     const payload = {
-       name: searchString,
+       name: searchString ? searchString.toUpperCase() : '',
     };
+    console.log(payload);
 
     this.reqService
       .post(physicians.getPhysicians, payload)
@@ -198,8 +199,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   }
   getExternalPhysiciansNoCNAS(searchString: string = '') {
     const payload = {
-       name: searchString,
+       firstName: searchString,
     };
+    console.log(payload);
     this.reqService
       .post(physicians.getExternalPhysiciansNoCNAS, payload)
       .subscribe(
@@ -232,7 +234,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       this.isFetching = true;
       switch (d) {
         case this.medicOption[0].id:
-          this.getPhysicians();
+          this.getPhysicians(searchString);
           break;
         case this.medicOption[1].id:
           if (searchString !== '') {
@@ -243,7 +245,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
           }
           break;
         case this.medicOption[2].id:
-          this.getExternalPhysiciansNoCNAS();
+          this.getExternalPhysiciansNoCNAS(searchString);
           break;
         default:
           this.getPhysicians();
