@@ -57,9 +57,10 @@ export const physicians = {
 };
 
 export const medicalSpecialities = {
-  getMedicalSpecialities : baseEndpoints.bizCalendarService + '/GetMedicalSpecialities',
+  getMedicalSpecialities: baseEndpoints.bizCalendarService + '/GetMedicalSpecialities',
+  getAllMedicalSpecialities: baseEndpoints.bizCalendarService + '/GetAllMedicalSpecialities',
 };
 
 export const equipments = {
-  getMedicalEquipment: baseEndpoints.bizCalendarService + '/GetMedicalEquipment'
+  getMedicalEquipment: baseEndpoints.bizCalendarService + '/GetMedicalEquipment',
 };

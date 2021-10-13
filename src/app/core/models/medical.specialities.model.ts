@@ -1,4 +1,4 @@
-export interface MedicalSpecialities {
+export interface MedicalSpecialitiesModel {
   code: string;
   id: number;
   isPrivateSpec: any;
