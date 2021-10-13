@@ -124,7 +124,8 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           if (data.search && data.search !== '') {
-            this.searching(data.search);
+            // this.searching(data.search);
+            this.getPhysicianType(this.medicOptionFormControl.value, data.search);
           } else {
             this.updateData();
           }
@@ -148,11 +149,14 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       data: null
     });
   }
-  getPhysicians(_searchString: string = '') {
+  getPhysicians(searchString: string = '') {
     // search by payload not working
+    const payload = {
+       name: searchString,
+    };
 
     this.reqService
-      .post(physicians.getPhysicians, {})
+      .post(physicians.getPhysicians, payload)
       .subscribe(
         (d: any) => {
           console.log(d);
@@ -192,9 +196,12 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         }
       );
   }
-  getExternalPhysiciansNoCNAS(_searchString: string = '') {
+  getExternalPhysiciansNoCNAS(searchString: string = '') {
+    const payload = {
+       name: searchString,
+    };
     this.reqService
-      .post(physicians.getExternalPhysiciansNoCNAS, {})
+      .post(physicians.getExternalPhysiciansNoCNAS, payload)
       .subscribe(
         (d: any) => {
           console.log(d);
