@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { appointment } from './../../../core/configs/endpoints';
+import { CalendarService } from './../../../core/services/calendar/calendar.service';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
@@ -61,107 +63,24 @@ const users: User[] = [
       title: 'Dna.',
       color: colors.yellow
   },
-  // {
-  //     id: 5,
-  //     name: 'B.C.D.',
-  //     title: 'Dna.',
-  //     color: colors.yellow
-  // },
-  // {
-  //     id: 6,
-  //     name: 'B.C.D.',
-  //     title: 'Dna.',
-  //     color: colors.yellow
-  // },
-  // {
-  //     id: 7,
-  //     name: 'B.C.D.',
-  //     title: 'Dna.',
-  //     color: colors.yellow
-  // },
-];
+  ];
 @Component({
   selector: 'app-comparativ',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './comparativ.component.html',
   styleUrls: ['./comparativ.component.scss'],
 })
 export class ComparativComponent implements OnInit {
 
+
   viewDate = new Date();
 
-  users = users;
+  users = [];
 
-  events: CalendarEvent[] = [
-    {
-      title: 'An event',
-      color: users[0].color,
-      start: addHours(startOfDay(new Date()), 5),
-      meta: {
-        user: users[0],
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'Another event',
-      color: users[1].color,
-      start: addHours(startOfDay(new Date()), 2),
-      meta: {
-        user: users[1],
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'A 3rd event',
-      color: users[0].color,
-      start: addHours(startOfDay(new Date()), 7),
-      meta: {
-        user: users[0],
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'An all day event',
-      color: users[0].color,
-      start: new Date(),
-      meta: {
-        user: users[0],
-      },
-      draggable: true,
-      allDay: true,
-    },
-    {
-      title: 'Another all day event',
-      color: users[1].color,
-      start: new Date(),
-      meta: {
-        user: users[1],
-      },
-      draggable: true,
-      allDay: true,
-    },
-    {
-      title: 'A 3rd all day event',
-      color: users[0].color,
-      start: new Date(),
-      meta: {
-        user: users[0],
-      },
-      draggable: true,
-      allDay: true,
-    },
-  ];
+  events: CalendarEvent[] = [];
+  constructor(private calS: CalendarService,private cdref: ChangeDetectorRef){
+
+  }
 
   eventTimesChanged({
     event,
@@ -179,6 +98,70 @@ export class ComparativComponent implements OnInit {
     this.events = [...this.events];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.calS.selectedDate.subscribe(d =>{
+      this.loadEvent(d);
+    });
+    this.loadEvent(this.viewDate);
+  }
+  loadEvent(date){
+    this.calS.getCabinetAppointment(date).subscribe((e: any) =>{
+      console.log(e);
+      const eventList = e.appointments.map((apt, i) => (
+        {
+          title: apt.personName,
+          color: colors.yellow,
+          // color:  {
+          //   secondary: this.calS.colorCode(apt.colorCode),
+          //   primary: this.calS.colorCode(apt.colorCode),
+          // },
+          // start: new Date(apt.startTime ),
+          start: addHours(startOfDay(new Date()), 5),
+          end: addHours(startOfDay(new Date()), 8),
+          // end: new Date(apt.endTime ),
+          meta: {
+            user: {
+              id: i,
+              name: apt.personName,
+             color: colors.yellow,
+            },
+          },
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+        }
+      ));
+
+      const distinctUser = [];
+      const filterdUser =[];
+      e.appointments.forEach((apt,i) =>
+         {
+          if(!distinctUser.includes(apt.uid)){
+            distinctUser.push(apt.uid);
+            filterdUser.push({
+              id: i,
+              name: this.acronym(apt.personName),
+              title: this.acronym(apt.personName),
+              color: colors.yellow,
+            });
+          }
+        }
+      );
+
+      this.events = eventList;
+      this.users = filterdUser;
+      //this.cdref.detectChanges();
+      console.log(this.users);
+      console.log(this.events);
+    });
+  }
+  acronym(text) {
+    console.log(text);
+    return text
+      .split(/\s/)
+      .reduce((accumulator, word) => accumulator + word.charAt(0), '');
+  }
 
 }

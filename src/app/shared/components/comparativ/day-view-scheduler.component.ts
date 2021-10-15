@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import {
     ChangeDetectorRef,
     Component,
@@ -11,7 +12,9 @@ import {
     SimpleChanges,
   } from '@angular/core';
   import {
+    CalendarDayViewBeforeRenderEvent,
     CalendarUtils,
+    CalendarWeekViewBeforeRenderEvent,
     CalendarWeekViewComponent,
     DateAdapter,
     getWeekViewPeriod,
@@ -26,6 +29,8 @@ import {
     WeekViewAllDayEvent,
   } from 'calendar-utils';
   import { DragEndEvent, DragMoveEvent } from 'angular-draggable-droppable';
+import { format } from 'date-fns';
+import { ro } from 'date-fns/locale';
 
   export interface User {
     id: number;
@@ -91,7 +96,9 @@ import {
     @Output() userChanged = new EventEmitter();
 
     view: DayViewScheduler;
-
+    month = format(new Date(), 'MMMM', { locale: ro });
+    currDay = format(new Date(), 'E', { locale: ro });
+    currDate = format(new Date(), 'd', { locale: ro });
     daysInWeek = 1;
 
     constructor(
@@ -107,7 +114,7 @@ import {
 
     ngOnChanges(changes: SimpleChanges): void {
       super.ngOnChanges(changes);
-
+      console.log(this.users);
       if (changes.users) {
         this.refreshBody();
         this.emitBeforeViewRender();
@@ -208,5 +215,32 @@ import {
       );
       const newIndex = currentColumnIndex + columnsMoved;
       return this.view.users[newIndex];
+    }
+    beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+      renderEvent.hourColumns.forEach((hourColumn) => {
+        hourColumn.hours.forEach((hour) => {
+          hour.segments.forEach((segment) => {
+            if (
+              segment.date.getHours() >= 2 &&
+              segment.date.getHours() <= 5 &&
+              segment.date.getDay() === 2
+            ) {
+              segment.cssClass = 'bg-pink';
+            }
+          });
+        });
+      });
+    }
+    beforeDayViewRender(renderEvent: CalendarDayViewBeforeRenderEvent) {
+      console.log(renderEvent);
+      renderEvent.hourColumns.forEach((hourColumn) => {
+        hourColumn.hours.forEach((hour) => {
+          hour.segments.forEach((segment) => {
+            if (segment.date.getHours() >= 2 && segment.date.getHours() <= 5) {
+              segment.cssClass = 'bg-pink';
+            }
+          });
+        });
+      });
     }
   }

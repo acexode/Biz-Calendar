@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AuthService } from './../auth/auth.service';
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
@@ -5,7 +6,8 @@ import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek, startOfYear, subBusinessDays } from 'date-fns';
+import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek,
+  startOfYear, subBusinessDays, startOfDay } from 'date-fns';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -25,7 +27,9 @@ export class CalendarService {
       console.log(e);
       if(e !== null){
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
-
+      }else{
+        console.log('new Date');
+        this.fetchCalendarAppointment(new Date(), appStartHour, appEndHour);
       }
     });
    }
@@ -34,9 +38,10 @@ export class CalendarService {
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
-  fetchCalendarAppointment(selectedDate = null, appStartHour, appEndHour){
-    // console.log(selectedDate);
+  fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
+    console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
+      console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
@@ -46,6 +51,7 @@ export class CalendarService {
           obj.EndDate = endOfYear(new Date());
         }
         else if(path === 'zi'){
+          console.log(selectedDate);
           const start = selectedDate ? new Date(selectedDate) : new Date();
           const end = selectedDate ? new Date(selectedDate) : new Date();;
           start.setHours(appStartHour,0,0);
@@ -99,6 +105,16 @@ export class CalendarService {
       });
 
     }
+  }
+
+  getCabinetAppointment(date){
+    const obj = {
+      StartDate: startOfDay(new Date('2022-01-09')),
+      EndDate: startOfDay(new Date('2022-01-10')),
+      CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
+
+    };
+    return this.reqS.post(appointmentEndpoints.getAppointment, obj);
   }
 
   colorCode(code, view = 'list'){

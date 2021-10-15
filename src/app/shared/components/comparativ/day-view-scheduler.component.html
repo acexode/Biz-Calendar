@@ -1,9 +1,9 @@
 <div class="cal-week-view" role="grid">
     <div  class="cal-header day-info flex flex-column pt-5 pl-16 pos-absolute">
         <ion-text>
-          LUN
+          {{ month | titlecase}}
         </ion-text> 
-        <b>8</b>
+        <b>{{currDate}}</b>
       </div>
     <div class="cal-day-headers" role="row">
       <div
@@ -85,6 +85,7 @@
             [customTemplate]="eventTemplate"
             [eventTitleTemplate]="eventTitleTemplate"
             [eventActionsTemplate]="eventActionsTemplate"
+            
             [daysInWeek]="daysInWeek"
             (eventClicked)="
               eventClicked.emit({
@@ -97,6 +98,9 @@
         </div>
       </div>
     </div>
+    
+    
+    
     <div
       class="cal-time-events"
       mwlDroppable
@@ -209,7 +213,8 @@
               [tooltipAppendToBody]="tooltipAppendToBody"
               [tooltipDisabled]="dragActive || timeEventResizes.size > 0"
               [tooltipDelay]="tooltipDelay"
-              [customTemplate]="eventTemplate"
+              
+              (beforeViewRender)="beforeWeekViewRender($event)"
               [eventTitleTemplate]="eventTitleTemplate"
               [eventActionsTemplate]="eventActionsTemplate"
               [column]="column"
@@ -262,6 +267,7 @@
             >
             </mwl-calendar-week-view-hour-segment>
           </div>
+          
         </div>
       </div>
     </div>
