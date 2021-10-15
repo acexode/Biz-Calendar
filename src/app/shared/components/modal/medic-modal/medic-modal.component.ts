@@ -199,7 +199,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   }
   getExternalPhysiciansNoCNAS(searchString: string = '') {
     const payload = {
-       firstName: searchString,
+       name: searchString ? searchString.toUpperCase() : '',
     };
     console.log(payload);
     this.reqService
@@ -321,6 +321,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
             this.list$.next([]);
           }
         } else {
+          console.log('here');
           this.isFetching = true;
           this.getThirdPartyPhysiciansNotify();
           this.list$.next([]);
