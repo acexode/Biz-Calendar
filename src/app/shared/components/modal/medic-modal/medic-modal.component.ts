@@ -1,25 +1,16 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { physicians } from 'src/app/core/configs/endpoints';
+import { medicalSpecialities, physicians } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { MedicalSpecialitiesModel } from 'src/app/core/models/medical.specialities.model';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { IonInputConfig } from 'src/app/shared/models/components/ion-input-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { IonTextItem } from 'src/app/shared/models/components/ion-text-item';
-
-export interface DemoMedicData {
-  first: string;
-  second: string;
-  third: string;
-  fourth?: string;
-  fifth?: string;
-  sixth?: string;
-  value: string;
-}
 
 @Component({
   selector: 'app-medic-modal',
@@ -100,6 +91,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   getExternalPhysiciansNoCNASList$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   getThirdPartyPhysiciansList$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   isFetching = true;
+  getMedicalSpecialities$: Subscription;
+  getMedicalSpecialitiesData$: BehaviorSubject<MedicalSpecialitiesModel[]> = new BehaviorSubject<MedicalSpecialitiesModel[]>([]);
+  getAllMedicalSpecialities$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -108,16 +102,23 @@ export class MedicModalComponent implements OnInit, OnDestroy {
   ) {
   }
   ngOnInit(): void {
+    this.getMedicalSpecialities();
      this.toastService.presentToastWithNoDurationDismiss(
         'Select an option', 'success'
       );
     this.medicOptionTipSubscription$ = this.medicOptionFormControl
       .valueChanges
+       .pipe(
+        distinctUntilChanged()
+      )
       .subscribe(
         (b: string) => {
-          this.searchForm.reset();
-          this.getTipServiciiType(b);
-        }
+          // this.searchForm.reset({emit: false});
+          this.searchForm.patchValue (
+            {
+              search: ''
+            },
+          );        }
       );
     // load check list to list
     //
@@ -128,11 +129,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       ) // makes sure the value has actually changed.
       .subscribe(
         data => {
-          if (data.search && data.search !== '') {
-            this.searching(data.search);
-          } else {
-            this.updateData();
-          }
+          this.getPhysicianType(this.medicOptionFormControl.value, data.search);
         }
     ));
   }
@@ -153,16 +150,20 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       data: null
     });
   }
-  getPhysicians(_searchString: string = '') {
+  getPhysicians(searchString: string = '') {
     // search by payload not working
+    const payload = {
+       name: searchString ? searchString.toUpperCase() : '',
+    };
 
     this.reqService
-      .post(physicians.getPhysicians, {})
+      .post(physicians.getPhysicians, payload)
       .subscribe(
         (d: any) => {
           if (d?.physicians?.length > 0) {
             this.getPhysiciansList$.next(d?.physicians);
           } else {
+            this.noDataFountNotification();
             this.getPhysiciansList$.next([]);
           }
           this.isFetching = false;
@@ -183,26 +184,31 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         (d: any) => {
           if (d?.length > 0) {
             this.getThirdPartyPhysiciansList$.next(d);
+            this.toastService.dismissToast();
           } else {
+            this.noDataFountNotification();
             this.getThirdPartyPhysiciansList$.next([]);
           }
           this.isFetching = false;
           this.updateData();
-          this.toastService.dismissToast();
         },
          _err => {
           this.isFetching = false;
         }
       );
   }
-  getExternalPhysiciansNoCNAS(_searchString: string = '') {
+  getExternalPhysiciansNoCNAS(searchString: string = '') {
+    const payload = {
+       name: searchString ? searchString.toUpperCase() : '',
+    };
     this.reqService
-      .post(physicians.getExternalPhysiciansNoCNAS, {})
+      .post(physicians.getExternalPhysiciansNoCNAS, payload)
       .subscribe(
         (d: any) => {
           if (d?.length > 0) {
             this.getExternalPhysiciansNoCNASList$.next(d);
           } else {
+            this.noDataFountNotification();
             this.getExternalPhysiciansNoCNASList$.next([]);
           }
           this.isFetching = false;
@@ -218,16 +224,22 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         'Use the search input to search by Name', 'success'
       );
   }
-  getTipServiciiType(
+  noDataFountNotification() {
+    this.toastService.presentToastWithNoDurationDismiss(
+        'No data found. Please try a different name or check your spelling', 'error'
+      );
+  }
+  getPhysicianType(
     d: string = this.medicOptionFormControl.value,
     searchString: string = ''
   ): void {
     if (d) {
       this.toastService.dismissToast();
       this.isFetching = true;
+       this.list$.next([]);
       switch (d) {
         case this.medicOption[0].id:
-          this.getPhysicians();
+          this.getPhysicians(searchString);
           break;
         case this.medicOption[1].id:
           if (searchString !== '') {
@@ -238,7 +250,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
           }
           break;
         case this.medicOption[2].id:
-          this.getExternalPhysiciansNoCNAS();
+          this.getExternalPhysiciansNoCNAS(searchString);
           break;
         default:
           this.getPhysicians();
@@ -284,6 +296,9 @@ export class MedicModalComponent implements OnInit, OnDestroy {
           const p = this.getPhysiciansList$.value.map(
             (y: any) => ({
               first: y.name,
+              second: this.getMedicalSpecialitiesData$.value.find(
+                (x: any) => x.id === y.specialityID
+              ).name || '', // specialityID =>
             })
           );
           this.list$.next(
@@ -297,8 +312,11 @@ export class MedicModalComponent implements OnInit, OnDestroy {
             const p = this.getThirdPartyPhysiciansList$.value.map(
               (y: any) => ({
                 first: y.name,
-                second: y.contractNo,
-                third: y.stencilNo,
+                second: this.getAllMedicalSpecialities$.value.find(
+                    (x: any) => x.id === y.specialityID
+                  ).name || '', // specialityID =>
+
+                third: y.stencilNo, // contractNo =>
               })
             );
             this.list$.next(
@@ -318,7 +336,10 @@ export class MedicModalComponent implements OnInit, OnDestroy {
           const p = this.getExternalPhysiciansNoCNASList$.value.map(
             (y: any) => ({
               first: `${y.firstName} ${y.lastName}`,
-              second: y.stencilNo,
+              second: this.getAllMedicalSpecialities$.value.find(
+                    (x: any) => x.id === y.specialityID
+                  ).name || '',
+              third: y.stencilNo,
             })
           );
           this.list$.next(
@@ -329,9 +350,30 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       default:
     }
   }
+  getMedicalSpecialities(): void {
+    this.getMedicalSpecialities$ = forkJoin(
+      [
+        this.reqService.get(medicalSpecialities.getMedicalSpecialities),
+        this.reqService.get(medicalSpecialities.getAllMedicalSpecialities),
+      ]
+     ).subscribe(
+        (d: any) => {
+         this.getMedicalSpecialitiesData$.next(
+            d?.[0]?.specialities || []
+          );
+          this.getAllMedicalSpecialities$.next(
+            d?.[1] || []
+          );
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get medical specialities at this instance. Please check your network and try again. C14'
+        )
+      );
+  }
   ngOnDestroy(): void {
     unsubscriberHelper(this.subscriptions);
     unsubscriberHelper(this.medicOptionTipSubscription$);
+    unsubscriberHelper(this.getMedicalSpecialities$);
   }
 
 }
