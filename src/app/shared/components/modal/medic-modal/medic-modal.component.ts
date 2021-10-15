@@ -108,11 +108,17 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       );
     this.medicOptionTipSubscription$ = this.medicOptionFormControl
       .valueChanges
+       .pipe(
+        distinctUntilChanged()
+      )
       .subscribe(
         (b: string) => {
-          this.searchForm.reset();
-          this.getPhysicianType(b);
-        }
+          // this.searchForm.reset({emit: false});
+          this.searchForm.patchValue (
+            {
+              search: ''
+            },
+          );        }
       );
     // load check list to list
     //
@@ -123,12 +129,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       ) // makes sure the value has actually changed.
       .subscribe(
         data => {
-          if (data.search && data.search !== '') {
-            // this.searching(data.search);
-            this.getPhysicianType(this.medicOptionFormControl.value, data.search);
-          } else {
-            this.updateData();
-          }
+          this.getPhysicianType(this.medicOptionFormControl.value, data.search);
         }
     ));
   }
@@ -154,16 +155,15 @@ export class MedicModalComponent implements OnInit, OnDestroy {
     const payload = {
        name: searchString ? searchString.toUpperCase() : '',
     };
-    console.log(payload);
 
     this.reqService
       .post(physicians.getPhysicians, payload)
       .subscribe(
         (d: any) => {
-          console.log(d);
           if (d?.physicians?.length > 0) {
             this.getPhysiciansList$.next(d?.physicians);
           } else {
+            this.noDataFountNotification();
             this.getPhysiciansList$.next([]);
           }
           this.isFetching = false;
@@ -182,15 +182,15 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       .post(physicians.getThirdPartyPhysicians, payload)
       .subscribe(
         (d: any) => {
-          console.log(d);
           if (d?.length > 0) {
             this.getThirdPartyPhysiciansList$.next(d);
+            this.toastService.dismissToast();
           } else {
+            this.noDataFountNotification();
             this.getThirdPartyPhysiciansList$.next([]);
           }
           this.isFetching = false;
           this.updateData();
-          this.toastService.dismissToast();
         },
          _err => {
           this.isFetching = false;
@@ -201,15 +201,14 @@ export class MedicModalComponent implements OnInit, OnDestroy {
     const payload = {
        name: searchString ? searchString.toUpperCase() : '',
     };
-    console.log(payload);
     this.reqService
       .post(physicians.getExternalPhysiciansNoCNAS, payload)
       .subscribe(
         (d: any) => {
-          console.log(d);
           if (d?.length > 0) {
             this.getExternalPhysiciansNoCNASList$.next(d);
           } else {
+            this.noDataFountNotification();
             this.getExternalPhysiciansNoCNASList$.next([]);
           }
           this.isFetching = false;
@@ -225,6 +224,11 @@ export class MedicModalComponent implements OnInit, OnDestroy {
         'Use the search input to search by Name', 'success'
       );
   }
+  noDataFountNotification() {
+    this.toastService.presentToastWithNoDurationDismiss(
+        'No data found. Please try a different name or check your spelling', 'error'
+      );
+  }
   getPhysicianType(
     d: string = this.medicOptionFormControl.value,
     searchString: string = ''
@@ -232,6 +236,7 @@ export class MedicModalComponent implements OnInit, OnDestroy {
     if (d) {
       this.toastService.dismissToast();
       this.isFetching = true;
+       this.list$.next([]);
       switch (d) {
         case this.medicOption[0].id:
           this.getPhysicians(searchString);
@@ -321,7 +326,6 @@ export class MedicModalComponent implements OnInit, OnDestroy {
             this.list$.next([]);
           }
         } else {
-          console.log('here');
           this.isFetching = true;
           this.getThirdPartyPhysiciansNotify();
           this.list$.next([]);
@@ -354,7 +358,6 @@ export class MedicModalComponent implements OnInit, OnDestroy {
       ]
      ).subscribe(
         (d: any) => {
-         console.log(d);
          this.getMedicalSpecialitiesData$.next(
             d?.[0]?.specialities || []
           );
