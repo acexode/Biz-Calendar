@@ -1,9 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { appointment } from './../../../core/configs/endpoints';
+import { CalendarService } from './../../../core/services/calendar/calendar.service';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
 } from 'angular-calendar';
-import { addHours, startOfDay } from 'date-fns';
+import { addHours, differenceInHours, isSameDay, startOfDay } from 'date-fns';
 import { User } from './day-view-scheduler.component';
 
 const colors: any = {
@@ -61,107 +63,26 @@ const users: User[] = [
       title: 'Dna.',
       color: colors.yellow
   },
-  // {
-  //     id: 5,
-  //     name: 'B.C.D.',
-  //     title: 'Dna.',
-  //     color: colors.yellow
-  // },
-  // {
-  //     id: 6,
-  //     name: 'B.C.D.',
-  //     title: 'Dna.',
-  //     color: colors.yellow
-  // },
-  // {
-  //     id: 7,
-  //     name: 'B.C.D.',
-  //     title: 'Dna.',
-  //     color: colors.yellow
-  // },
-];
+  ];
 @Component({
   selector: 'app-comparativ',
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './comparativ.component.html',
   styleUrls: ['./comparativ.component.scss'],
 })
 export class ComparativComponent implements OnInit {
 
+
   viewDate = new Date();
 
-  users = users;
+  users = [];
 
-  events: CalendarEvent[] = [
-    {
-      title: 'An event',
-      color: users[0].color,
-      start: addHours(startOfDay(new Date()), 5),
-      meta: {
-        user: users[0],
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'Another event',
-      color: users[1].color,
-      start: addHours(startOfDay(new Date()), 2),
-      meta: {
-        user: users[1],
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'A 3rd event',
-      color: users[0].color,
-      start: addHours(startOfDay(new Date()), 7),
-      meta: {
-        user: users[0],
-      },
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      title: 'An all day event',
-      color: users[0].color,
-      start: new Date(),
-      meta: {
-        user: users[0],
-      },
-      draggable: true,
-      allDay: true,
-    },
-    {
-      title: 'Another all day event',
-      color: users[1].color,
-      start: new Date(),
-      meta: {
-        user: users[1],
-      },
-      draggable: true,
-      allDay: true,
-    },
-    {
-      title: 'A 3rd all day event',
-      color: users[0].color,
-      start: new Date(),
-      meta: {
-        user: users[0],
-      },
-      draggable: true,
-      allDay: true,
-    },
-  ];
+  events: CalendarEvent[] = [];
+  schedules: any;
+  holidays: any;
+  constructor(private calS: CalendarService,private cdref: ChangeDetectorRef){
+
+  }
 
   eventTimesChanged({
     event,
@@ -179,6 +100,117 @@ export class ComparativComponent implements OnInit {
     this.events = [...this.events];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.calS.selectedDate.subscribe(d =>{
+      this.loadEvent(d);
+    });
+    this.loadEvent(this.viewDate);
+  }
+  loadEvent(date){
+    this.calS.getCabinetAppointment(date).subscribe((e: any) =>{
+      console.log(e);
+      this.schedules = e?.schedules ? e?.schedules : [];
+      const eventList = e.appointments.map((apt, i) => (
+        {
+          title: apt.personName,
+          color: colors.yellow,
+          // color:  {
+          //   secondary: this.calS.colorCode(apt.colorCode),
+          //   primary: this.calS.colorCode(apt.colorCode),
+          // },
+          // start: new Date(apt.startTime ),
+          start: addHours(startOfDay(new Date()), 5),
+          end: addHours(startOfDay(new Date()), 8),
+          // end: new Date(apt.endTime ),
+          meta: {
+            user: {
+              id: i,
+              name: apt.personName,
+             color: colors.yellow,
+            },
+          },
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+        }
+      ));
+
+      const distinctUser = [];
+      const filterdUser =[];
+      e.appointments.forEach((apt,i) =>
+         {
+          if(!distinctUser.includes(apt.uid)){
+            distinctUser.push(apt.uid);
+            filterdUser.push({
+              id: i,
+              name: this.acronym(apt.personName),
+              title: this.acronym(apt.personName),
+              color: colors.yellow,
+            });
+          }
+        }
+      );
+
+      this.events = eventList;
+      this.users = filterdUser;
+      //this.cdref.detectChanges();
+      console.log(this.users);
+      console.log(this.events);
+    });
+  }
+  setBg(d){
+
+  const hours = new Date(d).getHours();
+  if(this.holidays?.length){
+    this.holidays.forEach(hol =>{
+      const diff = differenceInHours(hol.startDay, hol.endDate);
+      const isSame = isSameDay(hol.startDate, d);
+      if(isSame){
+        return 'holidays';
+      }
+    });
+  }else if(this.schedules?.length > 0){
+    const breakTime = this.schedules?.filter(e => e.isBreakTime)[0];
+    const allPrivate = [];
+    const allCnas = [];
+    const allBreak = [parseInt(breakTime.start,10), parseInt(breakTime.end,10)-1];
+    this.schedules?.forEach(e => {
+      if(e.isPrivate && !e.isBreak){
+        allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+      }else if(!e.isPrivate && !e.isBreak){
+        allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+      }
+    });
+    if(allBreak.includes(hours) ){
+      return '';
+    }else  if(allPrivate.includes(hours)){
+      return 'online-not-confirmed-v2 no-border';
+    }else {
+      //if(allCnas.includes(hours))
+      return 'cabinet-not-confirmed-v1 no-border';
+    }
+
+  }
+
+}
+range(start, end, step = 1) {
+  const output = [];
+  if (typeof end === 'undefined') {
+    end = start;
+    start = 0;
+  }
+  for (let i = start; i < end; i += step) {
+    output.push(i);
+  }
+  return output;
+};
+  acronym(text) {
+    console.log(text);
+    return text
+      .split(/\s/)
+      .reduce((accumulator, word) => accumulator + word.charAt(0), '');
+  }
 
 }
