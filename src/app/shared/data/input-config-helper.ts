@@ -7,6 +7,7 @@ export const inputConfigHelper = (conf: {
   type: string;
   placeholder: string;
   disabled?: boolean;
+  displayFormat?: string;
   custom?: IonInputConfig;
   inputMode?: string;
 }): IonInputConfig => {
@@ -17,6 +18,7 @@ export const inputConfigHelper = (conf: {
       text: get(conf, 'label', ''),
       classes: 'mb-8',
     },
+    displayFormat: conf.displayFormat,
     disabled: conf.disabled || false,
     inputMode: get(conf, 'inputMode', 'none'),
   };

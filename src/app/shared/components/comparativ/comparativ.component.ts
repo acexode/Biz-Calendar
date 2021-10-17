@@ -5,7 +5,7 @@ import {
   CalendarEvent,
   CalendarEventTimesChangedEvent,
 } from 'angular-calendar';
-import { addHours, startOfDay } from 'date-fns';
+import { addHours, differenceInHours, isSameDay, startOfDay } from 'date-fns';
 import { User } from './day-view-scheduler.component';
 
 const colors: any = {
@@ -78,6 +78,8 @@ export class ComparativComponent implements OnInit {
   users = [];
 
   events: CalendarEvent[] = [];
+  schedules: any;
+  holidays: any;
   constructor(private calS: CalendarService,private cdref: ChangeDetectorRef){
 
   }
@@ -107,6 +109,7 @@ export class ComparativComponent implements OnInit {
   loadEvent(date){
     this.calS.getCabinetAppointment(date).subscribe((e: any) =>{
       console.log(e);
+      this.schedules = e?.schedules ? e?.schedules : [];
       const eventList = e.appointments.map((apt, i) => (
         {
           title: apt.personName,
@@ -157,6 +160,52 @@ export class ComparativComponent implements OnInit {
       console.log(this.events);
     });
   }
+  setBg(d){
+
+  const hours = new Date(d).getHours();
+  if(this.holidays?.length){
+    this.holidays.forEach(hol =>{
+      const diff = differenceInHours(hol.startDay, hol.endDate);
+      const isSame = isSameDay(hol.startDate, d);
+      if(isSame){
+        return 'holidays';
+      }
+    });
+  }else if(this.schedules?.length > 0){
+    const breakTime = this.schedules?.filter(e => e.isBreakTime)[0];
+    const allPrivate = [];
+    const allCnas = [];
+    const allBreak = [parseInt(breakTime.start,10), parseInt(breakTime.end,10)-1];
+    this.schedules?.forEach(e => {
+      if(e.isPrivate && !e.isBreak){
+        allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+      }else if(!e.isPrivate && !e.isBreak){
+        allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+      }
+    });
+    if(allBreak.includes(hours) ){
+      return '';
+    }else  if(allPrivate.includes(hours)){
+      return 'online-not-confirmed-v2 no-border';
+    }else {
+      //if(allCnas.includes(hours))
+      return 'cabinet-not-confirmed-v1 no-border';
+    }
+
+  }
+
+}
+range(start, end, step = 1) {
+  const output = [];
+  if (typeof end === 'undefined') {
+    end = start;
+    start = 0;
+  }
+  for (let i = start; i < end; i += step) {
+    output.push(i);
+  }
+  return output;
+};
   acronym(text) {
     console.log(text);
     return text

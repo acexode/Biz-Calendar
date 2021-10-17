@@ -1,10 +1,11 @@
+import { location, cabinet } from './../../configs/endpoints';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { AuthService } from './../auth/auth.service';
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek,
   startOfYear, subBusinessDays, startOfDay } from 'date-fns';
@@ -115,6 +116,11 @@ export class CalendarService {
 
     };
     return this.reqS.post(appointmentEndpoints.getAppointment, obj);
+  }
+  getLocations(){
+    const cabinets = this.reqS.get(cabinet.getCabinets);
+    const locations = this.reqS.get(location.getLocations);
+    return forkJoin([locations, cabinets]);
   }
 
   colorCode(code, view = 'list'){
