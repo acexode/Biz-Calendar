@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { location, cabinet } from './../../configs/endpoints';
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AuthService } from './../auth/auth.service';
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
@@ -118,10 +118,9 @@ export class CalendarService {
     return this.reqS.post(appointmentEndpoints.getAppointment, obj);
   }
   getLocations(){
-    const loc = this.reqS.get(location.getLocations);
     const cabinets = this.reqS.get(cabinet.getCabinets);
-
-    return forkJoin([loc, cabinets]);
+    const locations = this.reqS.get(location.getLocations);
+    return forkJoin([locations, cabinets]);
   }
 
   colorCode(code, view = 'list'){
