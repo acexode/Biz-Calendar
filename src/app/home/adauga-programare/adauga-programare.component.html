@@ -63,9 +63,10 @@
           </ion-chip>
 
           <ion-chip
+              [disabled]="!isPatientPerson"
               class="chip-radio"
               color="biz-radio-chip-default-b-no-outline"
-              (click)="presentInfoPacientModalModal()"
+              (click)="getPersonInfo()"
             >
               <ion-label>
                 INFO

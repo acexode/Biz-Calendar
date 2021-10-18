@@ -192,7 +192,6 @@ export class PacientComponent implements OnInit, OnDestroy {
     })
       .subscribe(
         (d: any) => {
-          console.log(d);
           this.personsList$.next(
             [...d.persons]
           );

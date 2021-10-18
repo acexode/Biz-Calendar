@@ -26,7 +26,7 @@ import
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { cabinet, equipments, tipServicii } from 'src/app/core/configs/endpoints';
+import { cabinet, equipments, info, tipServicii } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
@@ -36,6 +36,8 @@ import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
 import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.model';
+import { GroupList } from 'src/app/core/models/groupList.model';
+import { Person } from 'src/app/core/models/person.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -238,6 +240,20 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   pacientName = '';
   getTipServicesParameter$: Subscription;
   getMedicalEquipment$: Subscription;
+  getPersonInfo$: Subscription;
+  pacientData$: BehaviorSubject<{
+    isPerson: boolean;
+    isGroup: boolean;
+    personData: Person | null;
+    groupData: GroupList | null;
+  }> = new BehaviorSubject(
+    {
+      isPerson: false,
+      isGroup: false,
+      personData: null,
+      groupData: null,
+    }
+  );
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -259,6 +275,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.onInitializeLoadData();
     /*  */
 
@@ -366,8 +383,19 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.pacientName = isPerson ?
         `${data?.firstName} ${data?.lastName}` :
         (isGroup ? data?.groupName : '');
-        console.log(this.pacientName);
+      console.log(this.pacientName);
+      // save data =>
+      this.pacientData$.next({
+        isPerson,
+        isGroup,
+        personData: isPerson ? data : null,
+        groupData: isPerson ? data : null,
+      });
+
     }
+  }
+  get isPatientPerson() {
+    return this.pacientData$.value.isPerson;
   }
   async presentCabinetModalRadio() {
     if (this.cabinetOption.length < 1) {
@@ -640,8 +668,30 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           }
         },
         _err => this.toastService.presentToastWithDurationDismiss(
-          'Unable to get get medical equipment at this instance. Please check your network and try again. C13'
+          'Unable to get medical equipment at this instance. Please check your network and try again. C13'
         )
+      );
+  }
+  getPersonInfo() {
+    this.toastService.presentToastWithNoDurationDismiss(
+      'Please Wait', 'success'
+    );
+    this.getPersonInfo$ = this.reqService.post(info.getPersonInfo, {
+      personUID: '9526f87f-a00a-45e5-8b71-5e6ea07bea92',
+      date: '2021-09-20T08:34:18.66+03:00'
+    })
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+          this.toastService.dismissToast();
+          this.presentInfoPacientModalModal();
+        },
+        _err => {
+          this.toastService.dismissToast();
+          this.toastService.presentToastWithDurationDismiss(
+            'Unable to get Persons information at this instance. Please check your network and try again. C15'
+          );
+        }
       );
   }
   ngOnDestroy() {
@@ -653,6 +703,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.adaugaProgramareTipServicii$);
     unsubscriberHelper(this.getTipServicesParameter$);
     unsubscriberHelper(this.getMedicalEquipment$);
+    unsubscriberHelper(this.getPersonInfo$);
   }
 
 }
