@@ -39,6 +39,7 @@ import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.m
 import { GroupList } from 'src/app/core/models/groupList.model';
 import { Person } from 'src/app/core/models/person.model';
 import { InfoPatient } from 'src/app/core/models/infoPatient.model';
+import { format } from 'date-fns';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -373,7 +374,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const d = await modal.onWillDismiss();
-    console.log(d);
+
     const {dismissed , data, isPerson, isGroup} = d?.data;
     if(dismissed && data !== '') {
       this.adaugaProgramareFormGroup.patchValue(
@@ -384,7 +385,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.pacientName = isPerson ?
         `${data?.firstName} ${data?.lastName}` :
         (isGroup ? data?.groupName : '');
-      console.log(this.pacientName);
+
       // save data =>
       this.pacientData$.next({
         isPerson,
@@ -435,6 +436,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       backdropDismiss: true,
       componentProps: {
         pacientPersonData,
+        pacientPersonName: this.pacientName,
       },
     });
     await modal.present();
@@ -473,7 +475,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
     this.recurentaDetails = data?.recurentaData;
   }
   async presentMedicModal() {
@@ -485,7 +486,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const d = await modal.onWillDismiss();
-    console.log(d);
     const {dismissed , data} = d?.data;
     if(dismissed && data !== '') {
       this.adaugaProgramareFormGroup.patchValue({medic: data});
@@ -610,7 +610,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.getTipServices$ = this.getTipServiciiType(data, optionData)
     .subscribe(
       (d: Cuplata[] | CNAS[]) => {
-        console.log(d);
         this.tipServiciiData = d;
         this.toastService.dismissToast();
       },
@@ -680,7 +679,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.toastService.presentToastWithNoDurationDismiss(
       'Please Wait', 'success'
       );
-      console.log(this.pacientData$.value.personData);
+
       this.getPersonInfo$ = this.reqService.post(
         info.getPersonInfo,
         {

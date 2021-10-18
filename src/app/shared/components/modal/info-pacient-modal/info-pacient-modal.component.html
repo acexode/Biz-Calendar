@@ -2,7 +2,7 @@
   <div class="w-100">
     <div class="ion-no-padding flex flex-column w-100">
       <div class="w-100 px-16 pt-20 pb-15 border-bottom-1px-solid-neutral-grey-light-b-color">
-        <span class="p-0 s20-h28 text-weight-medium ls-0 roboto-family-font">Angela Ghica Protopopescu</span>
+        <span class="p-0 s20-h28 text-weight-medium ls-0 roboto-family-font">{{pacientPersonName}}</span>
       </div>
       <div class="w-100 p-24">
 
@@ -31,7 +31,7 @@
           <div class="flex flex-row ion-justify-content-between">
             <span class="p-0 s16-h24 roboto-family-font text-weight-regular ls-0">Ultima:</span>
             <span class="p-0 s16-h24 roboto-family-font text-weight-medium ls-0">
-             {{pacientPersonData?.lastAppointmentDate}}
+             {{lastAppointmentDate}}
             </span>
           </div>
           <div class="flex flex-row ion-justify-content-between my-8">
@@ -59,7 +59,7 @@
           <div class="flex flex-row ion-justify-content-between">
             <span class="p-0 s16-h24 roboto-family-font text-weight-regular ls-0">Pacient din:</span>
             <span class="p-0 s16-h24 roboto-family-font text-weight-medium ls-0">
-              {{pacientPersonData?.personRegistrationDate}}
+              {{personRegistrationDate}}
             </span>
           </div>
 
@@ -69,7 +69,7 @@
 
       <div class="w-100 px-16 py-12 flex ion-justify-content-end ion-align-items-center border-top-1px-solid-neutral-grey-light-b-color">
         <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal()">
-            Închide
+            INCHIDE
         </ion-button>
       </div>
 
