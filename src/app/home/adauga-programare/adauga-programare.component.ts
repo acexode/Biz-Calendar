@@ -32,10 +32,10 @@ import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabine
 import { CNAS } from 'src/app/core/models/cnas.service.model';
 import { Cuplata } from 'src/app/core/models/cuplata.service.model';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
 import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.model';
+import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -209,7 +209,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
     tipServicii: ['', [Validators.required]],
-    data: ['2021-09-27', [Validators.required]],
+    data: ['2021-10-18', [Validators.required]],
     oraDeIncepere: ['09:00', [Validators.required]],
     time: ['', [Validators.required]],
     cabinet: ['', [Validators.required]],
@@ -378,6 +378,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           const toCompareDate = new Date(
           `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
         );
+        console.log(toCompareDate);
         const modal = await this.modalController.create({
           component: BizSearchableRadioModalComponent,
           cssClass: 'biz-modal-class',
@@ -390,10 +391,13 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         });
         await modal.present();
         const { data } = await modal.onWillDismiss();
-        const { dismissed, radioValue } = data;
-        if (dismissed && radioValue !== '') {
-          this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+        if (data) {
+          const { dismissed, radioValue } = data;
+          if (dismissed && radioValue !== '') {
+            this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
+          }
         }
+
       } else {
         this.toastService.presentToastWithDurationDismiss('Completează data și ora de începere de mai sus!');
       }

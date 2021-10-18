@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { addHours, isAfter, isBefore, startOfDay } from 'date-fns';
+import { addHours, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
 import { Subscription } from 'rxjs';
 import { cabinet } from 'src/app/core/configs/endpoints';
@@ -138,17 +138,22 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
                     endTime: addHours(startOfDay(new Date()), v.endHour)
                   })
               );
-              console.log(this.cabinetOfEvent);
+              console.log('cabinetOfEvent: ', this.cabinetOfEvent, this.toCompareDate);
               for (const res of this.cabinetOfEvent) {
                 const checkIsBeforeEndTime = isBefore(res.endTime,
                   this.toCompareDate
                 );
                 const checkIsAfterStartTime = isAfter(res.startTime, this.toCompareDate);
-                if (!checkIsBeforeEndTime && !checkIsAfterStartTime) {
+                const isSameTime = isEqual(res.startTime, this.toCompareDate);
+                console.log('checkIsBeforeEndTime: ', checkIsBeforeEndTime);
+                console.log('checkIsAfterStartTime: ', checkIsAfterStartTime);
+                console.log('isSameTime: ', isSameTime);
+                const getTheDay = getDay(new Date());
+                console.log('getTheDay: ', getTheDay);
+                if ((checkIsBeforeEndTime && checkIsAfterStartTime) || isSameTime) {
                   this.presentCabinentNotify();
-                  // this.closeModal();
                 } else {
-                  this.presentCabinentNotify();
+                  this.closeModal();
                 }
               }
             } else {
@@ -194,3 +199,4 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   }
 
 }
+
