@@ -30,4 +30,5 @@ export interface GetCabinetSchedulesResponseModel {
   startMin: number;
   startTime?: Date;
   endTime?: Date;
+  cabinetTime?: Date;
 }

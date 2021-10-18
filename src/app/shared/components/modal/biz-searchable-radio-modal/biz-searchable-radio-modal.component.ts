@@ -5,6 +5,7 @@ import { addHours, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-f
 import { get, find } from 'lodash';
 import { Subscription } from 'rxjs';
 import { cabinet } from 'src/app/core/configs/endpoints';
+import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
 import { RequestService } from 'src/app/core/services/request/request.service';
@@ -133,10 +134,16 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
             if (resps.length > 0) {
               this.cabinetOfEvent = resps.map(
                 (v: GetCabinetSchedulesResponseModel) => ({
-                    ...v,
-                    startTime: addHours(startOfDay(new Date()), v.startHour),
-                    endTime: addHours(startOfDay(new Date()), v.endHour)
-                  })
+                  ...v,
+                  cabinetTime: dayInAWeekWithDate(new Date())[v.dayID],
+                  // startTime: addHours(startOfDay(new Date()), v.startHour),
+                  // endTime: addHours(startOfDay(new Date()), v.endHour)
+                })
+              ) .map((w: GetCabinetSchedulesResponseModel) => ({
+                    ...w,
+                    startTime: addHours(startOfDay(w.cabinetTime), w.startHour),
+                    endTime: addHours(startOfDay(w.cabinetTime), w.endHour)
+              })
               );
               console.log('cabinetOfEvent: ', this.cabinetOfEvent, this.toCompareDate);
               for (const res of this.cabinetOfEvent) {
