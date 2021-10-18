@@ -38,6 +38,7 @@ import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-
 import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.model';
 import { GroupList } from 'src/app/core/models/groupList.model';
 import { Person } from 'src/app/core/models/person.model';
+import { InfoPatient } from 'src/app/core/models/infoPatient.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -427,12 +428,14 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       }
     }
   }
-  async presentInfoPacientModalModal() {
+  async presentInfoPacientModalModal(pacientPersonData: InfoPatient) {
     const modal = await this.modalController.create({
       component: InfoPacientModalComponent,
       cssClass: 'biz-modal-class-type-a',
       backdropDismiss: true,
-      componentProps: {},
+      componentProps: {
+        pacientPersonData,
+      },
     });
     await modal.present();
   }
@@ -673,18 +676,22 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       );
   }
   getPersonInfo() {
-    this.toastService.presentToastWithNoDurationDismiss(
+    if (this.isPatientPerson) {
+      this.toastService.presentToastWithNoDurationDismiss(
       'Please Wait', 'success'
-    );
-    this.getPersonInfo$ = this.reqService.post(info.getPersonInfo, {
-      personUID: '9526f87f-a00a-45e5-8b71-5e6ea07bea92',
-      date: '2021-09-20T08:34:18.66+03:00'
-    })
+      );
+      console.log(this.pacientData$.value.personData);
+      this.getPersonInfo$ = this.reqService.post(
+        info.getPersonInfo,
+        {
+          personUID: this.pacientData$.value.personData.uid,
+          date: this.pacientData$.value.personData.birthDate
+        }
+      )
       .subscribe(
-        (d: any) => {
-          console.log(d);
+        (d: InfoPatient) => {
           this.toastService.dismissToast();
-          this.presentInfoPacientModalModal();
+          this.presentInfoPacientModalModal(d);
         },
         _err => {
           this.toastService.dismissToast();
@@ -693,6 +700,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           );
         }
       );
+    } else {
+      this.toastService.presentToastWithDurationDismiss(
+      'No Patient', 'error'
+    );
+    }
   }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
