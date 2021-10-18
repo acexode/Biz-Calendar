@@ -64,3 +64,8 @@ export const medicalSpecialities = {
 export const equipments = {
   getMedicalEquipment: baseEndpoints.bizCalendarService + '/GetMedicalEquipment',
 };
+
+
+export const info = {
+  getPersonInfo: baseEndpoints.bizCalendarService + '/GetPersonInfo',
+};
