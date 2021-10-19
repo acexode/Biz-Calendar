@@ -102,7 +102,7 @@ export class CalendarComponent implements OnInit {
     constructor(route: ActivatedRoute, private router: Router, private calS: CalendarService) {
       this.activatedPath = '/' + route.snapshot.paramMap.get('id');
       console.log(this.display);
-      this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
+      // this.calS.selectedPath.next(route.snapshot.paramMap.get('id'));
       this.startEndTime = JSON.parse(localStorage.getItem('workHours'));
       this.refresh.next();
     }

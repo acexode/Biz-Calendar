@@ -1,9 +1,9 @@
 <div class="cal-week-view" role="grid">
     <div  class="cal-header day-info flex flex-column pt-5 pl-16 pos-absolute">
         <ion-text>
-          {{ month | titlecase}}
+          LUN
         </ion-text> 
-        <b>{{currDate}}</b>
+        <b>8</b>
       </div>
     <div class="cal-day-headers" role="row">
       <div
@@ -13,8 +13,7 @@
         role="columnheader"
       >
       
-        <div class="flex flex-column align-items-center pt-5 defaultGrayColor">
-          <ion-text class="s12pt8-h16 pt-4"><b>{{user.name}}</b></ion-text></div>
+        <div class="flex flex-column defaultGrayColor"><ion-text class="s12pt8-h16">{{user.title}}</ion-text><b>{{user.name}}</b></div>
   
       </div>
     </div>
@@ -86,7 +85,6 @@
             [customTemplate]="eventTemplate"
             [eventTitleTemplate]="eventTitleTemplate"
             [eventActionsTemplate]="eventActionsTemplate"
-            
             [daysInWeek]="daysInWeek"
             (eventClicked)="
               eventClicked.emit({
@@ -99,9 +97,6 @@
         </div>
       </div>
     </div>
-    
-    
-    
     <div
       class="cal-time-events"
       mwlDroppable
@@ -115,7 +110,7 @@
             trackBy: trackByHour;
             let odd = odd
           "
-          class="cal-hour "
+          class="cal-hour"
           [class.cal-hour-odd]="odd"
         >
           <mwl-calendar-week-view-hour-segment
@@ -130,9 +125,6 @@
           </mwl-calendar-week-view-hour-segment>
         </div>
       </div>
-
-
-      <!-- week view template -->
       <div
         class="cal-day-columns"
         [class.cal-resize-active]="timeEventResizes.size > 0"
@@ -217,8 +209,7 @@
               [tooltipAppendToBody]="tooltipAppendToBody"
               [tooltipDisabled]="dragActive || timeEventResizes.size > 0"
               [tooltipDelay]="tooltipDelay"
-              
-            
+              [customTemplate]="eventTemplate"
               [eventTitleTemplate]="eventTitleTemplate"
               [eventActionsTemplate]="eventActionsTemplate"
               [column]="column"
@@ -251,7 +242,6 @@
             <mwl-calendar-week-view-hour-segment
               *ngFor="let segment of hour.segments; trackBy: trackByHourSegment"
               [style.height.px]="hourSegmentHeight"
-              [ngClass]="setBg(segment.date)"
               [segment]="segment"
               [segmentHeight]="hourSegmentHeight"
               [locale]="locale"
@@ -272,21 +262,8 @@
             >
             </mwl-calendar-week-view-hour-segment>
           </div>
-          
         </div>
       </div>
     </div>
   </div>
-  <!-- <ng-template #hourSegmentTemplate let-hour="hour" let-locale="locale" let-segment="segment">
-    <ion-row class=" b-bottom pl-0 h-100">
-      <ion-col [size]=" true ? 1: 2">
-        <ion-label class="h-100 w-40 cal-time">
-    
-          {{segment.date | calendarDate:'dayViewHour'}}</ion-label>
-    
-      </ion-col >
-      <ion-col [ngClass]="setBg(segment.date)" class="b-left" [size]=" true ? 11: 10">
-    
-      </ion-col>
-    </ion-row>
-    </ng-template> -->
+  

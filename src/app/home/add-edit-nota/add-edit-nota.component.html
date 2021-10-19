@@ -17,7 +17,7 @@
           <ion-title>Notă</ion-title>
 
           <div slot="end">
-            <ion-button (click)="save()" size="default" color="biz-primary upper">
+            <ion-button size="default" color="biz-primary upper">
               Salvează
             </ion-button>
           </div>
@@ -58,11 +58,17 @@
         <div class="w-100 px-32 flex flex-1 flex-row ion-justify-content-between">
 
           <div class="mw-140 flex-1 mr-16">
-            <app-date-time formControlName="pacient" [config]="dataInputConfig"></app-date-time>
+            <app-input
+              [config]="dataInputConfig"
+              formControlName="pacient"
+            ></app-input>
           </div>
 
           <div class="mw-140 flex-1 ml-16">
-            <app-date-time formControlName="time" [config]="timeInputConfig"></app-date-time>
+            <app-input
+              [config]="timeInputConfig"
+              formControlName="pacient"
+            ></app-input>
           </div>
 
         </div>
@@ -72,7 +78,7 @@
             <app-radios
                 [config]="timeRadioConfig"
                 [options]="timeRadioOption"
-                formControlName="duration"
+                formControlName="time"
                 class="w-100"
               >
             </app-radios>

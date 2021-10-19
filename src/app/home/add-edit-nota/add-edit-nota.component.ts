@@ -55,8 +55,7 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   dataInputConfig = inputConfigHelper({
     label: 'Data',
     type: 'date',
-    displayFormat: 'DD/MM/YY',
-    placeholder: new Date().toLocaleDateString(),
+    placeholder: '08.03.2021',
     custom: {
       mode: 'md',
       useIcon: {
@@ -67,7 +66,6 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   timeInputConfig = inputConfigHelper({
     label: 'Ora de începere',
     type: 'time',
-    displayFormat: 'h:mm A',
     placeholder: '09:00',
     custom: {
       mode: 'md',
@@ -106,7 +104,6 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     tipServicii: '',
     tipPredefinit: '',
     time: '',
-    duration: '',
     cabinet: '',
     medic: '',
     observatii: ''
@@ -123,10 +120,6 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
-  }
-  save(){
-    const values = this.adaugaProgramareFormGroup.value;
-    console.log(values);
   }
 
   ngOnDestroy() {

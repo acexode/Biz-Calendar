@@ -10,7 +10,6 @@ import { SelectComponent } from './components/select/select.component';
 import { ChipsComponent } from './chips/chips.component';
 import { RadiosComponent } from './components/radios/radios.component';
 import { BizCustomSelectionComponent } from './components/biz-custom-selection/biz-custom-selection.component';
-import { DateTimeComponent } from './components/date-time/input.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +19,7 @@ import { DateTimeComponent } from './components/date-time/input.component';
     SelectComponent,
     ChipsComponent,
     RadiosComponent,
-    BizCustomSelectionComponent,
-    DateTimeComponent
+    BizCustomSelectionComponent
   ],
   imports: [
     CommonModule,
@@ -36,8 +34,7 @@ import { DateTimeComponent } from './components/date-time/input.component';
     ChipsComponent,
     ReactiveFormsModule,
     RadiosComponent,
-    BizCustomSelectionComponent,
-    DateTimeComponent
+    BizCustomSelectionComponent
   ],
   providers: [BizInputsService],
 })
