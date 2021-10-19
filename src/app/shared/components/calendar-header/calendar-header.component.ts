@@ -90,19 +90,6 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.calS.getLocations().subscribe((e: any) =>{
-      const mappedLocations = e[0].locations.map(loc =>({
-        id: loc.locationID,
-        label: loc.locationName
-      }));
-      const mappedCabinetss = e[1].map(cab =>({
-        id: cab.cabinetUid,
-        label: cab.cabinetName
-      }));
-      console.log(e);
-      this.locationOptions = mappedLocations;
-      // this.cab
-    });
     this.calS.selectedDate.subscribe(e =>{
       if(e){
         this.currDay = format(new Date(e), 'E', { locale: ro });
