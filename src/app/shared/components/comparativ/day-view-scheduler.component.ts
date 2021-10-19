@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import {
     ChangeDetectorRef,
     Component,
@@ -11,7 +12,9 @@ import {
     SimpleChanges,
   } from '@angular/core';
   import {
+    CalendarDayViewBeforeRenderEvent,
     CalendarUtils,
+    CalendarWeekViewBeforeRenderEvent,
     CalendarWeekViewComponent,
     DateAdapter,
     getWeekViewPeriod,
@@ -26,6 +29,8 @@ import {
     WeekViewAllDayEvent,
   } from 'calendar-utils';
   import { DragEndEvent, DragMoveEvent } from 'angular-draggable-droppable';
+import { differenceInHours, format, isSameDay } from 'date-fns';
+import { ro } from 'date-fns/locale';
 
   export interface User {
     id: number;
@@ -87,11 +92,14 @@ import {
   export class DayViewSchedulerComponent extends CalendarWeekViewComponent
     implements OnChanges {
     @Input() users: User[] = [];
-
+    @Input() schedules;
+    @Input() holidays;
     @Output() userChanged = new EventEmitter();
 
     view: DayViewScheduler;
-
+    month = format(new Date(), 'MMMM', { locale: ro });
+    currDay = format(new Date(), 'E', { locale: ro });
+    currDate = format(new Date(), 'd', { locale: ro });
     daysInWeek = 1;
 
     constructor(
@@ -107,7 +115,7 @@ import {
 
     ngOnChanges(changes: SimpleChanges): void {
       super.ngOnChanges(changes);
-
+      console.log(this.users);
       if (changes.users) {
         this.refreshBody();
         this.emitBeforeViewRender();
@@ -209,4 +217,50 @@ import {
       const newIndex = currentColumnIndex + columnsMoved;
       return this.view.users[newIndex];
     }
+    setBg(d){
+      // console.log(d);
+      const hours = new Date(d).getHours();
+      if(this.holidays?.length){
+        this.holidays.forEach(hol =>{
+          const diff = differenceInHours(hol.startDay, hol.endDate);
+          const isSame = isSameDay(hol.startDate, d);
+          if(isSame){
+            return 'holidays';
+          }
+        });
+      }else if(this.schedules?.length > 0){
+        const breakTime = this.schedules?.filter(e => e.isBreakTime)[0];
+        const allPrivate = [];
+        const allCnas = [];
+        const allBreak = [parseInt(breakTime?.start,10), parseInt(breakTime?.end,10)-1];
+        this.schedules?.forEach(e => {
+          if(e.isPrivate && !e.isBreak){
+            allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }else if(!e.isPrivate && !e.isBreak){
+            allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }
+        });
+        if(allBreak.includes(hours) ){
+          return '';
+        }else  if(allPrivate.includes(hours)){
+          return 'online-not-confirmed-v2 no-border';
+        }else {
+          //if(allCnas.includes(hours))
+          return 'cabinet-not-confirmed-v1 no-border';
+        }
+
+      }
+
+    }
+    range(start, end, step = 1) {
+      const output = [];
+      if (typeof end === 'undefined') {
+        end = start;
+        start = 0;
+      }
+      for (let i = start; i < end; i += step) {
+        output.push(i);
+      }
+      return output;
+    };
   }
