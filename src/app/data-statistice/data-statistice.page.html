@@ -1,7 +1,7 @@
 
 <ion-content [scrollEvents]="true" [fullscreen]="true">
-  <!-- <div class="web-grey-light-b-bg-color w-100" [ngClass]="{ 'flex ion-justify-content-center': isWed }">
-    <div class="w-100 w-lg-634px web-white-page position-relative vh-100"> -->
+  <div class="web-grey-light-b-bg-color w-100" [ngClass]="{ 'flex ion-justify-content-center': isWed }">
+    <div class="w-100 w-lg-634px web-white-page position-relative vh-100">
       <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
         <ion-toolbar class="ion-no-padding">
 
@@ -22,13 +22,13 @@
         </ion-toolbar>
       </ion-header>
 
-      <form [formGroup]="adaugaProgramareFormGroup" class="mb-74">
+      <form [formGroup]="adaugaProgramareFormGroup" class="mb-16">
         <div class="biz-custom-select-div px-16 pt-32" (click)="presentModalB()">
           <ion-label>Tip de date</ion-label>
           <div [class]="'biz-custom-select border-light-grey'">
             <div class="input-select-display">
 
-              <input type="text" formControlName="numar" readonly>
+              <input type="text" formControlName="tipDate" readonly>
 
             </div>
             <div class="icon">
@@ -37,60 +37,107 @@
           </div>
         </div>
         
-        <div *ngIf="" class="pt-32 px-32">
+        <div *ngIf="chartType === 'pie'" class="pt-32 px-32">
           <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Ioana Anghelescu</ion-text>
           <!-- <ion-icon >Ioana Anghelescu</ion-icon> -->
         </div>
-        <div class="pt-32 px-32">
-          <ion-text class="primary-color-step-100 text-weight-500 s20-h28">Martie</ion-text>
-          <ion-icon name="caret-down" color="biz-primary" ></ion-icon>
+       
+        <div *ngIf="chartType === 'line'" class="pt-32 px-32">
+         
+           <ion-row>
+             <ion-select class="primary-color-step-100 text-weight-500 s20-h28" formControlName="month" okText="Okay" cancelText="Dismiss">
+               <ion-select-option [value]="m" *ngFor="let m of months" value="brown">{{m}}</ion-select-option>
+               
+             </ion-select>
+             <ion-col class=" mt-10">
+               <ion-icon  name="caret-down" color="biz-primary" ></ion-icon>
+
+             </ion-col>
+
+           </ion-row>
         </div>
 
-        <ion-row class="px-16 pt-16">
-          <ion-col class="card px-16 pt-16">
-            <ion-row>
-              <ion-col size="3">
-                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
-                  TOTAL
-                  martie
-                  2021
-
-                </ion-text>
-              </ion-col>
-              <ion-col size="6">
-                <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
-                  <div style="display: block;">
-                    <!-- <canvas baseChart  height="80"
-                      [datasets]="lineChartData"
-                      [labels]="lineChartLabels"
-                      [options]="lineChartOptions"
-                      [colors]="lineChartColors"
-                      [legend]="lineChartLegend"
-                      [chartType]="lineChartType"
-                      [plugins]="lineChartPlugins">
-                    </canvas> -->
-                  </div>
-
-                </ion-text>
-              </ion-col>
-              <ion-col size="3">
-                <ion-text class="s32-h32 text-weight-medium poppin-family-font ls-03 ">
-                  565
-
-                </ion-text>
-              </ion-col>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-
-
-
       </form>
+      <ion-row *ngIf="chartType === 'pie'" [ngClass]="!isWed ? 'px-16' : 'px-85'">
+        <ion-col size="12"  *ngFor="let d of dougnutStats; let i = index" class="card  pt-16 mb-16">
+          <ion-row>
+            <ion-col class="pl-16" size="6">
+              <ion-text *ngIf="i === 0" class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                TOTAL
+               
+
+              </ion-text>
+              <ion-text *ngIf="i !== 0" class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                {{d.month}}
+               
+
+              </ion-text>
+            </ion-col>
+           
+            <ion-col class="flex ion-justify-content-end pr-12" size="6">
+              <ion-text  class="s14-h16 primary-color-step-110 ls-03 roboto-family-font ls-03 ion-text-right pr-6">
+                {{d.increase}} {{d.decrease}}
+              </ion-text>
+              <ion-icon *ngIf="d.increase !== null" color="biz-primary" name="arrow-up"></ion-icon>
+              <ion-icon *ngIf="d.decrease !== null" color="error" name="arrow-down"></ion-icon>
+            </ion-col>
+            <ion-col size="12">
+                <app-custom-chart type="dougnut"></app-custom-chart>
+             
+              <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+
+              </ion-text>
+            </ion-col>
+            <ion-col size="12" class="ion-text-center flex flex-column">
+              <ion-text class="s32-h32 primary-color-step-110  poppins-family-font pos-absolute" [ngClass]="isWed ? 'total': 'total-mobile'">{{d.percent}}</ion-text>
+              <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 pos-absolute" [ngClass]="isWed ? 'total second-label': 'total-mobile second-label-mobile'">Servicii C.N.A.S.</ion-text>
+            </ion-col>
+            <ion-col class="text-center pb-12 pt-8 legend" size="12">
+                <ion-text class="legend-left">Servicii C.N.A.S.</ion-text>
+                <ion-text class="legend-right">Servicii C.N.A.S.</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      
+      </ion-row>
+      <ion-row *ngIf="chartType === 'line'" class="px-16">
+        <ion-col class="card  pt-16">
+          <ion-row>
+            <ion-col class="pl-16" size="6">
+              <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                TOTAL
+              </ion-text> <br>
+              <ion-text class="s14-h16 text-weight-medium roboto-family-font ls-03 ">
+                martie <br> 2021
+              </ion-text>
+            </ion-col>
+           
+           
+            <ion-col class="pr-12" offset="3" size="3">
+              <ion-text class="s32-h32 text-weight-medium ls-03 poppins-family-font ls-03 ion-text-right pr-6">
+                565
+              </ion-text> <br>
+              <ion-text class="s14-h16 primary-color-step-110 ls-03 roboto-family-font ls-03 ion-text-right pr-6">
+                + 11
+              </ion-text>
+             
+            </ion-col>
+            <ion-col class="px-48" size="12">
+              <app-custom-chart type="line"></app-custom-chart>
+           
+          
+          </ion-col>
+           
+            
+          </ion-row>
+        </ion-col>
+      
+      </ion-row>
 
 
-  <!--   </div>
+    </div>
 
-  </div> -->
+  </div>
 
 </ion-content>
 

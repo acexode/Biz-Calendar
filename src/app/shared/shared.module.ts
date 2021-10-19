@@ -1,3 +1,4 @@
+import { CustomChartComponent } from './components/custom-chart/custom-chart.component';
 import { HourPipe } from './../core/pipes/hour.pipe';
 import { BrowserModule } from '@angular/platform-browser';
 import { ComparativComponent } from './components/comparativ/comparativ.component';
@@ -22,6 +23,8 @@ import { DayViewSchedulerComponent } from './components/comparativ/day-view-sche
 import { ModalModule } from './components/modal/modal.module';
 import { AddServiceSelectionComponent } from './components/add-service-selection/add-service-selection.component';
 import { CalModalComponent } from './components/modal/cal-modal/cal-modal.component';
+import { NumarDeProgramariComponent } from './components/numar-de-programari/numar-de-programari.component';
+import { ChartsModule } from 'ng2-charts';
 import { CoreModule } from '../core/core.module';
 
 registerLocaleData(localeDe);
@@ -39,6 +42,9 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
+    // HourPipe,
+    NumarDeProgramariComponent,
+    CustomChartComponent
   ],
   imports: [
     CommonModule,
@@ -53,6 +59,7 @@ registerLocaleData(localeDe);
     NgCalendarModule,
     BizInputsModule,
     ModalModule,
+    ChartsModule,
     CoreModule
   ],
   exports: [
@@ -68,6 +75,9 @@ registerLocaleData(localeDe);
     DayViewSchedulerComponent,
     AddServiceSelectionComponent,
     CalModalComponent,
+    // HourPipe,
+    NumarDeProgramariComponent,
+    CustomChartComponent
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ro' }

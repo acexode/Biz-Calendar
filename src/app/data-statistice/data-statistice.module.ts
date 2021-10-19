@@ -8,7 +8,6 @@ import { IonicModule } from '@ionic/angular';
 import { DataStatisticePageRoutingModule } from './data-statistice-routing.module';
 
 import { DataStatisticePage } from './data-statistice.page';
-
 @NgModule({
   imports: [
     CommonModule,
