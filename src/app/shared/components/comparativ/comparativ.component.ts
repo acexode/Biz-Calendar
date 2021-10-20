@@ -113,15 +113,12 @@ export class ComparativComponent implements OnInit {
       const eventList = e?.appointments.map((apt, i) => (
         {
           title: apt.personName,
-          //color: colors.yellow,
           color:  {
             secondary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
             primary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
           },
-          // start: new Date(apt.startTime ),
           start: addHours(startOfDay(new Date()), 5),
           end: addHours(startOfDay(new Date()), 8),
-          // end: new Date(apt.endTime ),
           meta: {
             user: {
               id: i,
