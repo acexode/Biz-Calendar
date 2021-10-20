@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   CalendarDateFormatter,
@@ -9,7 +9,10 @@ import {
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
 import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
-import { Subject } from 'rxjs';
+import { Subject, Subscriber, Subscription } from 'rxjs';
+import { appointmentEndpoints } from 'src/app/core/configs/endpoints';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { RequestService } from 'src/app/core/services/request/request.service';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
 
@@ -32,7 +35,7 @@ const colors: any = {
     },
   ],
 })
-export class CabinetComponent implements OnInit {
+export class CabinetComponent implements OnInit, OnDestroy {
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
@@ -109,8 +112,8 @@ export class CabinetComponent implements OnInit {
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
       startHour: 9,
       startMin: 0,
-      start: addHours(startOfDay(new Date('2021-09-27')), 9),
-      end: addHours(startOfDay(new Date('2021-09-27')), 13),
+      start: addHours(startOfDay(new Date('2021-10-18')), 9),
+      end: addHours(startOfDay(new Date('2021-10-18')), 13),
       color: colors.bizPrimary,
       actions: this.actions,
       resizable: {
@@ -120,9 +123,14 @@ export class CabinetComponent implements OnInit {
       draggable: true,
     }
   ];
-  constructor(private modalController: ModalController) { }
+  getAppointments$: Subscription;
+  constructor(
+    private modalController: ModalController,
+    private reqService: RequestService,
+  ) { }
 
   ngOnInit() {
+    this.getApointments();
     /* setTimeout(() => {
       const ev = [
       {
@@ -175,9 +183,6 @@ export class CabinetComponent implements OnInit {
       dismissed: true,
     });
   }
-  log(d) {
-    console.log(d);
-  }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
     console.log(renderEvent);
     renderEvent.hourColumns.forEach((hourColumn) => {
@@ -209,6 +214,22 @@ export class CabinetComponent implements OnInit {
     console.log(data);
     const { dismissed, renita, veziProgram } = data;
     if (dismissed && veziProgram) {}
+  }
+
+  getApointments() {
+    this.getAppointments$ = this.reqService.post(
+      appointmentEndpoints.getAppointment,
+      {
+        cabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
+      }
+    )
+      .subscribe(
+        (d: any) => console.log(d)
+      );
+  }
+
+  ngOnDestroy() {
+    unsubscriberHelper(this.getAppointments$);
   }
 
 }
