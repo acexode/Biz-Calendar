@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { locationOptions, programOptions,
   selectConfig, selectConfigB, utilizatorList, cabinetList, aparatList } from './../../data/select-data';
@@ -9,7 +10,7 @@ import { CalendarPages } from '../calendar/calendarPages';
 import { IonSelectConfig } from '../../models/components/ion-select-config';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { CalendarView } from 'angular-calendar';
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { CalModalComponent } from '../modal/cal-modal/cal-modal.component';
 import { CalendarComponent } from 'ionic2-calendar';
@@ -45,7 +46,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   activatedPath  = '';
   config: IonSelectConfig = selectConfig;
   configB: IonSelectConfig = selectConfigB;
-  locationOptions = locationOptions;
+  locationOptions = [];
   programOptions = programOptions;
   programList = utilizatorList;
   totalAppt = 0;
@@ -90,6 +91,19 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.calS.getLocations().subscribe((e: any) =>{
+      const mappedLocations = e[0].locations.map(loc =>({
+        id: loc.locationID,
+        label: loc.locationName
+      }));
+      const mappedCabinetss = e[1].map(cab =>({
+        id: cab.cabinetUid,
+        label: cab.cabinetName
+      }));
+      console.log(mappedLocations);
+      this.locationOptions = mappedLocations;
+      // this.cab
+    });
     this.calS.selectedDate.subscribe(e =>{
       if(e){
         this.currDay = format(new Date(e), 'E', { locale: ro });
@@ -117,7 +131,13 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
         this.programList = aparatList;
       }
     });
-
+    this.locationForm.get('location').valueChanges.subscribe(val =>{
+      console.log(val);
+      const obj = {
+        LocationUID: val[0]
+      };
+      this.calS.cabinetQuery$.next(obj);
+    });
     this.isTablet = window.innerWidth >= 768 ? true : false;
     window.addEventListener('resize', ()=>{
       this.isTablet = window.innerWidth >= 768 ? true : false;

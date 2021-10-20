@@ -107,10 +107,10 @@ export class ComparativComponent implements OnInit {
     this.loadEvent(this.viewDate);
   }
   loadEvent(date){
-    this.calS.getCabinetAppointment(date).subscribe((e: any) =>{
-      console.log(e);
+    this.calS.cabinetAppointment$.subscribe((e: any) =>{
+      // console.log(e);
       this.schedules = e?.schedules ? e?.schedules : [];
-      const eventList = e.appointments.map((apt, i) => (
+      const eventList = e?.appointments.map((apt, i) => (
         {
           title: apt.personName,
           color: colors.yellow,
@@ -156,8 +156,8 @@ export class ComparativComponent implements OnInit {
       this.events = eventList;
       this.users = filterdUser;
       //this.cdref.detectChanges();
-      console.log(this.users);
-      console.log(this.events);
+      // console.log(this.users);
+      // console.log(this.events);
     });
   }
   setBg(d){
@@ -207,7 +207,7 @@ range(start, end, step = 1) {
   return output;
 };
   acronym(text) {
-    console.log(text);
+    // console.log(text);
     return text
       .split(/\s/)
       .reduce((accumulator, word) => accumulator + word.charAt(0), '');

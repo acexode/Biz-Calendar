@@ -18,20 +18,27 @@ export class CalendarService {
   selectedDate: BehaviorSubject<string> = new BehaviorSubject(null);
   selectedPath: BehaviorSubject<string> = new BehaviorSubject(null);
   appointments$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
+  cabinetAppointment$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
+  cabinetQuery$: BehaviorSubject<any> = new BehaviorSubject(null);
   eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute, private authS: AuthService) {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      console.log(e);
+      // console.log(e);
       if(e !== null){
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
       }else{
-        console.log('new Date');
+        // console.log('new Date');
         this.fetchCalendarAppointment(new Date(), appStartHour, appEndHour);
       }
+    });
+    this.cabinetQuery$.subscribe(q =>{
+      console.log(q);
+      this.getCabinetAppointment(q);
     });
    }
 
@@ -40,9 +47,9 @@ export class CalendarService {
 
   }
   fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
-    console.log(selectedDate);
+    // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-      console.log(path);
+      // console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
@@ -108,14 +115,18 @@ export class CalendarService {
     }
   }
 
-  getCabinetAppointment(date){
+  getCabinetAppointment(query){
     const obj = {
-      StartDate: startOfDay(new Date('2022-01-09')),
-      EndDate: startOfDay(new Date('2022-01-10')),
-      CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
+      StartDate: startOfDay(new Date()),
+      EndDate: startOfDay(new Date()),
+      ...query
+      // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
 
     };
-    return this.reqS.post(appointmentEndpoints.getAppointment, obj);
+    return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
+      console.log(res);
+      this.cabinetAppointment$.next(res);
+    });
   }
   getLocations(){
     const cabinets = this.reqS.get(cabinet.getCabinets);
