@@ -116,9 +116,10 @@ export class CalendarService {
   }
 
   getCabinetAppointment(query){
+    
     const obj = {
-      StartDate: startOfDay(new Date('2022-01-09')),
-      EndDate: startOfDay(new Date('2022-01-10')),
+      StartDate: startOfDay(new Date()),
+      EndDate: startOfDay(new Date()),
       ...query,
       // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
 
