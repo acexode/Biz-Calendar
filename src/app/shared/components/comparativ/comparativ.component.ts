@@ -139,7 +139,7 @@ export class ComparativComponent implements OnInit {
 
       const distinctUser = [];
       const filterdUser =[];
-      e.appointments.forEach((apt,i) =>
+      e?.appointments.forEach((apt,i) =>
          {
           if(!distinctUser.includes(apt.uid)){
             distinctUser.push(apt.uid);
