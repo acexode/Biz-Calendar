@@ -7,7 +7,7 @@ import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { get } from 'lodash';
-import { persons, location } from 'src/app/core/configs/endpoints';
+import { persons, location, promotions } from 'src/app/core/configs/endpoints';
 import { Observable, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -124,13 +124,14 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       alertOptions: {
         cssClass: '',
       },
-      idKey: 'id',
-      labelKey: 'label',
+      idKey: 'uid',
+      labelKey: 'name',
       useIcon: {
         name: 'caret-down',
         classes: 'neutral-grey-medium-color'
       }
-   };
+  };
+  canalDePromovareOptions = [];
   orasConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
@@ -170,6 +171,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   getCities$: Subscription;
   judet$: Subscription;
   personData: any;
+  getPromotions$: Subscription;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -178,7 +180,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log('isEdit: ', this.isEdit);
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
       if (this.data.oras && this.data.oras !== 0) {
@@ -265,6 +266,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   }
   toggleMoreField() {
     this.getCountries();
+    this.getPromotions();
     this.addMoreField = !this.addMoreField;
   }
   toggleLoadingState() {
@@ -288,7 +290,11 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
         isActive: true,
         wasUpdateByMobile: true,
-        mobileUpdateDate:  formatRFC3339(new Date(), { fractionDigits: 3 })
+        mobileUpdateDate: formatRFC3339(new Date(), { fractionDigits: 3 }),
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        persons_PromotionChannel: {
+          promotionChannelUID:  get(this.componentFormGroup.value, 'canalDePromovare', ''),
+        }
       };
       this.personData = d;
 
@@ -336,12 +342,26 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   get formGroupValidity() {
     return this.componentFormGroup.valid;
   }
+   getPromotions() {
+    this.getPromotions$ = this.reqS.get(promotions.getPromotionChannels)
+    .subscribe(
+      (d: any) => {
+        this.canalDePromovareOptions = d;
+
+      },
+      // eslint-disable-next-line max-len
+      _err => this.presentToast(
+        'An error occur while trying to get promotions channel at this time. Please Check your newtwork and try again. C21'
+      )
+    );
+  }
 
   ngOnDestroy() {
     unsubscriberHelper(this.getCountries$);
     unsubscriberHelper(this.getCities$);
     unsubscriberHelper(this.addUser$);
     unsubscriberHelper(this.judet$);
+    unsubscriberHelper(this.getPromotions$);
   }
 
 }

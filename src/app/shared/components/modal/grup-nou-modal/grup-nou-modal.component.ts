@@ -108,6 +108,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     }
   }
   async presentNewPacientModal(personData: any) {
+    console.log(personData);
     const {
         firstName,
         lastName,

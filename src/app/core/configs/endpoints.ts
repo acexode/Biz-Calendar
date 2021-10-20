@@ -69,3 +69,7 @@ export const equipments = {
 export const info = {
   getPersonInfo: baseEndpoints.bizCalendarService + '/GetPersonInfo',
 };
+
+export const promotions = {
+  getPromotionChannels: baseEndpoints.bizCalendarService + '/GetPromotionChannels',
+};
