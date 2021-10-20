@@ -69,7 +69,7 @@ export class SelectieServiciiModalComponent implements OnInit, OnDestroy {
     this.opts = opts ? opts : [];
     this.updateItems();
   }
-  @Input() set selectedValue(d: any[]) {
+  @Input() set selectedValue(d: any[]) { // passin selected value
     this.selctedOpts = d ? d : [];
     this.updateItems();
   };
@@ -96,12 +96,16 @@ export class SelectieServiciiModalComponent implements OnInit, OnDestroy {
     const items = this.opts
       .map((v) => ({
         first: get(v, first, null),
-        second: `${get(v, second, null)} ${get(v, secondForCurrency, '')}`,
+        second: `${get(v, second, '')} ${get(v, secondForCurrency, '')}`,
         third: get(v, third, null),
         checked: includes(
           this.selctedOpts,
           get(v, id, null) || get(v, value, null)
-        ) || get(v, 'checked', false),
+        ) || get(v, 'checked', false) ||
+          includes(
+            this.ionicForm.value.checkboxArrayList,
+            get(v, id, null) || get(v, value, null)
+          ),
         value: get(v, id, null) || get(v, value, null),
       }))
       .filter((vv) => get(vv, 'value', null) !== null);

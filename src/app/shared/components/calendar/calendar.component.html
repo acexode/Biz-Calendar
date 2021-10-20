@@ -40,7 +40,7 @@
       [viewDate]="viewDate"
       [events]="events"
       [eventTemplate]="customDayTemplate"
-      [hourSegmentTemplate]="hourSegmentTemplate"
+      (beforeViewRender)="beforeDayViewRender($event)"
       [refresh]="refresh"
       [dayStartHour]="startEndTime.appStartHour"
       [dayEndHour]="startEndTime.appEndHour -1"
@@ -53,19 +53,6 @@
     </ion-col>
   </ion-row>
 
-  <ng-template #hourSegmentTemplate let-hour="hour" let-locale="locale" let-segment="segment">
-    <ion-row class=" b-bottom pl-0 h-100">
-      <ion-col [size]=" isTablet ? 1: 2">
-        <ion-label class="h-100 w-40 cal-time">
-
-          {{segment.date | calendarDate:'dayViewHour'}}</ion-label>
-
-      </ion-col >
-      <ion-col [ngClass]="setBg(segment.date)" class="b-left" [size]=" isTablet ? 11: 10">
-
-      </ion-col>
-    </ion-row>
-  </ng-template>
   <ng-template #customDayTemplate let-dayEvents="dayEvents"
   let-weekEvent="weekEvent"
   let-tooltipPlacement="tooltipPlacement"
@@ -73,8 +60,8 @@
   let-events="events"
   let-tooltipTemplate="tooltipTemplate"
   let-tooltipAppendToBody="tooltipAppendToBody">
-  <ion-row
-  class="cal-event lh-none"  [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass : 'cal-event'" (mwlClick)="eventClicked.emit({   event: weekEvent.event })"
+  <div
+    [ngClass]="weekEvent.event.meta?.cssClass ? weekEvent.event.meta?.cssClass + ' cal-event' : 'cal-event'" (mwlClick)="eventClicked.emit({   event: weekEvent.event })"
  >
  <ion-col [ngClass]="weekEvent.event.meta?.cssClass" size="12">
   <ion-icon [name]="weekEvent.event.meta?.icon"></ion-icon>
@@ -83,7 +70,7 @@
   </ion-text>
  </ion-col>
 
-</ion-row>
+</div>
 
 
   </ng-template>

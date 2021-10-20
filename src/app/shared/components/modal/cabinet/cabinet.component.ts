@@ -37,7 +37,7 @@ export class CabinetComponent implements OnInit {
 
   page = 'zile-lucratoare';
   refresh: Subject<any> = new Subject();
-  dd = new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
+  monthOfDate = new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
   viewDate: Date = new Date(); // '2021/09/26'
   excludeDays: number[] = [0, 6];
   actions: CalendarEventAction[] = [

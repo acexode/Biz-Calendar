@@ -24,7 +24,7 @@
 
         </ion-toolbar>
       </ion-header>
-      <ion-segment [value]="segment.one" (ionChange)="segmentChanged($event)" color="biz-primary" mode="md" class="position-sticky">
+      <ion-segment [value]="currentSegement" (ionChange)="segmentChanged($event)" color="biz-primary" mode="md" class="position-sticky">
         <ion-segment-button [value]="segment.one">
           <ion-label>{{segment.one}}</ion-label>
         </ion-segment-button>
@@ -35,27 +35,29 @@
     </div>
 
 
-    <div *ngIf="segment.one === currentSegement">
+    <div *ngIf="currentSegement === segment.one">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="list" class="">
+          <div *ngIf="(this.list$ | async)?.length > 0 && !isFetchingPerson; else loadingTemplate">
             <ion-list>
 
-              <ion-item *ngFor="let item of list; let i=index" (click)="submit(item)">
+              <ion-item *ngFor="let item of this.list$ | async as items" (click)="submit(item)">
 
                 <div class="flex flex-column">
                   <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
-                    {{item.first}}
+                    {{item?.firstName}} {{item?.lastName}}
                   </p>
                   <p class="m-0 flex flex-row ion-align-items-center">
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-                      {{item.second}}
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0" *ngIf="item?.genderID">
+                      {{item?.genderID === 0 ? 'M' : 'F'}}
                     </ion-text>
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
+                    <ion-text
+                    class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4"
+                    *ngIf="item?.birthDate">
                       /
                     </ion-text>
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-                      {{item.third}}
+                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor" *ngIf="item?.birthDate">
+                      {{getAge(item?.birthDate)}}
                     </ion-text>
                   </p>
                 </div>
@@ -64,6 +66,8 @@
             </ion-list>
 
           </div>
+
+
         </div>
       </div>
       <div class="w-100 flex ion-justify-content-center ion-align-items-center mt-10 mb-24">
@@ -76,28 +80,28 @@
       </div>
     </div>
 
-    <div *ngIf="segment.two === currentSegement">
+    <div *ngIf="currentSegement === segment.two">
       <div class="modal-div-body modal-view mt-150">
         <div>
-          <div *ngIf="grupuris" class="">
+          <div *ngIf="(groupList$ | async)?.length > 0 && !isFetchingGroups; else loadingTemplate">
             <ion-list>
 
-              <ion-item *ngFor="let grupuri of list; let i=index" (click)="submit(grupuri)">
+              <ion-item *ngFor="let grupuri of this.list$ | async as items" (click)="submit(grupuri)">
 
                 <div class="flex flex-column">
                   <p class="m-0 s20-h24 roboto-family-font text-weight-regular ls-0">
-                    {{grupuri.first}}
+                    {{grupuri.groupName}}
                   </p>
                   <p class="m-0 flex flex-row ion-align-items-center">
                     <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0">
-                      {{grupuri.second}}
+                      {{grupuri.totalMembers}} membri
                     </ion-text>
                     <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor px-4">
 
                     </ion-text>
-                    <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
-                      {{grupuri.third}}
-                    </ion-text>
+                    <!-- <ion-text class="s16-h24 roboto-family-font text-weight-regular ls-0 defaultGrayColor">
+                      {{grupuri.groupName}}
+                    </ion-text> -->
                   </p>
                 </div>
 
@@ -105,6 +109,7 @@
             </ion-list>
 
           </div>
+
         </div>
       </div>
       <div class="w-100 flex ion-justify-content-center ion-align-items-center mt-10 mb-24">
@@ -121,4 +126,10 @@
 
 
 </ion-content>
+
+<ng-template #loadingTemplate>
+  <div class="w-100 flex ion-justify-content-center ion-align-items-center">
+    <ion-spinner name="crescent" color="biz-primary"></ion-spinner>
+  </div>
+</ng-template>
 

@@ -23,6 +23,8 @@ export const appointmentEndpoints = {
 
 export const persons = {
   addPerson: baseEndpoints.bizCalendarService + '/AddNewPerson',
+  getPersons: baseEndpoints.bizCalendarService + '/GetPersons',
+  updatePerson: baseEndpoints.bizCalendarService + '/UpdatePerson'
 };
 
 export const location = {
@@ -44,4 +46,31 @@ export const notes = {
   addNote: baseEndpoints.bizCalendarService + '/AddNote',
   updateNote: baseEndpoints.bizCalendarService + '/UpdateNote',
   deleteNote: baseEndpoints.bizCalendarService + '/DeleteNote'
+};
+
+export const group = {
+  getGroups: baseEndpoints.bizCalendarService + '/GetGroups',
+  createGroup: baseEndpoints.bizCalendarService + '/CreateGroup',
+  updateGroup: baseEndpoints.bizCalendarService + '/UpdateGroup',
+  addMembersToGroup: baseEndpoints.bizCalendarService + '/AddMembersToGroup',
+};
+
+export const physicians = {
+  getPhysicians: baseEndpoints.bizCalendarService + '/GetPhysicians',
+  getThirdPartyPhysicians: baseEndpoints.bizCalendarService + '/GetThirdPartyPhysicians',
+  getExternalPhysiciansNoCNAS: baseEndpoints.bizCalendarService + '/GetExternalPhysiciansNoCNAS',
+};
+
+export const medicalSpecialities = {
+  getMedicalSpecialities: baseEndpoints.bizCalendarService + '/GetMedicalSpecialities',
+  getAllMedicalSpecialities: baseEndpoints.bizCalendarService + '/GetAllMedicalSpecialities',
+};
+
+export const equipments = {
+  getMedicalEquipment: baseEndpoints.bizCalendarService + '/GetMedicalEquipment',
+};
+
+
+export const info = {
+  getPersonInfo: baseEndpoints.bizCalendarService + '/GetPersonInfo',
 };

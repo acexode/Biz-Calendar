@@ -30,12 +30,12 @@
 
 .cabinet-confirmed-v1 {
   border-left: 4px solid #2ea81b;
-  background-color: #eaf6e8;
+  background-color: #eaf6e8 !important;
   border-radius: 4px 0 0 4px;
   color: #2ea81b;
 }
 .cabinet-confirmed-v1-weekmonth{
-  background-color: #2EA81B;
+  background-color: #2EA81B !important;
   --color: white;
   color: white
 }
@@ -46,7 +46,7 @@
   color: #1EA5C7;
 }
 .cabinet-confirmed-v2-weekmonth{
-  background: #1EA5C7;
+  background: #1EA5C7 !important;
   color: #fff;
 }
 .online-confirmed-v1 {
@@ -58,18 +58,18 @@
   z-index: 100;
 }
 .online-confirmed-v1-weekmonth {
-  background:#3093f8 ;
+  background:#3093f8 !important ;
   color: #000;
 
 }
 .online-confirmed-v2 {
   border-left: 4px solid #9B57E0;
-  background-color: #F7EDFF;
+  background-color: #F7EDFF !important;
   color: #9B57E0;
   border-radius: 4px 0 0 4px;
 }
 .online-confirmed-v2-weekmonth {
-  background: #9B57E0;
+  background: #9B57E0 !important;
   color: #000;
 }
 
@@ -80,33 +80,33 @@
   color: #f77c00;
 }
 .warning-v1-weekMonth {
-  background:  #f77c00;
+  background:  #f77c00 !important;
   color: #fff;
 }
 .warning-v2 {
   border-radius: 4px 0 0 4px;
   border-left: 4px solid #F23D3D;
-  background-color: #FEF1E5;
+  background-color: #FEF1E5 !important;
   color: #F23D3D;
 }
 .warning-v2-weekMonth {
-  background: #F23D3D;
+  background: #F23D3D !important;
   color: #fff;
 }
 .note-v1{
-  background-color: #FFE9A1;
+  background-color: #FFE9A1 !important;
   color: #000;
 }
 .note-v2{
-  background-color: #E3E9EC;
+  background-color: #E3E9EC !important;
   color: #000;
 }
 .cancelled-v1{
-  background: #97A1A6;
+  background: #97A1A6 !important;
   color: #000;
 }
 .cancelled-v2{
-  border: 2px solid #97A1A6;
+  border: 2px solid #97A1A6 !important;
   border-left: 4px solid #97A1A6;
   border-radius: 4px 0 0 4px;
   background-color: #fff;
@@ -125,7 +125,7 @@
   color: #2ea81b;
 }
 .cabinet-not-confirmed-v1-weekmonth  {
-  background:  #d5eed1;
+  background:  #d5eed1 !important;
   color: #000;
  
 }
@@ -142,7 +142,7 @@
   ) !important;
 }
 .cabinet-not-confirmed-v2-weekmonth  {
-  background:  #C7F3FF;
+  background:  #C7F3FF !important;
   color: #000;
 }
 .online-not-confirmed-v2  {
@@ -168,17 +168,17 @@
     transparent 10px,
     #EAF4FE 10px,
     #EAF4FE calc(2 * 10px)
-  );
+  ) !important;
   color: #97A1A6;
 }
 .online-not-confirmed-v1-weekMonth {
-  background:  #D6E9FE;
+  background:  #D6E9FE !important;
   color: #000;
  
 }
 
 .online-not-confirmed-v2-weekMonth {
-  background:  #C7F3FF;
+  background:  #C7F3FF !important;
   color: #000;
 }
 .holidays{
@@ -188,7 +188,7 @@
     transparent 10px,
     #FFE9A1 10px,
     #FFE9A1 calc(2 * 10px)
-  );
+  ) !important;
 }
 .border-none{
     border: none !important;

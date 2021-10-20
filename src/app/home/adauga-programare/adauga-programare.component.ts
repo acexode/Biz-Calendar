@@ -11,7 +11,6 @@ import { IonRadioInputOption } from 'src/app/shared/models/components/ion-radio-
 import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-config';
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { TextAreaConfig } from 'src/app/shared/models/components/ion-textarea-config';
-import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
 import { Router } from '@angular/router';
@@ -27,14 +26,20 @@ import
   'src/app/shared/components/modal/biz-searchable-radio-modal/biz-searchable-radio-modal.component';
 import { NewPacientModalComponent } from 'src/app/shared/components/modal/new-pacient-modal/new-pacient-modal.component';
 import { RequestService } from 'src/app/core/services/request/request.service';
-import { cabinet, tipServicii } from 'src/app/core/configs/endpoints';
+import { cabinet, equipments, info, tipServicii } from 'src/app/core/configs/endpoints';
 import { GetCabinetsModel } from 'src/app/core/models/getCabinets.service.model';
 import { CabinetComponent } from 'src/app/shared/components/modal/cabinet/cabinet.component';
 import { CNAS } from 'src/app/core/models/cnas.service.model';
 import { Cuplata } from 'src/app/core/models/cuplata.service.model';
-import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
+import { BizSelectieServiciiConfig } from 'src/app/shared/models/components/biz-selectie-servicii.config';
+import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.model';
+import { GroupList } from 'src/app/core/models/groupList.model';
+import { Person } from 'src/app/core/models/person.model';
+import { InfoPatient } from 'src/app/core/models/infoPatient.model';
+import { format } from 'date-fns';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -181,57 +186,13 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     placeholder: '',
     disabled: false,
   };
-  checkList: DemoCheckList[] = [
-    {
-      first: 'Consultație peste vârsta de 4 ani',
-      second: 'Servicii paraclinice',
-      third: '10,80 pt.',
-      value: 'Consultație',
-      checked: false
-    },
-    {
-      first: 'Ecografie generală (abdomen + pelvis)',
-      second: 'Servicii paraclinice',
-      third: '23,45 pt.',
-      value: 'Ecografie generală',
-      checked: false
-    },
-    {
-      first: 'Ecografie abdominală',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'Ecografie abdominală',
-      checked: false
-    },
-    {
-      first: 'EKG standard',
-      second: 'Servicii paraclinice',
-      third: '12,34 pt.',
-      value: 'EKG',
-      checked: false
-    },
-    {
-      first: 'Consult peste 4 ani',
-      second: 'Consultație',
-      third: '5 pt.',
-      value: 'Consult',
-      checked: false
-    },
-    {
-      first: 'Spirometrie',
-      second: 'Servicii paraclinice',
-      third: '23 pt.',
-      value: 'Spirometrie',
-      checked: false
-    },
-    {
-      first: 'Pulsoximetrie',
-      second: 'Servicii paraclinice',
-      third: '10 pt.',
-      value: 'Pulsoximetrie',
-      checked: false
-    },
-  ];
+  aparaturaData: AparaturaAsociataModel[] = [];
+  aparaturaSelectServiciiOptionConfig: BizSelectieServiciiConfig = {
+      firstKey: 'equipmentName',
+      secondKey: '',
+      // thirdKey: '',
+      idKey: 'uid'
+  };
   cabinetOption: GetCabinetsModel[] = [];
   adugaOptions:  Array<IonRadioInputOption> = [
     { label: 'O persoană', id: 'O persoană' },
@@ -244,6 +205,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       text: 'Aparatură asociată'
     }
   };
+  aparaturaSelectedValue: any[] = [];
   adaugaProgramareFormGroup$: Subscription;
   isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
@@ -277,7 +239,23 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
    ...this.tipServiciiParameterInitialData
     }
   );
+  pacientName = '';
   getTipServicesParameter$: Subscription;
+  getMedicalEquipment$: Subscription;
+  getPersonInfo$: Subscription;
+  pacientData$: BehaviorSubject<{
+    isPerson: boolean;
+    isGroup: boolean;
+    personData: Person | null;
+    groupData: GroupList | null;
+  }> = new BehaviorSubject(
+    {
+      isPerson: false,
+      isGroup: false,
+      personData: null,
+      groupData: null,
+    }
+  );
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -289,14 +267,17 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
-    this.getLocations(true); // get location
-    this.getCabinets(); // get cabinete
+    /* services */
+    this.getLocations();
+    this.getCabinets();
+    this.getMedicalEquipment();
+    /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
   }
 
   ngOnInit(): void {
-    // initialize load
+
     this.onInitializeLoadData();
     /*  */
 
@@ -335,6 +316,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       componentProps: {},
     });
     await modal.present();
+    const d = await modal.onWillDismiss();
+    const { dismissed, data } = d?.data;
+    if(dismissed && data !== null) {
+      this.adaugaProgramareFormGroup.patchValue({ pacient: data?.uid });
+      this.pacientName =  `${data?.firstName} ${data?.lastName}`;
+    }
+  }
+  async presentGrupModal() {
+    const modal = await this.modalController.create({
+      component: GrupNouModalComponent,
+      cssClass: 'biz-modal-class',
+      backdropDismiss: false,
+      componentProps: {},
+    });
+    await modal.present();
+    const d = await modal.onWillDismiss();
+    const { dismissed, data } = d?.data;
+    if(dismissed && data !== null) {
+      this.adaugaProgramareFormGroup.patchValue({ pacient: data?.personsGroupUID });
+      this.pacientName = data?.groupName;
+    }
   }
    async presentBizRadioModal() {
     const modal = await this.modalController.create({
@@ -363,20 +365,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         }
      }
   }
-  async presentGrupModal() {
-    const modal = await this.modalController.create({
-      component: GrupNouModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
-      componentProps: {},
-    });
-    await modal.present();
-    const d = await modal.onWillDismiss();
-    const { dismissed, data } = d?.data;
-    if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({pacient: data?.first});
-    }
-  }
   async presentPacient() {
     const modal = await this.modalController.create({
       component: PacientComponent,
@@ -386,11 +374,30 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const d = await modal.onWillDismiss();
-    console.log(d);
-    const {dismissed , data} = d?.data;
+
+    const {dismissed , data, isPerson, isGroup} = d?.data;
     if(dismissed && data !== '') {
-      this.adaugaProgramareFormGroup.patchValue({pacient: data});
+      this.adaugaProgramareFormGroup.patchValue(
+        {
+          pacient: isPerson ? data?.uid : (isGroup ? data?.personsGroupUID : '')
+        }
+      );
+      this.pacientName = isPerson ?
+        `${data?.firstName} ${data?.lastName}` :
+        (isGroup ? data?.groupName : '');
+
+      // save data =>
+      this.pacientData$.next({
+        isPerson,
+        isGroup,
+        personData: isPerson ? data : null,
+        groupData: isPerson ? data : null,
+      });
+
     }
+  }
+  get isPatientPerson() {
+    return this.pacientData$.value.isPerson;
   }
   async presentCabinetModalRadio() {
     if (this.cabinetOption.length < 1) {
@@ -422,27 +429,40 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       }
     }
   }
-  async presentInfoPacientModalModal() {
+  async presentInfoPacientModalModal(pacientPersonData: InfoPatient) {
     const modal = await this.modalController.create({
       component: InfoPacientModalComponent,
       cssClass: 'biz-modal-class-type-a',
       backdropDismiss: true,
-      componentProps: {},
-    });
-    await modal.present();
-  }
-  async presentModalB() {
-    const modal = await this.modalController.create({
-      component: SelectieServiciiModalComponent,
-      cssClass: 'biz-modal-class',
-      backdropDismiss: false,
       componentProps: {
-        checkList: this.checkList,
+        pacientPersonData,
+        pacientPersonName: this.pacientName,
       },
     });
     await modal.present();
-    const { data } = await modal.onWillDismiss();
-    console.log(data);
+  }
+  async presentAparaturaDataModal() {
+    if (this.aparaturaData.length > 0) {
+      const modal = await this.modalController.create({
+        component: SelectieServiciiModalComponent,
+        cssClass: 'biz-modal-class',
+        backdropDismiss: false,
+        componentProps: {
+          checkList: this.aparaturaData,
+          selectedValue: this.aparaturaSelectedValue,
+          config: this.aparaturaSelectServiciiOptionConfig
+        },
+      });
+      await modal.present();
+      const { data } = await modal.onWillDismiss();
+      const { dismissed, checkedValue } = data;
+      if(dismissed && checkedValue.length > 0) {
+        this.aparaturaSelectedValue = checkedValue;
+      }
+    } else {
+      this.getMedicalEquipment(true);
+      this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+    }
   }
   async presentModalRecurentaComponentModal() {
     const modal = await this.modalController.create({
@@ -455,7 +475,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
     this.recurentaDetails = data?.recurentaData;
   }
   async presentMedicModal() {
@@ -467,7 +486,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const d = await modal.onWillDismiss();
-    console.log(d);
     const {dismissed , data} = d?.data;
     if(dismissed && data !== '') {
       this.adaugaProgramareFormGroup.patchValue({medic: data});
@@ -541,7 +559,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.getLocations$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
-          console.log(d);
           this.locatieOption = d;
           if (calLocationModal) {
             this.location.nativeElement.focus();
@@ -593,7 +610,6 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.getTipServices$ = this.getTipServiciiType(data, optionData)
     .subscribe(
       (d: Cuplata[] | CNAS[]) => {
-        console.log(d);
         this.tipServiciiData = d;
         this.toastService.dismissToast();
       },
@@ -644,6 +660,51 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         ];
     }
   }
+  getMedicalEquipment(callGetMedicalEquipment: boolean = false) {
+    this.getMedicalEquipment$ = this.reqService.post(equipments.getMedicalEquipment, {})
+      .subscribe(
+        (d: any) => {
+          this.aparaturaData = d;
+          if (callGetMedicalEquipment) {
+            this.presentAparaturaDataModal();
+          }
+        },
+        _err => this.toastService.presentToastWithDurationDismiss(
+          'Unable to get medical equipment at this instance. Please check your network and try again. C13'
+        )
+      );
+  }
+  getPersonInfo() {
+    if (this.isPatientPerson) {
+      this.toastService.presentToastWithNoDurationDismiss(
+      'Please Wait', 'success'
+      );
+
+      this.getPersonInfo$ = this.reqService.post(
+        info.getPersonInfo,
+        {
+          personUID: this.pacientData$.value.personData.uid,
+          date: this.pacientData$.value.personData.birthDate
+        }
+      )
+      .subscribe(
+        (d: InfoPatient) => {
+          this.toastService.dismissToast();
+          this.presentInfoPacientModalModal(d);
+        },
+        _err => {
+          this.toastService.dismissToast();
+          this.toastService.presentToastWithDurationDismiss(
+            'Unable to get Persons information at this instance. Please check your network and try again. C15'
+          );
+        }
+      );
+    } else {
+      this.toastService.presentToastWithDurationDismiss(
+      'No Patient', 'error'
+    );
+    }
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
     unsubscriberHelper(this.getCabinets$);
@@ -652,6 +713,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getTipServices$);
     unsubscriberHelper(this.adaugaProgramareTipServicii$);
     unsubscriberHelper(this.getTipServicesParameter$);
+    unsubscriberHelper(this.getMedicalEquipment$);
+    unsubscriberHelper(this.getPersonInfo$);
   }
 
 }

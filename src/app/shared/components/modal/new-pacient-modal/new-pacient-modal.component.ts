@@ -8,7 +8,7 @@ import { IonRadiosConfig } from 'src/app/shared/models/components/ion-radios-con
 import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-config';
 import { get } from 'lodash';
 import { persons, location } from 'src/app/core/configs/endpoints';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { formatRFC3339 } from 'date-fns';
@@ -19,6 +19,8 @@ import { formatRFC3339 } from 'date-fns';
 })
 export class NewPacientModalComponent implements OnInit, OnDestroy {
   @Input() data!: any;
+  @Input() isEdit!: boolean;
+  @Input() uid!: boolean;
   numeConfig = inputConfigHelper({
     label: 'Nume',
     type: 'text',
@@ -109,16 +111,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
 
-  judetOption = [
-    {
-      id: 'Alba',
-      label: 'Alba'
-    },
-    {
-      id: 'Arad',
-      label: 'Arad'
-    }
-  ];
+  judetOption = [];
   canalDePromovareConfig: IonSelectConfig = {
       inputLabel: {
         classes: '',
@@ -158,7 +151,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
       }
   };
   orasOptions: any;
-  addMoreField = false; // change this later
+  addMoreField = false;
   componentFormGroup: FormGroup = this.fb.group({
     nume: ['', [Validators.required]],
     preNume: ['', [Validators.required]],
@@ -167,14 +160,16 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     telephone: ['', Validators.pattern('^[0-9]*$')],
     email: ['', Validators.email],
     cnp:'',
-    judet: [{value: '', disabled: true}],
-    canalDePromovare: '',
+    judet: [{ value: '', disabled: true }],
     oras: [{value: '', disabled: true}],
+    canalDePromovare: '',
   });
   loading = false;
   addUser$: Subscription;
   getCountries$: Subscription;
   getCities$: Subscription;
+  judet$: Subscription;
+  personData: any;
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -183,20 +178,28 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('isEdit: ', this.isEdit);
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
+      if (this.data.oras && this.data.oras !== 0) {
+        this.getCitiesByCityId(this.data.oras);
+      }
     }
-    this.componentFormGroup.get('judet').valueChanges
+
+      this.getCountries();
+
+      this.judet$ = this.componentFormGroup.get('judet').valueChanges
       .pipe(
         distinctUntilChanged()
       )
       .subscribe(
         d => {
           if (d) {
-            this.getCities(d);
+            this.getCitiesByCountryId(d);
           }
         }
-    );
+      );
+
   }
   async presentToast(
     message: string = 'message',
@@ -210,10 +213,11 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     });
     toast.present();
   }
-  getCountries() {
-    this.getCountries$ = this.reqS.post(location.getCountries, {
-      searchString: '',
-    })
+  getCountries(toUpdateCountyID: number = 0) {
+    this.getCountries$ = this.reqS.post(location.getCountries,
+      {
+        searchString: '',
+      })
       .subscribe(
         (d: any) => {
           this.judetOption = d.counties.map((res: any) =>
@@ -223,17 +227,27 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
                 id: res.id,
               }));
           this.componentFormGroup.controls?.judet?.enable();
+          if (toUpdateCountyID) {
+            this.componentFormGroup.patchValue({judet: toUpdateCountyID});
+          }
         },
         _err => this.presentToast('unable to get countries at this time. Please Check your newtwork and try again.')
       );
   }
-  getCities(
-    id: number = this.componentFormGroup.value.judet,
-    searchString: string = '') {
-    this.getCities$ = this.reqS.post(location.getCities, {
-      id,
+  getCitiesByCountryId(
+    countyID: number = this.componentFormGroup.value.judet,
+    searchString: string = ''
+  ) {
+    this.getCities({
+      countyID,
       searchString,
-    })
+    });
+  }
+  getCitiesByCityId(cityID: number) {
+     this.getCities();
+  }
+  getCities(payload: any = {}) {
+    this.getCities$ = this.reqS.post(location.getCities, payload)
     .subscribe(
       (d: any) => {
         this.orasOptions = d.cities.map((res: any) =>
@@ -242,6 +256,9 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
               label: res.name,
         }));
         this.componentFormGroup.controls?.oras?.enable();
+        if(this.judetOption.length < 1){
+          this.getCountries(d?.cities?.[0].countyID);
+        }
       },
       _err => this.presentToast('An error occur while trying to get cities at this time. Please Check your newtwork and try again.')
     );
@@ -266,32 +283,54 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
             )
           ), { fractionDigits: 3 }),
         phone: get(this.componentFormGroup.value, 'telephone', ''),
-        cityID: Number(get(this.componentFormGroup.value, 'cityId', 0)),
+        email: get(this.componentFormGroup.value, 'email', ''),
+        cityID: Number(get(this.componentFormGroup.value, 'oras', 0)),
         genderID: Number(get(this.componentFormGroup.value, 'sex', 0)),
         isActive: true,
         wasUpdateByMobile: true,
         mobileUpdateDate:  formatRFC3339(new Date(), { fractionDigits: 3 })
       };
-      this.addUser$ = this.reqS.post(persons.addPerson, d).subscribe(
+      this.personData = d;
+
+      let postAction: Observable<any>;
+      if (this.isEdit && this.uid) {
+        postAction = this.reqS.put(persons.updatePerson, { ...d, uid: this.uid });
+      } else {
+        postAction =  this.reqS.post(persons.addPerson, d);
+      }
+
+      this.addUser$ = postAction.subscribe(
         async _rep => {
           this.toggleLoadingState();
           // present toast and close modal
           await this.presentToast('Sucessful', 'success');
           setTimeout(() => {
-            this.closeModal();
+            if(this.isEdit){
+             this.closeModal(false, true);
+            }else{
+              this.closeModal(true);
+            }
+
           }, 3000);
         },
         _err => {
+          console.log(_err);
           this.presentToast('An error occur while trying to add new person. Please try again.');
           this.toggleLoadingState();
         }
       );
     }
   }
-  closeModal() {
+
+  closeModal(
+    isPersonCreated: boolean = false,
+    isPersonUpdated: boolean = false
+  ) {
       this.modalController.dismiss({
-      dismissed: true,
-      data: null
+        dismissed: true,
+        isPersonCreated,
+        isPersonUpdated,
+        data: this.personData ||= null
     });
   }
   get formGroupValidity() {
@@ -302,6 +341,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getCountries$);
     unsubscriberHelper(this.getCities$);
     unsubscriberHelper(this.addUser$);
+    unsubscriberHelper(this.judet$);
   }
 
 }

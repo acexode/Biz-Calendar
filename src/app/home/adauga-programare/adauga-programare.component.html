@@ -36,7 +36,7 @@
                 <div [class]="'biz-custom-select border-light-grey'">
                   <div class="input-select-display">
 
-                    <input type="text" formControlName="pacient" readonly>
+                    <input type="text" [value]="pacientName" readonly>
 
                   </div>
                   <div class="icon">
@@ -63,9 +63,10 @@
           </ion-chip>
 
           <ion-chip
-              class="chip-radio"
-              color="biz-radio-chip-default-b-no-outline"
-              (click)="presentInfoPacientModalModal()"
+            [disabled]="!isPatientPerson"
+            class="chip-radio"
+            [color]="(!isPatientPerson ? 'biz-radio-chip-default-b-no-outline' : 'biz-chip-secondary-b-no-outline')"
+            (click)="getPersonInfo()"
             >
               <ion-label>
                 INFO
@@ -146,8 +147,9 @@
 
             <app-biz-custom-selection
             [config]="aparaturaConfig"
-            [data]="checkList"
-            (modalOpenEvent)="presentModalB()"
+            [data]="aparaturaData"
+            [selectedValue]="aparaturaSelectedValue"
+            (modalOpenEvent)="presentAparaturaDataModal()"
           ></app-biz-custom-selection>
 
           </div>

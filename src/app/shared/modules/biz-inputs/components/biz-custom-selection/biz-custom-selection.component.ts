@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AparaturaAsociataModel } from 'src/app/core/models/aparatura-asociata.model';
 import { BizCustomSelectionConfig } from 'src/app/shared/models/components/biz-custom-selection-config';
 import { DemoCheckList } from 'src/app/style-guide/components/selection/selection.component';
 
@@ -9,17 +10,19 @@ import { DemoCheckList } from 'src/app/style-guide/components/selection/selectio
   styleUrls: ['./biz-custom-selection.component.scss'],
 })
 export class BizCustomSelectionComponent implements OnInit {
-  @Input() data!: DemoCheckList[];
+  @Input() data!: AparaturaAsociataModel[];
   @Input() config: BizCustomSelectionConfig;
+  @Input() selectedValue: any[] = [];
   @Output() modalOpenEvent = new EventEmitter<any>();
   @Output() removeItemEvent: EventEmitter<boolean> = new EventEmitter<boolean>(false);
   constructor() { }
 
-  ngOnInit() {}
-  removeChips(event: any, item: string): void {
+  ngOnInit() {
+  }
+  removeChips(event: any, uid: string): void {
     // IOS is a mess. Stop propagating the event to the input under the buttons.
     this.stopModalPropagation(event);
-    this.unCheckItem(item);
+    this.unCheckItem(uid);
     this.removeItemEvent.emit(true);
   }
   openModal() {
@@ -31,16 +34,16 @@ export class BizCustomSelectionComponent implements OnInit {
   get useIcon(): boolean {
     return this.config.hasOwnProperty('useIcon') ? true : false;
   } // caret-down
-  get filtercustomComponentData() {
-    return this.data.filter((v: DemoCheckList) => v.checked === true)
-      .map((v: DemoCheckList) => v.value);
+  get filtercustomComponentData():  AparaturaAsociataModel[]{
+    return this.data.filter((v: AparaturaAsociataModel) => this.selectedValue.includes(v.uid));
   }
-  unCheckItem(data: string): void {
-    if (typeof data !== null && data !== '') {
-      const indexOfData = this.data.findIndex(
-        (v: DemoCheckList) => v.value === data);
-      if (indexOfData > -1) {
-        this.data[indexOfData].checked = false;
+  unCheckItem(uid: string): void {
+    if (typeof uid !== null && uid !== '') {
+      const indexOfData = this.selectedValue.findIndex(
+        (v: string) => v === uid);
+     if (indexOfData > -1) {
+       this.selectedValue.splice(indexOfData, 1);
+       console.log(this.selectedValue);
       }
     }
   }

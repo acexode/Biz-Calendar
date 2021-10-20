@@ -32,7 +32,7 @@
         <div class="mr-16">
           <ion-icon name="user" class="icon-24 defaultGrayColor" slot="icon-only"></ion-icon>
         </div>
-        <ion-label class="s20-h28 text-weight-medium roboto-family-font ls-0">{{data?.first}}</ion-label>
+        <ion-label class="s20-h28 text-weight-medium roboto-family-font ls-0">{{data?.firstName}} {{data?.lastName}}</ion-label>
       </div>
 
       <div class="flex flex-row ion-align-items-start mb-32">
@@ -51,7 +51,7 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            14 aprilie 1973 (47 ani)
+            {{ birthDay }} {{ birthMonth }} {{ birthYear }} ({{ birthAge }} {{ birthAge > 1 ? 'ani' : 'an' }})
           </ion-label>
         </div>
       </div>
@@ -72,7 +72,7 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            feminin
+            {{data?.genderID === 0 ? 'Masculin' : 'Feminin'}}
           </ion-label>
         </div>
       </div>
@@ -95,7 +95,7 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            0723.123.456
+            {{data?.phone}}
           </ion-label>
         </div>
       </div>
@@ -117,7 +117,7 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            2730414266652
+            {{data?.pid}}
           </ion-label>
         </div>
       </div>
@@ -140,7 +140,12 @@
           </ion-label>
           <br />
           <ion-label class="s16-h24 roboto-family-font text-weight-regular ls-0">
-            Bacău, Bacău
+            <ng-container *ngIf="!addressLoader; else loading">
+              {{userAddress}}
+            </ng-container>
+            <ng-template #loading>
+              <ion-spinner name="dots" color="biz-primary" class="icon-20"></ion-spinner>
+            </ng-template>
           </ion-label>
         </div>
       </div>
