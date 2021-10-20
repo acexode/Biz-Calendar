@@ -58,11 +58,11 @@
         <div class="w-100 px-32 flex flex-1 flex-row ion-justify-content-between">
 
           <div class="mw-140 flex-1 mr-16">
-            <app-date-time formControlName="pacient" [config]="dataInputConfig"></app-date-time>
+            <app-date-time formControlName="startTime" [config]="dataInputConfig"></app-date-time>
           </div>
 
           <div class="mw-140 flex-1 ml-16">
-            <app-date-time formControlName="time" [config]="timeInputConfig"></app-date-time>
+            <app-date-time formControlName="endTime" [config]="timeInputConfig"></app-date-time>
           </div>
 
         </div>
@@ -79,7 +79,7 @@
 
           </div>
           <div class="w-100 p-32">
-            <app-textarea [config]="textAreaConfig" formControlName="observatii"></app-textarea>
+            <app-textarea [config]="textAreaConfig" formControlName="comment"></app-textarea>
           </div>
        
           <div class="w-100 px-32 ion-text-right">

@@ -1,6 +1,8 @@
+import { NoteService } from './../../core/services/notes/note.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { addMinutes } from 'date-fns';
 import { Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { PlatformService } from 'src/app/core/services/platform/platform.service';
@@ -100,23 +102,24 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   adaugaProgramareFormGroup$: Subscription;
   isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
-    pacient: ['', [Validators.required]],
+    startTime: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: new FormControl(''),
     tipServicii: '',
     tipPredefinit: '',
-    time: '',
+    endTime: '',
     duration: '',
     cabinet: '',
     medic: '',
-    observatii: ''
+    comment: ''
   });
   isWed = false;
   locatieConfigPlaceholder: string;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
-    private pS: PlatformService
+    private pS: PlatformService,
+    private noteS: NoteService
   ) { }
 
   ngOnInit() {
@@ -126,6 +129,15 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   }
   save(){
     const values = this.adaugaProgramareFormGroup.value;
+    const end = new Date(values.startTime);
+    // console.log()
+    const value = {
+      ...values,
+      // endTime: addMinutes()
+    };
+    this.noteS.addNotes(values).subscribe(note =>{
+      console.log(note);
+    });
     console.log(values);
   }
 
