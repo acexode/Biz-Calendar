@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { NoteService } from './../../core/services/notes/note.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
@@ -103,14 +104,11 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     startTime: ['', [Validators.required]],
-    tipprogramare: ['În-cabinet', [Validators.required]],
-    locatie: new FormControl(''),
-    tipServicii: '',
-    tipPredefinit: '',
-    endTime: '',
-    duration: '',
-    cabinet: '',
-    medic: '',
+    tipPredefinit: ['', [Validators.required]],
+    duration: ['', [Validators.required]],
+    time: ['', [Validators.required]],
+    allDay: [false, [Validators.required]],
+    permit: [false, [Validators.required]],
     comment: ''
   });
   isWed = false;
@@ -119,10 +117,32 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public modalController: ModalController,
     private pS: PlatformService,
-    private noteS: NoteService
+    private noteS: NoteService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
+    this.formValue('allDay').valueChanges.subscribe(val =>{
+      if(val === true){
+        this.formValue('time').disable();
+        this.formValue('time').clearValidators();
+
+        this.formValue('duration').disable();
+        this.formValue('duration').clearValidators();
+        this.formValue('duration').setValue('');
+
+        this.adaugaProgramareFormGroup.updateValueAndValidity();
+        console.log(this.adaugaProgramareFormGroup.valid);
+      }else{
+        this.formValue('time').enable();
+        this.formValue('time').setValidators([Validators.required]);
+        this.formValue('duration').enable();
+        this.formValue('duration').setValidators([Validators.required]);
+
+        this.adaugaProgramareFormGroup.updateValueAndValidity();
+      }
+      console.log(val);
+    });
     this.pS.isDesktopWidth$.subscribe(
       v => this.isWed = v
     );
@@ -130,17 +150,23 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   save(){
     const values = this.adaugaProgramareFormGroup.value;
     const end = new Date(values.startTime);
-    // console.log()
-    const value = {
+    const obj = {
       ...values,
-      // endTime: addMinutes()
+      endTime: values.duration ? addMinutes(new Date(values.startTime), values.duration) : ''
     };
+    console.log(obj);
     this.noteS.addNotes(values).subscribe(note =>{
       console.log(note);
+      // this.dismiss();
     });
     console.log(values);
   }
-
+  formValue(field){
+    return this.adaugaProgramareFormGroup.get(field);
+  }
+  dismiss(){
+    this.router.navigate(['..']);
+  }
   ngOnDestroy() {
     unsubscriberHelper(this.adaugaProgramareFormGroup$);
   }

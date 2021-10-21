@@ -4,7 +4,7 @@
       <ion-header class="header-type-a ion-no-border" [translucent]="true" mode="md">
         <ion-toolbar class="ion-no-padding">
 
-          <ion-buttons slot="start" class="slot-start">
+          <ion-buttons (click)="dismiss()" slot="start" class="slot-start">
 
             <ion-icon
               name="close"
@@ -17,7 +17,7 @@
           <ion-title>Notă</ion-title>
 
           <div slot="end">
-            <ion-button (click)="save()" size="default" color="biz-primary upper">
+            <ion-button [disabled]="!adaugaProgramareFormGroup.valid" (click)="save()" size="default" color="biz-primary upper">
               Salvează
             </ion-button>
           </div>
@@ -38,7 +38,7 @@
           </div>
           <div class="w-100 pt-16 px-32">
             <ion-item>
-              <ion-toggle color="biz-primary" mode="md"></ion-toggle>
+              <ion-toggle formControlName="allDay" color="biz-primary" mode="md"></ion-toggle>
               <ion-label class="s18-h24 roboto-family-font text-weight-medium ls-0">Toată ziua</ion-label>
             </ion-item>
           </div>
@@ -47,6 +47,7 @@
               <ion-label class="s18-h24 roboto-family-font text-weight-400 ls-02">Permite programări în paralel</ion-label>
               <ion-checkbox
               slot="start"
+              formControlName="permit"
               color="biz-primary"
               class="margin-inline-end-12"
               mode="md"
@@ -62,7 +63,7 @@
           </div>
 
           <div class="mw-140 flex-1 ml-16">
-            <app-date-time formControlName="endTime" [config]="timeInputConfig"></app-date-time>
+            <app-date-time formControlName="time" [config]="timeInputConfig"></app-date-time>
           </div>
 
         </div>
