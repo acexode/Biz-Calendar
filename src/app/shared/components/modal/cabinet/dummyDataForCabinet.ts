@@ -9,116 +9,88 @@ export const cabinetData = {
   operationUID: 'string',
   appointments: [
     {
-      uid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      personName: 'string',
-      pid: 'string',
-      phone: 'string',
-      companyID: 0,
-      personUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      physicianName: 'string',
-      startTime: 'string',
-      endTime: 'string',
-      comment: 'string',
-      operationDate: 'string',
-      observations: 'string',
-      personHasArrived: true,
+      acordSiteGDPRProgramare: null,
+      acordSiteTermeniSiConditii: null,
+      appStatus: '',
+      appStatusIDID: null,
+      cabinetName: null,
+      cabinetUID: null,
+      colorCode: '1CN',
+      comment: 'Alimos Toma',
+      companyID: 1,
+      consultationID: null,
+      consultationIsActive: null,
+      endTime: '2021-11-04T11:45:00',
+      equipmentName: 'COLONOSCOP Cab 3 Preciziei',
+      equipmentUID: '96e3f068-9abd-49fb-bfa0-ff065ccb5d2c',
+      equipments: null,
+      equipmentsUIDs: ['96e3f068-9abd-49fb-bfa0-ff065ccb5d2c'],
+      icons: [],
+      infPacient: 'O colonoscopie pe luna de placere',
       isPrivateCLN: true,
-      consultationID: 0,
-      infPacient: 'string',
-      subject: 'string',
+      locationName: 'Bucuresti - Preciziei',
+      locationUID: null,
+      observations: null,
+      operationDate: '2021-10-01T15:21:00',
+      personHasArrived: false,
+      personName: 'ALIMOS TOMA',
+      personUID: '36fcdd80-3994-4c52-ef25-08d97cd244dc',
+      phone: '0722527577',
+      physicianName: 'POPESCU ION',
+      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      pid: '5201019141690',
       priorityOrder: 0,
-      appStatusIDID: 0,
-      appStatus: 'string',
-      webUserID: 0,
-      webUserName: 'string',
-      consultationIsActive: true,
-      locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      locationName: 'string',
-      services: [
-        {
-          service: 'string'
-        }
-      ],
-      equipments: [
-        {
-          uid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          appointmentUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          equipmentUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-          operationDate: '2021-10-18T15:22:12.251Z'
-        }
-      ],
-      equipmentsUIDs: [
-        '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-      ],
-      servicesUIDs: [
-        '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-      ],
-      acordSiteTermeniSiConditii: true,
-      acordSiteGDPRProgramare: true,
-      colorCode: 'string',
-      icons: [
-        0
-      ],
-      recurrence: {
-        id: 0,
-        appRecurrenceTypeID: 0,
-        repetition: 0,
-        startDate: '2021-10-18T15:22:12.251Z',
-        endDate: '2021-10-18T15:22:12.251Z',
-        nrRec: 0,
-        resumeText: 'string',
-        isActive: true,
-        operationDate: '2021-10-18T15:22:12.251Z',
-        rowGuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        recurrences_Repetition_Detail: {
-          id: 0,
-          recurrenceID: 0,
-          day1: true,
-          day2: true,
-          day3: true,
-          day4: true,
-          day5: true,
-          day7: true,
-          firstDayOfMonth: true,
-          firstDayOfWeek: true,
-          operationDate: '2021-10-18T15:22:12.251Z',
-          rowGuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-        }
-      },
-      cabinetUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      cabinetName: 'string',
-      equipmentUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      equipmentName: 'string'
+      recurrence: null,
+      services: null,
+      servicesUIDs: [],
+      startTime: '2021-11-04T11:00:00',
+      // eslint-disable-next-line max-len
+      subject: 'Servicii programate privat: COLONOSCOPIE\nAparate selectate: COLONOSCOP Cab 3 PrecizieiConsultatie asociata: NU; Achitata: NU\nDurata: 45 min\nTelefon: 0215654455\nLocatie:Bucuresti - Preciziei',
+      uid: '8ef6724b-9a05-4925-9d4e-3f0ae6b8ef40',
+      webUserID: null,
+      webUserName: null,
     }
   ],
   schedules: [
     {
-      physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      physicianLastName: 'string',
-      physicianFirstName: 'string',
-      locationName: 'string',
-      locationUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      date: '2021-10-18T15:22:12.251Z',
-      startHour: 0,
-      startMin: 0,
-      endHour: 0,
-      endMin: 0,
-      start: 'string',
-      end: 'string',
+      date: '2021-11-01T07:00:00',
+      dow: 1,
+      end: '14:0',
       isBreakTime: true,
       isPrivate: true,
-      dow: 0
+      locationName: 'Bucuresti - Preciziei',
+      locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',
+      physicianFirstName: 'ION',
+      physicianLastName: 'POPESCU',
+      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      start: '13:0',
+    },
+    {
+      date: '2021-11-01T07:00:00',
+      dow: 1,
+      end: '17:0',
+      isBreakTime: false,
+      isPrivate: true,
+      locationName: 'Bucuresti - Preciziei',
+      locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',
+      physicianFirstName: 'ION',
+      physicianLastName: 'POPESCU',
+      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      start: '14:0'
+    },
+    {
+      date: '2021-11-02T07:00:00',
+      dow: 2,
+      end: '14:0',
+      isBreakTime: true,
+      isPrivate: true,
+      locationName: 'Bucuresti - Preciziei',
+      locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',
+      physicianFirstName: 'ION',
+      physicianLastName: 'POPESCU',
+      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      start: '13:0'
     }
   ],
-  phyFreeDays: [
-    {
-      uid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-      type: 'string',
-      startDate: 'string',
-      endDate: 'string'
-    }
-  ]
+  phyFreeDays: []
 };

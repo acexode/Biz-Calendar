@@ -15,6 +15,7 @@ import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { RequestService } from 'src/app/core/services/request/request.service';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
+import { cabinetData } from './dummyDataForCabinet';
 
 const colors: any = {
   bizPrimary: {
@@ -124,13 +125,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
     }
   ];
   getAppointments$: Subscription;
+
+  cabinetData = cabinetData;
   constructor(
     private modalController: ModalController,
     private reqService: RequestService,
   ) { }
 
   ngOnInit() {
-    this.getApointments();
+    // this.getApointments();
     /* setTimeout(() => {
       const ev = [
       {
@@ -151,11 +154,11 @@ export class CabinetComponent implements OnInit, OnDestroy {
       this.refresh.next();
     }, 3000); */
     this.events.push(...this.dummyData);
-    console.log(this.events);
+    // console.log(this.events);
     this.refresh.next();
    }
   handleEvent(action: string, event: CalendarEvent): void {
-    console.log(event);
+    // console.log(event);
     this.viewDate = new Date(event.start);
     // this.view = CalendarView.Day;
     // this.modalData = { event, action };
@@ -184,7 +187,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
     });
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    console.log(renderEvent);
+    // console.log(renderEvent);
     renderEvent.hourColumns.forEach((hourColumn) => {
       hourColumn.hours.forEach((hour) => {
         hour.segments.forEach((segment) => {
@@ -219,8 +222,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
   getApointments() {
     this.getAppointments$ = this.reqService.post(
       appointmentEndpoints.getAppointment,
-      {
+      /* {
         cabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
+      } */
+      {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        EndDate: '2021-11-06T20:00:00.999Z',
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        StartDate: '2021-10-31T07:00:00.000Z',
+        physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
       }
     )
       .subscribe(
