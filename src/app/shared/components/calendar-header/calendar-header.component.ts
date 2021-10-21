@@ -91,6 +91,8 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    const path = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(path, this.programOptions);
     this.calS.getLocations().subscribe((e: any) =>{
       const mappedLocations = e[0].locations.map(loc =>({
         id: loc.locationID,
