@@ -293,7 +293,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         mobileUpdateDate: formatRFC3339(new Date(), { fractionDigits: 3 }),
         // eslint-disable-next-line @typescript-eslint/naming-convention
         persons_PromotionChannel: {
-          promotionChannelUID:  get(this.componentFormGroup.value, 'canalDePromovare', ''),
+          promotionChannelUID:  get(this.componentFormGroup.value, 'canalDePromovare', null),
         }
       };
       this.personData = d;
