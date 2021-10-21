@@ -182,6 +182,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
+      console.log(this.componentFormGroup.value);
       if (this.data.oras && this.data.oras !== 0) {
         this.getCitiesByCityId(this.data.oras);
       }
@@ -275,6 +276,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   add() {
     if (this.formGroupValidity) {
       this.toggleLoadingState();
+      console.log('submiting: ', this.componentFormGroup.value);
       const d = {
         firstName: get(this.componentFormGroup.value, 'nume', ''),
         lastName: get(this.componentFormGroup.value, 'preNume', ''),
@@ -292,9 +294,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
         wasUpdateByMobile: true,
         mobileUpdateDate: formatRFC3339(new Date(), { fractionDigits: 3 }),
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        persons_PromotionChannel: {
-          promotionChannelUID:  get(this.componentFormGroup.value, 'canalDePromovare', null),
-        }
+        promotionChannelUID:  get(this.componentFormGroup.value, 'canalDePromovare', null),
       };
       this.personData = d;
 
