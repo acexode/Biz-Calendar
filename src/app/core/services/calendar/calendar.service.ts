@@ -116,7 +116,6 @@ export class CalendarService {
   }
 
   getCabinetAppointment(query){
-    
     const obj = {
       StartDate: startOfDay(new Date()),
       EndDate: startOfDay(new Date()),
