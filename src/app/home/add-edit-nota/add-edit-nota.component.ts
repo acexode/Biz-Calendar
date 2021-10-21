@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NoteService } from './../../core/services/notes/note.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
@@ -18,7 +18,7 @@ import { IonSelectConfig } from 'src/app/shared/models/components/ion-select-con
   styleUrls: ['./add-edit-nota.component.scss'],
 })
 export class AddEditNotaComponent implements OnInit, OnDestroy {
-
+  noteId = null;
   config: IonSelectConfig = {
     inputLabel: {
       classes: '',
@@ -119,9 +119,26 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     private pS: PlatformService,
     private noteS: NoteService,
     private router: Router,
+    private aRroute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
+    this.noteId = this.aRroute.snapshot.paramMap.get('id');
+    this.noteS.note$.subscribe(note =>{
+      if(note){
+        console.log(note);
+        this.adaugaProgramareFormGroup.setValue({
+          startTime: note?.startTime,
+          tipPredefinit: note?.tip,
+          duration: note?.duration,
+          time: note?.time,
+          allDay: note?.allDay,
+          permit: note?.permit,
+          comment: note?.comment
+        });
+
+      }
+    });
     this.formValue('allDay').valueChanges.subscribe(val =>{
       if(val === true){
         this.formValue('time').disable();
@@ -154,11 +171,19 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       ...values,
       endTime: values.duration ? addMinutes(new Date(values.startTime), values.duration) : ''
     };
+    if(this.noteId){
+      this.noteS.updateNotes(this.noteId, values).subscribe(note =>{
+        console.log(note);
+        // this.dismiss();
+      });
+
+    }else{
+      this.noteS.addNotes(values).subscribe(note =>{
+        console.log(note);
+        // this.dismiss();
+      });
+    }
     console.log(obj);
-    this.noteS.addNotes(values).subscribe(note =>{
-      console.log(note);
-      // this.dismiss();
-    });
     console.log(values);
   }
   formValue(field){
