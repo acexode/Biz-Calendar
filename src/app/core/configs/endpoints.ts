@@ -44,6 +44,7 @@ export const tipServicii = {
 };
 export const notes = {
   addNote: baseEndpoints.bizCalendarService + '/AddNote',
+  getNoteTypes: baseEndpoints.bizCalendarService + '/GetNoteTypes',
   updateNote: baseEndpoints.bizCalendarService + '/UpdateNote',
   deleteNote: baseEndpoints.bizCalendarService + '/DeleteNote'
 };

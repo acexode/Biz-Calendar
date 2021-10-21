@@ -1,3 +1,4 @@
+import { CalendarService } from './../../core/services/calendar/calendar.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NoteService } from './../../core/services/notes/note.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -104,11 +105,11 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   isAparaturaOnLine = false;
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     startTime: ['', [Validators.required]],
-    tipPredefinit: ['', [Validators.required]],
+    noteTypeID: ['', [Validators.required]],
     duration: ['', [Validators.required]],
     time: ['', [Validators.required]],
     allDay: [false, [Validators.required]],
-    permit: [false, [Validators.required]],
+    allowOverlap: [false, [Validators.required]],
     comment: ''
   });
   isWed = false;
@@ -119,21 +120,34 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     private pS: PlatformService,
     private noteS: NoteService,
     private router: Router,
+    private calS: CalendarService,
     private aRroute: ActivatedRoute,
-  ) { }
+  ) {
+    this.noteS.getNoteTypes().subscribe((res: any) =>{
+      console.log(res);
+      this.radioOptionB = res.map(type =>({
+        id: type.noteTypeID,
+        label: type.description
+      }));
+    });
+   }
 
   ngOnInit() {
     this.noteId = this.aRroute.snapshot.paramMap.get('id');
+    this.calS.appointments$.subscribe(cals =>{
+      const single = cals.appointments.filter(apt => apt.uid);
+      console.log(single);
+    });
     this.noteS.note$.subscribe(note =>{
       if(note){
         console.log(note);
         this.adaugaProgramareFormGroup.setValue({
           startTime: note?.startTime,
-          tipPredefinit: note?.tip,
+          noteTypeID: note?.tip,
           duration: note?.duration,
           time: note?.time,
           allDay: note?.allDay,
-          permit: note?.permit,
+          allowOverlap: note?.permit,
           comment: note?.comment
         });
 
@@ -166,11 +180,26 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
   }
   save(){
     const values = this.adaugaProgramareFormGroup.value;
-    const end = new Date(values.startTime);
-    const obj = {
-      ...values,
-      endTime: values.duration ? addMinutes(new Date(values.startTime), values.duration) : ''
+    const workHours = JSON.parse(localStorage.getItem('workHours'));
+    const obj: any = {
+      allDay: values.allDay,
+      allowOverlap: values.allowOverlap,
+      comment: values.comment
     };
+    if(values.allDay === true){
+      const start = new Date(values.startTime);
+      start.setHours(workHours.appStartHour,0);
+      const end = new Date(values.startTime);
+      end.setHours(workHours.appEndHour,0);
+      obj.startTime = start.toLocaleString();
+      obj.endTime = end.toLocaleString();
+    }else{
+      const hour = new Date(values.time).getHours();
+      const minutes = new Date(values.time).getMinutes();
+      obj.startTime = new Date(new Date(values.startTime).setHours(hour, minutes)).toLocaleString();
+      obj.endTime = values.duration ? addMinutes(new Date(obj.startTime), values.duration).toLocaleString() : '';
+    }
+    console.log(obj);
     if(this.noteId){
       this.noteS.updateNotes(this.noteId, values).subscribe(note =>{
         console.log(note);
@@ -178,13 +207,11 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       });
 
     }else{
-      this.noteS.addNotes(values).subscribe(note =>{
+      this.noteS.addNotes(obj).subscribe(note =>{
         console.log(note);
         // this.dismiss();
       });
     }
-    console.log(obj);
-    console.log(values);
   }
   formValue(field){
     return this.adaugaProgramareFormGroup.get(field);
