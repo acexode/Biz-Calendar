@@ -51,13 +51,14 @@ export const cabinetData = {
       uid: '8ef6724b-9a05-4925-9d4e-3f0ae6b8ef40',
       webUserID: null,
       webUserName: null,
+
     }
   ],
   schedules: [
     {
-      date: startOfDay(new Date('2021-10-21')),
+      date: startOfDay(new Date()),
       dow: 1,
-      end:  addHours(startOfDay(new Date('2021-10-21')), 14), // '14:0',
+      end:  addHours(startOfDay(new Date()), 14), // '14:0',
       isBreakTime: true,
       isPrivate: true,
       locationName: 'Bucuresti - Preciziei',
@@ -65,20 +66,20 @@ export const cabinetData = {
       physicianFirstName: 'ION',
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      start: addHours(startOfDay(new Date('2021-10-21')), 13),// '13:0',
+      start: addHours(startOfDay(new Date()), 13),// '13:0',
     },
     {
-      date: startOfDay(new Date('2021-10-22')), // '2021-11-01T07:00:00',
+      date: startOfDay(new Date()), // '2021-11-01T07:00:00',
       dow: 1,
-      end: addHours(startOfDay(new Date('2021-10-22')), 17),// '17:0',
-      isBreakTime: false,
-      isPrivate: true,
+      end: addHours(startOfDay(new Date()), 17),// '17:0',
+      isBreakTime: false, // time is available
+      isPrivate: true, // schedule is reseved - for private
       locationName: 'Bucuresti - Preciziei',
       locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',
       physicianFirstName: 'ION',
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      start:  addHours(startOfDay(new Date('2021-10-22')), 14),// '14:0'
+      start:  addHours(startOfDay(new Date()), 14),// '14:0'
     },
     /* {
       date: '2021-11-02T07:00:00',

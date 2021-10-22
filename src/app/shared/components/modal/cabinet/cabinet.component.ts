@@ -8,7 +8,7 @@ import {
   CalendarView,
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
-import { subDays, startOfDay, addDays, endOfMonth, addHours, getDay, isSameDay } from 'date-fns';
+import { subDays, startOfDay, addDays, endOfMonth, addHours, getDay, isSameDay, isAfter, isBefore, isEqual } from 'date-fns';
 import { Subject, Subscriber, Subscription } from 'rxjs';
 import { appointmentEndpoints } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
@@ -121,7 +121,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
         beforeStart: false,
         afterEnd: false,
       },
-      draggable: true,
+      draggable: false,
     }
   ];
   getAppointments$: Subscription;
@@ -154,7 +154,25 @@ export class CabinetComponent implements OnInit, OnDestroy {
       console.log(this.events);
       this.refresh.next();
     }, 3000); */
-    this.events.push(...this.dummyData);
+    const eventFromAppointement = this.cabinetData.appointments.map(
+      (v: any) => (
+        {
+          ...v,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true,
+          },
+          draggable: true,
+          start: addHours(startOfDay(new Date()), 9),
+          end: addHours(startOfDay(new Date()), 10),
+          title: 'Rez.',
+          color: colors.bizPrimary,
+          actions: this.actions,
+        }
+      )
+    );
+    // this.events.push(...this.dummyData);
+    this.events.push(...eventFromAppointement);
     // console.log(this.events);
     this.refresh.next();
    }
@@ -208,14 +226,40 @@ export class CabinetComponent implements OnInit, OnDestroy {
       this.cabinetData.schedules.forEach(schedule => {
         // console.log('schedule: ', schedule);
         hourColumn.hours.forEach((hour) => {
-            hour.segments.forEach((segment) => {
+          hour.segments.forEach((segment) => {
+               /* const checkIsBeforeEndTime = isBefore(schedule.end, segment.date);
+                const checkIsAfterStartTime = isAfter(schedule.start, segment.date);
+            const isSameTime = isEqual(schedule.start, segment.date);
+
+
+
+            console.log('schedule.start: ', schedule.start);
+              console.log('schedule.end: ', schedule.end);
+              console.log('segment.date: ', segment.date);
+
+            console.log('checkIsAfterStartTime: ',
+                checkIsAfterStartTime, 'isSameTime: ',
+              isSameTime, 'checkIsBeforeEndTime: ', checkIsBeforeEndTime); */
+
+
+            if (segment.date >= schedule.start && segment.date < schedule.end) {
+
+
+                  segment.cssClass = 'orange-bg-color-step-10 name';
+            }
+
+
+            /* if ((checkIsBeforeEndTime && checkIsAfterStartTime) || isSameTime) {
+
+
+                  segment.cssClass = 'red-bg';
+                } */
               // console.log('segments: ', segment);
-              if (segment.isStart) {
+              /* if (segment.isStart) {
                 segment.cssClass = 'red-bg';
               } else {
                 segment.cssClass = 'pink-bg';
-              }
-              console.log(segment);
+              } */
             });
           });
         });

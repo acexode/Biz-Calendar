@@ -85,9 +85,10 @@
   let-label="label"
   let-segment="segment"
   let-isTimeLabel="isTimeLabel"
+  let-weekEvent="weekEvent"
 >
   <ion-row [class]="'b-bottom pl-0 h-100 ' + (!segment.isStart && ' cal-after-hour-start ')">
-    <ion-col [class]="segment.cssClass"> <!-- [class]="segment.cssClass" -->
+    <ion-col [class]="(!isTimeLabel ? segment.cssClass : '')"> <!-- [class]="segment.cssClass" -->
       <ion-label [class]="'h-100 w-40 cal-time'" *ngIf="isTimeLabel; else ee">
 
         {{segment.date | hour}}
@@ -95,14 +96,14 @@
       <ng-template #ee>
         <ion-label *ngIf="segment.isStart; else isSecond">
 
-        {{segment.cssClass}}
+        {{segment.cssClass ? segment.cssClass.split(' ')[1] : ''}}
         </ion-label>
 
       </ng-template>
       <ng-template #isSecond>
         <ion-label>
-
-        is second
+         <!--  {{segment.cssClass}} -->
+        <!-- is second: display nothing for now -->
         </ion-label>
 
       </ng-template>
