@@ -53,6 +53,7 @@ export class HomePage implements OnInit {
     if(this.page === 'aparate' || this.page === 'utilizatori' || this.page === 'cabinet'){
       this.page = 'comparativ';
     }
+    console.log(this.page);
   }
   navigate(path){
     this.router.navigate(['/calendar' +path]);
