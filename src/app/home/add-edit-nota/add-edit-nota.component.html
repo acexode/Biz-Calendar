@@ -79,6 +79,19 @@
             </app-radios>
 
           </div>
+          <div *ngIf="showOthers" class="w-100 pt-32 px-32">
+
+          <app-input
+                    [config]="inputConfig(
+                      'others',
+                      'text',
+                      'Alta',
+                      false,
+                      false
+                      )"
+                    formControlName="others"
+                  ></app-input>
+          </div>
           <div class="w-100 p-32">
             <app-textarea [config]="textAreaConfig" formControlName="comment"></app-textarea>
           </div>

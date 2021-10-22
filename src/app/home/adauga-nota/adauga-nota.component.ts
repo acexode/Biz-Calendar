@@ -12,6 +12,7 @@ import { CabinetNotifyComponent } from 'src/app/shared/components/modal/cabinet-
 })
 export class AdaugaNotaComponent implements OnInit {
   noteId;
+  note: any = {};
   constructor(private modalController: ModalController, private router: Router,
     private aRoute: ActivatedRoute,
     private calS: CalendarService,
@@ -19,12 +20,18 @@ export class AdaugaNotaComponent implements OnInit {
 
   ngOnInit() {
     this.noteId = this.aRoute.snapshot.paramMap.get('id');
-    this.calS.appointments$.subscribe(cals =>{
-      console.log(cals);
-      const single = cals.appointments.filter(apt => apt.uid === this.noteId);
-      console.log(single);
+    this.noteS.getNotes(this.noteId).subscribe(note =>{
+      console.log(note);
+      this.note = note;
+      this.noteS.note$.next(note);
     });
-    // this.noteS.note$.next({});
+    // this.calS.appointments$.subscribe(cals =>{
+    //   console.log(cals);
+    //   const single = cals?.appointments.filter(apt => apt.uid === this.noteId)[0];
+    //   console.log(single);
+    //   this.note = single;
+    //   this.noteS.note$.next(single);
+    // });
     console.log(this.noteId);
   }
 
@@ -51,7 +58,7 @@ export class AdaugaNotaComponent implements OnInit {
 
   }
   navigate(){
-    this.noteS.note$.next({});
+    this.noteS.note$.next(this.note);
     this.router.navigate(['calendar/adauga-nota']);
   }
 }

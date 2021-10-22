@@ -14,6 +14,9 @@ export class NoteService {
   addNotes(obj){
     return this.reqS.post(notes.addNote, obj);
   }
+  getNotes(id){
+    return this.reqS.get(notes.getNote+'?appointmentUID='+id);
+  }
   getNoteTypes(){
     return this.reqS.get(notes.getNoteTypes);
   }

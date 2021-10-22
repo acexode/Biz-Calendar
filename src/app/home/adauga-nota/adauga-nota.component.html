@@ -46,7 +46,7 @@
           name="clock"
           class="mr-16"
         ></ion-icon>
-        <ion-text class="hour">Luni, 8 martie 2020 ● 16:00 - 17:00</ion-text>
+        <ion-text class="hour">{{note?.startTime | date}} ● {{note?.startTime | date:'H:mm'}} - {{note?.endTime | date:'H:mm'}}</ion-text>
   </ion-item>
     <ion-item class="d-flex ">
         <div class=" h-100">
@@ -57,7 +57,7 @@
         ></ion-icon>
         </div>
         <div>
-          <ion-text class="notes">Donec nisi nisi, ultricies luctus massa non, commodo ultricies lectus. Etiam tortor ante, pulvinar ac est eget, ultricies aliquam velit. Ut odio tortor, aliquet sit amet iaculis et, hendrerit non est. Phasellus laoreet quam id placerat. </ion-text>
+          <ion-text class="notes">{{note?.subject}} </ion-text>
         </div>
   </ion-item>
   </ion-list>
