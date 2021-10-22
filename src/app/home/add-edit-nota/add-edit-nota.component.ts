@@ -245,17 +245,16 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       obj.endTime = duration ? addMinutes(new Date(obj.startTime), duration).toLocaleString() : '';
     }
     console.log(obj, values);
-    return;
     if(this.noteId){
       this.noteS.updateNotes(this.noteId, values).subscribe(note =>{
         console.log(note);
-        // this.dismiss();
+        this.router.navigate(['/calendar/lista']);
       });
 
     }else{
       this.noteS.addNotes(obj).subscribe(note =>{
         console.log(note);
-        // this.dismiss();
+        this.router.navigate(['/calendar/lista']);
       });
     }
   }
