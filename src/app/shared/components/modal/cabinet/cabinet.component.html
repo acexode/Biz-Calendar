@@ -87,7 +87,7 @@
   let-isTimeLabel="isTimeLabel"
 >
   <ion-row [class]="'b-bottom pl-0 h-100 ' + (!segment.isStart && ' cal-after-hour-start ')">
-    <ion-col> <!-- [class]="segment.cssClass" -->
+    <ion-col [class]="segment.cssClass"> <!-- [class]="segment.cssClass" -->
       <ion-label [class]="'h-100 w-40 cal-time'" *ngIf="isTimeLabel; else ee">
 
         {{segment.date | hour}}

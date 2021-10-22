@@ -205,37 +205,17 @@ export class CabinetComponent implements OnInit, OnDestroy {
   } */
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
     renderEvent.hourColumns.forEach((hourColumn) => {
-      // const dow = this.cabinetData.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
-     /*  const breakTime = dow?.filter(e => e.isBreakTime)[0];
-      const allPrivate = [];
-      const allCnas = [];
-      const allBreak = [parseInt(breakTime?.start,10), parseInt(breakTime?.end,10)-1];
-      dow.forEach(e => {
-          if(e.isPrivate && !e.isBreakTime){
-            allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
-          }else if(!e.isPrivate && !e.isBreakTime){
-            allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
-          }
-        }); */
-
-      // console.log('dow: ', dow);
-      /*  */
       this.cabinetData.schedules.forEach(schedule => {
         // console.log('schedule: ', schedule);
         hourColumn.hours.forEach((hour) => {
             hour.segments.forEach((segment) => {
               // console.log('segments: ', segment);
-              segment.cssClass = 'red-bg';
-              // console.log('red-bg');
-              // console.log('segment: ', segment);
-               /* if(allBreak.includes(segment.date.getHours()) ){
-                  segment.cssClass = '';
-                }else  if(allPrivate.includes(segment.date.getHours())){
-                  segment.cssClass = 'online-not-confirmed-v2 no-border';
-                }else{
-                  // if(allCnas.includes(segment.date.getHours()))
-                  segment.cssClass = 'cabinet-not-confirmed-v1 no-border';
-                } */
+              if (segment.isStart) {
+                segment.cssClass = 'red-bg';
+              } else {
+                segment.cssClass = 'pink-bg';
+              }
+              console.log(segment);
             });
           });
         });
