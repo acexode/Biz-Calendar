@@ -81,7 +81,7 @@ export const cabinetData = {
     {
       date: '2021-11-02T07:00:00',
       dow: 2,
-      end: '14:0',
+      end: '15:0',
       isBreakTime: true,
       isPrivate: true,
       locationName: 'Bucuresti - Preciziei',
@@ -89,7 +89,7 @@ export const cabinetData = {
       physicianFirstName: 'ION',
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      start: '13:0'
+      start: '14:0'
     }
   ],
   phyFreeDays: []

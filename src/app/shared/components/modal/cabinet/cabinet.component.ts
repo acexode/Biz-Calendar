@@ -8,7 +8,7 @@ import {
   CalendarView,
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
-import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
+import { subDays, startOfDay, addDays, endOfMonth, addHours, getDay, isSameDay } from 'date-fns';
 import { Subject, Subscriber, Subscription } from 'rxjs';
 import { appointmentEndpoints } from 'src/app/core/configs/endpoints';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
@@ -133,6 +133,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log(cabinetData);
     // this.getApointments();
     /* setTimeout(() => {
       const ev = [
@@ -186,8 +187,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
       dismissed: true,
     });
   }
-  beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    // console.log(renderEvent);
+  /* beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+    console.log(renderEvent);
     renderEvent.hourColumns.forEach((hourColumn) => {
       hourColumn.hours.forEach((hour) => {
         hour.segments.forEach((segment) => {
@@ -201,7 +202,57 @@ export class CabinetComponent implements OnInit, OnDestroy {
         });
       });
     });
+  } */
+  beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
+    renderEvent.hourColumns.forEach((hourColumn) => {
+      const dow = this.cabinetData.schedules.filter(sc => sc.dow === getDay(hourColumn.date));
+      const breakTime = dow?.filter(e => e.isBreakTime)[0];
+      const allPrivate = [];
+      const allCnas = [];
+      const allBreak = [parseInt(breakTime?.start,10), parseInt(breakTime?.end,10)-1];
+      dow.forEach(e => {
+          if(e.isPrivate && !e.isBreakTime){
+            allPrivate.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }else if(!e.isPrivate && !e.isBreakTime){
+            allCnas.push(...this.range(parseInt(e.start, 10), parseInt(e.end, 10)));
+          }
+        });
+
+      console.log('dow: ', dow, allPrivate, allCnas);
+      /*  */
+      dow.forEach(day =>{
+          const starttime = parseInt(day.start, 10);
+          const endtime = parseInt(day.end, 10);
+          hourColumn.hours.forEach((hour) => {
+            hour.segments.forEach((segment) => {
+               if(allBreak.includes(segment.date.getHours()) ){
+                  segment.cssClass = '';
+                }else  if(allPrivate.includes(segment.date.getHours())){
+                  segment.cssClass = 'online-not-confirmed-v2 no-border';
+                }else{
+                  // if(allCnas.includes(segment.date.getHours()))
+                  segment.cssClass = 'cabinet-not-confirmed-v1 no-border';
+                }
+            });
+          });
+        });
+
+
+      /*  */
+    });
+
   }
+  range(start: any, end: any, step = 1) {
+      const output = [];
+      if (typeof end === 'undefined') {
+        end = start;
+        start = 0;
+      }
+      for (let i = start; i < end; i += step) {
+        output.push(i);
+      }
+      return output;
+    };
 
   async presentCabinentNotify() {
     const modal = await this.modalController.create({
