@@ -1,3 +1,5 @@
+import { addHours, startOfDay } from 'date-fns';
+
 export const cabinetData = {
   errorMessage: 'string',
   errorCode: 0,
@@ -53,9 +55,9 @@ export const cabinetData = {
   ],
   schedules: [
     {
-      date: '2021-11-01T07:00:00',
+      date: startOfDay(new Date('2021-10-21')),
       dow: 1,
-      end: '14:0',
+      end:  addHours(startOfDay(new Date('2021-10-21')), 14), // '14:0',
       isBreakTime: true,
       isPrivate: true,
       locationName: 'Bucuresti - Preciziei',
@@ -63,12 +65,12 @@ export const cabinetData = {
       physicianFirstName: 'ION',
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      start: '13:0',
+      start: addHours(startOfDay(new Date('2021-10-21')), 13),// '13:0',
     },
     {
-      date: '2021-11-01T07:00:00',
+      date: startOfDay(new Date('2021-10-22')), // '2021-11-01T07:00:00',
       dow: 1,
-      end: '17:0',
+      end: addHours(startOfDay(new Date('2021-10-22')), 17),// '17:0',
       isBreakTime: false,
       isPrivate: true,
       locationName: 'Bucuresti - Preciziei',
@@ -76,9 +78,9 @@ export const cabinetData = {
       physicianFirstName: 'ION',
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      start: '14:0'
+      start:  addHours(startOfDay(new Date('2021-10-22')), 14),// '14:0'
     },
-    {
+    /* {
       date: '2021-11-02T07:00:00',
       dow: 2,
       end: '15:0',
@@ -90,7 +92,7 @@ export const cabinetData = {
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
       start: '14:0'
-    }
+    } */
   ],
   phyFreeDays: []
 };
