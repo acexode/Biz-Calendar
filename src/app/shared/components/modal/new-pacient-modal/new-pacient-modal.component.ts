@@ -300,6 +300,7 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
 
       let postAction: Observable<any>;
       if (this.isEdit && this.uid) {
+        console.log(this.uid);
         postAction = this.reqS.put(persons.updatePerson, { ...d, uid: this.uid });
       } else {
         postAction =  this.reqS.post(persons.addPerson, d);
