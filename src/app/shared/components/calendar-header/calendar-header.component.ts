@@ -94,8 +94,9 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     const path = this.activatedRoute.snapshot.paramMap.get('id');
     console.log(path, this.programOptions);
     this.calS.getLocations().subscribe((e: any) =>{
+      console.log(e);
       const mappedLocations = e[0].locations.map(loc =>({
-        id: loc.locationID,
+        id: loc.uid,
         label: loc.locationName
       }));
       const mappedCabinetss = e[1].map(cab =>({
@@ -124,17 +125,23 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       this.showPicker = false;
     });
     this.locationForm.get('program').valueChanges.subscribe(val =>{
+      console.log(val);
       if(val === '1'){
+        this.calS.filterProgram.next('Utilizator');
         this.programList = utilizatorList;
       }else if(val === '2'){
+        this.calS.filterProgram.next('cabinetName');
         this.programList = cabinetList;
       }
       else if(val === '3'){
+        this.calS.filterProgram.next('equipmentName');
         this.programList = aparatList;
       }
     });
     this.locationForm.get('location').valueChanges.subscribe(val =>{
-      console.log(val);
+      const loc = this.locationOptions.filter(l => l.id === val[0])[0];
+      console.log(loc, val);
+      this.calS.filterLocation.next(loc.label);
       const obj = {
         LocationUID: val[0]
       };

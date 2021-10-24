@@ -1,3 +1,4 @@
+import { PlatformService } from './../../../core/services/platform/platform.service';
 import { appointment } from './../../../core/configs/endpoints';
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
@@ -76,11 +77,16 @@ export class ComparativComponent implements OnInit {
   viewDate = new Date();
 
   users = [];
-
+  allUsers = [];
+  numDisplay = 5;
+  currentIndex = 0;
+  isMobile = false;
   events: CalendarEvent[] = [];
+  allEvents: CalendarEvent[] = [];
+  appointmentResponse: any;
   schedules: any;
   holidays: any;
-  constructor(private calS: CalendarService,private cdref: ChangeDetectorRef){
+  constructor(private calS: CalendarService,private cdref: ChangeDetectorRef, private pS: PlatformService){
 
   }
 
@@ -101,24 +107,50 @@ export class ComparativComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pS.isDesktopWidth$.subscribe(e =>{
+      console.log(e);
+      this.isMobile = e ? false : true;
+      this.numDisplay = e ? 10 : 5;
+    });
     this.calS.selectedDate.subscribe(d =>{
+      console.log(d);
       this.loadEvent(d);
     });
-    this.loadEvent(this.viewDate);
+    this.calS.filterProgram.subscribe(loc =>{
+      console.log(loc);
+      console.log(this.appointmentResponse);
+      if(loc !== null){
+        const events = this.appointmentResponse.appointments
+        .filter(lname => lname[loc] !== null );
+        console.log(events);
+
+      }
+    });
+    // this.loadEvent(this.viewDate);
   }
   loadEvent(date){
     this.calS.cabinetAppointment$.subscribe((e: any) =>{
-      // console.log(e);
+      console.log(e);
       this.schedules = e?.schedules ? e?.schedules : [];
-      const eventList = e?.appointments.map((apt, i) => (
+      this.appointmentResponse = e;
+      if(e !== null){
+        this.mapAppointments(e.appointments);
+
+      }
+    });
+  }
+  mapAppointments(appointments){
+    if(appointments.length > 0){
+      this.currentIndex = 0;
+      const eventList = appointments.map((apt, i) => (
         {
           title: apt.personName,
           color:  {
             secondary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
             primary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
           },
-          start: addHours(startOfDay(new Date()), 5),
-          end: addHours(startOfDay(new Date()), 8),
+          start: new Date(apt.startTime),
+          end: new Date(apt.endTime),
           meta: {
             user: {
               id: i,
@@ -136,7 +168,7 @@ export class ComparativComponent implements OnInit {
 
       const distinctUser = [];
       const filterdUser =[];
-      e?.appointments.forEach((apt,i) =>
+      appointments.forEach((apt,i) =>
          {
           if(!distinctUser.includes(apt.uid)){
             distinctUser.push(apt.uid);
@@ -149,13 +181,20 @@ export class ComparativComponent implements OnInit {
           }
         }
       );
+      this.allEvents = eventList;
+      this.allUsers = filterdUser;
+      // console.log(this.allEvents, eventList);
+      if(this.allEvents.length > 0){
+        this.events = this.allEvents.slice(this.currentIndex , this.numDisplay);
+        this.users = this.allUsers.slice(this.currentIndex , this.numDisplay);
+        this.currentIndex = this.numDisplay;
+        // this.cdref.detectChanges();
+        console.log(this.allEvents);
+        console.log(this.users);
+        console.log(this.events);
 
-      this.events = eventList;
-      this.users = filterdUser;
-      //this.cdref.detectChanges();
-      // console.log(this.users);
-      // console.log(this.events);
-    });
+      }
+    }
   }
   setBg(d){
 
@@ -210,7 +249,24 @@ range(start, end, step = 1) {
       .reduce((accumulator, word) => accumulator + word.charAt(0), '');
   }
   left(){
-    
+    if(this.currentIndex !== 0){
+      this.currentIndex -= this.numDisplay;
+      console.log(this.currentIndex);
+      this.events = this.allEvents.slice(this.currentIndex , (this.currentIndex - this.numDisplay));
+      this.users = this.allUsers.slice(this.currentIndex , (this.currentIndex - this.numDisplay));
+      console.log(this.currentIndex);
+    }
+  }
+  right(){
+    if(this.currentIndex < this.allEvents.length){
+      this.currentIndex = this.currentIndex === 0 ? this.numDisplay : this.currentIndex;
+      this.events = this.allEvents?.slice(this.currentIndex , (this.currentIndex + this.numDisplay));
+      this.users = this.allUsers?.slice(this.currentIndex , (this.currentIndex + this.numDisplay));
+      console.log(this.currentIndex);
+      this.currentIndex += this.numDisplay;
+      console.log(this.currentIndex);
+
+    }
   }
 
 }

@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek,
   startOfYear, subBusinessDays, startOfDay } from 'date-fns';
 import { map } from 'rxjs/operators';
+import { addDays } from 'date-fns/esm';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,8 @@ import { map } from 'rxjs/operators';
 export class CalendarService {
   selectedDate: BehaviorSubject<string> = new BehaviorSubject(null);
   selectedPath: BehaviorSubject<string> = new BehaviorSubject(null);
+  filterLocation: BehaviorSubject<string> = new BehaviorSubject(null);
+  filterProgram: BehaviorSubject<string> = new BehaviorSubject(null);
   appointments$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
   cabinetAppointment$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
   cabinetQuery$: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -118,7 +121,7 @@ export class CalendarService {
   getCabinetAppointment(query){
     const obj = {
       StartDate: startOfDay(new Date()),
-      EndDate: startOfDay(new Date()),
+      EndDate: addDays(new Date(), 1),
       ...query,
       // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
 
