@@ -68,6 +68,7 @@ export class PacientComponent implements OnInit, OnDestroy {
   getGroups$: Subscription;
   isFetchingGroups = true;
   isFetchingPerson = true;
+  gender = ['M', 'F'];
   constructor(
     private fb: FormBuilder,
     private modalController: ModalController,
@@ -193,7 +194,13 @@ export class PacientComponent implements OnInit, OnDestroy {
       .subscribe(
         (d: any) => {
           this.personsList$.next(
-            [...d.persons]
+            [...d.persons.map(
+              (v: any) => ({
+                ...v,
+                gender: v?.genderID ? 'F':'M'
+              })
+            )
+            ]
           );
           if (this.currentSegement === this.segment.one) {
             // call update
