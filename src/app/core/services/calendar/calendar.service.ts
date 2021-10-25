@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek,
-  startOfYear, subBusinessDays, startOfDay } from 'date-fns';
+  startOfYear, subBusinessDays, startOfDay, addDays } from 'date-fns';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -119,8 +119,8 @@ export class CalendarService {
 
   getCabinetAppointment(query){
     const obj = {
-      StartDate: startOfDay(new Date('2021-10-25')),
-      EndDate: startOfDay(new Date('2021-10-30')),
+      StartDate: startOfDay(new Date()),
+      EndDate: addDays(new Date(),1),
       ...query,
       // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
 

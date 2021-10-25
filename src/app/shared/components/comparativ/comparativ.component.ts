@@ -123,14 +123,14 @@ export class ComparativComponent implements OnInit {
       // console.log(d);
     });
     this.calS.filterProgram.subscribe(p =>{
-      console.log(p);
+      // console.log(p);
       if(p !== null){
         const events = this.appointmentResponse.appointments
         .filter(lname => lname[p] !== null );
         this.events = this.mapAppointments(events);
         const notEmpty = this.mapProgram(events, p).length;
         this.users = notEmpty > 0 ? this.mapProgram(events, p) : this.emptyPlaceHolder;
-        console.log(events, this.users);
+        // console.log(events, this.users);
         this.cdref.detectChanges();
       }
     });
@@ -148,7 +148,7 @@ export class ComparativComponent implements OnInit {
         this.currentIndex = 0;
         this.allEvents = this.mapAppointments(e.appointments);
         this.allUsers = this.mapProgram(e.appointments, 'physicianName');
-      // console.log(this.allEvents, eventList);
+      // console.log(this.allUsers);
       if(this.allEvents.length > 0){
         this.events = this.allEvents.slice(this.currentIndex , this.numDisplay);
         this.users = this.allUsers.slice(this.currentIndex , this.numDisplay);
@@ -158,6 +158,10 @@ export class ComparativComponent implements OnInit {
         // console.log(this.users);
         // console.log(this.events);
 
+      }else{
+        // console.log('EMPTY');
+        this.events = [];
+        this.users = this.emptyPlaceHolder;
       }
       }
     });
@@ -189,6 +193,8 @@ export class ComparativComponent implements OnInit {
       ));
         return eventList;
 
+    }else{
+      return [];
     }
   }
   setBg(d){

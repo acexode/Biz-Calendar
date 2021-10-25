@@ -44,7 +44,11 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   CalendarView = CalendarView;
   locationCal: FormControl = new FormControl('');
   activatedPath  = '';
-  config: IonSelectConfig = selectConfig;
+  config: IonSelectConfig =selectConfig;
+  locationConfig: IonSelectConfig = {
+    ...selectConfig,
+    multiple: false
+  };
   configB: IonSelectConfig = selectConfigB;
   locationOptions = [];
   programOptions = programOptions;
@@ -145,11 +149,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       }
     });
     this.locationForm.get('location').valueChanges.subscribe(val =>{
-      const loc = this.locationOptions.filter(l => l.id === val[0])[0];
+      console.log(val);
+      const loc = this.locationOptions.filter(l => l.id === val)[0];
       // console.log(loc, val);
       this.calS.filterLocation.next(loc.label);
       const obj = {
-        LocationUID: val[0]
+        LocationUID: val
       };
       this.calS.cabinetQuery$.next(obj);
     });
