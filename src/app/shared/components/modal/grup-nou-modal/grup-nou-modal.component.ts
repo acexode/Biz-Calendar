@@ -117,7 +117,8 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
         phone,
         pid,
       cityID,
-        uid
+      uid,
+      promotionChannelUID,
     } = personData;
     const d = {
       nume: firstName,
@@ -128,6 +129,7 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
       email,
       cnp: pid,
       oras: cityID,
+      canalDePromovare: promotionChannelUID
     };
     const modal = await this.modalController.create({
       component: NewPacientModalComponent,
@@ -141,7 +143,6 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
     if (data?.dismissed && data?.isPersonUpdated) {
       this.getPersons();
      }
