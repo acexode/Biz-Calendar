@@ -182,7 +182,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.data) {
       this.componentFormGroup.patchValue(this.data);
-      console.log(this.componentFormGroup.value);
       if (this.data.oras && this.data.oras !== 0) {
         this.getCitiesByCityId(this.data.oras);
       }
@@ -276,7 +275,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
   add() {
     if (this.formGroupValidity) {
       this.toggleLoadingState();
-      console.log('submiting: ', this.componentFormGroup.value);
       const d = {
         firstName: get(this.componentFormGroup.value, 'nume', ''),
         lastName: get(this.componentFormGroup.value, 'preNume', ''),
@@ -300,7 +298,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
 
       let postAction: Observable<any>;
       if (this.isEdit && this.uid) {
-        console.log(this.uid);
         postAction = this.reqS.put(persons.updatePerson, { ...d, uid: this.uid });
       } else {
         postAction =  this.reqS.post(persons.addPerson, d);
@@ -321,7 +318,6 @@ export class NewPacientModalComponent implements OnInit, OnDestroy {
           }, 3000);
         },
         _err => {
-          console.log(_err);
           this.presentToast('An error occur while trying to add new person. Please try again.');
           this.toggleLoadingState();
         }

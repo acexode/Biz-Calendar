@@ -108,7 +108,6 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     }
   }
   async presentNewPacientModal(personData: any) {
-    console.log(personData);
     const {
         firstName,
         lastName,
@@ -144,7 +143,6 @@ export class GrupNouModalComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
     if (data?.dismissed && data?.isPersonUpdated) {
       this.getPersons();
      }

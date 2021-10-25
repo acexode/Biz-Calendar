@@ -207,7 +207,6 @@ export class PacientComponent implements OnInit, OnDestroy {
            this.updateData();
           }
           this.isFetchingPerson = false;
-          console.log('person: ', this.personsList$.value);
         },
         _err => {
           this.toastService.presentToastWithDurationDismiss(
