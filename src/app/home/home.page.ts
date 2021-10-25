@@ -40,20 +40,17 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.page = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(this.calS.selectedPath.getValue());
     this.calS.selectedPath.subscribe(e =>{
       if(e  === null){
         this.calS.selectedPath.next(this.page);
       }
     });
-    console.log(this.page);
     if(this.page === 'lista'){
       this.calendarList = EVENTLIST;
     }
     if(this.page === 'aparate' || this.page === 'utilizatori' || this.page === 'cabinet'){
       this.page = 'comparativ';
     }
-    console.log(this.page);
   }
   navigate(path){
     this.router.navigate(['/calendar' +path]);

@@ -10,7 +10,7 @@
 >
 </app-mwl-day-view-scheduler>
 
-<div class="fab-container">
+<div *ngIf="allEvents.length > 5" class="fab-container">
   <ion-button fill="outline" size="large" color="biz-primary" class="bg-white left" (click)="left()">
     <ion-icon class="icon-24" name="arrow-left" color="ion-color-biz-primary"></ion-icon>
   </ion-button>

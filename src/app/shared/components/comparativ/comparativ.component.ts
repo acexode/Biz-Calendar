@@ -75,7 +75,14 @@ export class ComparativComponent implements OnInit {
 
 
   viewDate = new Date();
-
+  emptyPlaceHolder = [
+    {
+      id: 0,
+      name: '',
+      title: '',
+      color: '',
+    }
+  ];
   users = [];
   allUsers = [];
   numDisplay = 5;
@@ -108,43 +115,58 @@ export class ComparativComponent implements OnInit {
 
   ngOnInit() {
     this.pS.isDesktopWidth$.subscribe(e =>{
-      console.log(e);
       this.isMobile = e ? false : true;
       this.numDisplay = e ? 10 : 5;
     });
     this.calS.selectedDate.subscribe(d =>{
-      console.log(d);
-      this.loadEvent(d);
+      this.loadEvent();
+      // console.log(d);
     });
-    this.calS.filterProgram.subscribe(loc =>{
-      console.log(loc);
-      console.log(this.appointmentResponse);
-      if(loc !== null){
+    this.calS.filterProgram.subscribe(p =>{
+      console.log(p);
+      if(p !== null){
         const events = this.appointmentResponse.appointments
-        .filter(lname => lname[loc] !== null );
-        console.log(events);
-
+        .filter(lname => lname[p] !== null );
+        this.events = this.mapAppointments(events);
+        const notEmpty = this.mapProgram(events, p).length;
+        this.users = notEmpty > 0 ? this.mapProgram(events, p) : this.emptyPlaceHolder;
+        console.log(events, this.users);
+        this.cdref.detectChanges();
       }
+    });
+    this.calS.filterLocation.subscribe(loc =>{
+      this.loadEvent();
     });
     // this.loadEvent(this.viewDate);
   }
-  loadEvent(date){
+  loadEvent(){
     this.calS.cabinetAppointment$.subscribe((e: any) =>{
-      console.log(e);
+      // console.log(e);
       this.schedules = e?.schedules ? e?.schedules : [];
       this.appointmentResponse = e;
       if(e !== null){
-        this.mapAppointments(e.appointments);
+        this.currentIndex = 0;
+        this.allEvents = this.mapAppointments(e.appointments);
+        this.allUsers = this.mapProgram(e.appointments, 'physicianName');
+      // console.log(this.allEvents, eventList);
+      if(this.allEvents.length > 0){
+        this.events = this.allEvents.slice(this.currentIndex , this.numDisplay);
+        this.users = this.allUsers.slice(this.currentIndex , this.numDisplay);
+        this.currentIndex = this.numDisplay;
+        // this.cdref.detectChanges();
+        // console.log(this.allEvents);
+        // console.log(this.users);
+        // console.log(this.events);
 
+      }
       }
     });
   }
   mapAppointments(appointments){
     if(appointments.length > 0){
-      this.currentIndex = 0;
       const eventList = appointments.map((apt, i) => (
         {
-          title: apt.personName,
+          title: '',
           color:  {
             secondary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
             primary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
@@ -165,35 +187,8 @@ export class ComparativComponent implements OnInit {
           draggable: true,
         }
       ));
+        return eventList;
 
-      const distinctUser = [];
-      const filterdUser =[];
-      appointments.forEach((apt,i) =>
-         {
-          if(!distinctUser.includes(apt.uid)){
-            distinctUser.push(apt.uid);
-            filterdUser.push({
-              id: i,
-              name: this.acronym(apt.personName),
-              title: this.acronym(apt.personName),
-              color: colors.yellow,
-            });
-          }
-        }
-      );
-      this.allEvents = eventList;
-      this.allUsers = filterdUser;
-      // console.log(this.allEvents, eventList);
-      if(this.allEvents.length > 0){
-        this.events = this.allEvents.slice(this.currentIndex , this.numDisplay);
-        this.users = this.allUsers.slice(this.currentIndex , this.numDisplay);
-        this.currentIndex = this.numDisplay;
-        // this.cdref.detectChanges();
-        console.log(this.allEvents);
-        console.log(this.users);
-        console.log(this.events);
-
-      }
     }
   }
   setBg(d){
@@ -231,6 +226,25 @@ export class ComparativComponent implements OnInit {
   }
 
 }
+
+mapProgram(appointments, field){
+  const distinctUser = [];
+  const filterdUser =[];
+  appointments.forEach((apt,i) =>
+  {
+   if(!distinctUser.includes(apt.uid)){
+     distinctUser.push(apt.uid);
+     filterdUser.push({
+       id: i,
+       name: this.acronym(apt[field]),
+       title: this.acronym(apt[field]),
+       color: colors.yellow,
+     });
+   }
+ }
+ );
+ return filterdUser;
+}
 range(start, end, step = 1) {
   const output = [];
   if (typeof end === 'undefined') {
@@ -244,6 +258,10 @@ range(start, end, step = 1) {
 };
   acronym(text) {
     // console.log(text);
+    if(text === null){
+      return '';
+
+    }
     return text
       .split(/\s/)
       .reduce((accumulator, word) => accumulator + word.charAt(0), '');

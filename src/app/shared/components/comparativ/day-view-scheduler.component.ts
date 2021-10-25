@@ -59,9 +59,9 @@ export class DayViewSchedulerCalendarUtils extends CalendarUtils {
     };
 
     view.users.forEach((user, columnIndex) => {
-      const events = args.events.filter(
-        (event) => event.meta.user.id === user.id
-      );
+      const events = args.events !== undefined ? args.events.filter(
+        (event) => event?.meta?.user?.id === user.id
+      ): [];
       const columnView = super.getWeekView({
         ...args,
         events,
@@ -115,7 +115,7 @@ export class DayViewSchedulerComponent extends CalendarWeekViewComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
-    console.log(this.users);
+    // console.log(this.users);
     if (changes.users) {
       this.refreshBody();
       this.emitBeforeViewRender();

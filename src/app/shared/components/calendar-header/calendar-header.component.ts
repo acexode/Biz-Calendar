@@ -92,9 +92,15 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const path = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(path, this.programOptions);
+    if(path === 'utilizatori'){
+      this.locationForm.get('program').patchValue(this.programOptions[0].id);
+    }else if(path === 'cabinet'){
+      this.locationForm.get('program').patchValue(this.programOptions[1].id);
+    }else if(path === 'aparate'){
+      this.locationForm.get('program').patchValue(this.programOptions[2].id);
+    }
     this.calS.getLocations().subscribe((e: any) =>{
-      console.log(e);
+      // console.log(e);
       const mappedLocations = e[0].locations.map(loc =>({
         id: loc.uid,
         label: loc.locationName
@@ -103,7 +109,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
         id: cab.cabinetUid,
         label: cab.cabinetName
       }));
-      console.log(mappedLocations);
+      // console.log(mappedLocations);
       this.locationOptions = mappedLocations;
       // this.cab
     });
@@ -125,9 +131,9 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       this.showPicker = false;
     });
     this.locationForm.get('program').valueChanges.subscribe(val =>{
-      console.log(val);
+      // console.log(val);
       if(val === '1'){
-        this.calS.filterProgram.next('Utilizator');
+        this.calS.filterProgram.next('physicianName');
         this.programList = utilizatorList;
       }else if(val === '2'){
         this.calS.filterProgram.next('cabinetName');
@@ -140,7 +146,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     });
     this.locationForm.get('location').valueChanges.subscribe(val =>{
       const loc = this.locationOptions.filter(l => l.id === val[0])[0];
-      console.log(loc, val);
+      // console.log(loc, val);
       this.calS.filterLocation.next(loc.label);
       const obj = {
         LocationUID: val[0]
@@ -165,7 +171,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     this.menu.toggle();
   }
   navigate(path: string){
-    console.log(path.split('/')[2]);
+    // console.log(path.split('/')[2]);
     this.router.navigate([path]);
     this.calS.selectedPath.next(path.split('/')[2]);
   }
