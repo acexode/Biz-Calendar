@@ -212,7 +212,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
     tipServicii: ['', [Validators.required]],
-    data: ['2021-10-18', [Validators.required]],
+    data: ['2021-10-25', [Validators.required]],
     oraDeIncepere: ['09:00', [Validators.required]],
     time: ['', [Validators.required]],
     cabinet: ['', [Validators.required]],
@@ -276,9 +276,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.presentCabinent();
+    // this.presentCabinent();
 
-    // this.onInitializeLoadData();
+    this.onInitializeLoadData();
     /*  */
 
     this.pS.isDesktopWidth$.subscribe(
@@ -536,7 +536,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       const getCabinet: any = this.cabinetOption.find(
         (v) => v.cabinetUID === this.adaugaProgramareFormGroup.value.cabinet
       );
-      if(typeof getCabinet !== 'undefined') {
+      if(getCabinet !== undefined) {
         return getCabinet.cabinetName;
       } else {
         return '';
@@ -549,6 +549,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.getCabinets$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
+          console.log('cabinet: ', d);
           this.cabinetOption = d;
           if (callCabinetModal) {
             this.presentCabinetModalRadio();

@@ -1,4 +1,4 @@
-import { addHours, startOfDay } from 'date-fns';
+import { addDays, addHours, startOfDay } from 'date-fns';
 
 export const cabinetData = {
   errorMessage: 'string',
@@ -66,7 +66,7 @@ export const cabinetData = {
       physicianFirstName: 'ION',
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      start: addHours(startOfDay(new Date()), 13),// '13:0',
+      start: addHours(startOfDay(new Date()), 8),// '13:0',
     },
     {
       date: startOfDay(new Date()), // '2021-11-01T07:00:00',
@@ -93,7 +93,20 @@ export const cabinetData = {
       physicianLastName: 'POPESCU',
       physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
       start: '14:0'
-    } */
+    }, */
+    {
+      date: startOfDay(new Date()), // '2021-11-01T07:00:00',
+      dow: 1,
+      end: addDays(addHours(startOfDay(new Date()), 13), 1),
+      isBreakTime: false, // time is available
+      isPrivate: true, // schedule is reseved - for private
+      locationName: 'Bucuresti - Preciziei',
+      locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',
+      physicianFirstName: 'ION',
+      physicianLastName: 'POPESCU',
+      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
+      start: addDays(addHours(startOfDay(new Date()), 10), 1),
+    },
   ],
   phyFreeDays: []
 };

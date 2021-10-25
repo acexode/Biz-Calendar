@@ -128,6 +128,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       .subscribe(
         (resps: GetCabinetSchedulesResponseModel[]) => {
           if (resps) {
+            console.log('resps: ', resps);
             // dismiss loader
             loading.dismiss();
             /*  */

@@ -88,8 +88,8 @@
   let-weekEvent="weekEvent"
 >
   <ion-row [class]="'b-bottom pl-0 h-100 ' + (!segment.isStart && ' cal-after-hour-start ')">
-    <ion-col [class]="(!isTimeLabel ? segment.cssClass : '')"> <!-- [class]="segment.cssClass" -->
-      <ion-label [class]="'h-100 w-40 cal-time'" *ngIf="isTimeLabel; else ee">
+    <ion-col [class]="(!isTimeLabel ? segment.cssClass : '') + ' s11-h12 ls-03 defaultGrayColor '"> <!-- [class]="segment.cssClass" -->
+      <ion-label [class]="'h-100 w-40 cal-time '" *ngIf="isTimeLabel; else ee">
 
         {{segment.date | hour}}
       </ion-label>

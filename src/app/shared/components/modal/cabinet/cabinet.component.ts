@@ -134,7 +134,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(cabinetData);
-    // this.getApointments();
+    this.getApointments();
     /* setTimeout(() => {
       const ev = [
       {
@@ -205,67 +205,23 @@ export class CabinetComponent implements OnInit, OnDestroy {
       dismissed: true,
     });
   }
-  /* beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    console.log(renderEvent);
-    renderEvent.hourColumns.forEach((hourColumn) => {
-      hourColumn.hours.forEach((hour) => {
-        hour.segments.forEach((segment) => {
-          if (
-            segment.date.getHours() >= 2 &&
-            segment.date.getHours() <= 5 &&
-            segment.date.getDay() === 2
-          ) {
-            segment.cssClass = 'bg-pink';
-          }
-        });
-      });
-    });
-  } */
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
     renderEvent.hourColumns.forEach((hourColumn) => {
       this.cabinetData.schedules.forEach(schedule => {
+        const name = `${schedule.physicianFirstName.split('')[0]}.${schedule.physicianLastName.split('')[0]}`;
         // console.log('schedule: ', schedule);
         hourColumn.hours.forEach((hour) => {
           hour.segments.forEach((segment) => {
-               /* const checkIsBeforeEndTime = isBefore(schedule.end, segment.date);
-                const checkIsAfterStartTime = isAfter(schedule.start, segment.date);
-            const isSameTime = isEqual(schedule.start, segment.date);
-
-
-
-            console.log('schedule.start: ', schedule.start);
-              console.log('schedule.end: ', schedule.end);
-              console.log('segment.date: ', segment.date);
-
-            console.log('checkIsAfterStartTime: ',
-                checkIsAfterStartTime, 'isSameTime: ',
-              isSameTime, 'checkIsBeforeEndTime: ', checkIsBeforeEndTime); */
 
 
             if (segment.date >= schedule.start && segment.date < schedule.end) {
 
 
-                  segment.cssClass = 'orange-bg-color-step-10 name';
+                  segment.cssClass = `orange-bg-color-step-10 ${name}`;
             }
-
-
-            /* if ((checkIsBeforeEndTime && checkIsAfterStartTime) || isSameTime) {
-
-
-                  segment.cssClass = 'red-bg';
-                } */
-              // console.log('segments: ', segment);
-              /* if (segment.isStart) {
-                segment.cssClass = 'red-bg';
-              } else {
-                segment.cssClass = 'pink-bg';
-              } */
             });
           });
         });
-
-
-      /*  */
     });
 
   }
