@@ -13,8 +13,8 @@
             </ion-col>
             <ion-col size="10" >
                 <ion-row *ngFor="let cal of ev.events" class="bg-card flex flex-column"  [ngClass]="cal.class"  >
-                  <!-- <ion-col [routerLink]="cal.class === 'note-v1' ||cal.class === 'note-v2'  ?  ['/calendar/vizualizare-nota/', cal.id] : []"  size="12"> -->
-                  <ion-col [routerLink]="  ['/calendar/vizualizare-nota/', cal.id] "  size="12">
+                  <ion-col [routerLink]="cal.class === 'note-v1' ||cal.class === 'note-v2'  ?  ['/calendar/vizualizare-nota/', cal.id] : []"  size="12">
+                  <!-- <ion-col [routerLink]="  ['/calendar/vizualizare-nota/', cal.id] "  size="12"> -->
                     <div class="info flex">
                       <div>
                         <ion-text class="hour">{{cal.time}}</ion-text> • <ion-text class="location">{{cal.location}}</ion-text>
@@ -31,18 +31,13 @@
                       {{cal.desc | slice:0:90}}
                     </p>
                   </ion-col>
-                 
                 </ion-row>
-                
+
               </ion-col>
-            
-            
+
           </ion-row>
-       
-      
     </ion-col>
 
-    
   </ion-row>
   <!-- <ion-row class="ev-month    text-white">
     <ion-text>Aprilie 2021</ion-text>
