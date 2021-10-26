@@ -45,3 +45,16 @@ export const getDateInYearMonthDay = (date: Date) => {
   return `${ year }-${ month }-${ day }`; */
   return dateObj.toISOString().slice(0, 10); // yyyy-mmm-dd
 };
+
+export const dayInAWeekWithDate = (current: Date): Array<Date> => {
+  const week = new Array();
+  // Starting Monday not Sunday use current.getDate() - current.getDay() + 1
+  current.setDate((current.getDate() - current.getDay()));
+  for (let i = 0; i < 7; i++) {
+    week.push(
+      new Date(current)
+    );
+    current.setDate(current.getDate() + 1);
+  }
+  return week; // dayInAWeekWithDate(new Date('2021-10-18'));
+};

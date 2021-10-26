@@ -247,5 +247,9 @@
     .cal-after-hour-start {
       border-bottom: 1px solid #D5DBDE !important;
     }
+
+    .cal-week-view .cal-ends-within-day .cal-event {
+      align-items: flex-start !important;
+    }
   }
 }
