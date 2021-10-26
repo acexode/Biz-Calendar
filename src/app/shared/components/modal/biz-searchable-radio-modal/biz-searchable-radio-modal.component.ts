@@ -31,6 +31,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     this.updateItems();
   }
   @Input() checkList!: any;
+  isCabinetAvailable = false;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
   getAppointments$: Subscription;
@@ -76,8 +77,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalController.dismiss({
       dismissed: true,
-      radioValue: this.controlValue,
-      selectedData: find(this.items, ['id', this.controlValue])
+      radioValue: this.isCabinetAvailable ? this.controlValue : ' ',
     });
   }
   checkRadio(event: any) {
@@ -155,12 +155,15 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
               );
               console.log('checkCabinetavailability: ', checkCabinetavailability);
               if (checkCabinetavailability.length > 0) {
+                this.isCabinetAvailable = true;
                 this.closeModal();
               } else {
+                this.isCabinetAvailable = false;
                 this.presentCabinentNotify();
               }
             } else {
               // this.closeModal();
+               this.isCabinetAvailable = false;
               this.presentCabinentNotify();
             }
           }
