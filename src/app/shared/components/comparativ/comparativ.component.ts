@@ -119,7 +119,7 @@ export class ComparativComponent implements OnInit {
       this.numDisplay = e ? 10 : 5;
     });
     this.calS.selectedDate.subscribe(d =>{
-      console.log(d);
+      // console.log(d);
       if(d !== null){
         this.calS.getCabinetAppointment({}, new Date(d));
 
@@ -128,7 +128,7 @@ export class ComparativComponent implements OnInit {
       // console.log(d);
     });
     this.calS.filterProgram.subscribe(p =>{
-      // console.log(p);
+      console.log(p);
       if(p !== null){
         const events = this.appointmentResponse.appointments
         .filter(lname => lname[p] !== null );
@@ -247,8 +247,8 @@ mapProgram(appointments, field){
      distinctUser.push(apt.uid);
      filterdUser.push({
        id: i,
-       name: this.acronym(apt[field]),
-       title: this.acronym(apt[field]),
+       name: this.acronym(apt[field], field),
+       title: this.acronym(apt[field], field),
        color: colors.yellow,
      });
    }
@@ -267,15 +267,20 @@ range(start, end, step = 1) {
   }
   return output;
 };
-  acronym(text) {
+  acronym(text, field) {
     // console.log(text);
     if(text === null){
       return '';
 
     }
-    return text
-      .split(/\s/)
-      .reduce((accumulator, word) => accumulator + word.charAt(0), '');
+    if(field === 'physicianName'){
+      return text
+        .split(/\s/)
+        .reduce((accumulator, word) => accumulator + word.charAt(0), '');
+
+    }else{
+      return text.slice(0,3);
+    }
   }
   left(){
     if(this.currentIndex !== 0){

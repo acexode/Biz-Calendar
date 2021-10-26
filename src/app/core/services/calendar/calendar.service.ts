@@ -30,7 +30,7 @@ export class CalendarService {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      console.log(e);
+      // console.log(e);
       if(e !== null){
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
       }else{
@@ -53,7 +53,7 @@ export class CalendarService {
   fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
     // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-      console.log(path);
+      // console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
