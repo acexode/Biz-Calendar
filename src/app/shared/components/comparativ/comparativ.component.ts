@@ -119,6 +119,11 @@ export class ComparativComponent implements OnInit {
       this.numDisplay = e ? 10 : 5;
     });
     this.calS.selectedDate.subscribe(d =>{
+      console.log(d);
+      if(d !== null){
+        this.calS.getCabinetAppointment({}, new Date(d));
+
+      }
       this.loadEvent();
       // console.log(d);
     });
