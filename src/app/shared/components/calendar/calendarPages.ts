@@ -5,5 +5,5 @@ export const CalendarPages = [
     { title: 'Zile lucratoare', url: '/calendar/zile-lucratoare', icon: '3-days' },
     { title: 'Săptămână', url: '/calendar/saptamana', icon: '5-days' },
     { title: 'Lună', url: '/calendar/luna', icon: 'month' },
-    { title: 'Comparativ', url: '/calendar/comparativ', icon: 'coparativ' },
+    { title: 'Comparativ', url: '/calendar/aparate', icon: 'coparativ' },
   ];
