@@ -39,6 +39,7 @@ import { Parameter, ParameterState } from 'src/app/core/models/parameter.model';
 import { GroupList } from 'src/app/core/models/groupList.model';
 import { Person } from 'src/app/core/models/person.model';
 import { InfoPatient } from 'src/app/core/models/infoPatient.model';
+import { addMinutes } from 'date-fns';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -214,7 +215,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipServicii: ['', [Validators.required]],
     data: ['2021-10-25', [Validators.required]],
     oraDeIncepere: ['09:00', [Validators.required]],
-    time: ['', [Validators.required]],
+    time: ['30', [Validators.required]],
     cabinet: ['', [Validators.required]],
     medic:['', [Validators.required]],
     observatii: ['', [Validators.required]]
@@ -276,9 +277,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.presentCabinent();
+    this.presentCabinent();
 
-    this.onInitializeLoadData();
+    // this.onInitializeLoadData();
     /*  */
 
     this.pS.isDesktopWidth$.subscribe(
@@ -405,10 +406,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.getCabinets(true);
     } else {
       if (!this.dataAndOraDeIncepereNotFilledStatus) {
-          const toCompareDate = new Date(
+        const startTime = new Date(
           `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
         );
-        console.log(toCompareDate);
+        const endTime = addMinutes(startTime, Number(this.adaugaProgramareFormGroup.value.time));
+        console.log('toCompareDate: ', startTime, endTime);
         const modal = await this.modalController.create({
           component: BizSearchableRadioModalComponent,
           cssClass: 'biz-modal-class',
@@ -416,7 +418,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           componentProps: {
             options: this.cabinetOption,
             config: this.cabinetConfig,
-            toCompareDate,
+            startTime,
+            endTime,
           },
         });
         await modal.present();
@@ -673,10 +676,16 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           if (callGetMedicalEquipment) {
             this.presentAparaturaDataModal();
           }
+          this.toastService.dismissToast();
         },
-        _err => this.toastService.presentToastWithDurationDismiss(
-          'Unable to get medical equipment at this instance. Please check your network and try again. C13'
-        )
+        _err => {
+          // dismiss previous toast
+          this.toastService.dismissToast();
+          // show toast with duration dismiss
+          this.toastService.presentToastWithDurationDismiss(
+            'Unable to get medical equipment at this instance. Please check your network and try again. C13'
+          );
+        }
       );
   }
   getPersonInfo() {

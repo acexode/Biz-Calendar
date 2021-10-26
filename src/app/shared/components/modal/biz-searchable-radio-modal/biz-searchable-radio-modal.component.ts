@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { addHours, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
+import { addHours, addMinutes, format, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
 import { Subscription } from 'rxjs';
-import { cabinet } from 'src/app/core/configs/endpoints';
+import { appointmentEndpoints, cabinet } from 'src/app/core/configs/endpoints';
 import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
@@ -23,7 +23,8 @@ import { CabinetComponent } from '../cabinet/cabinet.component';
 export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
 
   @Input() config!: IonRadiosConfig;
-  @Input() toCompareDate: Date;
+  @Input() startTime: Date;
+  @Input() endTime: Date;
   @Input() @Input() set options(opts: Array<IonRadioInputOption>) {
     this.opts = opts ? opts : [];
     this.updateItems();
@@ -31,6 +32,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   @Input() checkList!: any;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
+  getAppointments$: Subscription;
   list!: any;
   ionicForm: FormGroup;
 
@@ -127,10 +129,10 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
         .post<Array<GetCabinetSchedulesResponseModel>>(cabinet.getCabinetsSchedules, d)
       .subscribe(
         (resps: GetCabinetSchedulesResponseModel[]) => {
+          // dismiss loader
+            loading.dismiss();
           if (resps) {
             console.log('resps: ', resps);
-            // dismiss loader
-            loading.dismiss();
             /*  */
             if (resps.length > 0) {
               this.cabinetOfEvent = resps.map(
@@ -142,34 +144,35 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
                 })
               ) .map((w: GetCabinetSchedulesResponseModel) => ({
                     ...w,
-                    startTime: addHours(startOfDay(w.cabinetTime), w.startHour),
-                    endTime: addHours(startOfDay(w.cabinetTime), w.endHour)
+                    startTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.startHour), w.startMin),
+                    endTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.endHour), w.endMin),
               })
               );
-              console.log('cabinetOfEvent: ', this.cabinetOfEvent, this.toCompareDate);
-              for (const res of this.cabinetOfEvent) {
-                const checkIsBeforeEndTime = isBefore(res.endTime,
-                  this.toCompareDate
-                );
-                const checkIsAfterStartTime = isAfter(res.startTime, this.toCompareDate);
-                const isSameTime = isEqual(res.startTime, this.toCompareDate);
-                console.log('checkIsBeforeEndTime: ', checkIsBeforeEndTime);
-                console.log('checkIsAfterStartTime: ', checkIsAfterStartTime);
-                console.log('isSameTime: ', isSameTime);
-                const getTheDay = getDay(new Date());
-                console.log('getTheDay: ', getTheDay);
-                if ((checkIsBeforeEndTime && checkIsAfterStartTime) || isSameTime) {
-                  this.presentCabinentNotify();
-                } else {
-                  this.closeModal();
-                }
+              console.log('cabinetOfEvent: ', this.cabinetOfEvent);
+
+              const checkCabinetVailability = this.cabinetOfEvent.filter(
+                (t: GetCabinetSchedulesResponseModel) => ((this.startTime >= t.startTime && this.startTime < t.endTime)
+                  || (this.endTime >= t.startTime && this.endTime < t.endTime))
+              );
+
+              console.log('checkCabinetVailability: ', checkCabinetVailability);
+              if (checkCabinetVailability.length > 0) {
+                this.presentCabinentNotify();
+              } else {
+                this.closeModal();
               }
             } else {
               this.closeModal();
             }
           }
 
-      });
+        },
+        error => {
+          // dismiss loader
+            loading.dismiss();
+        }
+
+      );
     }
   }
   async presentCabinentNotify() {
@@ -186,18 +189,59 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     console.log(data);
     const { dismissed, renita, veziProgram } = data;
     if (dismissed && veziProgram) {
-      this.presentCabinent();
+      this.getApointments();
     }
   }
 
-  async presentCabinent() {
+  async presentCabinent(cabinetData: any) {
     const modal = await this.modalController.create({
       component: CabinetComponent,
       cssClass: 'biz-modal-class width-md-100',
       backdropDismiss: true,
-      componentProps: {},
+      componentProps: {
+        cabinetData,
+      },
     });
     await modal.present();
+  }
+  async getApointments() {
+
+    const loading = await this.loadingController.create({
+            spinner: 'crescent',
+            mode: 'md',
+            // duration: 2000,
+            message: 'Checking Cabinet...',
+            translucent: true,
+            cssClass: 'custom-class custom-loading'
+        });
+    await loading.present();
+
+    const payload = {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      StartDate: format(new Date(this.startTime), 'yyyy-MM-dd HH:mm'),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      EndDate: format(new Date(this.endTime), 'yyyy-MM-dd HH:mm'),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      CabinetUID: this.controlValue// 'ccedb51b-f381-4f89-924c-516af87411fb'
+
+    };
+    console.log('payload: ', payload);
+    this.getAppointments$ = this.reqService.post(
+      appointmentEndpoints.getAppointment,
+      payload,
+    )
+      .subscribe(
+        (d: any) => {
+          console.log(d);
+          // dismiss loader
+            loading.dismiss();
+          this.presentCabinent(d);
+        },
+        err => {
+          // dismiss loader
+            loading.dismiss();
+        }
+      );
   }
 
   ngOnDestroy() {
