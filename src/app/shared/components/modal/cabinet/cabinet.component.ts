@@ -11,7 +11,7 @@ import {
 import { startOfDay, addHours,} from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
-import { RequestService } from 'src/app/core/services/request/request.service';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
 import { cabinetData } from './dummyDataForCabinet';
