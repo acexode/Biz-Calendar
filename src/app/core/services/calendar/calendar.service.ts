@@ -126,11 +126,9 @@ export class CalendarService {
 
   getCabinetAppointment(query, date= null){
     const obj = {
-      StartDate: date !== null ? startOfDay(new Date(date)) : startOfDay(new Date('2021-10-25')) ,
-      EndDate:  date !== null ? addDays(new Date(date), 1) : addDays(new Date('2021-10-30'), 1),
-      ...query,
-      // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
-
+      StartDate: date !== null ? startOfDay(new Date(date)) : startOfDay(new Date()) ,
+      EndDate:  date !== null ? addDays(new Date(date), 1) : addDays(new Date(), 1),
+      ...query
     };
     return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
       console.log(res);

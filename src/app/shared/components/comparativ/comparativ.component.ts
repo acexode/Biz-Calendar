@@ -132,7 +132,7 @@ export class ComparativComponent implements OnInit {
       if(p !== null){
         const events = this.appointmentResponse.appointments
         .filter(lname => lname[p] !== null );
-        this.events = this.mapAppointments(events);
+        this.events = this.mapAppointments(events, p);
         const notEmpty = this.mapProgram(events, p).length;
         this.users = notEmpty > 0 ? this.mapProgram(events, p) : this.emptyPlaceHolder;
         // console.log(events, this.users);
@@ -151,7 +151,7 @@ export class ComparativComponent implements OnInit {
       this.appointmentResponse = e;
       if(e !== null){
         this.currentIndex = 0;
-        this.allEvents = this.mapAppointments(e.appointments);
+        this.allEvents = this.mapAppointments(e.appointments, 'physicianName');
         this.allUsers = this.mapProgram(e.appointments, 'physicianName');
       // console.log(this.allUsers);
       if(this.allEvents.length > 0){
@@ -171,11 +171,11 @@ export class ComparativComponent implements OnInit {
       }
     });
   }
-  mapAppointments(appointments){
+  mapAppointments(appointments, field){
     if(appointments.length > 0){
       const eventList = appointments.map((apt, i) => (
         {
-          title: '',
+          title: 'hello',
           color:  {
             secondary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
             primary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
@@ -185,7 +185,7 @@ export class ComparativComponent implements OnInit {
           meta: {
             user: {
               id: i,
-              name: apt.personName,
+              name: apt[field],
              color: colors.yellow,
             },
           },
@@ -196,6 +196,7 @@ export class ComparativComponent implements OnInit {
           draggable: true,
         }
       ));
+      console.log(eventList);
         return eventList;
 
     }else{
@@ -274,31 +275,36 @@ range(start, end, step = 1) {
 
     }
     if(field === 'physicianName'){
-      return text
+      const res =  text
         .split(/\s/)
-        .reduce((accumulator, word) => accumulator + word.charAt(0), '');
-
+        .reduce((accumulator, word) => accumulator + word.charAt(0) + '.', '');
+      return res.slice(0,res.length-1).replace('-.', '');
     }else{
       return text.slice(0,3);
     }
   }
   left(){
     if(this.currentIndex !== 0){
+      // console.log(this.currentIndex);
       this.currentIndex -= this.numDisplay;
-      console.log(this.currentIndex);
-      this.events = this.allEvents.slice(this.currentIndex , (this.currentIndex - this.numDisplay));
-      this.users = this.allUsers.slice(this.currentIndex , (this.currentIndex - this.numDisplay));
-      console.log(this.currentIndex);
+      if(this.currentIndex > 0){
+        // console.log(this.currentIndex, (this.currentIndex + this.numDisplay));
+        this.events = this.allEvents.slice(this.currentIndex - this.numDisplay , (this.currentIndex));
+        this.users = this.allUsers.slice(this.currentIndex - this.numDisplay , (this.currentIndex));
+
+      }
+      // console.log(this.currentIndex);
     }
   }
   right(){
-    if(this.currentIndex < this.allEvents.length){
+    // console.log(this.allUsers);
+    if(this.currentIndex < this.allUsers.length){
       this.currentIndex = this.currentIndex === 0 ? this.numDisplay : this.currentIndex;
       this.events = this.allEvents?.slice(this.currentIndex , (this.currentIndex + this.numDisplay));
       this.users = this.allUsers?.slice(this.currentIndex , (this.currentIndex + this.numDisplay));
-      console.log(this.currentIndex);
+      // console.log(this.currentIndex);
       this.currentIndex += this.numDisplay;
-      console.log(this.currentIndex);
+      // console.log(this.currentIndex);
 
     }
   }

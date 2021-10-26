@@ -202,6 +202,9 @@
   <div [ngClass]="weekEvent.event.color?.primary ? weekEvent.event.color?.primary + ' cal-event' : 'cal-event'" >
     <!-- {{weekEvent | json}} -->
     <!-- {{weekEvent.event.color.secondary | json}} -->
-    {{weekEvent.event.title}}
+    <span style="color: transparent;">
+      {{weekEvent.event.title}}
+
+    </span>
   </div>
   </ng-template>
