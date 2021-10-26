@@ -33,4 +33,9 @@ export class ToastService {
   dismissToast() {
     this.toast.dismiss();
   }
+  forceDismissToast() {
+    if (this.toast) {
+      this.toast.dismissToast();
+    }
+  }
 }

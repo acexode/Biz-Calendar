@@ -111,6 +111,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('this.cabinetData: ', this.cabinetData);
     if (this.cabinetData && this.cabinetData.appointments > 0) {
 
       const eventFromAppointement = this.cabinetData.appointments.map(
@@ -167,7 +168,9 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
-    if (this.cabinetData && this.cabinetData.schedules > 0) {
+    if (this.cabinetData && this.cabinetData.schedules.length > 0) {
+
+      console.log('here');
 
 
       renderEvent.hourColumns.forEach((hourColumn) => {

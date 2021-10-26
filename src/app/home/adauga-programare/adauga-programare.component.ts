@@ -213,7 +213,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: '',
     tipServicii: ['', [Validators.required]],
-    data: ['2021-10-25', [Validators.required]],
+    data: ['2021-10-26', [Validators.required]],
     oraDeIncepere: ['09:00', [Validators.required]],
     time: ['30', [Validators.required]],
     cabinet: ['', [Validators.required]],
@@ -675,11 +675,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           if (callGetMedicalEquipment) {
             this.presentAparaturaDataModal();
           }
-          this.toastService.dismissToast();
+          this.toastService.forceDismissToast();
         },
         _err => {
           // dismiss previous toast
-          this.toastService.dismissToast();
+          this.toastService.forceDismissToast();
           // show toast with duration dismiss
           this.toastService.presentToastWithDurationDismiss(
             'Unable to get medical equipment at this instance. Please check your network and try again. C13'

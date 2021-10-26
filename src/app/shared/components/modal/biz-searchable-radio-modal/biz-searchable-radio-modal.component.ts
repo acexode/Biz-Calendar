@@ -139,28 +139,29 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
               this.cabinetOfEvent = resps.map(
                 (v: GetCabinetSchedulesResponseModel) => ({
                   ...v,
-                  cabinetTime: dayInAWeekWithDate(new Date())[v.dayID],
-                  // startTime: addHours(startOfDay(new Date()), v.startHour),
-                  // endTime: addHours(startOfDay(new Date()), v.endHour)
+                  cabinetTime: startOfDay(dayInAWeekWithDate(new Date())[v.dayID]),
                 })
               ) .map((w: GetCabinetSchedulesResponseModel) => ({
                     ...w,
                     startTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.startHour), w.startMin),
                     endTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.endHour), w.endMin),
-              })
+                })
               );
 
-              const checkCabinetVailability = this.cabinetOfEvent.filter(
-                (t: GetCabinetSchedulesResponseModel) => ((this.startTime >= t.startTime && this.startTime < t.endTime)
-                  || (this.endTime >= t.startTime && this.endTime < t.endTime))
+              console.log('cabinetOfEvent', this.cabinetOfEvent);
+
+              const checkCabinetavailability = this.cabinetOfEvent.filter(
+                (t: GetCabinetSchedulesResponseModel) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
               );
-              if (checkCabinetVailability.length > 0) {
-                this.presentCabinentNotify();
-              } else {
+              console.log('checkCabinetavailability: ', checkCabinetavailability);
+              if (checkCabinetavailability.length > 0) {
                 this.closeModal();
+              } else {
+                this.presentCabinentNotify();
               }
             } else {
-              this.closeModal();
+              // this.closeModal();
+              this.presentCabinentNotify();
             }
           }
 
@@ -230,6 +231,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     )
       .subscribe(
         (d: any) => {
+          console.log('getAppointments$: ', d);
           // dismiss loader
             loading.dismiss();
           this.presentCabinent(d);
