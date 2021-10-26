@@ -10,7 +10,7 @@
         [refresh]="refresh"
         (eventClicked)="handleEvent('Clicked', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
-      [hourSegmentTemplate]="hourSegmentTemplate"
+        [hourSegmentTemplate]="hourSegmentTemplate"
         (beforeViewRender)="beforeWeekViewRender($event)"
         >
         </mwl-calendar-week-view>
@@ -85,15 +85,29 @@
   let-label="label"
   let-segment="segment"
   let-isTimeLabel="isTimeLabel"
+  let-weekEvent="weekEvent"
 >
   <ion-row [class]="'b-bottom pl-0 h-100 ' + (!segment.isStart && ' cal-after-hour-start ')">
-    <ion-col>
-      <ion-label [class]="'h-100 w-40 cal-time'" *ngIf="isTimeLabel">
+    <ion-col [class]="(!isTimeLabel ? segment.cssClass : '') + ' s11-h12 ls-03 defaultGrayColor '"> <!-- [class]="segment.cssClass" -->
+      <ion-label [class]="'h-100 w-40 cal-time '" *ngIf="isTimeLabel; else ee">
 
-        {{segment.date | hour}}</ion-label>
+        {{segment.date | hour}}
+      </ion-label>
+      <ng-template #ee>
+        <ion-label *ngIf="segment.isStart; else isSecond">
+
+        {{segment.cssClass ? segment.cssClass.split(' ')[1] : ''}}
+        </ion-label>
+
+      </ng-template>
+      <ng-template #isSecond>
+        <ion-label>
+         <!--  {{segment.cssClass}} -->
+        <!-- is second: display nothing for now -->
+        </ion-label>
+
+      </ng-template>
     </ion-col>
-     <!--<ion-col *ngIf="!isTimeLabel">
-      jsfhsf
-    </ion-col>-->
   </ion-row>
 </ng-template>
+
