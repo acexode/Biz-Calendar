@@ -105,14 +105,14 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     }
     this.calS.getLocations().subscribe((e: any) =>{
       // console.log(e);
-      const mappedLocations = e[0].locations.map(loc =>({
+      const mappedLocations = e.locations.map(loc =>({
         id: loc.uid,
         label: loc.locationName
       }));
-      const mappedCabinetss = e[1].map(cab =>({
-        id: cab.cabinetUid,
-        label: cab.cabinetName
-      }));
+      // const mappedCabinetss = e[1].map(cab =>({
+      //   id: cab.cabinetUid,
+      //   label: cab.cabinetName
+      // }));
       // console.log(mappedLocations);
       this.locationOptions = mappedLocations;
       // this.cab

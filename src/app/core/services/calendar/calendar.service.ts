@@ -30,7 +30,7 @@ export class CalendarService {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      // console.log(e);
+      console.log(e);
       if(e !== null){
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
       }else{
@@ -39,8 +39,10 @@ export class CalendarService {
       }
     });
     this.cabinetQuery$.subscribe(q =>{
-      // console.log(q);
-      this.getCabinetAppointment(q);
+      console.log(q);
+      if(q !== null){
+        this.getCabinetAppointment(q);
+      }
     });
    }
 
@@ -51,7 +53,7 @@ export class CalendarService {
   fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
     // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-      // console.log(path);
+      console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
@@ -59,6 +61,7 @@ export class CalendarService {
         if(path === 'lista'){
           obj.StartDate = startOfYear(new Date());
           obj.EndDate = endOfYear(new Date());
+          this.getAppointments(obj);
         }
         else if(path === 'zi'){
           console.log(selectedDate);
@@ -68,6 +71,7 @@ export class CalendarService {
           end.setHours(appEndHour,0,0);
           obj.StartDate = start;
           obj.EndDate = end;
+          this.getAppointments(obj);
         }else if(path === 'luna'){
           const start = selectedDate ? startOfMonth(new Date(selectedDate)) : startOfMonth(new Date());
           const end = selectedDate ? endOfMonth(new Date(selectedDate)): endOfMonth(new Date());
@@ -75,6 +79,7 @@ export class CalendarService {
           end.setHours(appEndHour,0,0);
           obj.StartDate = start;
           obj.EndDate = end;
+          this.getAppointments(obj);
         }else if(path === 'saptamana'){
           const start = selectedDate ? startOfWeek(new Date(selectedDate)) : startOfWeek(new Date());
           const end = selectedDate ? endOfWeek(new Date(selectedDate)) : endOfWeek(new Date()) ;
@@ -82,6 +87,7 @@ export class CalendarService {
           end.setHours(appEndHour,0,0);
           obj.StartDate = start;
           obj.EndDate = end;
+          this.getAppointments(obj);
         }else if(path === 'zile-lucratoare'){
           const start = selectedDate ? addBusinessDays(startOfWeek(new Date(selectedDate)),1) : addBusinessDays(startOfWeek(new Date()),1);
           const end = selectedDate ? subBusinessDays(endOfWeek(new Date(selectedDate)),1) : subBusinessDays(endOfWeek(new Date()),1) ;
@@ -89,9 +95,10 @@ export class CalendarService {
           end.setHours(appEndHour,0,0);
           obj.StartDate = start;
           obj.EndDate = end;
+          this.getAppointments(obj);
         }
         // console.log(obj);
-        this.getAppointments(obj);
+
 
       }
 
@@ -117,10 +124,10 @@ export class CalendarService {
     }
   }
 
-  getCabinetAppointment(query){
+  getCabinetAppointment(query, date= null){
     const obj = {
-      StartDate: startOfDay(new Date()),
-      EndDate: addDays(new Date(),1),
+      StartDate: date !== null ? startOfDay(new Date(date)) : startOfDay(new Date('2021-10-25')) ,
+      EndDate:  date !== null ? addDays(new Date(date), 1) : addDays(new Date('2021-10-30'), 1),
       ...query,
       // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
 
@@ -133,7 +140,7 @@ export class CalendarService {
   getLocations(){
     const cabinets = this.reqS.get(cabinet.getCabinets);
     const locations = this.reqS.get(location.getLocations);
-    return forkJoin([locations, cabinets]);
+    return this.reqS.get(location.getLocations);
   }
 
   colorCode(code, view = 'list'){

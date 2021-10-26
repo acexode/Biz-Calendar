@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CalendarService } from './../../../../core/services/calendar/calendar.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ModalController, MenuController } from '@ionic/angular';
@@ -16,7 +16,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   @Input() showPicker: boolean;
   eventSource;
   viewTitle;
-
+  isComparativ;
   isToday: boolean;
    calendar = {
         mode: 'month' as CalendarMode,
@@ -44,9 +44,14 @@ export class CalModalComponent implements OnInit, OnDestroy {
   month = format(new Date(), 'MMMM', { locale: ro });
   showSub$: Subscription;
   constructor(private modalCtrl: ModalController, private menu: MenuController, private routerS: Router,
-    private calS: CalendarService) { }
+    private calS: CalendarService, private aRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    const page = this.aRoute.snapshot.paramMap.get('id');
+    console.log(page);
+    if(page === 'aparate' || page === 'cabinet' ||page === 'utilizatori'){
+      this.isComparativ = true;
+    }
   }
 
 
@@ -70,7 +75,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   onTimeSelected(ev, clicked= false) {
     // console.log(ev.selectedTime, clicked);
     this.calS.selectedDate.next(ev.selectedTime);
-    if(this.showPicker === true){
+    if(!this.isComparativ){
       this.routerS.navigate(['calendar/zi']);
 
     }
