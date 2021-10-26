@@ -1,11 +1,14 @@
+import { location, cabinet } from './../../configs/endpoints';
+/* eslint-disable @typescript-eslint/naming-convention */
 import { AuthService } from './../auth/auth.service';
 import { Appointment, AppointmentResponse } from './../../models/appointment.interface';
 import { appointmentEndpoints, authEndpoints } from './../../configs/endpoints';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek, startOfYear, subBusinessDays } from 'date-fns';
+import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek,
+  startOfYear, subBusinessDays, startOfDay, addDays } from 'date-fns';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -14,19 +17,30 @@ import { map } from 'rxjs/operators';
 export class CalendarService {
   selectedDate: BehaviorSubject<string> = new BehaviorSubject(null);
   selectedPath: BehaviorSubject<string> = new BehaviorSubject(null);
+  filterLocation: BehaviorSubject<string> = new BehaviorSubject(null);
+  filterProgram: BehaviorSubject<string> = new BehaviorSubject(null);
   appointments$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
+  cabinetAppointment$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
+  cabinetQuery$: BehaviorSubject<any> = new BehaviorSubject(null);
   eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute, private authS: AuthService) {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      console.log(e);
+      // console.log(e);
       if(e !== null){
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
-
+      }else{
+        // console.log('new Date');
+        this.fetchCalendarAppointment(new Date(), appStartHour, appEndHour);
       }
+    });
+    this.cabinetQuery$.subscribe(q =>{
+      // console.log(q);
+      this.getCabinetAppointment(q);
     });
    }
 
@@ -34,19 +48,20 @@ export class CalendarService {
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
 
   }
-  fetchCalendarAppointment(selectedDate = null, appStartHour, appEndHour){
+  fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
     // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
+      // console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
-      console.log(path);
       if(path !== null){
         if(path === 'lista'){
           obj.StartDate = startOfYear(new Date());
           obj.EndDate = endOfYear(new Date());
         }
         else if(path === 'zi'){
+          console.log(selectedDate);
           const start = selectedDate ? new Date(selectedDate) : new Date();
           const end = selectedDate ? new Date(selectedDate) : new Date();;
           start.setHours(appStartHour,0,0);
@@ -83,6 +98,7 @@ export class CalendarService {
     });
   }
   async  getAppointments(data = null){
+    // console.log(data);
     if(data !== null){
       const phy: any = await this.getUserPhysicians().toPromise();
       const obj: any = {
@@ -99,6 +115,25 @@ export class CalendarService {
       });
 
     }
+  }
+
+  getCabinetAppointment(query){
+    const obj = {
+      StartDate: startOfDay(new Date()),
+      EndDate: addDays(new Date(),1),
+      ...query,
+      // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
+
+    };
+    return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
+      console.log(res);
+      this.cabinetAppointment$.next(res);
+    });
+  }
+  getLocations(){
+    const cabinets = this.reqS.get(cabinet.getCabinets);
+    const locations = this.reqS.get(location.getLocations);
+    return forkJoin([locations, cabinets]);
   }
 
   colorCode(code, view = 'list'){
