@@ -220,11 +220,14 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
         });
     await loading.present();
 
+    const startOfTheWeekDate = startOfDay(dayInAWeekWithDate(new Date())[0]);
+    const endOfTheWeekDate = startOfDay(dayInAWeekWithDate(new Date())[6]);
+
     const payload = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      StartDate: format(new Date(this.startTime), 'yyyy-MM-dd HH:mm'),
+      StartDate: format(startOfTheWeekDate, 'yyyy-MM-dd HH:mm'),
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      EndDate: format(new Date(this.endTime), 'yyyy-MM-dd HH:mm'),
+      EndDate: format(endOfTheWeekDate, 'yyyy-MM-dd HH:mm'),
       // eslint-disable-next-line @typescript-eslint/naming-convention
       CabinetUID: this.controlValue// 'ccedb51b-f381-4f89-924c-516af87411fb'
 
