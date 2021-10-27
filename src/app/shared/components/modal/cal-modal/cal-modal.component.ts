@@ -48,7 +48,6 @@ export class CalModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const page = this.aRoute.snapshot.paramMap.get('id');
-    console.log(page);
     if(page === 'aparate' || page === 'cabinet' ||page === 'utilizatori'){
       this.isComparativ = true;
     }

@@ -30,7 +30,7 @@ export class CalendarService {
     // console.log(appStartHour, appEndHour);
     this.selectedDate.subscribe(e =>{
       const {appStartHour, appEndHour} = JSON.parse(localStorage.getItem('workHours'));
-      console.log(e);
+      // console.log(e);
       if(e !== null){
         this.fetchCalendarAppointment(e, appStartHour, appEndHour);
       }else{
@@ -53,7 +53,7 @@ export class CalendarService {
   fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
     // console.log(selectedDate);
     this.selectedPath.subscribe(path =>{
-      console.log(path);
+      // console.log(path);
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
@@ -126,11 +126,9 @@ export class CalendarService {
 
   getCabinetAppointment(query, date= null){
     const obj = {
-      StartDate: date !== null ? startOfDay(new Date(date)) : startOfDay(new Date('2021-10-25')) ,
-      EndDate:  date !== null ? addDays(new Date(date), 1) : addDays(new Date('2021-10-30'), 1),
-      ...query,
-      // CabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb'
-
+      StartDate: date !== null ? startOfDay(new Date(date)) : startOfDay(new Date()) ,
+      EndDate:  date !== null ? addDays(new Date(date), 1) : addDays(new Date(), 1),
+      ...query
     };
     return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
       console.log(res);
