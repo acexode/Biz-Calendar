@@ -1,3 +1,5 @@
+import { distinctUntilChanged } from 'rxjs/operators';
+/* eslint-disable @typescript-eslint/naming-convention */
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { locationOptions, programOptions,
   selectConfig, selectConfigB, utilizatorList, cabinetList, aparatList } from './../../data/select-data';
@@ -9,7 +11,7 @@ import { CalendarPages } from '../calendar/calendarPages';
 import { IonSelectConfig } from '../../models/components/ion-select-config';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { CalendarView } from 'angular-calendar';
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { CalModalComponent } from '../modal/cal-modal/cal-modal.component';
 import { CalendarComponent } from 'ionic2-calendar';
@@ -43,9 +45,13 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   CalendarView = CalendarView;
   locationCal: FormControl = new FormControl('');
   activatedPath  = '';
-  config: IonSelectConfig = selectConfig;
+  config: IonSelectConfig =selectConfig;
+  locationConfig: IonSelectConfig = {
+    ...selectConfig,
+    multiple: false
+  };
   configB: IonSelectConfig = selectConfigB;
-  locationOptions = locationOptions;
+  locationOptions = [];
   programOptions = programOptions;
   programList = utilizatorList;
   totalAppt = 0;
@@ -90,18 +96,21 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    const path = this.activatedRoute.snapshot.paramMap.get('id');
+    if(path === 'utilizatori'){
+      this.locationForm.get('program').patchValue(this.programOptions[0].id);
+    }else if(path === 'cabinet'){
+      this.locationForm.get('program').patchValue(this.programOptions[1].id);
+    }else if(path === 'aparate'){
+      this.locationForm.get('program').patchValue(this.programOptions[2].id);
+    }
     this.calS.getLocations().subscribe((e: any) =>{
-      const mappedLocations = e[0].locations.map(loc =>({
-        id: loc.locationID,
+      const mappedLocations = e.locations.map(loc =>({
+        id: loc.uid,
         label: loc.locationName
       }));
-      const mappedCabinetss = e[1].map(cab =>({
-        id: cab.cabinetUid,
-        label: cab.cabinetName
-      }));
-      console.log(e);
       this.locationOptions = mappedLocations;
-      // this.cab
+      this.locationForm.get('location').patchValue(this.locationOptions[0].id);
     });
     this.calS.selectedDate.subscribe(e =>{
       if(e){
@@ -121,16 +130,28 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       this.showPicker = false;
     });
     this.locationForm.get('program').valueChanges.subscribe(val =>{
+      // console.log(val);
       if(val === '1'){
+        this.calS.filterProgram.next('physicianName');
         this.programList = utilizatorList;
       }else if(val === '2'){
+        this.calS.filterProgram.next('cabinetName');
         this.programList = cabinetList;
       }
       else if(val === '3'){
+        this.calS.filterProgram.next('equipmentName');
         this.programList = aparatList;
       }
     });
-
+    this.locationForm.get('location').valueChanges.pipe(distinctUntilChanged()).subscribe(val =>{
+      const loc = this.locationOptions.filter(l => l.id === val)[0];
+      // console.log(loc, val);
+      this.calS.filterLocation.next(loc?.label);
+      const obj = {
+        LocationUID: val
+      };
+      this.calS.cabinetQuery$.next(obj);
+    });
     this.isTablet = window.innerWidth >= 768 ? true : false;
     window.addEventListener('resize', ()=>{
       this.isTablet = window.innerWidth >= 768 ? true : false;
@@ -149,7 +170,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     this.menu.toggle();
   }
   navigate(path: string){
-    console.log(path.split('/')[2]);
+    // console.log(path.split('/')[2]);
     this.router.navigate([path]);
     this.calS.selectedPath.next(path.split('/')[2]);
   }

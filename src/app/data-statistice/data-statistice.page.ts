@@ -2,10 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
+import { unsubscriberHelper } from '../core/helpers/unsubscriber.helper';
 import { PlatformService } from '../core/services/platform/platform.service';
-
-import { ChartOptions } from 'chart.js';
-import { NumarDeProgramariComponent } from '../shared/components/numar-de-programari/numar-de-programari.component';
+import { RecurentaModel } from '../home/recurenta/models/recurenta.model';
+import { RecurentaComponent } from '../home/recurenta/recurenta.component';
+import { BizRadioModalComponent } from '../shared/components/modal/biz-radio-modal/biz-radio-modal.component';
+import { InfoPacientModalComponent } from '../shared/components/modal/info-pacient-modal/info-pacient-modal.component';
+import { MedicModalComponent } from '../shared/components/modal/medic-modal/medic-modal.component';
+import { SelectieServiciiModalComponent } from '../shared/components/modal/selectie-servicii-modal/selectie-servicii-modal.component';
+import { inputConfigHelper } from '../shared/data/input-config-helper';
+import { BizCustomSelectionConfig } from '../shared/models/components/biz-custom-selection-config';
+import { IonRadioInputOption } from '../shared/models/components/ion-radio-input-option';
+import { IonRadiosConfig } from '../shared/models/components/ion-radios-config';
+import { IonSelectConfig } from '../shared/models/components/ion-select-config';
+import { TextAreaConfig } from '../shared/models/components/ion-textarea-config';
+import { DemoCheckList } from '../style-guide/components/selection/selection.component';
 
 @Component({
   selector: 'app-data-statistice',
@@ -13,94 +26,80 @@ import { NumarDeProgramariComponent } from '../shared/components/numar-de-progra
   styleUrls: ['./data-statistice.page.scss'],
 })
 export class DataStatisticePage implements OnInit {
-  public lineChartData = [
-    { data: [65, 59, 80, 81, 56, 55, 40] },
-  ];
-  public lineChartLabels= ['S9', 'S10', 'S11', 'S12', 'S13'];
-  public lineChartOptions = {
-    responsive: true,
-  };
-  public lineChartColors = [
+
+
+  checkList: DemoCheckList[] = [
     {
-      borderColor: 'black',
-      backgroundColor: 'rgba(255,0,0,0.3)',
+      first: 'Consultație peste vârsta de 4 ani',
+      second: 'Servicii paraclinice',
+      third: '10,80 pt.',
+      value: 'Consultație',
+      checked: false
+    },
+    {
+      first: 'Ecografie generală (abdomen + pelvis)',
+      second: 'Servicii paraclinice',
+      third: '23,45 pt.',
+      value: 'Ecografie generală',
+      checked: false
+    },
+    {
+      first: 'Ecografie abdominală',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'Ecografie abdominală',
+      checked: false
+    },
+    {
+      first: 'EKG standard',
+      second: 'Servicii paraclinice',
+      third: '12,34 pt.',
+      value: 'EKG',
+      checked: false
+    },
+    {
+      first: 'Consult peste 4 ani',
+      second: 'Consultație',
+      third: '5 pt.',
+      value: 'Consult',
+      checked: false
+    },
+    {
+      first: 'Spirometrie',
+      second: 'Servicii paraclinice',
+      third: '23 pt.',
+      value: 'Spirometrie',
+      checked: false
+    },
+    {
+      first: 'Pulsoximetrie',
+      second: 'Servicii paraclinice',
+      third: '10 pt.',
+      value: 'Pulsoximetrie',
+      checked: false
     },
   ];
-  public lineChartLegend = true;
-  public lineChartType = 'line';
-  public lineChartPlugins = [];
-  months = [ 'Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August',
-  'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'];
-  list = [
-    {
-      label:'Număr de programări',
-      value: 'numarProgram',
-      type: 'line',
-      icon: 'bar-chart',
-    },
-    {
-      label:'Încasări',
-      value: 'incasari',
-      type: 'pie',
-      icon: 'paid',
-    },
-    {
-      label:'Servicii C.N.A.S. vs. Cu plată',
-      value: 'cnasCuPlata',
-      type: 'pie',
-      icon: 'privat',
-    },
-    {
-      label:'Programări active vs. anulate',
-      value: 'activeProgram',
-      type: 'pie',
-      icon: 'default',
-    },
-    {
-      label:'Programări vs. consultații efectuate',
-      value: 'consultProgram',
-      type: 'pie',
-      icon: 'consult',
-    },
-    {
-      label:'Pacienți noi vs. recurenți',
-      value: 'pacientRecurent',
-      type: 'pie',
-      icon: 'users',
+  cabinetOption:  Array<IonRadioInputOption> = [
+    { label: 'Cabinet 1', id: 'Cabinet 1' },
+    { label: 'Cabinet 2', id: 'Cabinet 2' },
+    { label: 'Cabinet 3', id: 'Cabinet 3' },
+    { label: 'Sala de Operație 1', id: 'Sala de Operație 1' },
+    { label: 'Sala de Operație 2', id: 'Sala de Operație 2' },
+  ];
+
+  aparaturaConfig: BizCustomSelectionConfig = {
+    placeholder: 'Alege',
+    inputLabel: {
+      text: 'Tip de date'
     }
-  ];
+  };
 
-  selected = this.list[1].label;
-
-  dougnutStats = [
-    {
-      percent: '55,1%',
-      type: 'Servicii C.N.A.S.',
-      month: 'Martie',
-      increase: '4.3%',
-      decrease: null,
-    },
-    {
-      percent: '68,3%',
-      type: 'Servicii C.N.A.S.',
-      month: 'Ianuarie',
-      increase: null,
-      decrease: '-2,6%',
-    },
-    {
-      percent: '55.1%',
-      type: 'Servicii C.N.A.S.',
-      month: 'Februarie',
-      increase: '12,2%',
-      decrease: null,
-    },
-  ];
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
-    tipDate: this.list[0].label,
-    month: this.months[0]
+    numar: ['', [Validators.required]],
+
   });
   isWed = false;
-  chartType = 'line';
+
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -119,20 +118,17 @@ export class DataStatisticePage implements OnInit {
 
   async presentModalB() {
     const modal = await this.modalController.create({
-      component: NumarDeProgramariComponent,
+      component: SelectieServiciiModalComponent,
       cssClass: 'biz-modal-class',
       componentProps: {
-        list: this.list,
+        checkList: this.checkList,
       },
     });
-    modal.onDidDismiss()
-    .then((data) => {
-      console.log(data);
-      this.chartType = data.data.type;
-      console.log(data.data.label);
-      this.adaugaProgramareFormGroup.get('tipDate').setValue(data.data.label);
-  });
     await modal.present();
+  }
+
+  navigateToRecurenta() {
+    this.router.navigate(['calendar/recurenta']);
   }
   save(): void {
 

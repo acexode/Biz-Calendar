@@ -4,7 +4,7 @@
   
   <app-calendar [calendarList]="calendarList" [display]="page"></app-calendar>
   <!-- <app-calendar-month [calendarList]="calendarList" [display]="page"></app-calendar-month> -->
-  <div class="fab-container">
+  <div *ngIf="page !== 'comparativ'" class="fab-container">
     <div *ngIf="!showFab" (click)="showButtons()" class="fab fab-icon-holder white px-32 py-16 s18-h24 upper text-weight-medium md hydrated">
       Adaugă
     </div>

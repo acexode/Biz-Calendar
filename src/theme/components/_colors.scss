@@ -95,6 +95,22 @@
   background: red !important;
 }
 
+.pink-bg {
+  background: pink !important;
+}
+
+.orange-bg-color-step-10 {
+  background: var(--ion-status-orange-color-step-10) !important;
+}
+
+.orange-bg-color-step-20 {
+  background: var(--ion-status-orange-color-step-20) !important;
+}
+
+.green-bg-color-step-20 {
+  background: var(--ion-status-green-color-step-20) !important;
+}
+
 .priamry-color-text {
   --color: var(--ion-primary-color-text) !important;
   color: var(--color) !important;
@@ -118,4 +134,12 @@
     background: $white;
   }
 
+}
+
+.primary-bg-color-step-100 {
+  background: var(--ion-primary-color-step-100) !important;
+}
+
+.orange-bg-color-step-10 {
+  background: var(--ion-status-orange-color-step-10) !important;
 }

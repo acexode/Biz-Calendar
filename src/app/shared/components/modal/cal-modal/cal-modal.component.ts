@@ -16,7 +16,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   @Input() showPicker: boolean;
   eventSource;
   viewTitle;
-
+  isComparativ;
   isToday: boolean;
    calendar = {
         mode: 'month' as CalendarMode,
@@ -43,14 +43,14 @@ export class CalModalComponent implements OnInit, OnDestroy {
   modalReady = false;
   month = format(new Date(), 'MMMM', { locale: ro });
   showSub$: Subscription;
-  currentRoute;
-  comparativRoutes = ['utilizatori', 'cabinet','aparate', 'comparativ'];
   constructor(private modalCtrl: ModalController, private menu: MenuController, private routerS: Router,
-    private calS: CalendarService, private route: ActivatedRoute) { }
+    private calS: CalendarService, private aRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.currentRoute = this.route.snapshot.paramMap.get('id');
-    console.log(this.currentRoute);
+    const page = this.aRoute.snapshot.paramMap.get('id');
+    if(page === 'aparate' || page === 'cabinet' ||page === 'utilizatori'){
+      this.isComparativ = true;
+    }
   }
 
 
@@ -60,7 +60,7 @@ export class CalModalComponent implements OnInit, OnDestroy {
   }
 
   onEventSelected(event) {
-      console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
+      // console.log('Event selected:' + event.startTime + '-' + event.endTime + ',' + event.title);
   }
 
   changeMode(mode) {
@@ -72,9 +72,9 @@ export class CalModalComponent implements OnInit, OnDestroy {
   }
 
   onTimeSelected(ev, clicked= false) {
-    console.log(ev.selectedTime, clicked);
+    // console.log(ev.selectedTime, clicked);
     this.calS.selectedDate.next(ev.selectedTime);
-    if(!this.comparativRoutes.includes(this.currentRoute)){
+    if(!this.isComparativ){
       this.routerS.navigate(['calendar/zi']);
 
     }

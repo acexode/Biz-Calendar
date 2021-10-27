@@ -1,3 +1,4 @@
+import { PlatformService } from './../../../core/services/platform/platform.service';
 import { appointment } from './../../../core/configs/endpoints';
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
@@ -74,13 +75,25 @@ export class ComparativComponent implements OnInit {
 
 
   viewDate = new Date();
-
+  emptyPlaceHolder = [
+    {
+      id: 0,
+      name: '',
+      title: '',
+      color: '',
+    }
+  ];
   users = [];
-
+  allUsers = [];
+  numDisplay = 5;
+  currentIndex = 0;
+  isMobile = false;
   events: CalendarEvent[] = [];
+  allEvents: CalendarEvent[] = [];
+  appointmentResponse: any;
   schedules: any;
   holidays: any;
-  constructor(private calS: CalendarService,private cdref: ChangeDetectorRef){
+  constructor(private calS: CalendarService,private cdref: ChangeDetectorRef, private pS: PlatformService){
 
   }
 
@@ -101,31 +114,78 @@ export class ComparativComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.calS.selectedDate.subscribe(d =>{
-      this.loadEvent(d);
+    this.pS.isDesktopWidth$.subscribe(e =>{
+      this.isMobile = e ? false : true;
+      this.numDisplay = e ? 10 : 5;
     });
-    this.loadEvent(this.viewDate);
+    this.calS.selectedDate.subscribe(d =>{
+      // console.log(d);
+      if(d !== null){
+        this.calS.getCabinetAppointment({}, new Date(d));
+
+      }
+      this.loadEvent();
+      // console.log(d);
+    });
+    this.calS.filterProgram.subscribe(p =>{
+      console.log(p);
+      if(p !== null){
+        const events = this.appointmentResponse.appointments
+        .filter(lname => lname[p] !== null );
+        this.events = this.mapAppointments(events, p);
+        const notEmpty = this.mapProgram(events, p).length;
+        this.users = notEmpty > 0 ? this.mapProgram(events, p) : this.emptyPlaceHolder;
+        // console.log(events, this.users);
+        this.cdref.detectChanges();
+      }
+    });
+    this.calS.filterLocation.subscribe(loc =>{
+      this.loadEvent();
+    });
+    // this.loadEvent(this.viewDate);
   }
-  loadEvent(date){
-    this.calS.getCabinetAppointment(date).subscribe((e: any) =>{
-      console.log(e);
+  loadEvent(){
+    this.calS.cabinetAppointment$.subscribe((e: any) =>{
+      // console.log(e);
       this.schedules = e?.schedules ? e?.schedules : [];
-      const eventList = e.appointments.map((apt, i) => (
+      this.appointmentResponse = e;
+      if(e !== null){
+        this.currentIndex = 0;
+        this.allEvents = this.mapAppointments(e.appointments, 'physicianName');
+        this.allUsers = this.mapProgram(e.appointments, 'physicianName');
+      // console.log(this.allUsers);
+      if(this.allEvents.length > 0){
+        this.events = this.allEvents.slice(this.currentIndex , this.numDisplay);
+        this.users = this.allUsers.slice(this.currentIndex , this.numDisplay);
+        this.currentIndex = this.numDisplay;
+        // this.cdref.detectChanges();
+        // console.log(this.allEvents);
+        // console.log(this.users);
+        // console.log(this.events);
+
+      }else{
+        // console.log('EMPTY');
+        this.events = [];
+        this.users = this.emptyPlaceHolder;
+      }
+      }
+    });
+  }
+  mapAppointments(appointments, field){
+    if(appointments.length > 0){
+      const eventList = appointments.map((apt, i) => (
         {
-          title: apt.personName,
-          color: colors.yellow,
-          // color:  {
-          //   secondary: this.calS.colorCode(apt.colorCode),
-          //   primary: this.calS.colorCode(apt.colorCode),
-          // },
-          // start: new Date(apt.startTime ),
-          start: addHours(startOfDay(new Date()), 5),
-          end: addHours(startOfDay(new Date()), 8),
-          // end: new Date(apt.endTime ),
+          title: 'hello',
+          color:  {
+            secondary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
+            primary: this.calS.colorCode(apt.colorCode, 'weekMonth'),
+          },
+          start: new Date(apt.startTime),
+          end: new Date(apt.endTime),
           meta: {
             user: {
               id: i,
-              name: apt.personName,
+              name: apt[field],
              color: colors.yellow,
             },
           },
@@ -136,29 +196,12 @@ export class ComparativComponent implements OnInit {
           draggable: true,
         }
       ));
+      console.log(eventList);
+        return eventList;
 
-      const distinctUser = [];
-      const filterdUser =[];
-      e.appointments.forEach((apt,i) =>
-         {
-          if(!distinctUser.includes(apt.uid)){
-            distinctUser.push(apt.uid);
-            filterdUser.push({
-              id: i,
-              name: this.acronym(apt.personName),
-              title: this.acronym(apt.personName),
-              color: colors.yellow,
-            });
-          }
-        }
-      );
-
-      this.events = eventList;
-      this.users = filterdUser;
-      //this.cdref.detectChanges();
-      console.log(this.users);
-      console.log(this.events);
-    });
+    }else{
+      return [];
+    }
   }
   setBg(d){
 
@@ -195,6 +238,25 @@ export class ComparativComponent implements OnInit {
   }
 
 }
+
+mapProgram(appointments, field){
+  const distinctUser = [];
+  const filterdUser =[];
+  appointments.forEach((apt,i) =>
+  {
+   if(!distinctUser.includes(apt.uid)){
+     distinctUser.push(apt.uid);
+     filterdUser.push({
+       id: i,
+       name: this.acronym(apt[field], field),
+       title: this.acronym(apt[field], field),
+       color: colors.yellow,
+     });
+   }
+ }
+ );
+ return filterdUser;
+}
 range(start, end, step = 1) {
   const output = [];
   if (typeof end === 'undefined') {
@@ -206,11 +268,45 @@ range(start, end, step = 1) {
   }
   return output;
 };
-  acronym(text) {
-    console.log(text);
-    return text
-      .split(/\s/)
-      .reduce((accumulator, word) => accumulator + word.charAt(0), '');
+  acronym(text, field) {
+    // console.log(text);
+    if(text === null){
+      return '';
+
+    }
+    if(field === 'physicianName'){
+      const res =  text
+        .split(/\s/)
+        .reduce((accumulator, word) => accumulator + word.charAt(0) + '.', '');
+      return res.slice(0,res.length-1).replace('-.', '');
+    }else{
+      return text.slice(0,3);
+    }
+  }
+  left(){
+    if(this.currentIndex !== 0){
+      // console.log(this.currentIndex);
+      this.currentIndex -= this.numDisplay;
+      if(this.currentIndex > 0){
+        // console.log(this.currentIndex, (this.currentIndex + this.numDisplay));
+        this.events = this.allEvents.slice(this.currentIndex - this.numDisplay , (this.currentIndex));
+        this.users = this.allUsers.slice(this.currentIndex - this.numDisplay , (this.currentIndex));
+
+      }
+      // console.log(this.currentIndex);
+    }
+  }
+  right(){
+    // console.log(this.allUsers);
+    if(this.currentIndex < this.allUsers.length){
+      this.currentIndex = this.currentIndex === 0 ? this.numDisplay : this.currentIndex;
+      this.events = this.allEvents?.slice(this.currentIndex , (this.currentIndex + this.numDisplay));
+      this.users = this.allUsers?.slice(this.currentIndex , (this.currentIndex + this.numDisplay));
+      // console.log(this.currentIndex);
+      this.currentIndex += this.numDisplay;
+      // console.log(this.currentIndex);
+
+    }
   }
 
 }

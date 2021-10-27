@@ -55,7 +55,6 @@ export class PacientViewModalComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (d: any) => {
-          console.log(d);
           this.address = d?.cities?.[0]?.name;
           this.addressLoader = false;
         },

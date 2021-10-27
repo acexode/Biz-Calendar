@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   CalendarDateFormatter,
@@ -8,10 +8,13 @@ import {
   CalendarView,
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
-import { subDays, startOfDay, addDays, endOfMonth, addHours } from 'date-fns';
-import { Subject } from 'rxjs';
+import { startOfDay, addHours,} from 'date-fns';
+import { Subject, Subscription } from 'rxjs';
+import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
+import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
+import { cabinetData } from './dummyDataForCabinet';
 
 const colors: any = {
   bizPrimary: {
@@ -32,7 +35,10 @@ const colors: any = {
     },
   ],
 })
-export class CabinetComponent implements OnInit {
+export class CabinetComponent implements OnInit, OnDestroy {
+
+  // cabinetData = cabinetData;
+  @Input() cabinetData: any;
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
@@ -57,6 +63,7 @@ export class CabinetComponent implements OnInit {
       },
     },
   ];
+  bgColor = ['green-bg-color-step-20', 'orange-bg-color-step-20', 'green-bg-color-step-20', 'orange-bg-color-step-10'];
   events: CalendarEvent[] = [
    /*  {
       start: subDays(startOfDay(new Date()), 1),
@@ -98,60 +105,45 @@ export class CabinetComponent implements OnInit {
       draggable: true,
     }, */
   ];
-  dummyData = [
-    {
-      title: 'User Name',
-      cabinetUID: 'ccedb51b-f381-4f89-924c-516af87411fb',
-      cabinetsScheduleUID: '4ce71467-4410-47b3-88a7-35b801411238',
-      dayID: 1,
-      endHour: 13,
-      endMin: 0,
-      physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5',
-      startHour: 9,
-      startMin: 0,
-      start: addHours(startOfDay(new Date('2021-09-27')), 9),
-      end: addHours(startOfDay(new Date('2021-09-27')), 13),
-      color: colors.bizPrimary,
-      actions: this.actions,
-      resizable: {
-        beforeStart: false,
-        afterEnd: false,
-      },
-      draggable: true,
-    }
-  ];
-  constructor(private modalController: ModalController) { }
+  getAppointments$: Subscription;
+
+  constructor(
+    private modalController: ModalController,
+  ) { }
 
   ngOnInit() {
-    /* setTimeout(() => {
-      const ev = [
-      {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(startOfDay(new Date()), 3),
-      title: 'A draggable and resizable event',
-      color: colors.bizPrimary,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-      ];
-      this.events.push(...this.dummyData);
-      console.log(this.events);
+    console.log('this.cabinetData: ', this.cabinetData);
+    if (this.cabinetData && this.cabinetData.appointments > 0) {
+
+      const eventFromAppointement = this.cabinetData.appointments.map(
+      (v: any) => (
+        {
+          ...v,
+          resizable: {
+            beforeStart: false,
+            afterEnd: false,
+          },
+          draggable: false,
+          start: new Date(v.startTime),// addHours(startOfDay(new Date()), 9),
+          end: new Date(v.endTime),// addHours(startOfDay(new Date()), 10),
+          title: 'Rez.',
+          color: colors.bizPrimary,
+          actions: this.actions,
+        }
+      )
+      );
+      console.log('eventFromAppointement: ', eventFromAppointement);
+      this.events.push(...eventFromAppointement);
       this.refresh.next();
-    }, 3000); */
-    this.events.push(...this.dummyData);
-    console.log(this.events);
-    this.refresh.next();
+
+    }
    }
   handleEvent(action: string, event: CalendarEvent): void {
-    console.log(event);
+    // console.log(event);
     this.viewDate = new Date(event.start);
     // this.view = CalendarView.Day;
     // this.modalData = { event, action };
-  //this.modal.open(this.modalContent, { size: 'lg' });
+    //this.modal.open(this.modalContent, { size: 'lg' });
   }
   eventTimesChanged({
     event,
@@ -175,24 +167,41 @@ export class CabinetComponent implements OnInit {
       dismissed: true,
     });
   }
-  log(d) {
-    console.log(d);
-  }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
-    console.log(renderEvent);
-    renderEvent.hourColumns.forEach((hourColumn) => {
-      hourColumn.hours.forEach((hour) => {
-        hour.segments.forEach((segment) => {
-          if (
-            segment.date.getHours() >= 2 &&
-            segment.date.getHours() <= 5 &&
-            segment.date.getDay() === 2
-          ) {
-            segment.cssClass = 'bg-pink';
-          }
-        });
-      });
-    });
+
+    if (this.cabinetData && this.cabinetData.schedules.length > 0) {
+
+      console.log('here');
+
+
+      renderEvent.hourColumns.forEach((hourColumn) => {
+      this.cabinetData.schedules
+        .map((v: any) => ({
+          ...v,
+          date: startOfDay(new Date(v.date)),
+          end: addHours(startOfDay(new Date(v.date)), parseInt(v.end, 10)),
+          start: addHours(startOfDay(new Date(v.date)), parseInt(v.start, 10)),
+          abbrvName: `${v.physicianFirstName.split('')[0]}.${v.physicianLastName.split('')[0]}`
+        }))
+        .forEach((schedule: any, index: number) => {
+          hourColumn.hours.forEach((hour) => {
+            hour.segments.forEach((segment) => {
+
+
+              if ((segment.date >= schedule.start && segment.date < schedule.end)) {
+
+
+                    segment.cssClass = `${this.bgColor[index % this.bgColor.length]} ${schedule.abbrvName}`;
+              }
+              });
+            });
+          });
+         });
+
+
+    }
+
+
   }
 
   async presentCabinentNotify() {
@@ -209,6 +218,10 @@ export class CabinetComponent implements OnInit {
     console.log(data);
     const { dismissed, renita, veziProgram } = data;
     if (dismissed && veziProgram) {}
+  }
+
+  ngOnDestroy() {
+    unsubscriberHelper(this.getAppointments$);
   }
 
 }
