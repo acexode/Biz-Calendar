@@ -270,10 +270,13 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     /* services */
     this.getLocations();
     this.getCabinets();
-    this.getMedicalEquipment();
+    // this.getMedicalEquipment(); => moved to location dependency endpoint
     /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
+  }
+  locationDependencyEndpoints() {
+    this.getMedicalEquipment();
   }
 
   ngOnInit(): void {
@@ -448,26 +451,29 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     await modal.present();
   }
   async presentAparaturaDataModal() {
-    if (this.aparaturaData.length > 0) {
-      const modal = await this.modalController.create({
-        component: SelectieServiciiModalComponent,
-        cssClass: 'biz-modal-class',
-        backdropDismiss: false,
-        componentProps: {
-          checkList: this.aparaturaData,
-          selectedValue: this.aparaturaSelectedValue,
-          config: this.aparaturaSelectServiciiOptionConfig
-        },
-      });
-      await modal.present();
-      const { data } = await modal.onWillDismiss();
-      const { dismissed, checkedValue } = data;
-      if(dismissed && checkedValue.length > 0) {
-        this.aparaturaSelectedValue = checkedValue;
+    if (this.locatieFormControl.value) {
+      if (this.aparaturaData.length > 0) {
+        const modal = await this.modalController.create({
+          component: SelectieServiciiModalComponent,
+          cssClass: 'biz-modal-class',
+          backdropDismiss: false,
+          componentProps: {
+            checkList: this.aparaturaData,
+            selectedValue: this.aparaturaSelectedValue,
+            config: this.aparaturaSelectServiciiOptionConfig
+          },
+        });
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+        const { dismissed, checkedValue } = data;
+        if(dismissed && checkedValue.length > 0) {
+          this.aparaturaSelectedValue = checkedValue;
+        }
+      } else {
+        this.getMedicalEquipment(true);
       }
     } else {
-      this.getMedicalEquipment(true);
-      this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+      this.toastService.presentToastWithDurationDismiss('Location is Required');
     }
   }
   async presentModalRecurentaComponentModal() {
@@ -668,18 +674,24 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
   }
   getMedicalEquipment(callGetMedicalEquipment: boolean = false) {
-    this.getMedicalEquipment$ = this.reqService.post(equipments.getMedicalEquipment, {})
+    this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+    this.getMedicalEquipment$ = this.reqService.post(
+      equipments.getMedicalEquipment,
+      {
+        equipmentLocationUID: this.locatieFormControl.value
+      }
+    )
       .subscribe(
         (d: any) => {
           this.aparaturaData = d;
           if (callGetMedicalEquipment) {
             this.presentAparaturaDataModal();
           }
-          this.toastService.forceDismissToast();
+          this.toastService.dismissToast();
         },
         _err => {
           // dismiss previous toast
-          this.toastService.forceDismissToast();
+          this.toastService.dismissToast();
           // show toast with duration dismiss
           this.toastService.presentToastWithDurationDismiss(
             'Unable to get medical equipment at this instance. Please check your network and try again. C13'
