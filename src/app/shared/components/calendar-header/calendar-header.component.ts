@@ -1,3 +1,4 @@
+import { distinctUntilChanged } from 'rxjs/operators';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
 import { locationOptions, programOptions,
@@ -104,18 +105,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       this.locationForm.get('program').patchValue(this.programOptions[2].id);
     }
     this.calS.getLocations().subscribe((e: any) =>{
-      // console.log(e);
       const mappedLocations = e.locations.map(loc =>({
         id: loc.uid,
         label: loc.locationName
       }));
-      // const mappedCabinetss = e[1].map(cab =>({
-      //   id: cab.cabinetUid,
-      //   label: cab.cabinetName
-      // }));
-      // console.log(mappedLocations);
       this.locationOptions = mappedLocations;
-      // this.cab
+      this.locationForm.get('location').patchValue(this.locationOptions[0].id);
     });
     this.calS.selectedDate.subscribe(e =>{
       if(e){
@@ -148,11 +143,10 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
         this.programList = aparatList;
       }
     });
-    this.locationForm.get('location').valueChanges.subscribe(val =>{
-      console.log(val);
+    this.locationForm.get('location').valueChanges.pipe(distinctUntilChanged()).subscribe(val =>{
       const loc = this.locationOptions.filter(l => l.id === val)[0];
       // console.log(loc, val);
-      this.calS.filterLocation.next(loc.label);
+      this.calS.filterLocation.next(loc?.label);
       const obj = {
         LocationUID: val
       };
