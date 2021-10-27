@@ -39,6 +39,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
+  @Input() cabinetName: string;
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';

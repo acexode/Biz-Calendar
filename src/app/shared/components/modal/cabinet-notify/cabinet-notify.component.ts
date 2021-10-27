@@ -8,6 +8,8 @@ import { ModalController } from '@ionic/angular';
 })
 export class CabinetNotifyComponent implements OnInit {
   @Input() notifyType!: 'typeA' | 'typeB';
+  @Input() cabinetName!: string;
+
   notifyTypes: any = {
     typeA: 'cabinet notify',
     typeB: 'calendar notify',

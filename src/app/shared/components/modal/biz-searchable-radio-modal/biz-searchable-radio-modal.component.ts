@@ -162,9 +162,8 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
                 this.presentCabinentNotify();
               }
             } else {
-              // this.closeModal();
-               this.isCabinetAvailable = false;
-              this.presentCabinentNotify();
+              this.isCabinetAvailable = true;
+              this.closeModal();
             }
           }
 
@@ -185,7 +184,8 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
       backdropDismiss: true,
       componentProps: {
-        notifyType: 'typeA'
+        notifyType: 'typeA',
+        cabinetName: this.cabinetLabel,
       },
     });
     await modal.present();
@@ -203,6 +203,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
       backdropDismiss: true,
       componentProps: {
         cabinetData,
+        cabinetName: this.cabinetLabel,
       },
     });
     await modal.present();
@@ -246,6 +247,10 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
           this.toastService.presentToastWithDurationDismiss('Unable to get appoiintements for this cabinet at this time. Please check your network and try again. C17');
         }
       );
+  }
+
+  get cabinetLabel(): string {
+    return this.items.find((v: any) => v.id === this.controlValue).label || '';
   }
 
   ngOnDestroy() {
