@@ -224,6 +224,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     const endOfTheWeekDate = startOfDay(dayInAWeekWithDate(new Date())[6]);
 
     const payload = {
+      locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',// this.options.find((v: any) => v.id === this.controlValue).locationUID,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       StartDate: format(startOfTheWeekDate, 'yyyy-MM-dd HH:mm'),
       // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -8,6 +8,7 @@ import {
   CalendarView,
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
+import { CalendarWeekViewHourSegmentComponent } from 'angular-calendar/modules/week/calendar-week-view-hour-segment.component';
 import { startOfDay, addHours,} from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
@@ -140,11 +141,14 @@ export class CabinetComponent implements OnInit, OnDestroy {
     }
    }
   handleEvent(action: string, event: CalendarEvent): void {
-    // console.log(event);
-    this.viewDate = new Date(event.start);
+    console.log(action, event);
+    // this.viewDate = new Date(event.start);
     // this.view = CalendarView.Day;
     // this.modalData = { event, action };
     //this.modal.open(this.modalContent, { size: 'lg' });
+  }
+  hourSegmentClicked(event: any) {
+    console.log('hourSegmentClicked: ', event);
   }
   eventTimesChanged({
     event,
