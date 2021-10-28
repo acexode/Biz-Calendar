@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { addBusinessDays, endOfMonth, endOfWeek, endOfYear, startOfMonth, startOfWeek,
-  startOfYear, subBusinessDays, startOfDay, addDays } from 'date-fns';
+  startOfYear, subBusinessDays, startOfDay, addDays, endOfDay } from 'date-fns';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -127,13 +127,15 @@ export class CalendarService {
   }
 
   getCabinetAppointment(query, date= null){
-    const start = date ? new Date(date) : new Date();
-    const end = date ? new Date(date) : new Date();;
-    start.setHours(0,0);
-    end.setHours(23,0);
+    console.log(startOfDay(new Date(date)));
+    console.log(endOfDay(new Date(date)));
+    const start = date ? startOfDay(new Date(date)) : startOfDay(new Date());
+    const end = date ? endOfDay(new Date(date)) : endOfDay(new Date());
+    // start.setHours(0,0);
+    // end.setHours(23,0);
     const obj = {
-      StartDate: start ,
-      EndDate:  end,
+      StartDate: start.toLocaleString() ,
+      EndDate:  end.toLocaleString(),
       ...query
     };
     console.log('cabinet---', obj);
