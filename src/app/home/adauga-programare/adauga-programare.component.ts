@@ -277,7 +277,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     );
     /* services */
     this.getLocations();
-    this.getCabinets(true); // remove this when done
+    this.getCabinets();
     // this.getMedicalEquipment(); => moved to location dependency endpoint
     /*  */
     this.locatieFormControlProcess();
