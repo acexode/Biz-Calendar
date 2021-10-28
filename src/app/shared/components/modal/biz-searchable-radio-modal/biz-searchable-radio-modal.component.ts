@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { addHours, addMinutes, format, formatRFC3339, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
+import { addHours, addMinutes, formatRFC3339, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
 import { BehaviorSubject, forkJoin, Subscription } from 'rxjs';
 import { appointmentEndpoints, cabinet, physicians } from 'src/app/core/configs/endpoints';
@@ -26,6 +26,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   @Input() config!: IonRadiosConfig;
   @Input() startTime: Date;
   @Input() endTime: Date;
+  @Input() dayInAWeekWithDate: Array<Date>;
   @Input() @Input() set options(opts: Array<IonRadioInputOption>) {
     this.opts = opts ? opts : [];
     this.updateItems();
@@ -33,7 +34,6 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   @Input() checkList!: any;
   @Input() locationUID: string;
   @Input() physicianUID: string;
-  dayInAWeekWithDate = dayInAWeekWithDate(new Date());
   isCabinetAvailable = false;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
@@ -280,6 +280,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
         cabinetName: this.cabinetLabel,
         schedules: this.cabinetScheldulesEndpointData$.value,
         appointments: this.appointmentEndpointData$.value.appointments,
+        viewDate: this.dayInAWeekWithDate[0],
       },
     });
     await modal.present();

@@ -41,6 +41,7 @@ import { Person } from 'src/app/core/models/person.model';
 import { InfoPatient } from 'src/app/core/models/infoPatient.model';
 import { addMinutes } from 'date-fns';
 import { Physician } from 'src/app/core/models/Physician.model';
+import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -214,7 +215,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: ['ec9faa71-e00a-482a-801d-520af369de85'],
     tipServicii: ['', [Validators.required]],
-    data: ['2021-10-28', [Validators.required]],
+    data: ['2021-10-20', [Validators.required]],
     oraDeIncepere: ['16:00', [Validators.required]],
     time: ['30', [Validators.required]],
     cabinet: ['', [Validators.required]],
@@ -277,7 +278,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     );
     /* services */
     this.getLocations();
-    this.getCabinets();
+    this.getCabinets(false); // => change to flase
     // this.getMedicalEquipment(); => moved to location dependency endpoint
     /*  */
     this.locatieFormControlProcess();
@@ -288,6 +289,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    // this.presentCabinent();
 
     this.onInitializeLoadData();
     /*  */
@@ -416,11 +419,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.getCabinets(true);
     } else {
       if (!this.dataAndOraDeIncepereNotFilledStatus) {
-        const startTime = new Date(
-          `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
-        );
-        const endTime = addMinutes(startTime, Number(this.adaugaProgramareFormGroup.value.time));
-        console.log('toCompareDate: ', startTime, endTime);
+        const userSetTime = `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`;
+        const addedTime = Number(this.adaugaProgramareFormGroup.value.time);
         const modal = await this.modalController.create({
           component: BizSearchableRadioModalComponent,
           cssClass: 'biz-modal-class',
@@ -428,10 +428,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           componentProps: {
             options: this.cabinetOption,
             config: this.cabinetConfig,
-            startTime,
-            endTime,
+            startTime: new Date(userSetTime),
+            endTime: new Date(addMinutes(new Date(userSetTime), addedTime)),
             locationUID: this.locatieFormControl.value || '',
             physicianUID: this.physician$.value.physicianUID || '',
+            dayInAWeekWithDate: dayInAWeekWithDate(new Date(userSetTime)),
           },
         });
         await modal.present();
