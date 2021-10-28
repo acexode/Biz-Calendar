@@ -185,7 +185,17 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
             )
           );
           /*  */
-          this.appointmentEndpointData$.next(res[2]);
+          this.appointmentEndpointData$.next(
+            {
+              ...res[2],
+               appointments: res[2]?.appointments.map((q: any) => ({
+                  ...q,
+                  startTime: new Date(q.startTime),
+                  endTime: new Date(q.endTime),
+                }))
+
+            }
+          );
 
           // run process
 
@@ -194,7 +204,10 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
           loading.dismiss();
         },
         _err => {
+          // dismiss loader
           loading.dismiss();
+          // eslint-disable-next-line max-len
+          this.toastService.presentToastWithDurationDismiss('Unable to get appoiintements for this cabinet at this time. Please check your network and try again. C17');
         }
       );
 
@@ -204,27 +217,41 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     console.log(this.cabinetScheldulesEndpointData$.value,
       this.getPhysicianScheduleEndPointData$.value);
 
-    const checkCabinetavailability = this.cabinetScheldulesEndpointData$.value.filter(
-       (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
+    // if exist data it means user can't select this cabinet
+    const checkCabinetAvailability = this.cabinetScheldulesEndpointData$.value.filter(
+       (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime) && this.physicianUID !== t.physicianUID)
     );
 
-    // check if physician is available at that hour
+    // check if physician is available at that hour =>  then user can select this cabinet
     const checkPhysicianScheduleAvailability = this.getPhysicianScheduleEndPointData$.value.filter(
       (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
     );
+
+    // check if an appointment exist at that hour => if exist user can't select this cabinet
+    const checkAppointmentAvailability = this.appointmentEndpointData$.value.appointments.filter(
+      (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
+    );
+
     console.log('this.startTime: ', this.startTime);
     console.log('this.endTime: ', this.endTime);
     console.log('this.physicianUID,: ', this.physicianUID);
 
-    console.log('checkCabinetavailability: ', checkCabinetavailability);
+    console.log('checkCabinetavailability: ', checkCabinetAvailability);
     console.log('checkPhysicianScheduleAvailability: ', checkPhysicianScheduleAvailability);
-    /* if (checkCabinetavailability.length > 0) {
+    console.log('checkPhysicianScheduleAvailability: ', checkAppointmentAvailability);
+
+    if (
+      (!(checkCabinetAvailability.length > 0)) &&
+      (checkPhysicianScheduleAvailability.length > 0)
+      &&
+      (!(checkAppointmentAvailability.length > 0))
+    ) {
       this.isCabinetAvailable = true;
       this.closeModal();
     } else {
       this.isCabinetAvailable = false;
       this.presentCabinentNotify();
-    } */
+    }
   }
   async presentCabinentNotify() {
     const modal = await this.modalController.create({
@@ -240,65 +267,22 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     const { data } = await modal.onWillDismiss();
     const { dismissed, renita, veziProgram } = data;
     if (dismissed && veziProgram) {
-      this.getApointments();
+      this.presentCabinent();
     }
   }
 
-  async presentCabinent(cabinetData: any) {
+  async presentCabinent(cabinetData: any = []) {
     const modal = await this.modalController.create({
       component: CabinetComponent,
       cssClass: 'biz-modal-class width-md-100',
       backdropDismiss: true,
       componentProps: {
-        cabinetData,
         cabinetName: this.cabinetLabel,
+        schedules: this.cabinetScheldulesEndpointData$.value,
+        appointments: this.appointmentEndpointData$.value.appointments,
       },
     });
     await modal.present();
-  }
-  async getApointments() {
-
-    const loading = await this.loadingController.create({
-            spinner: 'crescent',
-            mode: 'md',
-            // duration: 2000,
-            message: 'Checking Cabinet...',
-            translucent: true,
-            cssClass: 'custom-class custom-loading'
-        });
-    await loading.present();
-
-    const startOfTheWeekDate = startOfDay(this.dayInAWeekWithDate[0]);
-    const endOfTheWeekDate = startOfDay(this.dayInAWeekWithDate[6]);
-
-    const payload = {
-      locationUID:  this.locationUID,// this.options.find((v: any) => v.id === this.controlValue).locationUID,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      StartDate: format(startOfTheWeekDate, 'yyyy-MM-dd HH:mm'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      EndDate: format(endOfTheWeekDate, 'yyyy-MM-dd HH:mm'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      CabinetUID: this.controlValue// 'ccedb51b-f381-4f89-924c-516af87411fb'
-
-    };
-    this.getAppointments$ = this.reqService.post(
-      appointmentEndpoints.getAppointment,
-      payload,
-    )
-      .subscribe(
-        (d: any) => {
-          console.log('getAppointments$: ', d);
-          // dismiss loader
-            loading.dismiss();
-          this.presentCabinent(d);
-        },
-        _err => {
-          // dismiss loader
-          loading.dismiss();
-          // eslint-disable-next-line max-len
-          this.toastService.presentToastWithDurationDismiss('Unable to get appoiintements for this cabinet at this time. Please check your network and try again. C17');
-        }
-      );
   }
 
   get cabinetLabel(): string {

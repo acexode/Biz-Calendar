@@ -41,6 +41,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
   @Input() cabinetName: string;
+  @Input() appointments: any[];
+  @Input() schedules: any[];
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
@@ -114,10 +116,10 @@ export class CabinetComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log('this.cabinetData: ', this.cabinetData);
-    if (this.cabinetData && this.cabinetData.appointments > 0) {
+    console.log('this.cabinetData: ', this.schedules);
+    if (this.appointments && this.appointments.length > 0) {
 
-      const eventFromAppointement = this.cabinetData.appointments.map(
+      const eventFromAppointement = this.appointments.map(
       (v: any) => (
         {
           ...v,
@@ -174,18 +176,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
-    if (this.cabinetData && this.cabinetData.schedules.length > 0) {
+    if (this.schedules && this.schedules.length > 0) {
 
-      console.log('here');
+      console.log('here', this.schedules);
 
 
       renderEvent.hourColumns.forEach((hourColumn) => {
-      this.cabinetData.schedules
+      this.schedules
         .map((v: any) => ({
           ...v,
-          date: startOfDay(new Date(v.date)),
-          end: addHours(startOfDay(new Date(v.date)), parseInt(v.end, 10)),
-          start: addHours(startOfDay(new Date(v.date)), parseInt(v.start, 10)),
           abbrvName: `${v.physicianFirstName.split('')[0]}.${v.physicianLastName.split('')[0]}`
         }))
         .forEach((schedule: any, index: number) => {
@@ -193,7 +192,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
             hour.segments.forEach((segment) => {
 
 
-              if ((segment.date >= schedule.start && segment.date < schedule.end)) {
+              if ((segment.date >= schedule.startTime && segment.date < schedule.endTime)) {
 
 
                     segment.cssClass = `${this.bgColor[index % this.bgColor.length]} ${schedule.abbrvName}`;
