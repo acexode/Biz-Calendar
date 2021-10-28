@@ -48,7 +48,6 @@ export class CalendarService {
 
   getUserPhysicians(){
     return this.reqS.get(appointmentEndpoints.getUserPhysicians);
-
   }
   fetchCalendarAppointment(selectedDate, appStartHour, appEndHour){
     // console.log(selectedDate);

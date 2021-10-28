@@ -3,7 +3,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { addHours, addMinutes, format, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subscription } from 'rxjs';
 import { appointmentEndpoints, cabinet } from 'src/app/core/configs/endpoints';
 import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
@@ -31,6 +31,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     this.updateItems();
   }
   @Input() checkList!: any;
+  @Input() locationUID: string;
   isCabinetAvailable = false;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
@@ -58,6 +59,8 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     radio: ['', [Validators.required]],
   });
   cabinetOfEvent: GetCabinetSchedulesResponseModel[] = [];
+  appointmentEndpointData$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  cabinetScheldulesEndpointData$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   public subscriptions = new Subscription();
 
@@ -111,6 +114,57 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     this.cdRef.markForCheck();
   }
   async callCabinetProcess(cabinetUID: string = this.controlValue) {
+
+    const loading = await this.loadingController.create({
+            spinner: 'crescent',
+            mode: 'md',
+            // duration: 2000,
+            message: 'Checking Cabinet...',
+            translucent: true,
+            cssClass: 'custom-class custom-loading'
+        });
+    await loading.present();
+
+    if (cabinetUID) {
+      const getSchedulePayload = {
+        // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        cabinetUID, // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      };
+
+    const payload = {
+      locationUID: this.locationUID,// this.options.find((v: any) => v.id === this.controlValue).locationUID,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      StartDate: format(
+        startOfDay(dayInAWeekWithDate(new Date())[0])
+        , 'yyyy-MM-dd HH:mm'),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      EndDate: format(
+        startOfDay(dayInAWeekWithDate(new Date())[6])
+        , 'yyyy-MM-dd HH:mm'),
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      CabinetUID: this.controlValue// 'ccedb51b-f381-4f89-924c-516af87411fb'
+
+    };
+
+
+      this.getCabinetScheldules$ = forkJoin([
+        this.reqService.post<Array<GetCabinetSchedulesResponseModel>>(
+          cabinet.getCabinetsSchedules
+          , getSchedulePayload),
+        this.reqService.post(appointmentEndpoints.getAppointment, payload)
+      ]).subscribe(
+        (res: any) => {
+          console.log(res);
+          loading.dismiss();
+        },
+        _err => {
+          loading.dismiss();
+        }
+      );
+
+    }
+  }
+  async _callCabinetProcess(cabinetUID: string = this.controlValue) {
 
     const loading = await this.loadingController.create({
             spinner: 'crescent',

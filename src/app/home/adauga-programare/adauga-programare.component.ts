@@ -267,6 +267,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
+    this.authS.getUserPhysicians$().subscribe(
+      (data: any) => {
+        console.log('phy: ', data);
+      }
+    );
     /* services */
     this.getLocations();
     this.getCabinets();
@@ -422,6 +427,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
             config: this.cabinetConfig,
             startTime,
             endTime,
+            locationUID: this.locatieFormControl.value || ''
           },
         });
         await modal.present();
@@ -460,7 +466,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           componentProps: {
             checkList: this.aparaturaData,
             selectedValue: this.aparaturaSelectedValue,
-            config: this.aparaturaSelectServiciiOptionConfig
+            config: this.aparaturaSelectServiciiOptionConfig,
           },
         });
         await modal.present();
