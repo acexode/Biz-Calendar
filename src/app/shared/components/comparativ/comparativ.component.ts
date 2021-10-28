@@ -119,10 +119,10 @@ export class ComparativComponent implements OnInit {
       this.numDisplay = e ? 10 : 5;
     });
     this.calS.selectedDate.subscribe(d =>{
-      // console.log(d);
+      console.log(d);
       if(d !== null){
         this.calS.getCabinetAppointment({}, new Date(d));
-
+        this.viewDate = new Date(d);
       }
       this.loadEvent();
       // console.log(d);
@@ -158,6 +158,7 @@ export class ComparativComponent implements OnInit {
         this.events = this.allEvents.slice(this.currentIndex , this.numDisplay);
         this.users = this.allUsers.slice(this.currentIndex , this.numDisplay);
         this.currentIndex = this.numDisplay;
+        this.calS.eventCounts.next(this.allEvents.length);
         // this.cdref.detectChanges();
         // console.log(this.allEvents);
         // console.log(this.users);
@@ -172,8 +173,9 @@ export class ComparativComponent implements OnInit {
     });
   }
   mapAppointments(appointments, field){
+    console.log(field);
     if(appointments.length > 0){
-      const eventList = appointments.map((apt, i) => (
+      const eventList = appointments.filter(ap => ap[field] !== null).map((apt, i) => (
         {
           title: 'hello',
           color:  {
@@ -242,7 +244,7 @@ export class ComparativComponent implements OnInit {
 mapProgram(appointments, field){
   const distinctUser = [];
   const filterdUser =[];
-  appointments.forEach((apt,i) =>
+  appointments.filter(ap => ap[field] !== null).forEach((apt,i) =>
   {
    if(!distinctUser.includes(apt.uid)){
      distinctUser.push(apt.uid);

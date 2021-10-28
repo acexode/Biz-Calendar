@@ -98,7 +98,6 @@ export class DayViewSchedulerComponent extends CalendarWeekViewComponent
 
   view: DayViewScheduler;
   month = format(new Date(), 'MMMM', { locale: ro });
-  currDay = format(new Date(), 'E', { locale: ro });
   currDate = format(new Date(), 'd', { locale: ro });
   daysInWeek = 1;
 
@@ -116,6 +115,9 @@ export class DayViewSchedulerComponent extends CalendarWeekViewComponent
   ngOnChanges(changes: SimpleChanges): void {
     super.ngOnChanges(changes);
     // console.log(this.users);
+    this.month = format(new Date(this.viewDate), 'MMMM', { locale: ro });
+    this.currDate = format(new Date(this.viewDate), 'd', { locale: ro });
+    console.log(this.month);
     if (changes.users) {
       this.refreshBody();
       this.emitBeforeViewRender();
