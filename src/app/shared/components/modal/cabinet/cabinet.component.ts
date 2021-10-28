@@ -63,6 +63,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
       },
     },
   ];
+  bgColor = ['green-bg-color-step-20', 'orange-bg-color-step-20', 'green-bg-color-step-20', 'orange-bg-color-step-10'];
   events: CalendarEvent[] = [
    /*  {
       start: subDays(startOfDay(new Date()), 1),
@@ -111,6 +112,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('this.cabinetData: ', this.cabinetData);
     if (this.cabinetData && this.cabinetData.appointments > 0) {
 
       const eventFromAppointement = this.cabinetData.appointments.map(
@@ -167,7 +169,9 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
-    if (this.cabinetData && this.cabinetData.schedules > 0) {
+    if (this.cabinetData && this.cabinetData.schedules.length > 0) {
+
+      console.log('here');
 
 
       renderEvent.hourColumns.forEach((hourColumn) => {
@@ -179,7 +183,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
           start: addHours(startOfDay(new Date(v.date)), parseInt(v.start, 10)),
           abbrvName: `${v.physicianFirstName.split('')[0]}.${v.physicianLastName.split('')[0]}`
         }))
-        .forEach((schedule: any) => {
+        .forEach((schedule: any, index: number) => {
           hourColumn.hours.forEach((hour) => {
             hour.segments.forEach((segment) => {
 
@@ -187,7 +191,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
               if ((segment.date >= schedule.start && segment.date < schedule.end)) {
 
 
-                    segment.cssClass = `orange-bg-color-step-10 ${schedule.abbrvName}`;
+                    segment.cssClass = `${this.bgColor[index % this.bgColor.length]} ${schedule.abbrvName}`;
               }
               });
             });
