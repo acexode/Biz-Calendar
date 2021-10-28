@@ -40,6 +40,7 @@ import { GroupList } from 'src/app/core/models/groupList.model';
 import { Person } from 'src/app/core/models/person.model';
 import { InfoPatient } from 'src/app/core/models/infoPatient.model';
 import { addMinutes } from 'date-fns';
+import { Physician } from 'src/app/core/models/Physician.model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -255,7 +256,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       personData: null,
       groupData: null,
     }
-  );
+    );
+  physician$: BehaviorSubject<Physician> = new BehaviorSubject<Physician>(null);
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -269,7 +271,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   onInitializeLoadData(): void {
     this.authS.getUserPhysicians$().subscribe(
       (data: any) => {
-        console.log('phy: ', data);
+        this.physician$.next(data?.physicians[0] || null);
       }
     );
     /* services */
@@ -427,7 +429,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
             config: this.cabinetConfig,
             startTime,
             endTime,
-            locationUID: this.locatieFormControl.value || ''
+            locationUID: this.locatieFormControl.value || '',
+            physicianUID: this.physician$.value.physicianUID || '',
           },
         });
         await modal.present();
@@ -609,7 +612,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getTipServicii(data: string = this.tipServiciiOption[0].id) {
     let optionData =  {
       // serviceName: 'string',
-      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      // physicianUID: this.physician$.value.physicianUID || '',
       // specialityCode: 'string',
       // locationUID: 'ec9faa71-e00a-482a-801d-520af369de85',
     };
@@ -624,7 +627,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
       if (this.locatieFormControl.value !== '') {
         optionData = {
-          locationUID: this.locatieFormControl.value
+          locationUID: this.locatieFormControl.value,
+          physicianUID: this.physician$.value.physicianUID || '',
         };
       }
       this.getTipServices$ = this.getTipServiciiType(data, optionData)

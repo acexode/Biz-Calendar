@@ -32,6 +32,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   }
   @Input() checkList!: any;
   @Input() locationUID: string;
+  @Input() physicianUID: string;
   isCabinetAvailable = false;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
@@ -127,7 +128,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
 
     if (cabinetUID) {
       const getSchedulePayload = {
-        // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+        physicianUID: this.physicianUID,
         cabinetUID, // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
       };
 
