@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   CalendarDateFormatter,
@@ -16,6 +16,7 @@ import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
 import { cabinetData } from './dummyDataForCabinet';
+import { ViewChild} from '@angular/core';
 
 const colors: any = {
   bizPrimary: {
@@ -36,7 +37,8 @@ const colors: any = {
     },
   ],
 })
-export class CabinetComponent implements OnInit, OnDestroy {
+export class CabinetComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('dateTime') datePicker: any;
 
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
@@ -77,10 +79,29 @@ export class CabinetComponent implements OnInit, OnDestroy {
     return new Intl.DateTimeFormat('ro', { month: 'long' }).format(this.viewDate)
       || new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
   }
-
+  customPickerOptions: any;
   constructor(
     private modalController: ModalController,
-  ) { }
+  ) {
+    this.customPickerOptions = {
+      buttons: [{
+        text: 'Save',
+        handler: () => console.log('Clicked Save!')
+      }, {
+        text: 'Log',
+        handler: () => {
+          console.log('Clicked Log. Do not Dismiss.');
+          return false;
+        }
+      }]
+    };
+  }
+  ngAfterViewInit(): void {
+    // this.openDatePicker();
+  }
+  openDatePicker() {
+    this.datePicker.open();
+  }
 
   ngOnInit() {
 
@@ -191,6 +212,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
     console.log(data);
     const { dismissed, selecteaza } = data;
     if (dismissed && selecteaza) {
+      this.openDatePicker();
       console.log('open clock... looks like user want to change time');
     }
   }
