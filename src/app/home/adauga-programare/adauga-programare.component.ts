@@ -212,10 +212,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
-    locatie: '',
+    locatie: ['ec9faa71-e00a-482a-801d-520af369de85'],
     tipServicii: ['', [Validators.required]],
-    data: ['2021-10-26', [Validators.required]],
-    oraDeIncepere: ['09:00', [Validators.required]],
+    data: ['2021-10-28', [Validators.required]],
+    oraDeIncepere: ['16:00', [Validators.required]],
     time: ['30', [Validators.required]],
     cabinet: ['', [Validators.required]],
     medic:['', [Validators.required]],
@@ -272,11 +272,12 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.authS.getUserPhysicians$().subscribe(
       (data: any) => {
         this.physician$.next(data?.physicians[0] || null);
+        console.log(data?.physicians[0]);
       }
     );
     /* services */
     this.getLocations();
-    this.getCabinets();
+    this.getCabinets(true); // remove this when done
     // this.getMedicalEquipment(); => moved to location dependency endpoint
     /*  */
     this.locatieFormControlProcess();

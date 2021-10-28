@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { addHours, addMinutes, format, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
+import { addHours, addMinutes, format, formatRFC3339, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
 import { BehaviorSubject, forkJoin, Subscription } from 'rxjs';
-import { appointmentEndpoints, cabinet } from 'src/app/core/configs/endpoints';
+import { appointmentEndpoints, cabinet, physicians } from 'src/app/core/configs/endpoints';
 import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
@@ -33,6 +33,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   @Input() checkList!: any;
   @Input() locationUID: string;
   @Input() physicianUID: string;
+  dayInAWeekWithDate = dayInAWeekWithDate(new Date());
   isCabinetAvailable = false;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
@@ -62,6 +63,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   cabinetOfEvent: GetCabinetSchedulesResponseModel[] = [];
   appointmentEndpointData$: BehaviorSubject<any> = new BehaviorSubject<any>({});
   cabinetScheldulesEndpointData$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  getPhysicianScheduleEndPointData$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   public subscriptions = new Subscription();
 
@@ -128,34 +130,67 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
 
     if (cabinetUID) {
       const getSchedulePayload = {
-        physicianUID: this.physicianUID,
-        cabinetUID, // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+        // physicianUID: this.physicianUID,
+        cabinetUID,
+        locationUID: this.locationUID,
       };
 
-    const payload = {
-      locationUID: this.locationUID,// this.options.find((v: any) => v.id === this.controlValue).locationUID,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      StartDate: format(
-        startOfDay(dayInAWeekWithDate(new Date())[0])
-        , 'yyyy-MM-dd HH:mm'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      EndDate: format(
-        startOfDay(dayInAWeekWithDate(new Date())[6])
-        , 'yyyy-MM-dd HH:mm'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      CabinetUID: this.controlValue// 'ccedb51b-f381-4f89-924c-516af87411fb'
-
-    };
+      const payload = {
+        startDate:  formatRFC3339( startOfDay(this.dayInAWeekWithDate[0]), { fractionDigits: 3 }),
+        endDate: formatRFC3339( startOfDay(this.dayInAWeekWithDate[6]), { fractionDigits: 3 }),
+        physicianUID: this.physicianUID,
+        locationUID: this.locationUID,
+      };
+      const appointmentPayload = {
+        locationUID: this.locationUID,
+        cabinetUID: this.controlValue,
+        startDate:  formatRFC3339( startOfDay(this.dayInAWeekWithDate[0]), { fractionDigits: 3 }),
+        endDate: formatRFC3339( startOfDay(this.dayInAWeekWithDate[6]), { fractionDigits: 3 }),
+      };
 
 
-      this.getCabinetScheldules$ = forkJoin([
+      this.getCabinetScheldules$ = forkJoin(
+        [
         this.reqService.post<Array<GetCabinetSchedulesResponseModel>>(
           cabinet.getCabinetsSchedules
           , getSchedulePayload),
-        this.reqService.post(appointmentEndpoints.getAppointment, payload)
-      ]).subscribe(
+        this.reqService.post(physicians.getPhysicianSchedule, payload),
+        this.reqService.post(appointmentEndpoints.getAppointment, appointmentPayload)
+        ]
+      ).subscribe(
         (res: any) => {
           console.log(res);
+          this.cabinetScheldulesEndpointData$.next(
+            res[0].map(
+              (v: any) => ({
+                ...v,
+                cabinetDate:  startOfDay(this.dayInAWeekWithDate[v.dayID]),
+              })
+            ).map((q: any) => ({
+                    ...q,
+                    startTime: addMinutes(addHours(startOfDay(q.cabinetDate), q.startHour), q.startMin),
+                    endTime: addMinutes(addHours(startOfDay(q.cabinetDate), q.endHour), q.endMin),
+                })
+              )
+          );
+
+          // getPhysicianScheduleEndPointData
+          this.getPhysicianScheduleEndPointData$.next(
+            res[1].map((w: any) => ({
+              ...w,
+              date: startOfDay(new Date(w.date)),
+              endTime: addHours(startOfDay(new Date(w.date)), parseInt(w.end, 10)),
+              startTime: addHours(startOfDay(new Date(w.date)), parseInt(w.start, 10)),
+            })
+            )
+          );
+          /*  */
+          this.appointmentEndpointData$.next(res[2]);
+
+          // run process
+
+          this.runCheckProcess();
+
           loading.dismiss();
         },
         _err => {
@@ -165,73 +200,31 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
 
     }
   }
-  async _callCabinetProcess(cabinetUID: string = this.controlValue) {
+  runCheckProcess() {
+    console.log(this.cabinetScheldulesEndpointData$.value,
+      this.getPhysicianScheduleEndPointData$.value);
 
-    const loading = await this.loadingController.create({
-            spinner: 'crescent',
-            mode: 'md',
-            // duration: 2000,
-            message: 'Checking Cabinet...',
-            translucent: true,
-            cssClass: 'custom-class custom-loading'
-        });
-    await loading.present();
+    const checkCabinetavailability = this.cabinetScheldulesEndpointData$.value.filter(
+       (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
+    );
 
-    if (cabinetUID) {
-      const d = {
-        // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        cabinetUID, // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
-      };
-      this.getCabinetScheldules$ = this.reqService
-        .post<Array<GetCabinetSchedulesResponseModel>>(cabinet.getCabinetsSchedules, d)
-      .subscribe(
-        (resps: GetCabinetSchedulesResponseModel[]) => {
-          // dismiss loader
-            loading.dismiss();
-          if (resps) {
-            /*  */
-            if (resps.length > 0) {
-              this.cabinetOfEvent = resps.map(
-                (v: GetCabinetSchedulesResponseModel) => ({
-                  ...v,
-                  cabinetTime: startOfDay(dayInAWeekWithDate(new Date())[v.dayID]),
-                })
-              ) .map((w: GetCabinetSchedulesResponseModel) => ({
-                    ...w,
-                    startTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.startHour), w.startMin),
-                    endTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.endHour), w.endMin),
-                })
-              );
+    // check if physician is available at that hour
+    const checkPhysicianScheduleAvailability = this.getPhysicianScheduleEndPointData$.value.filter(
+      (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
+    );
+    console.log('this.startTime: ', this.startTime);
+    console.log('this.endTime: ', this.endTime);
+    console.log('this.physicianUID,: ', this.physicianUID);
 
-              console.log('cabinetOfEvent', this.cabinetOfEvent);
-
-              const checkCabinetavailability = this.cabinetOfEvent.filter(
-                (t: GetCabinetSchedulesResponseModel) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
-              );
-              console.log('checkCabinetavailability: ', checkCabinetavailability);
-              if (checkCabinetavailability.length > 0) {
-                this.isCabinetAvailable = true;
-                this.closeModal();
-              } else {
-                this.isCabinetAvailable = false;
-                this.presentCabinentNotify();
-              }
-            } else {
-              this.isCabinetAvailable = true;
-              this.closeModal();
-            }
-          }
-
-        },
-        _error => {
-          // dismiss loader
-          loading.dismiss();
-          // eslint-disable-next-line max-len
-          this.toastService.presentToastWithDurationDismiss('Unable check cabinet at this time. Please check your network and try again. C18');
-        }
-
-      );
-    }
+    console.log('checkCabinetavailability: ', checkCabinetavailability);
+    console.log('checkPhysicianScheduleAvailability: ', checkPhysicianScheduleAvailability);
+    /* if (checkCabinetavailability.length > 0) {
+      this.isCabinetAvailable = true;
+      this.closeModal();
+    } else {
+      this.isCabinetAvailable = false;
+      this.presentCabinentNotify();
+    } */
   }
   async presentCabinentNotify() {
     const modal = await this.modalController.create({
@@ -275,11 +268,11 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
         });
     await loading.present();
 
-    const startOfTheWeekDate = startOfDay(dayInAWeekWithDate(new Date())[0]);
-    const endOfTheWeekDate = startOfDay(dayInAWeekWithDate(new Date())[6]);
+    const startOfTheWeekDate = startOfDay(this.dayInAWeekWithDate[0]);
+    const endOfTheWeekDate = startOfDay(this.dayInAWeekWithDate[6]);
 
     const payload = {
-      locationUID: '4cbb3c39-8be6-46d7-b334-1f7325e86a5e',// this.options.find((v: any) => v.id === this.controlValue).locationUID,
+      locationUID:  this.locationUID,// this.options.find((v: any) => v.id === this.controlValue).locationUID,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       StartDate: format(startOfTheWeekDate, 'yyyy-MM-dd HH:mm'),
       // eslint-disable-next-line @typescript-eslint/naming-convention
