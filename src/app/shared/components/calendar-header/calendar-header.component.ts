@@ -97,6 +97,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const path = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(path);
     if(path === 'utilizatori'){
       this.locationForm.get('program').patchValue(this.programOptions[0].id);
     }else if(path === 'cabinet'){
@@ -121,7 +122,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       // this.viewDate = new Date(e);
     });
     this.calS.appointments$.subscribe(e => {
+      console.log('TOTAL', e);
       this.totalAppt = e?.appointments.length;
+    });
+    this.calS.eventCounts.pipe(distinctUntilChanged()).subscribe(count =>{
+      console.log('COUNT', count);
+      this.totalAppt = count;
     });
     this.calS.selectedMonth.subscribe(e =>{
       this.month = e.split(' ')[0];

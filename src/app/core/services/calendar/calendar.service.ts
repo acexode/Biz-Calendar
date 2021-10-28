@@ -24,6 +24,7 @@ export class CalendarService {
   cabinetQuery$: BehaviorSubject<any> = new BehaviorSubject(null);
   eventLists$: BehaviorSubject<Appointment[]> = new BehaviorSubject([]);
   selectedMonth: BehaviorSubject<string> = new BehaviorSubject('');
+  eventCounts: BehaviorSubject<number> = new BehaviorSubject(0);
   showPicker: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private reqS: RequestService, private activatedRoute: ActivatedRoute, private authS: AuthService) {
@@ -57,6 +58,7 @@ export class CalendarService {
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
+      console.log('PATH', path);
       if(path !== null){
         if(path === 'lista'){
           obj.StartDate = startOfYear(new Date());
@@ -125,11 +127,16 @@ export class CalendarService {
   }
 
   getCabinetAppointment(query, date= null){
+    const start = date ? new Date(date) : new Date();
+    const end = date ? new Date(date) : new Date();;
+    start.setHours(0,0);
+    end.setHours(23,0);
     const obj = {
-      StartDate: date !== null ? startOfDay(new Date(date)) : startOfDay(new Date()) ,
-      EndDate:  date !== null ? addDays(new Date(date), 1) : addDays(new Date(), 1),
+      StartDate: start ,
+      EndDate:  end,
       ...query
     };
+    console.log('cabinet---', obj);
     return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
       console.log(res);
       this.cabinetAppointment$.next(res);
