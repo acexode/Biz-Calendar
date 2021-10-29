@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { addHours, addMinutes, format, getDay, isAfter, isBefore, isEqual, startOfDay } from 'date-fns';
+import { addHours, addMinutes, formatRFC3339, startOfDay } from 'date-fns';
 import { get, find } from 'lodash';
-import { Subscription } from 'rxjs';
-import { appointmentEndpoints, cabinet } from 'src/app/core/configs/endpoints';
+import { BehaviorSubject, forkJoin, Subscription } from 'rxjs';
+import { appointmentEndpoints, cabinet, physicians } from 'src/app/core/configs/endpoints';
 import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { GetCabinetSchedulesResponseModel } from 'src/app/core/models/getCabinetSchedules.response.model';
@@ -26,11 +26,14 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   @Input() config!: IonRadiosConfig;
   @Input() startTime: Date;
   @Input() endTime: Date;
+  @Input() dayInAWeekWithDate: Array<Date>;
   @Input() @Input() set options(opts: Array<IonRadioInputOption>) {
     this.opts = opts ? opts : [];
     this.updateItems();
   }
   @Input() checkList!: any;
+  @Input() locationUID: string;
+  @Input() physicianUID: string;
   isCabinetAvailable = false;
   getCabinets$: Subscription;
   getCabinetScheldules$: Subscription;
@@ -58,6 +61,9 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     radio: ['', [Validators.required]],
   });
   cabinetOfEvent: GetCabinetSchedulesResponseModel[] = [];
+  appointmentEndpointData$: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  cabinetScheldulesEndpointData$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+  getPhysicianScheduleEndPointData$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
   public subscriptions = new Subscription();
 
@@ -123,121 +129,79 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     await loading.present();
 
     if (cabinetUID) {
-      const d = {
-        // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-        cabinetUID, // '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+      const getSchedulePayload = {
+        // physicianUID: this.physicianUID,
+        cabinetUID,
+        locationUID: this.locationUID,
       };
-      this.getCabinetScheldules$ = this.reqService
-        .post<Array<GetCabinetSchedulesResponseModel>>(cabinet.getCabinetsSchedules, d)
-      .subscribe(
-        (resps: GetCabinetSchedulesResponseModel[]) => {
-          // dismiss loader
-            loading.dismiss();
-          if (resps) {
-            /*  */
-            if (resps.length > 0) {
-              this.cabinetOfEvent = resps.map(
-                (v: GetCabinetSchedulesResponseModel) => ({
-                  ...v,
-                  cabinetTime: startOfDay(dayInAWeekWithDate(new Date())[v.dayID]),
-                })
-              ) .map((w: GetCabinetSchedulesResponseModel) => ({
-                    ...w,
-                    startTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.startHour), w.startMin),
-                    endTime: addMinutes(addHours(startOfDay(w.cabinetTime), w.endHour), w.endMin),
-                })
-              );
 
-              console.log('cabinetOfEvent', this.cabinetOfEvent);
+      const payload = {
+        startDate:  formatRFC3339( startOfDay(this.dayInAWeekWithDate[0]), { fractionDigits: 3 }),
+        endDate: formatRFC3339( startOfDay(this.dayInAWeekWithDate[6]), { fractionDigits: 3 }),
+        physicianUID: this.physicianUID,
+        locationUID: this.locationUID,
+      };
+      const appointmentPayload = {
+        locationUID: this.locationUID,
+        cabinetUID: this.controlValue,
+        startDate:  formatRFC3339( startOfDay(this.dayInAWeekWithDate[0]), { fractionDigits: 3 }),
+        endDate: formatRFC3339( startOfDay(this.dayInAWeekWithDate[6]), { fractionDigits: 3 }),
+      };
 
-              const checkCabinetavailability = this.cabinetOfEvent.filter(
-                (t: GetCabinetSchedulesResponseModel) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
-              );
-              console.log('checkCabinetavailability: ', checkCabinetavailability);
-              if (checkCabinetavailability.length > 0) {
-                this.isCabinetAvailable = true;
-                this.closeModal();
-              } else {
-                this.isCabinetAvailable = false;
-                this.presentCabinentNotify();
-              }
-            } else {
-              // this.closeModal();
-               this.isCabinetAvailable = false;
-              this.presentCabinentNotify();
+
+      this.getCabinetScheldules$ = forkJoin(
+        [
+        this.reqService.post<Array<GetCabinetSchedulesResponseModel>>(
+          cabinet.getCabinetsSchedules
+          , getSchedulePayload),
+        this.reqService.post(physicians.getPhysicianSchedule, payload),
+        this.reqService.post(appointmentEndpoints.getAppointment, appointmentPayload)
+        ]
+      ).subscribe(
+        (res: any) => {
+          console.log(res);
+          this.cabinetScheldulesEndpointData$.next(
+            res[0].map(
+              (v: any) => ({
+                ...v,
+                cabinetDate:  startOfDay(this.dayInAWeekWithDate[v.dayID]),
+              })
+            ).map((q: any) => ({
+                    ...q,
+                    startTime: addMinutes(addHours(startOfDay(q.cabinetDate), q.startHour), q.startMin),
+                    endTime: addMinutes(addHours(startOfDay(q.cabinetDate), q.endHour), q.endMin),
+                })
+              )
+          );
+
+          // getPhysicianScheduleEndPointData
+          this.getPhysicianScheduleEndPointData$.next(
+            res[1].map((w: any) => ({
+              ...w,
+              date: startOfDay(new Date(w.date)),
+              endTime: addHours(startOfDay(new Date(w.date)), parseInt(w.end, 10)),
+              startTime: addHours(startOfDay(new Date(w.date)), parseInt(w.start, 10)),
+            })
+            )
+          );
+          /*  */
+          this.appointmentEndpointData$.next(
+            {
+              ...res[2],
+               appointments: res[2]?.appointments.map((q: any) => ({
+                  ...q,
+                  startTime: new Date(q.startTime),
+                  endTime: new Date(q.endTime),
+                }))
+
             }
-          }
+          );
 
-        },
-        _error => {
-          // dismiss loader
+          // run process
+
+          this.runCheckProcess();
+
           loading.dismiss();
-          // eslint-disable-next-line max-len
-          this.toastService.presentToastWithDurationDismiss('Unable check cabinet at this time. Please check your network and try again. C18');
-        }
-
-      );
-    }
-  }
-  async presentCabinentNotify() {
-    const modal = await this.modalController.create({
-      component: CabinetNotifyComponent,
-      cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
-      backdropDismiss: true,
-      componentProps: {
-        notifyType: 'typeA'
-      },
-    });
-    await modal.present();
-    const { data } = await modal.onWillDismiss();
-    const { dismissed, renita, veziProgram } = data;
-    if (dismissed && veziProgram) {
-      this.getApointments();
-    }
-  }
-
-  async presentCabinent(cabinetData: any) {
-    const modal = await this.modalController.create({
-      component: CabinetComponent,
-      cssClass: 'biz-modal-class width-md-100',
-      backdropDismiss: true,
-      componentProps: {
-        cabinetData,
-      },
-    });
-    await modal.present();
-  }
-  async getApointments() {
-
-    const loading = await this.loadingController.create({
-            spinner: 'crescent',
-            mode: 'md',
-            // duration: 2000,
-            message: 'Checking Cabinet...',
-            translucent: true,
-            cssClass: 'custom-class custom-loading'
-        });
-    await loading.present();
-
-    const payload = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      StartDate: format(new Date(this.startTime), 'yyyy-MM-dd HH:mm'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      EndDate: format(new Date(this.endTime), 'yyyy-MM-dd HH:mm'),
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      CabinetUID: this.controlValue// 'ccedb51b-f381-4f89-924c-516af87411fb'
-
-    };
-    this.getAppointments$ = this.reqService.post(
-      appointmentEndpoints.getAppointment,
-      payload,
-    )
-      .subscribe(
-        (d: any) => {
-          console.log('getAppointments$: ', d);
-          // dismiss loader
-            loading.dismiss();
-          this.presentCabinent(d);
         },
         _err => {
           // dismiss loader
@@ -246,6 +210,84 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
           this.toastService.presentToastWithDurationDismiss('Unable to get appoiintements for this cabinet at this time. Please check your network and try again. C17');
         }
       );
+
+    }
+  }
+  runCheckProcess() {
+    console.log(this.cabinetScheldulesEndpointData$.value,
+      this.getPhysicianScheduleEndPointData$.value);
+
+    // if exist data it means user can't select this cabinet
+    const checkCabinetAvailability = this.cabinetScheldulesEndpointData$.value.filter(
+       (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime) && this.physicianUID !== t.physicianUID)
+    );
+
+    // check if physician is available at that hour =>  then user can select this cabinet
+    const checkPhysicianScheduleAvailability = this.getPhysicianScheduleEndPointData$.value.filter(
+      (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
+    );
+
+    // check if an appointment exist at that hour => if exist user can't select this cabinet
+    const checkAppointmentAvailability = this.appointmentEndpointData$.value.appointments.filter(
+      (t: any) => ((this.startTime >= t.startTime && this.endTime < t.endTime))
+    );
+
+    console.log('this.startTime: ', this.startTime);
+    console.log('this.endTime: ', this.endTime);
+    console.log('this.physicianUID,: ', this.physicianUID);
+
+    console.log('checkCabinetavailability: ', checkCabinetAvailability);
+    console.log('checkPhysicianScheduleAvailability: ', checkPhysicianScheduleAvailability);
+    console.log('checkPhysicianScheduleAvailability: ', checkAppointmentAvailability);
+
+    if (
+      (!(checkCabinetAvailability.length > 0)) &&
+      (checkPhysicianScheduleAvailability.length > 0)
+      &&
+      (!(checkAppointmentAvailability.length > 0))
+    ) {
+      this.isCabinetAvailable = true;
+      this.closeModal();
+    } else {
+      this.isCabinetAvailable = false;
+      this.presentCabinentNotify();
+    }
+  }
+  async presentCabinentNotify() {
+    const modal = await this.modalController.create({
+      component: CabinetNotifyComponent,
+      cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
+      backdropDismiss: true,
+      componentProps: {
+        notifyType: 'typeA',
+        cabinetName: this.cabinetLabel,
+      },
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    const { dismissed, renita, veziProgram } = data;
+    if (dismissed && veziProgram) {
+      this.presentCabinent();
+    }
+  }
+
+  async presentCabinent(cabinetData: any = []) {
+    const modal = await this.modalController.create({
+      component: CabinetComponent,
+      cssClass: 'biz-modal-class width-md-100',
+      backdropDismiss: true,
+      componentProps: {
+        cabinetName: this.cabinetLabel,
+        schedules: this.cabinetScheldulesEndpointData$.value,
+        appointments: this.appointmentEndpointData$.value.appointments,
+        viewDate: this.dayInAWeekWithDate[0],
+      },
+    });
+    await modal.present();
+  }
+
+  get cabinetLabel(): string {
+    return this.items.find((v: any) => v.id === this.controlValue).label || '';
   }
 
   ngOnDestroy() {
