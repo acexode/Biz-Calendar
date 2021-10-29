@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 export class CalendarService {
   selectedDate: BehaviorSubject<string> = new BehaviorSubject(null);
   selectedPath: BehaviorSubject<string> = new BehaviorSubject(null);
-  filterLocation: BehaviorSubject<string> = new BehaviorSubject(null);
+  filterLocation: BehaviorSubject<any> = new BehaviorSubject(null);
   filterProgram: BehaviorSubject<string> = new BehaviorSubject(null);
   appointments$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
   cabinetAppointment$: BehaviorSubject<AppointmentResponse> = new BehaviorSubject(null);
@@ -124,6 +124,9 @@ export class CalendarService {
       });
 
     }
+  }
+  public get subjectValue() {
+    return this.filterLocation.value;
   }
 
   getCabinetAppointment(query, date= null){
