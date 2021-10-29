@@ -26,6 +26,8 @@ export class CabinetNotifyComponent implements OnInit {
       renita: v === 'RENUNȚĂ' ? true : false,
       veziProgram: v === 'VEZI PROGRAM' ? true : false,
       selecteaza: v === 'SELECTEAZA' ? true : false,
+      isHoutMinutesPicker: v === 'HOUR-MINUTES-PICKER' ? true : false,
+      isDayMonthPicker: v === 'MONTH-DAY-PICKER' ? true : false,
     });
   }
   get notifyTypeToUse() {
@@ -67,6 +69,12 @@ export class CabinetNotifyComponent implements OnInit {
   }
   get time() {
     return `${this.timeFormat(this.theDate)} - ${this.timeFormat(this.addOneHourToTime)}`;
+  }
+  houtMinutesPicker() {
+    this.closeModal('HOUR-MINUTES-PICKER');
+  }
+  isDayMonthPicker() {
+    this.closeModal('MONTH-DAY-PICKER');
   }
 
 }

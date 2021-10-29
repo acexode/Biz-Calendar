@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -8,9 +8,10 @@ import { ModalController } from '@ionic/angular';
 })
 export class DatePickerModalComponent implements OnInit, AfterViewInit {
   @ViewChild('dateTime') datePicker: any;
+  @Input() pickerType: 'hourMinutes' | 'dayMonth';
+    date = '';
 
   constructor(private modalController: ModalController,) { }
-
   ngOnInit() { }
    ngAfterViewInit(): void {
     this.openDatePicker();
@@ -18,14 +19,20 @@ export class DatePickerModalComponent implements OnInit, AfterViewInit {
   openDatePicker() {
     this.datePicker.open();
   }
-  onClosePicker(event: any) {
-    console.log(event);
-    this.closeModal();
-  }
-  closeModal() {
+  closeModal(closeModalAfterUpdateData: boolean = false) {
     this.modalController.dismiss({
       dismissed: true,
+      dateData: closeModalAfterUpdateData ? this.date : ''
     });
+  }
+  get datePickerType() {
+    return this.pickerType || 'date';
+  }
+  changed(_e: any) {
+    this.closeModal(true);
+  }
+  pickerCancled(_e: any) {
+    this.closeModal(false);
   }
 
 }

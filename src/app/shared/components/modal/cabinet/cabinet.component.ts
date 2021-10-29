@@ -84,7 +84,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.presentDatePicker();
+    // this.presentDatePicker();
 
     if (this.appointments && this.appointments.length > 0) {
 
@@ -192,17 +192,19 @@ export class CabinetComponent implements OnInit, OnDestroy {
     const { data } = await modal.onWillDismiss();
     console.log(data);
     const { dismissed, selecteaza } = data;
-    if (dismissed && selecteaza) {
-      this.presentDatePicker();
+    if (dismissed) {
+      this.presentDatePicker(data);
       console.log('open clock... looks like user want to change time');
     }
   }
-  async presentDatePicker() {
+  async presentDatePicker({isHoutMinutesPicker, isDayMonthPicker}) {
     const modal = await this.modalController.create({
       component: DatePickerModalComponent,
       cssClass: 'biz-modal-class-type-no-background width-md-100',
-      backdropDismiss: true,
-      componentProps: {},
+      backdropDismiss: false,
+      componentProps: {
+        pickerType: isHoutMinutesPicker ? 'hourMinutes' : 'dayMonth',
+      },
     });
     await modal.present();
   }
