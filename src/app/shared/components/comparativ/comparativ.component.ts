@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { PlatformService } from './../../../core/services/platform/platform.service';
 import { appointment } from './../../../core/configs/endpoints';
 import { CalendarService } from './../../../core/services/calendar/calendar.service';
@@ -120,8 +121,12 @@ export class ComparativComponent implements OnInit {
     });
     this.calS.selectedDate.subscribe(d =>{
       console.log(d);
+      console.log('LOCATION', this.calS.subjectValue);
+      const val = this.calS.subjectValue;
       if(d !== null){
-        this.calS.getCabinetAppointment({}, new Date(d));
+        this.calS.getCabinetAppointment({
+          LocationUID: val?.id
+        }, new Date(d));
         this.viewDate = new Date(d);
       }
       this.loadEvent();
