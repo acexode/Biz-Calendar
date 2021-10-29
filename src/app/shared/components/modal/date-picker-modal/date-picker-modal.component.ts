@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
 export class DatePickerModalComponent implements OnInit, AfterViewInit {
   @ViewChild('dateTime') datePicker: any;
   @Input() pickerType: 'hourMinutes' | 'dayMonth';
-    date = '';
+   @Input() date = '';
 
   constructor(private modalController: ModalController,) { }
   ngOnInit() { }
@@ -19,20 +19,20 @@ export class DatePickerModalComponent implements OnInit, AfterViewInit {
   openDatePicker() {
     this.datePicker.open();
   }
-  closeModal(closeModalAfterUpdateData: boolean = false) {
+  closeModal() {
     this.modalController.dismiss({
       dismissed: true,
-      dateData: closeModalAfterUpdateData ? this.date : ''
+      dateData: this.date
     });
   }
   get datePickerType() {
     return this.pickerType || 'date';
   }
   changed(_e: any) {
-    this.closeModal(true);
+    this.closeModal();
   }
   pickerCancled(_e: any) {
-    this.closeModal(false);
+    this.closeModal();
   }
 
 }

@@ -9,7 +9,7 @@ import {
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
 import { CalendarWeekViewHourSegmentComponent } from 'angular-calendar/modules/week/calendar-week-view-hour-segment.component';
-import { startOfDay, addHours, format,} from 'date-fns';
+import { startOfDay, addHours, format, formatRFC3339,} from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
@@ -18,6 +18,7 @@ import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.compone
 import { cabinetData } from './dummyDataForCabinet';
 import { ViewChild} from '@angular/core';
 import { DatePickerModalComponent } from '../date-picker-modal/date-picker-modal.component';
+import { ProgrammareService } from 'src/app/core/services/programmare/programmare.service';
 
 const colors: any = {
   bizPrimary: {
@@ -46,6 +47,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
   @Input() appointments: any[];
   @Input() schedules: any[];
   @Input() viewDate: Date;
+  @Input() cabinetUID: string;
+
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
@@ -81,10 +84,10 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
   constructor(
     private modalController: ModalController,
+    private programmareS$: ProgrammareService
   ) { }
 
   ngOnInit() {
-    // this.presentDatePicker();
 
     if (this.appointments && this.appointments.length > 0) {
 
@@ -105,21 +108,13 @@ export class CabinetComponent implements OnInit, OnDestroy {
         }
       )
       );
-      console.log('eventFromAppointement: ', eventFromAppointement);
       this.events.push(...eventFromAppointement);
       this.refresh.next();
 
     }
    }
-  handleEvent(action: string, event: CalendarEvent): void {
-    console.log(action, event);
-    // this.viewDate = new Date(event.start);
-    // this.view = CalendarView.Day;
-    // this.modalData = { event, action };
-    //this.modal.open(this.modalContent, { size: 'lg' });
-  }
+  handleEvent(action: string, event: CalendarEvent): void {}
   hourSegmentClicked(event: any) {
-    console.log('hourSegmentClicked: ', event, event.date);
     this.presentCabinentNotify(event.date);
   }
   eventTimesChanged({
@@ -140,15 +135,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
     this.handleEvent('Dropped or resized', event);
   }
   closeModal() {
+    console.log('close');
     this.modalController.dismiss({
       dismissed: true,
+      d: null,
     });
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
     if (this.schedules && this.schedules.length > 0) {
-
-      console.log('here', this.schedules);
 
 
       renderEvent.hourColumns.forEach((hourColumn) => {
@@ -171,17 +166,13 @@ export class CabinetComponent implements OnInit, OnDestroy {
             });
           });
          });
-
-
     }
-
-
   }
 
   async presentCabinentNotify(date: Date = new Date()) {
     const modal = await this.modalController.create({
       component: CabinetNotifyComponent,
-      cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
+      cssClass: 'biz-modal-class-type-a modal-wrapper-with-236px-height',
       backdropDismiss: true,
       componentProps: {
         notifyType: 'typeB',
@@ -190,23 +181,31 @@ export class CabinetComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
-    const { dismissed, selecteaza } = data;
-    if (dismissed) {
+    const { dismissed, selecteaza, renita, dateData} = data;
+    if (dismissed && !renita && !selecteaza) {
       this.presentDatePicker(data);
-      console.log('open clock... looks like user want to change time');
+    }
+    if (selecteaza) {
+      this.programmareS$.updateProgrammareDateData(dateData, this.cabinetUID);
+      this.closeModal();
     }
   }
-  async presentDatePicker({isHoutMinutesPicker, isDayMonthPicker}) {
+  async presentDatePicker({isHoutMinutesPicker, dateData: date}) {
     const modal = await this.modalController.create({
       component: DatePickerModalComponent,
       cssClass: 'biz-modal-class-type-no-background width-md-100',
       backdropDismiss: false,
       componentProps: {
         pickerType: isHoutMinutesPicker ? 'hourMinutes' : 'dayMonth',
+        date: formatRFC3339(date,  { fractionDigits: 3 })
       },
     });
     await modal.present();
+     const { data } = await modal.onWillDismiss();
+    const { dismissed, dateData } = data;
+    if (dismissed) {
+      this.presentCabinentNotify(new Date(dateData || date));
+    }
   }
 
   ngOnDestroy() {

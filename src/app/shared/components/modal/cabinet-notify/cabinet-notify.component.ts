@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { addHours, format } from 'date-fns';
+import { addHours, addMinutes, format } from 'date-fns';
+import { ProgrammareService } from 'src/app/core/services/programmare/programmare.service';
 
 @Component({
   selector: 'app-cabinet-notify',
@@ -17,7 +18,10 @@ export class CabinetNotifyComponent implements OnInit {
     typeB: 'calendar notify',
   };
 
-  constructor(private modalController: ModalController) { }
+  constructor(
+    private modalController: ModalController,
+    private programmareS$: ProgrammareService,
+  ) { }
 
   ngOnInit() {}
   closeModal(v: string = '') {
@@ -28,6 +32,7 @@ export class CabinetNotifyComponent implements OnInit {
       selecteaza: v === 'SELECTEAZA' ? true : false,
       isHoutMinutesPicker: v === 'HOUR-MINUTES-PICKER' ? true : false,
       isDayMonthPicker: v === 'MONTH-DAY-PICKER' ? true : false,
+      dateData: this.date,
     });
   }
   get notifyTypeToUse() {
@@ -65,7 +70,10 @@ export class CabinetNotifyComponent implements OnInit {
       }).format(date);
   }
   get addOneHourToTime() {
-    return addHours(this.date, 1);
+    return (this.programmareS$.duration$.value
+    && this.programmareS$.duration$.value > 59 ) ?
+      addHours(this.date, 1) :
+      addMinutes(this.date, this.programmareS$.duration$.value);
   }
   get time() {
     return `${this.timeFormat(this.theDate)} - ${this.timeFormat(this.addOneHourToTime)}`;
