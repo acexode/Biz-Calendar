@@ -19,6 +19,7 @@ import { NgCalendarModule } from 'ionic2-calendar';
 import { CoreModule } from 'src/app/core/core.module';
 import { CabinetNotifyComponent } from './cabinet-notify/cabinet-notify.component';
 import { ConflictProgramariComponent } from './conflict-programari/conflict-programari.component';
+import { DatePickerModalComponent } from './date-picker-modal/date-picker-modal.component';
 
 
 
@@ -35,7 +36,8 @@ import { ConflictProgramariComponent } from './conflict-programari/conflict-prog
     BizSearchableRadioModalComponent,
     CabinetComponent,
     CabinetNotifyComponent,
-    ConflictProgramariComponent
+    ConflictProgramariComponent,
+    DatePickerModalComponent
   ],
   imports: [
     CommonModule,
@@ -61,7 +63,8 @@ import { ConflictProgramariComponent } from './conflict-programari/conflict-prog
     BizSearchableRadioModalComponent,
     CabinetComponent,
     CabinetNotifyComponent,
-    ConflictProgramariComponent
+    ConflictProgramariComponent,
+    DatePickerModalComponent
   ]
 })
 export class ModalModule { }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import {
   CalendarDateFormatter,
@@ -17,6 +17,7 @@ import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provid
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
 import { cabinetData } from './dummyDataForCabinet';
 import { ViewChild} from '@angular/core';
+import { DatePickerModalComponent } from '../date-picker-modal/date-picker-modal.component';
 
 const colors: any = {
   bizPrimary: {
@@ -37,8 +38,7 @@ const colors: any = {
     },
   ],
 })
-export class CabinetComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('dateTime') datePicker: any;
+export class CabinetComponent implements OnInit, OnDestroy {
 
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
@@ -79,31 +79,12 @@ export class CabinetComponent implements OnInit, OnDestroy, AfterViewInit {
     return new Intl.DateTimeFormat('ro', { month: 'long' }).format(this.viewDate)
       || new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
   }
-  customPickerOptions: any;
   constructor(
     private modalController: ModalController,
-  ) {
-    this.customPickerOptions = {
-      buttons: [{
-        text: 'Save',
-        handler: () => console.log('Clicked Save!')
-      }, {
-        text: 'Log',
-        handler: () => {
-          console.log('Clicked Log. Do not Dismiss.');
-          return false;
-        }
-      }]
-    };
-  }
-  ngAfterViewInit(): void {
-    // this.openDatePicker();
-  }
-  openDatePicker() {
-    this.datePicker.open();
-  }
+  ) { }
 
   ngOnInit() {
+    this.presentDatePicker();
 
     if (this.appointments && this.appointments.length > 0) {
 
@@ -212,9 +193,18 @@ export class CabinetComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(data);
     const { dismissed, selecteaza } = data;
     if (dismissed && selecteaza) {
-      this.openDatePicker();
+      this.presentDatePicker();
       console.log('open clock... looks like user want to change time');
     }
+  }
+  async presentDatePicker() {
+    const modal = await this.modalController.create({
+      component: DatePickerModalComponent,
+      cssClass: 'biz-modal-class-type-no-background width-md-100',
+      backdropDismiss: true,
+      componentProps: {},
+    });
+    await modal.present();
   }
 
   ngOnDestroy() {

@@ -1,0 +1,10 @@
+<ion-content>
+  <div>
+    <ion-item>
+      <!-- <ion-label>h:mm a</ion-label> -->
+      <ion-datetime displayFormat="hh:mm-A" [mode]="'md'" #dateTime doneText="SELECTEAZA" cancelText="RENUNTA"
+        (ionFocus)="onClosePicker($event)">
+      </ion-datetime>
+    </ion-item>
+  </div>
+</ion-content>

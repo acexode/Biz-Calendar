@@ -16,7 +16,7 @@ import { ErrorInterceptor } from './core/guards/error.interceptor';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot(),
+  imports: [BrowserModule,BrowserAnimationsModule, IonicModule.forRoot({ mode: 'md'}),
     AppRoutingModule, HttpClientModule, SharedModule, CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },

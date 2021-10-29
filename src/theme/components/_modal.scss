@@ -252,4 +252,25 @@
       align-items: flex-start !important;
     }
   }
+
+  .biz-modal-class-type-no-background {
+    --background: none !important;
+    --backdrop-opacity: 0.3 !important;
+
+    ion-backdrop {
+      background-color: none !important;
+    }
+
+    .modal-wrapper {
+      background: none !important;
+
+      ion-content {
+        --background: none !important;
+
+        ion-item {
+          --background: none !important;
+        }
+      }
+    }
+  }
 }

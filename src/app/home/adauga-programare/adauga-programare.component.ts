@@ -290,9 +290,9 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    // this.presentCabinent();
+    this.presentCabinent();
 
-    this.onInitializeLoadData();
+    // this.onInitializeLoadData();
     /*  */
 
     this.pS.isDesktopWidth$.subscribe(
