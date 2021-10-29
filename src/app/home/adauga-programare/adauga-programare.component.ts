@@ -298,7 +298,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     );
     /* services */
     this.getLocations();
-    this.getCabinets(); // => change to flase
+    this.getCabinets(false); // => change to flase
     // this.getMedicalEquipment(); => moved to location dependency endpoint
     /*  */
     this.locatieFormControlProcess();
@@ -444,6 +444,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         const duration = Number(this.adaugaProgramareFormGroup.value.time);
         const modal = await this.modalController.create({
           component: BizSearchableRadioModalComponent,
+          id: 'BizSearchableRadioModalComponent',
           cssClass: 'biz-modal-class',
           backdropDismiss: false,
           componentProps: {

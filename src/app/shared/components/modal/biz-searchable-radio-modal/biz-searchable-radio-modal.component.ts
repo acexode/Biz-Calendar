@@ -87,7 +87,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     this.modalController.dismiss({
       dismissed: true,
       radioValue: this.isCabinetAvailable ? this.controlValue : ' ',
-    });
+    }, undefined, 'BizSearchableRadioModalComponent');
   }
   checkRadio(event: any) {
    this.toggleRadio(event?.detail?.value);
@@ -211,6 +211,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: CabinetComponent,
       cssClass: 'biz-modal-class width-md-100',
+      id: 'cabinet-modal',
       backdropDismiss: false,
       componentProps: {
         cabinetName: this.cabinetLabel,
@@ -220,9 +221,13 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
         cabinetUID: this.controlValue
       },
     });
+     await modal.present();
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log('cabinet dismiss: ', data);
+    const { dismissed } = data;
+    if (dismissed) {
+       this.closeModal();
+    }
   }
 
   get cabinetLabel(): string {

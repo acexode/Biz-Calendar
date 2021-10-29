@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   CalendarDateFormatter,
   CalendarEvent,
@@ -9,7 +8,7 @@ import {
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
 import { CalendarWeekViewHourSegmentComponent } from 'angular-calendar/modules/week/calendar-week-view-hour-segment.component';
-import { startOfDay, addHours, format, formatRFC3339,} from 'date-fns';
+import { startOfDay, addHours, format, formatRFC3339, addMinutes,} from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
@@ -19,6 +18,7 @@ import { cabinetData } from './dummyDataForCabinet';
 import { ViewChild} from '@angular/core';
 import { DatePickerModalComponent } from '../date-picker-modal/date-picker-modal.component';
 import { ProgrammareService } from 'src/app/core/services/programmare/programmare.service';
+import { ModalController } from '@ionic/angular';
 
 const colors: any = {
   bizPrimary: {
@@ -39,7 +39,8 @@ const colors: any = {
     },
   ],
 })
-export class CabinetComponent implements OnInit, OnDestroy {
+export class CabinetComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('closeBtn', { static: false }) closeB: ElementRef;
 
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
@@ -84,9 +85,18 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
   constructor(
     private modalController: ModalController,
-    private programmareS$: ProgrammareService
+    private programmareS$: ProgrammareService,
+    private toastService: ToastService,
   ) { }
 
+  ngAfterViewInit() {
+    // this.closeBtn.nativeElement.click();
+    // console.log(this.closeB.nativeElement.click());
+    /* setTimeout(() => {
+      this.closeB.nativeElement.click();
+      console.log('ere-close');
+    }, 1000); */
+  }
   ngOnInit() {
 
     if (this.appointments && this.appointments.length > 0) {
@@ -135,11 +145,11 @@ export class CabinetComponent implements OnInit, OnDestroy {
     this.handleEvent('Dropped or resized', event);
   }
   closeModal() {
-    console.log('close');
+    console.log('close cabinet');
     this.modalController.dismiss({
       dismissed: true,
-      d: null,
-    });
+      d: 'none'
+    }, undefined, 'cabinet-modal');
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
@@ -181,13 +191,25 @@ export class CabinetComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    const { dismissed, selecteaza, renita, dateData} = data;
-    if (dismissed && !renita && !selecteaza) {
-      this.presentDatePicker(data);
-    }
-    if (selecteaza) {
-      this.programmareS$.updateProgrammareDateData(dateData, this.cabinetUID);
-      this.closeModal();
+    if (data) {
+      const { dismissed, selecteaza, renita, dateData} = data;
+      console.log('change Time: ', dateData);
+      if (dismissed && !renita && !selecteaza) {
+        this.presentDatePicker(data);
+      }
+      if (dismissed && selecteaza) {
+        const check = this.programmareS$.runCheckProcess(
+          dateData, new Date(addMinutes(new Date(dateData), this.programmareS$.duration$.value))
+        );
+        if (check) {
+          this.programmareS$.updateProgrammareDateData(dateData, this.cabinetUID);
+          this.closeModal();
+        } else {
+          this.toastService.presentToastWithDurationDismiss(
+            'You can not fix a schedule at this time. C30'
+            );
+        }
+      }
     }
   }
   async presentDatePicker({isHoutMinutesPicker, dateData: date}) {
