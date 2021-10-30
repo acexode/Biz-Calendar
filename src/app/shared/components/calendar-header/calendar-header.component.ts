@@ -56,6 +56,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
   programList = utilizatorList;
   totalAppt = 0;
   public page: string;
+
   opts = {
     freeMode: true,
     slidesPerView: 3,
@@ -97,6 +98,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const path = this.activatedRoute.snapshot.paramMap.get('id');
+    console.log(path);
     if(path === 'utilizatori'){
       this.locationForm.get('program').patchValue(this.programOptions[0].id);
     }else if(path === 'cabinet'){
@@ -121,7 +123,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       // this.viewDate = new Date(e);
     });
     this.calS.appointments$.subscribe(e => {
+      console.log('TOTAL', e);
       this.totalAppt = e?.appointments.length;
+    });
+    this.calS.eventCounts.pipe(distinctUntilChanged()).subscribe(count =>{
+      console.log('COUNT', count);
+      this.totalAppt = count;
     });
     this.calS.selectedMonth.subscribe(e =>{
       this.month = e.split(' ')[0];
@@ -146,7 +153,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     this.locationForm.get('location').valueChanges.pipe(distinctUntilChanged()).subscribe(val =>{
       const loc = this.locationOptions.filter(l => l.id === val)[0];
       // console.log(loc, val);
-      this.calS.filterLocation.next(loc?.label);
+      this.calS.filterLocation.next(loc);
       const obj = {
         LocationUID: val
       };
@@ -173,6 +180,17 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     // console.log(path.split('/')[2]);
     this.router.navigate([path]);
     this.calS.selectedPath.next(path.split('/')[2]);
+  }
+  today(path: string){
+    // console.log(path.split('/')[2]);
+    if(this.isComparativ){
+      const date = new Date().toString();
+      this.calS.selectedDate.next(date);
+    }else{
+      this.router.navigate([path]);
+      this.calS.selectedPath.next(path.split('/')[2]);
+
+    }
   }
   segmentChanged(id){
   }

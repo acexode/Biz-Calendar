@@ -3,7 +3,7 @@
 
     <div>
       <mwl-calendar-week-view
-        [viewDate]="viewDate"
+        [viewDate]="weekDate"
         [headerTemplate]="customHeaderTemplate"
         [events]="events"
         [excludeDays]="excludeDays"
@@ -12,6 +12,7 @@
         (eventTimesChanged)="eventTimesChanged($event)"
         [hourSegmentTemplate]="hourSegmentTemplate"
         (beforeViewRender)="beforeWeekViewRender($event)"
+        (hourSegmentClicked)="hourSegmentClicked($event)"
         >
         </mwl-calendar-week-view>
     </div>
@@ -40,7 +41,7 @@
           <ion-icon name="arrow-left" class="icon-24 black-color" slot="icon-only"></ion-icon>
         </ion-buttons>
 
-        <ion-title class="s20-h28 roboto-family-font text-weight-500 ls-0">Cabinet 1</ion-title>
+        <ion-title class="s20-h28 roboto-family-font text-weight-500 ls-0">{{cabinetName}}</ion-title>
 
         <div slot="end">
           <ion-icon name="close" class="icon-24 black-color" slot="icon-only" (click)="closeModal()"></ion-icon>

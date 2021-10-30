@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { addHours, format } from 'date-fns';
 
 @Component({
   selector: 'app-cabinet-notify',
@@ -8,6 +9,9 @@ import { ModalController } from '@ionic/angular';
 })
 export class CabinetNotifyComponent implements OnInit {
   @Input() notifyType!: 'typeA' | 'typeB' | 'typeC';
+  @Input() cabinetName!: string;
+  @Input() date: Date;
+
   notifyTypes: any = {
     typeA: 'cabinet notify',
     typeB: 'calendar notify',
@@ -39,6 +43,34 @@ export class CabinetNotifyComponent implements OnInit {
           return this.notifyTypes.typeA;
       }
     }
+  }
+  intlDate() {
+    return new Intl.DateTimeFormat(
+      'ro',
+      {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+  }
+  get theDate() {
+    return this.date || new Date();
+  }
+  get formattedDate() {
+    return this.intlDate()
+      .format(this.theDate);
+  }
+  timeFormat(date: Date) {
+    return new Intl.DateTimeFormat(
+      'ro',
+      {
+        hour: 'numeric',
+        minute: 'numeric',
+      }).format(date);
+  }
+  get addOneHourToTime() {
+    return addHours(this.date, 1);
+  }
+  get time() {
+    return `${this.timeFormat(this.theDate)} - ${this.timeFormat(this.addOneHourToTime)}`;
   }
 
 }

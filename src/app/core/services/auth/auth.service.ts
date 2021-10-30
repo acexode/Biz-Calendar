@@ -4,7 +4,7 @@ import { Login } from './../../models/login.interface';
 import { CustomStorageService } from './../custom-storage/custom-storage.service';
 import { RequestService } from './../request/request.service';
 import { Injectable } from '@angular/core';
-import { authEndpoints } from '../../configs/endpoints';
+import { appointmentEndpoints, authEndpoints } from '../../configs/endpoints';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { User } from '../../models';
@@ -24,6 +24,10 @@ export class AuthService {
     init: false,
     parameters: null
   });
+  private userPhysicians$: BehaviorSubject<any> = new BehaviorSubject<any>({
+    init: false,
+    data: null
+  });
   constructor(
     private reqS: RequestService,
     private router: Router,
@@ -35,13 +39,20 @@ export class AuthService {
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
     this.user = this.userSubject.asObservable();
     const parameters = JSON.parse(localStorage.getItem('parameters'));
-    if(parameters){
+    const userPhysicians = JSON.parse(localStorage.getItem('userPhysicians'));
+    if(parameters && userPhysicians){
       this.parameters$.next({
         init: true,
         parameters,
       });
+      this.userPhysicians$.next(
+        {
+          init: true,
+          physicians: userPhysicians || [],
+        }
+      );
     } else {
-      this.toastS.presentToastWithDurationDismiss('Parameter not found. Please signin again');
+      this.toastS.presentToastWithDurationDismiss('Some needed data by the application are missing. Please signin again. A01');
       this.logout();
     }
 
@@ -59,14 +70,21 @@ export class AuthService {
       username: loginData.username,
       password: loginData.password,
     };
-    return this.reqS.post(authEndpoints.auth, credentials).pipe(map((user: User) => {
+    return this.reqS.post(authEndpoints.auth, credentials)
+      .pipe(
+        map((user: User) => {
       // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
-      user.authdata = window.btoa(loginData.username + ':' + loginData.password);
-      // this.customS.setItem('user',  JSON.stringify(user));
-      localStorage.setItem('user', JSON.stringify(user));
-      this.userSubject.next(user);
-      return user;
-  }));
+        user.authdata = window.btoa(loginData.username + ':' + loginData.password);
+        // this.customS.setItem('user',  JSON.stringify(user));
+        localStorage.setItem('user', JSON.stringify(user));
+        this.userSubject.next(user);
+        return user;
+        }),
+        switchMap((user: User) => this.getUserPhysicians()
+            .pipe(
+              map(userPhysicians => ({ user, userPhysicians:  userPhysicians?.physicians || [] })),
+          )),
+      );
     // .pipe(
     //   switchMap((res: any) =>this.saveToken(res.token).pipe(
     //      switchMap(() =>res.token)
@@ -129,5 +147,25 @@ export class AuthService {
       filter((val: ParameterState) => val && val.hasOwnProperty('init') && val.init),
       distinctUntilChanged()
     );
+  }
+  getUserPhysicians$(): Observable<any> {
+    return this.userPhysicians$.pipe(
+      filter((val: any) => val && val.hasOwnProperty('init') && val.init),
+      distinctUntilChanged()
+    );
+  }
+  getUserPhysicians(){
+    return this.reqS.get(appointmentEndpoints.getUserPhysicians)
+      .pipe(
+        tap((v: any) => {
+          localStorage.setItem('userPhysicians', JSON.stringify(v?.physicians || []));
+          this.userPhysicians$.next(
+            {
+              init: true,
+              physicians: v?.physicians || [],
+            }
+          );
+         })
+      );
   }
 }

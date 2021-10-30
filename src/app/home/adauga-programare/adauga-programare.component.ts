@@ -40,6 +40,8 @@ import { GroupList } from 'src/app/core/models/groupList.model';
 import { Person } from 'src/app/core/models/person.model';
 import { InfoPatient } from 'src/app/core/models/infoPatient.model';
 import { addMinutes } from 'date-fns';
+import { Physician } from 'src/app/core/models/Physician.model';
+import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -211,10 +213,10 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   adaugaProgramareFormGroup: FormGroup = this.fb.group({
     pacient: ['', [Validators.required]],
     tipprogramare: ['În-cabinet', [Validators.required]],
-    locatie: '',
+    locatie: ['ec9faa71-e00a-482a-801d-520af369de85'],
     tipServicii: ['', [Validators.required]],
-    data: ['2021-10-26', [Validators.required]],
-    oraDeIncepere: ['09:00', [Validators.required]],
+    data: ['2021-10-20', [Validators.required]],
+    oraDeIncepere: ['16:00', [Validators.required]],
     time: ['30', [Validators.required]],
     cabinet: ['', [Validators.required]],
     medic:['', [Validators.required]],
@@ -255,7 +257,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       personData: null,
       groupData: null,
     }
-  );
+    );
+  physician$: BehaviorSubject<Physician> = new BehaviorSubject<Physician>(null);
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -267,16 +270,27 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private authS: AuthService
   ) { }
   onInitializeLoadData(): void {
+    this.authS.getUserPhysicians$().subscribe(
+      (data: any) => {
+        this.physician$.next(data?.physicians[0] || null);
+        console.log(data?.physicians[0]);
+      }
+    );
     /* services */
     this.getLocations();
-    this.getCabinets();
-    this.getMedicalEquipment();
+    this.getCabinets(false); // => change to flase
+    // this.getMedicalEquipment(); => moved to location dependency endpoint
     /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
   }
+  locationDependencyEndpoints() {
+    this.getMedicalEquipment();
+  }
 
   ngOnInit(): void {
+
+    // this.presentCabinent();
 
     this.onInitializeLoadData();
     /*  */
@@ -405,11 +419,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.getCabinets(true);
     } else {
       if (!this.dataAndOraDeIncepereNotFilledStatus) {
-        const startTime = new Date(
-          `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`
-        );
-        const endTime = addMinutes(startTime, Number(this.adaugaProgramareFormGroup.value.time));
-        console.log('toCompareDate: ', startTime, endTime);
+        const userSetTime = `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`;
+        const addedTime = Number(this.adaugaProgramareFormGroup.value.time);
         const modal = await this.modalController.create({
           component: BizSearchableRadioModalComponent,
           cssClass: 'biz-modal-class',
@@ -417,8 +428,11 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
           componentProps: {
             options: this.cabinetOption,
             config: this.cabinetConfig,
-            startTime,
-            endTime,
+            startTime: new Date(userSetTime),
+            endTime: new Date(addMinutes(new Date(userSetTime), addedTime)),
+            locationUID: this.locatieFormControl.value || '',
+            physicianUID: this.physician$.value.physicianUID || '',
+            dayInAWeekWithDate: dayInAWeekWithDate(new Date(userSetTime)),
           },
         });
         await modal.present();
@@ -448,26 +462,29 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     await modal.present();
   }
   async presentAparaturaDataModal() {
-    if (this.aparaturaData.length > 0) {
-      const modal = await this.modalController.create({
-        component: SelectieServiciiModalComponent,
-        cssClass: 'biz-modal-class',
-        backdropDismiss: false,
-        componentProps: {
-          checkList: this.aparaturaData,
-          selectedValue: this.aparaturaSelectedValue,
-          config: this.aparaturaSelectServiciiOptionConfig
-        },
-      });
-      await modal.present();
-      const { data } = await modal.onWillDismiss();
-      const { dismissed, checkedValue } = data;
-      if(dismissed && checkedValue.length > 0) {
-        this.aparaturaSelectedValue = checkedValue;
+    if (this.locatieFormControl.value) {
+      if (this.aparaturaData.length > 0) {
+        const modal = await this.modalController.create({
+          component: SelectieServiciiModalComponent,
+          cssClass: 'biz-modal-class',
+          backdropDismiss: false,
+          componentProps: {
+            checkList: this.aparaturaData,
+            selectedValue: this.aparaturaSelectedValue,
+            config: this.aparaturaSelectServiciiOptionConfig,
+          },
+        });
+        await modal.present();
+        const { data } = await modal.onWillDismiss();
+        const { dismissed, checkedValue } = data;
+        if(dismissed && checkedValue.length > 0) {
+          this.aparaturaSelectedValue = checkedValue;
+        }
+      } else {
+        this.getMedicalEquipment(true);
       }
     } else {
-      this.getMedicalEquipment(true);
-      this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+      this.toastService.presentToastWithDurationDismiss('Location is Required');
     }
   }
   async presentModalRecurentaComponentModal() {
@@ -566,6 +583,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     this.getLocations$ = this.reqService.get(cabinet.getCabinets)
       .subscribe(
         (d: any) => {
+          console.log('locatie: ', d);
           this.locatieOption = d;
           if (calLocationModal) {
             this.location.nativeElement.focus();
@@ -596,7 +614,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
   getTipServicii(data: string = this.tipServiciiOption[0].id) {
     let optionData =  {
       // serviceName: 'string',
-      // physicianUID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      // physicianUID: this.physician$.value.physicianUID || '',
       // specialityCode: 'string',
       // locationUID: 'ec9faa71-e00a-482a-801d-520af369de85',
     };
@@ -611,7 +629,8 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
       this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
       if (this.locatieFormControl.value !== '') {
         optionData = {
-          locationUID: this.locatieFormControl.value
+          locationUID: this.locatieFormControl.value,
+          physicianUID: this.physician$.value.physicianUID || '',
         };
       }
       this.getTipServices$ = this.getTipServiciiType(data, optionData)
@@ -668,18 +687,24 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
   }
   getMedicalEquipment(callGetMedicalEquipment: boolean = false) {
-    this.getMedicalEquipment$ = this.reqService.post(equipments.getMedicalEquipment, {})
+    this.toastService.presentToastWithNoDurationDismiss('Please Wait', 'success');
+    this.getMedicalEquipment$ = this.reqService.post(
+      equipments.getMedicalEquipment,
+      {
+        equipmentLocationUID: this.locatieFormControl.value
+      }
+    )
       .subscribe(
         (d: any) => {
           this.aparaturaData = d;
           if (callGetMedicalEquipment) {
             this.presentAparaturaDataModal();
           }
-          this.toastService.forceDismissToast();
+          this.toastService.dismissToast();
         },
         _err => {
           // dismiss previous toast
-          this.toastService.forceDismissToast();
+          this.toastService.dismissToast();
           // show toast with duration dismiss
           this.toastService.presentToastWithDurationDismiss(
             'Unable to get medical equipment at this instance. Please check your network and try again. C13'

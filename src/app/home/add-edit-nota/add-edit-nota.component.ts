@@ -1,7 +1,7 @@
 import { CalendarService } from './../../core/services/calendar/calendar.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NoteService } from './../../core/services/notes/note.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, Validators, FormControl, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { addMinutes, differenceInMinutes } from 'date-fns';
@@ -113,7 +113,7 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     allDay: [false, [Validators.required]],
     allowOverlap: [false, [Validators.required]],
     comment: '',
-    others: ''
+    others: '0'
   });
   isWed = false;
   locatieConfigPlaceholder: string;
@@ -127,6 +127,7 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     private router: Router,
     private calS: CalendarService,
     private aRroute: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {
     this.noteS.getNoteTypes().subscribe((res: any) =>{
       console.log(res);
@@ -209,8 +210,14 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       console.log(val);
       if(val === 'Alta'){
         this.showOthers = true;
+        this.formValue('others').setValidators([Validators.required]);
+        this.adaugaProgramareFormGroup.updateValueAndValidity();
+        this.cdr.detectChanges();
       }else{
         this.showOthers = false;
+        this.formValue('others').clearValidators();
+        this.adaugaProgramareFormGroup.updateValueAndValidity();
+        this.cdr.detectChanges();
       }
     });
     this.formValue('others').valueChanges.subscribe(val =>{
