@@ -8,7 +8,8 @@ import {
   CalendarView,
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
-import { startOfDay, addHours,} from 'date-fns';
+import { CalendarWeekViewHourSegmentComponent } from 'angular-calendar/modules/week/calendar-week-view-hour-segment.component';
+import { startOfDay, addHours, format,} from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
@@ -39,12 +40,14 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
+  @Input() cabinetName: string;
+  @Input() appointments: any[];
+  @Input() schedules: any[];
+  @Input() viewDate: Date;
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
   refresh: Subject<any> = new Subject();
-  monthOfDate = new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
-  viewDate: Date = new Date(); // '2021/09/26'
   excludeDays: number[] = [0, 6];
   actions: CalendarEventAction[] = [
     {
@@ -64,58 +67,26 @@ export class CabinetComponent implements OnInit, OnDestroy {
     },
   ];
   bgColor = ['green-bg-color-step-20', 'orange-bg-color-step-20', 'green-bg-color-step-20', 'orange-bg-color-step-10'];
-  events: CalendarEvent[] = [
-   /*  {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: colors.bizPrimary,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color:  colors.bizPrimary,
-      actions: this.actions,
-      draggable: true,
-    },*/
-    /* {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: colors.bizPrimary,
-      allDay: true,
-    }, */
-    /* {
-      start: addHours(startOfDay(new Date()), 2),
-      end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
-      color: colors.bizPrimary,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true,
-      },
-      draggable: true,
-    }, */
-  ];
+  events: CalendarEvent[] = [];
   getAppointments$: Subscription;
+
+  get weekDate() {
+    return this.viewDate || new Date();
+  }
+  get monthOfDate() {
+    return new Intl.DateTimeFormat('ro', { month: 'long' }).format(this.viewDate)
+      || new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
+  }
 
   constructor(
     private modalController: ModalController,
   ) { }
 
   ngOnInit() {
-    console.log('this.cabinetData: ', this.cabinetData);
-    if (this.cabinetData && this.cabinetData.appointments > 0) {
 
-      const eventFromAppointement = this.cabinetData.appointments.map(
+    if (this.appointments && this.appointments.length > 0) {
+
+      const eventFromAppointement = this.appointments.map(
       (v: any) => (
         {
           ...v,
@@ -139,11 +110,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
     }
    }
   handleEvent(action: string, event: CalendarEvent): void {
-    // console.log(event);
-    this.viewDate = new Date(event.start);
+    console.log(action, event);
+    // this.viewDate = new Date(event.start);
     // this.view = CalendarView.Day;
     // this.modalData = { event, action };
     //this.modal.open(this.modalContent, { size: 'lg' });
+  }
+  hourSegmentClicked(event: any) {
+    console.log('hourSegmentClicked: ', event, event.date);
+    this.presentCabinentNotify(event.date);
   }
   eventTimesChanged({
     event,
@@ -169,18 +144,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
-    if (this.cabinetData && this.cabinetData.schedules.length > 0) {
+    if (this.schedules && this.schedules.length > 0) {
 
-      console.log('here');
+      console.log('here', this.schedules);
 
 
       renderEvent.hourColumns.forEach((hourColumn) => {
-      this.cabinetData.schedules
+      this.schedules
         .map((v: any) => ({
           ...v,
-          date: startOfDay(new Date(v.date)),
-          end: addHours(startOfDay(new Date(v.date)), parseInt(v.end, 10)),
-          start: addHours(startOfDay(new Date(v.date)), parseInt(v.start, 10)),
           abbrvName: `${v.physicianFirstName.split('')[0]}.${v.physicianLastName.split('')[0]}`
         }))
         .forEach((schedule: any, index: number) => {
@@ -188,7 +160,7 @@ export class CabinetComponent implements OnInit, OnDestroy {
             hour.segments.forEach((segment) => {
 
 
-              if ((segment.date >= schedule.start && segment.date < schedule.end)) {
+              if ((segment.date >= schedule.startTime && segment.date < schedule.endTime)) {
 
 
                     segment.cssClass = `${this.bgColor[index % this.bgColor.length]} ${schedule.abbrvName}`;
@@ -204,20 +176,23 @@ export class CabinetComponent implements OnInit, OnDestroy {
 
   }
 
-  async presentCabinentNotify() {
+  async presentCabinentNotify(date: Date = new Date()) {
     const modal = await this.modalController.create({
       component: CabinetNotifyComponent,
       cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
       backdropDismiss: true,
       componentProps: {
-        notifyType: 'typeB'
+        notifyType: 'typeB',
+        date,
       },
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
     console.log(data);
-    const { dismissed, renita, veziProgram } = data;
-    if (dismissed && veziProgram) {}
+    const { dismissed, selecteaza } = data;
+    if (dismissed && selecteaza) {
+      console.log('open clock... looks like user want to change time');
+    }
   }
 
   ngOnDestroy() {
