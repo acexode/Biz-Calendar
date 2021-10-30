@@ -261,7 +261,7 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       this.noteS.addNotes(obj).subscribe(note =>{
         console.log(note);
         this.adaugaProgramareFormGroup.reset();
-        // this.router.navigate(['/calendar/lista']);
+        this.router.navigate(['/calendar/lista']);
       });
     }
   }
