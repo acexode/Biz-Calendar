@@ -63,10 +63,7 @@
           </div>
 
           <div class="mw-140 flex-1 ml-16">
-            <app-input
-              [config]="timeInputConfig"
-              formControlName="pacient"
-            ></app-input>
+            <app-date-time formControlName="time" [config]="timeInputConfig"></app-date-time>
           </div>
 
         </div>
@@ -76,7 +73,7 @@
             <app-radios
                 [config]="timeRadioConfig"
                 [options]="timeRadioOption"
-                formControlName="time"
+                formControlName="duration"
                 class="w-100"
               >
             </app-radios>
