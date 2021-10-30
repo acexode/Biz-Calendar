@@ -1,4 +1,4 @@
-import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { MenuController, Platform } from '@ionic/angular';
 
@@ -37,7 +37,8 @@ export class SideMenuComponent implements OnInit {
     { title: 'vizualiare-programare', url: '/vizualiare/programare/2', icon: 'edit', chevron: false, notify: false },
     // { title: 'Comparativ', url: '/calendar/comparativ', icon: 'coparativ' },
   ];
-  constructor(platform: Platform, private menu: MenuController, private router: Router) {
+  constructor(platform: Platform, private menu: MenuController,
+    private authS: AuthService) {
     this.isTablet = window.innerWidth >= 768 ? true : false;
     window.addEventListener('resize', ()=>{
       if (window.innerWidth >= 768) {
@@ -54,9 +55,7 @@ export class SideMenuComponent implements OnInit {
   ngOnInit() { }
 
   logout(){
-    localStorage.clear();
-    this.router.navigate(['/login']);
-
+    this.authS.logout();
   }
 
   toggleCoparative(){
