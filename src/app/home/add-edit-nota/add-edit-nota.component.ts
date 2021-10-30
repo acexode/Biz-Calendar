@@ -113,7 +113,7 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     allDay: [false, [Validators.required]],
     allowOverlap: [false, [Validators.required]],
     comment: '',
-    others: '0'
+    others: ''
   });
   isWed = false;
   locatieConfigPlaceholder: string;
@@ -211,14 +211,13 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       if(val === 'Alta'){
         this.showOthers = true;
         this.formValue('others').setValidators([Validators.required]);
-        this.adaugaProgramareFormGroup.updateValueAndValidity();
-        this.cdr.detectChanges();
       }else{
         this.showOthers = false;
-        this.formValue('others').clearValidators();
-        this.adaugaProgramareFormGroup.updateValueAndValidity();
-        this.cdr.detectChanges();
+        this.formValue('others').setValidators(null);
+        this.formValue('others').setValue('');
       }
+      this.adaugaProgramareFormGroup.updateValueAndValidity({emitEvent: false});
+      this.cdr.detectChanges();
     });
     this.formValue('others').valueChanges.subscribe(val =>{
       console.log(val);
