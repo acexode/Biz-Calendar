@@ -58,6 +58,11 @@
             <ion-icon class="mr-8" *ngIf="p.chevron" slot="end" name="chevron-down"></ion-icon>
             <ion-text class="mr-8 notify" *ngIf="p.notify" slot="end">12</ion-text>
           </ion-item>
+          <ion-item    lines="none" detail="false" (click)="logout()">
+            <!-- <ion-icon slot="start" name="Menu"></ion-icon> -->
+            <ion-icon slot="start" name="deconectare"></ion-icon>
+            <ion-label>Ieșire</ion-label>
+          </ion-item>
         </ion-menu-toggle>
       </ion-list>
       <ion-item lines="none" class="s11-h13 ml-56">
