@@ -52,6 +52,7 @@ export class CalendarListComponent implements OnInit {
         events: formattedEvent
       };
       });
+      console.log(appt);
       this.eventList = appt;
       this.cdRef.detectChanges();
     });

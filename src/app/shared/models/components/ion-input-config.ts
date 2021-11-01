@@ -6,6 +6,7 @@ export interface IonInputConfig {
   inputLabel?: IonTextItem;
   placeholder?: string;
   inputName?: string;
+  displayFormat?: string;
   type?: string;
   size?: number;
   min?: number;

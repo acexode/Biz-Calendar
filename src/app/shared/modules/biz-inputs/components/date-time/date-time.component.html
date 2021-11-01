@@ -1,0 +1,65 @@
+<div class="w-100 p-0 flex flex-column biz-form-group">
+    <ion-item class="form-group w-100 p-0 item-label-stacked" [formGroup]="formGroup" [lines]="config?.removeInputItemBaseLine ? 'none': 'full'" [ngClass]="{
+        'item-mh-40': !config?.inputLabel?.text,
+        'disabled-border': config?.disabled || inputReadonly,
+        'bg-white': config?.bgwhite,
+        'hasError': config?.inputHasError || false,
+        'item-has-focus': config?.isInputFocused || false
+      }">
+        <!-- <ion-label class="s12pt8-h16 roboto-family-font text-weight-medium mb-8 black-color" position="stacked" [color]="config?.inputLabel?.color" *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</ion-label> -->
+        <label
+          class=" roboto-family-font text-weight-medium  black-color label-stacked"
+          [ngClass]="
+            config?.disabled || inputReadonly || formGroup?.disabled
+              ? 'input-label'
+              : 'input-label-2'"
+           *ngIf="config?.inputLabel?.text">{{ config?.inputLabel?.text }}</label>
+        <ion-row class="ion-no-padding flex flex-column w-100 flex-1 position-relative"
+        [ngClass]="{
+                      ' isFocused':
+                      (config?.isInputFocused || false)
+                  }"
+          >
+            <ion-col class="ion-no-padding p-0 m-0 flex-1 w-100 biz-custom-form-group" [ngClass]="{
+                      ' useIcon':
+                      config?.useIcon || false
+                  }">
+                <ion-datetime
+                  formControlName="input"
+                  [placeholder]="config?.placeholder"
+                  [maxlength]="config?.maxLength"
+                  [minlength]="config?.minLength"
+                  [displayFormat]="config?.displayFormat"
+                  [min]="config?.min"
+                  [max]="config?.max"
+                  [readonly]="inputReadonly"
+  
+                  [ngClass]="{
+                    'ion-text-center': config?.spinnerConfig?.textAlign,
+                    'disabled':
+                      config?.disabled || inputReadonly || formGroup?.disabled,
+                      'isInputFocused':
+                      config?.isInputFocused || false
+                  }"
+                  (ionFocus)="onMouseDown($event)"
+                 class="w-100"
+                  [mode]="config?.mode || 'md'"
+                  [pattern]="config?.pattern|| ''"
+                  ></ion-datetime>
+  
+                  <ion-icon *ngIf="useIcon"
+                      [name]="config?.useIcon?.name"
+                      [class]="config?.useIcon?.classes">
+                    </ion-icon>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+    <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="config?.inputAssistiveText?.text && !config?.hidAssistiveText">
+      <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right">{{config?.inputAssistiveText?.text}}</ion-text>
+    </div>
+    <div class="w-100 flex ion-justify-content-end assative-text" *ngIf="getErrorList() && !config?.hidAssistiveText">
+      <ion-text class="s12pt8-h16 roboto-family-font text-weight-400 text-right" *ngFor="let error of getErrorList()">{{error}}
+      </ion-text>
+    </div>
+  </div>
+  

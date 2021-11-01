@@ -88,5 +88,36 @@
   </div>
 </ion-content>
 
+<ion-content *ngIf="notifyTypes.typeC === notifyTypeToUse">
+  <div class="w-100">
 
+    <div class="ion-no-padding flex flex-column w-100 position-relative">
+      <div class="w-100 px-16 pt-20 pb-15 border-bottom-1px-solid-neutral-grey-light-b-color modal-header">
+        <span class="p-0 s20-h28 text-weight-medium ls-0 roboto-family-font">Ștergere Note</span>
+      </div>
 
+      <div class="modal-body">
+        <div class="mt-32">
+          <ion-text class="s16-h24 ls-0 roboto-family-font text-weight-regular">
+            Atenție, operațiunea de ștergere este definitivă și nu poate fi anulată!
+          </ion-text>
+        </div>
+      </div>
+
+      <div
+        class="w-100 px-16 py-12 flex ion-justify-content-end ion-align-items-center border-top-1px-solid-neutral-grey-light-b-color modal-footer">
+        <div class="mr-16">
+          <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal('RENUNȚĂ')">
+            RENUNȚĂ
+          </ion-button>
+        </div>
+        <div>
+          <ion-button class="biz-tertiary" size="default-flat" (click)="closeModal('Șterge')">
+            ȘTERGE
+          </ion-button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
