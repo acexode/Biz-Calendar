@@ -40,7 +40,7 @@ export class CalendarService {
       }
     });
     this.cabinetQuery$.subscribe(q =>{
-      console.log(q);
+      // console.log(q);
       if(q !== null){
         this.getCabinetAppointment(q);
       }
@@ -57,7 +57,7 @@ export class CalendarService {
       const obj: any = {
         physicianUID: '6e3c43b9-0a07-4029-b707-ca3570916ad5'
       };
-      console.log('PATH', path);
+      // console.log('PATH', path);
       if(path !== null){
         if(path === 'lista'){
           obj.StartDate = startOfYear(new Date());
@@ -129,8 +129,8 @@ export class CalendarService {
   }
 
   getCabinetAppointment(query, date= null){
-    console.log(startOfDay(new Date(date)));
-    console.log(endOfDay(new Date(date)));
+    // console.log(startOfDay(new Date(date)));
+    // console.log(endOfDay(new Date(date)));
     const start = date ? startOfDay(new Date(date)) : startOfDay(new Date());
     const end = date ? endOfDay(new Date(date)) : endOfDay(new Date());
     // start.setHours(0,0);
@@ -140,9 +140,9 @@ export class CalendarService {
       EndDate:  end.toLocaleString(),
       ...query
     };
-    console.log('cabinet---', obj);
+    // console.log('cabinet---', obj);
     return this.reqS.post(appointmentEndpoints.getAppointment, obj).subscribe((res: any) =>{
-      console.log(res);
+      // console.log(res);
       this.cabinetAppointment$.next(res);
     });
   }

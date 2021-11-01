@@ -11,7 +11,7 @@ import { CalendarPages } from '../calendar/calendarPages';
 import { IonSelectConfig } from '../../models/components/ion-select-config';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { CalendarView } from 'angular-calendar';
-import { format, startOfDay } from 'date-fns';
+import { endOfDay, format, startOfDay } from 'date-fns';
 import { ro } from 'date-fns/locale';
 import { CalModalComponent } from '../modal/cal-modal/cal-modal.component';
 import { CalendarComponent } from 'ionic2-calendar';
@@ -123,11 +123,9 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       // this.viewDate = new Date(e);
     });
     this.calS.appointments$.subscribe(e => {
-      console.log('TOTAL', e);
       this.totalAppt = e?.appointments.length;
     });
     this.calS.eventCounts.pipe(distinctUntilChanged()).subscribe(count =>{
-      console.log('COUNT', count);
       this.totalAppt = count;
     });
     this.calS.selectedMonth.subscribe(e =>{
@@ -154,8 +152,12 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       const loc = this.locationOptions.filter(l => l.id === val)[0];
       // console.log(loc, val);
       this.calS.filterLocation.next(loc);
+      const start =  startOfDay(new Date());
+      const end =  endOfDay(new Date());
       const obj = {
-        LocationUID: val
+        LocationUID: val,
+        StartDate: start.toLocaleString() ,
+        EndDate:  end.toLocaleString(),
       };
       this.calS.cabinetQuery$.next(obj);
     });
