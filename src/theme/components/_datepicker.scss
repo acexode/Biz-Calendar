@@ -1,0 +1,48 @@
+@import '../variables';
+@import '../mixins/mixins';
+
+.biz {
+  ion-picker {
+
+
+
+    .picker-wrapper {
+      .picker-toolbar {
+        .picker-toolbar-button {
+          button {
+            color: var(--ion-primary-color-step-100) !important;
+            font-size: rem(14);
+            line-height: rem(16);
+          }
+        }
+      }
+
+      .picker-columns {
+        .picker-col {
+          .picker-opts {
+            max-width: 56px !important;
+
+            .picker-opt {
+              // button
+              font-size: rem(20);
+              line-height: rem(28);
+              letter-spacing: -0.2px;
+              font-family: $font-family-base;
+              height: 60px !important;
+            }
+          }
+        }
+      }
+    }
+
+    .picker-opt {
+      color: var(--ion-neutral-grey-default-color) !important;
+
+      &.picker-opt-selected {
+        color: var(--ion-primary-color-step-100) !important;
+        border-top: 1px solid var(--ion-neutral-grey-medium-color) !important;
+        border-bottom: 1px solid var(--ion-neutral-grey-medium-color) !important;
+      }
+    }
+  }
+}

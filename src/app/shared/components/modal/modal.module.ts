@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SelectieServiciiModalComponent } from './selectie-servicii-modal/selectie-servicii-modal.component';
 import { InfoPacientModalComponent } from './info-pacient-modal/info-pacient-modal.component';
 import { IonicModule } from '@ionic/angular';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BizInputsModule } from '../../modules/biz-inputs/biz-inputs.module';
 import { BizRadioModalComponent } from './biz-radio-modal/biz-radio-modal.component';
 import { MedicModalComponent } from './medic-modal/medic-modal.component';
@@ -19,6 +19,7 @@ import { NgCalendarModule } from 'ionic2-calendar';
 import { CoreModule } from 'src/app/core/core.module';
 import { CabinetNotifyComponent } from './cabinet-notify/cabinet-notify.component';
 import { ConflictProgramariComponent } from './conflict-programari/conflict-programari.component';
+import { DatePickerModalComponent } from './date-picker-modal/date-picker-modal.component';
 
 
 
@@ -35,11 +36,13 @@ import { ConflictProgramariComponent } from './conflict-programari/conflict-prog
     BizSearchableRadioModalComponent,
     CabinetComponent,
     CabinetNotifyComponent,
-    ConflictProgramariComponent
+    ConflictProgramariComponent,
+    DatePickerModalComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
+    FormsModule,
     ReactiveFormsModule,
     BizInputsModule,
     CalendarModule.forRoot({
@@ -61,7 +64,8 @@ import { ConflictProgramariComponent } from './conflict-programari/conflict-prog
     BizSearchableRadioModalComponent,
     CabinetComponent,
     CabinetNotifyComponent,
-    ConflictProgramariComponent
+    ConflictProgramariComponent,
+    DatePickerModalComponent
   ]
 })
 export class ModalModule { }

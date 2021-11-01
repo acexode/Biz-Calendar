@@ -175,6 +175,13 @@
         min-height: var(--min-height) !important;
       }
     }
+
+    &.modal-wrapper-with-236px-height {
+      .modal-wrapper {
+        --min-height: 236px !important;
+        min-height: var(--min-height) !important;
+      }
+    }
   }
 
   @media (min-width: $desktop-width) {
@@ -250,6 +257,27 @@
 
     .cal-week-view .cal-ends-within-day .cal-event {
       align-items: flex-start !important;
+    }
+  }
+
+  .biz-modal-class-type-no-background {
+    --background: none !important;
+    --backdrop-opacity: 0.3 !important;
+
+    ion-backdrop {
+      background-color: none !important;
+    }
+
+    .modal-wrapper {
+      background: none !important;
+
+      ion-content {
+        --background: none !important;
+
+        ion-item {
+          --background: none !important;
+        }
+      }
     }
   }
 }

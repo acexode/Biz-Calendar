@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
   CalendarDateFormatter,
   CalendarEvent,
@@ -9,13 +8,17 @@ import {
   CalendarWeekViewBeforeRenderEvent
 } from 'angular-calendar';
 import { CalendarWeekViewHourSegmentComponent } from 'angular-calendar/modules/week/calendar-week-view-hour-segment.component';
-import { startOfDay, addHours, format,} from 'date-fns';
+import { startOfDay, addHours, format, formatRFC3339, addMinutes,} from 'date-fns';
 import { Subject, Subscription } from 'rxjs';
 import { unsubscriberHelper } from 'src/app/core/helpers/unsubscriber.helper';
 import { ToastService } from 'src/app/core/services/toast/toast.service';
 import { CustomDateFormatter } from '../../calendar/custom-date-formatter.provider';
 import { CabinetNotifyComponent } from '../cabinet-notify/cabinet-notify.component';
 import { cabinetData } from './dummyDataForCabinet';
+import { ViewChild} from '@angular/core';
+import { DatePickerModalComponent } from '../date-picker-modal/date-picker-modal.component';
+import { ProgrammareService } from 'src/app/core/services/programmare/programmare.service';
+import { ModalController } from '@ionic/angular';
 
 const colors: any = {
   bizPrimary: {
@@ -36,7 +39,8 @@ const colors: any = {
     },
   ],
 })
-export class CabinetComponent implements OnInit, OnDestroy {
+export class CabinetComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('closeBtn', { static: false }) closeB: ElementRef;
 
   // cabinetData = cabinetData;
   @Input() cabinetData: any;
@@ -44,6 +48,8 @@ export class CabinetComponent implements OnInit, OnDestroy {
   @Input() appointments: any[];
   @Input() schedules: any[];
   @Input() viewDate: Date;
+  @Input() cabinetUID: string;
+
   view: CalendarView = CalendarView.Month;
 
   page = 'zile-lucratoare';
@@ -77,11 +83,20 @@ export class CabinetComponent implements OnInit, OnDestroy {
     return new Intl.DateTimeFormat('ro', { month: 'long' }).format(this.viewDate)
       || new Intl.DateTimeFormat('ro', { month: 'long' }).format(new Date());
   }
-
   constructor(
     private modalController: ModalController,
+    private programmareS$: ProgrammareService,
+    private toastService: ToastService,
   ) { }
 
+  ngAfterViewInit() {
+    // this.closeBtn.nativeElement.click();
+    // console.log(this.closeB.nativeElement.click());
+    /* setTimeout(() => {
+      this.closeB.nativeElement.click();
+      console.log('ere-close');
+    }, 1000); */
+  }
   ngOnInit() {
 
     if (this.appointments && this.appointments.length > 0) {
@@ -103,21 +118,13 @@ export class CabinetComponent implements OnInit, OnDestroy {
         }
       )
       );
-      console.log('eventFromAppointement: ', eventFromAppointement);
       this.events.push(...eventFromAppointement);
       this.refresh.next();
 
     }
    }
-  handleEvent(action: string, event: CalendarEvent): void {
-    console.log(action, event);
-    // this.viewDate = new Date(event.start);
-    // this.view = CalendarView.Day;
-    // this.modalData = { event, action };
-    //this.modal.open(this.modalContent, { size: 'lg' });
-  }
+  handleEvent(action: string, event: CalendarEvent): void {}
   hourSegmentClicked(event: any) {
-    console.log('hourSegmentClicked: ', event, event.date);
     this.presentCabinentNotify(event.date);
   }
   eventTimesChanged({
@@ -138,15 +145,15 @@ export class CabinetComponent implements OnInit, OnDestroy {
     this.handleEvent('Dropped or resized', event);
   }
   closeModal() {
+    console.log('close cabinet');
     this.modalController.dismiss({
       dismissed: true,
-    });
+      d: 'none'
+    }, undefined, 'cabinet-modal');
   }
   beforeWeekViewRender(renderEvent: CalendarWeekViewBeforeRenderEvent) {
 
     if (this.schedules && this.schedules.length > 0) {
-
-      console.log('here', this.schedules);
 
 
       renderEvent.hourColumns.forEach((hourColumn) => {
@@ -169,17 +176,13 @@ export class CabinetComponent implements OnInit, OnDestroy {
             });
           });
          });
-
-
     }
-
-
   }
 
   async presentCabinentNotify(date: Date = new Date()) {
     const modal = await this.modalController.create({
       component: CabinetNotifyComponent,
-      cssClass: 'biz-modal-class-type-a modal-wrapper-with-232px-height',
+      cssClass: 'biz-modal-class-type-a modal-wrapper-with-236px-height',
       backdropDismiss: true,
       componentProps: {
         notifyType: 'typeB',
@@ -188,10 +191,42 @@ export class CabinetComponent implements OnInit, OnDestroy {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    console.log(data);
-    const { dismissed, selecteaza } = data;
-    if (dismissed && selecteaza) {
-      console.log('open clock... looks like user want to change time');
+    if (data) {
+      const { dismissed, selecteaza, renita, dateData} = data;
+      console.log('change Time: ', dateData);
+      if (dismissed && !renita && !selecteaza) {
+        this.presentDatePicker(data);
+      }
+      if (dismissed && selecteaza) {
+        const check = this.programmareS$.runCheckProcess(
+          dateData, new Date(addMinutes(new Date(dateData), this.programmareS$.duration$.value))
+        );
+        if (check) {
+          this.programmareS$.updateProgrammareDateData(dateData, this.cabinetUID);
+          this.closeModal();
+        } else {
+          this.toastService.presentToastWithDurationDismiss(
+            'You can not fix a schedule at this time. C30'
+            );
+        }
+      }
+    }
+  }
+  async presentDatePicker({isHoutMinutesPicker, dateData: date}) {
+    const modal = await this.modalController.create({
+      component: DatePickerModalComponent,
+      cssClass: 'biz-modal-class-type-no-background width-md-100',
+      backdropDismiss: false,
+      componentProps: {
+        pickerType: isHoutMinutesPicker ? 'hourMinutes' : 'dayMonth',
+        date: formatRFC3339(date,  { fractionDigits: 3 })
+      },
+    });
+    await modal.present();
+     const { data } = await modal.onWillDismiss();
+    const { dismissed, dateData } = data;
+    if (dismissed) {
+      this.presentCabinentNotify(new Date(dateData || date));
     }
   }
 

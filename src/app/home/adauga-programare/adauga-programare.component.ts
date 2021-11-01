@@ -42,6 +42,8 @@ import { InfoPatient } from 'src/app/core/models/infoPatient.model';
 import { addMinutes } from 'date-fns';
 import { Physician } from 'src/app/core/models/Physician.model';
 import { dayInAWeekWithDate } from 'src/app/core/helpers/date.helper';
+import { ProgrammareService } from 'src/app/core/services/programmare/programmare.service';
+import { ProgrammareDateDataUpdate } from 'src/app/core/models/programmareDateDataUpdate-model';
 @Component({
   selector: 'app-adauga-programare',
   templateUrl: './adauga-programare.component.html',
@@ -215,7 +217,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     tipprogramare: ['În-cabinet', [Validators.required]],
     locatie: ['ec9faa71-e00a-482a-801d-520af369de85'],
     tipServicii: ['', [Validators.required]],
-    data: ['2021-10-20', [Validators.required]],
+    data: [ '2021-10-29' , [Validators.required]],
     oraDeIncepere: ['16:00', [Validators.required]],
     time: ['30', [Validators.required]],
     cabinet: ['', [Validators.required]],
@@ -259,6 +261,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     }
     );
   physician$: BehaviorSubject<Physician> = new BehaviorSubject<Physician>(null);
+  getProgrammareDateData$: Subscription;
   constructor(
     private fb: FormBuilder,
     public modalController: ModalController,
@@ -267,8 +270,25 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     private reqService: RequestService,
     public toastController: ToastController,
     private toastService: ToastService,
-    private authS: AuthService
+    private authS: AuthService,
+    private programmareS$: ProgrammareService
   ) { }
+
+  checkingForCabinetDataUpdate() {
+   this.getProgrammareDateData$ = this.programmareS$.getProgrammareDateData().subscribe(
+      (data:  ProgrammareDateDataUpdate) => {
+        console.log(data);
+        const { isUpdate, time, date, cabinetUID } = data;
+        if(isUpdate && time && date) {
+          this.adaugaProgramareFormGroup.patchValue({
+            oraDeIncepere: time,
+            data: date,
+            cabinet: cabinetUID
+          });
+        }
+       }
+    );
+  }
   onInitializeLoadData(): void {
     this.authS.getUserPhysicians$().subscribe(
       (data: any) => {
@@ -283,6 +303,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     /*  */
     this.locatieFormControlProcess();
     this.getTipsOptionTypeFromParameter();
+    this.checkingForCabinetDataUpdate();
   }
   locationDependencyEndpoints() {
     this.getMedicalEquipment();
@@ -420,16 +441,18 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     } else {
       if (!this.dataAndOraDeIncepereNotFilledStatus) {
         const userSetTime = `${this.adaugaProgramareFormGroup.value.data} ${this.adaugaProgramareFormGroup.value.oraDeIncepere}`;
-        const addedTime = Number(this.adaugaProgramareFormGroup.value.time);
+        const duration = Number(this.adaugaProgramareFormGroup.value.time);
         const modal = await this.modalController.create({
           component: BizSearchableRadioModalComponent,
+          id: 'BizSearchableRadioModalComponent',
           cssClass: 'biz-modal-class',
           backdropDismiss: false,
           componentProps: {
             options: this.cabinetOption,
             config: this.cabinetConfig,
             startTime: new Date(userSetTime),
-            endTime: new Date(addMinutes(new Date(userSetTime), addedTime)),
+            endTime: new Date(addMinutes(new Date(userSetTime), duration)),
+            duration,
             locationUID: this.locatieFormControl.value || '',
             physicianUID: this.physician$.value.physicianUID || '',
             dayInAWeekWithDate: dayInAWeekWithDate(new Date(userSetTime)),
@@ -753,6 +776,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     unsubscriberHelper(this.getTipServicesParameter$);
     unsubscriberHelper(this.getMedicalEquipment$);
     unsubscriberHelper(this.getPersonInfo$);
+    unsubscriberHelper(this.getProgrammareDateData$);
   }
 
 }

@@ -43,7 +43,7 @@
 
         <ion-title class="s20-h28 roboto-family-font text-weight-500 ls-0">{{cabinetName}}</ion-title>
 
-        <div slot="end">
+        <div slot="end" #closeBtn (click)="closeModal()">
           <ion-icon name="close" class="icon-24 black-color" slot="icon-only" (click)="closeModal()"></ion-icon>
         </div>
       </ion-toolbar>
