@@ -123,11 +123,9 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
       // this.viewDate = new Date(e);
     });
     this.calS.appointments$.subscribe(e => {
-      console.log('TOTAL', e);
       this.totalAppt = e?.appointments.length;
     });
     this.calS.eventCounts.pipe(distinctUntilChanged()).subscribe(count =>{
-      console.log('COUNT', count);
       this.totalAppt = count;
     });
     this.calS.selectedMonth.subscribe(e =>{
@@ -152,7 +150,7 @@ export class CalendarHeaderComponent implements OnInit, OnDestroy {
     });
     this.locationForm.get('location').valueChanges.pipe(distinctUntilChanged()).subscribe(val =>{
       const loc = this.locationOptions.filter(l => l.id === val)[0];
-      console.log(loc, val);
+      // console.log(loc, val);
       this.calS.filterLocation.next(loc);
       const start =  startOfDay(new Date());
       const end =  endOfDay(new Date());
