@@ -220,7 +220,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
     data: [ '2021-10-29' , [Validators.required]],
     oraDeIncepere: ['16:00', [Validators.required]],
     time: ['30', [Validators.required]],
-    cabinet: ['', [Validators.required]],
+    cabinet: ['98b47725-d1de-4508-8d35-39b75d807f5b', [Validators.required]],
     medic:['', [Validators.required]],
     observatii: ['', [Validators.required]]
   });
@@ -462,7 +462,7 @@ export class AdaugaProgramareComponent implements OnInit, OnDestroy {
         const { data } = await modal.onWillDismiss();
         if (data) {
           const { dismissed, radioValue } = data;
-          if (dismissed && radioValue !== '') {
+          if (dismissed && radioValue) {
             this.adaugaProgramareFormGroup.patchValue({cabinet: radioValue});
           }
         }

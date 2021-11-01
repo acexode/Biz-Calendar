@@ -86,7 +86,7 @@ export class BizSearchableRadioModalComponent implements OnInit, OnDestroy {
   closeModal() {
     this.modalController.dismiss({
       dismissed: true,
-      radioValue: this.isCabinetAvailable ? this.controlValue : ' ',
+      radioValue: this.isCabinetAvailable ? this.controlValue : null,
     }, undefined, 'BizSearchableRadioModalComponent');
   }
   checkRadio(event: any) {
