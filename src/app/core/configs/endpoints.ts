@@ -42,6 +42,13 @@ export const tipServicii = {
   getMedicalServices: baseEndpoints.bizCalendarService + '/GetMedicalServices',
   getClinicCNASMedicalServices: baseEndpoints.bizCalendarService + '/GetClinicCNASMedicalServices',
 };
+export const notes = {
+  addNote: baseEndpoints.bizCalendarService + '/AddNote',
+  getNote: baseEndpoints.bizCalendarService + '/GetAppointmentDetails',
+  getNoteTypes: baseEndpoints.bizCalendarService + '/GetNoteTypes',
+  updateNote: baseEndpoints.bizCalendarService + '/UpdateNote',
+  deleteNote: baseEndpoints.bizCalendarService + '/DeleteNote'
+};
 
 export const group = {
   getGroups: baseEndpoints.bizCalendarService + '/GetGroups',

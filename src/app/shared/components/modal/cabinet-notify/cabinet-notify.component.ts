@@ -8,13 +8,14 @@ import { addHours, format } from 'date-fns';
   styleUrls: ['./cabinet-notify.component.scss'],
 })
 export class CabinetNotifyComponent implements OnInit {
-  @Input() notifyType!: 'typeA' | 'typeB';
+  @Input() notifyType!: 'typeA' | 'typeB' | 'typeC';
   @Input() cabinetName!: string;
   @Input() date: Date;
 
   notifyTypes: any = {
     typeA: 'cabinet notify',
     typeB: 'calendar notify',
+    typeC: 'note notify',
   };
 
   constructor(private modalController: ModalController) { }
@@ -25,6 +26,7 @@ export class CabinetNotifyComponent implements OnInit {
       dismissed: true,
       renita: v === 'RENUNȚĂ' ? true : false,
       veziProgram: v === 'VEZI PROGRAM' ? true : false,
+      sterge: v === 'Șterge' ? true : false,
       selecteaza: v === 'SELECTEAZA' ? true : false,
     });
   }
@@ -35,6 +37,8 @@ export class CabinetNotifyComponent implements OnInit {
           return this.notifyTypes.typeA;
         case 'typeB':
           return this.notifyTypes.typeB;
+        case 'typeC':
+          return this.notifyTypes.typeC;
         default:
           return this.notifyTypes.typeA;
       }
