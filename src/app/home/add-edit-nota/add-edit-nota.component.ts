@@ -111,7 +111,7 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     duration: ['', [Validators.required]],
     time: ['', [Validators.required]],
     allDay: [false, [Validators.required]],
-    allowOverlap: [false, [Validators.required]],
+    allowOverlap: [false],
     comment: '',
     others: ''
   });
@@ -188,7 +188,9 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
     this.formValue('allDay').valueChanges.subscribe(val =>{
       if(val === true){
         this.formValue('time').disable();
+        this.formValue('startTime').disable();
         this.formValue('time').clearValidators();
+        this.formValue('startTime').clearValidators();
 
         this.formValue('duration').disable();
         this.formValue('duration').clearValidators();
@@ -197,8 +199,10 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
         this.adaugaProgramareFormGroup.updateValueAndValidity();
         console.log(this.adaugaProgramareFormGroup.valid);
       }else{
+        this.formValue('startTime').enable();
         this.formValue('time').enable();
         this.formValue('time').setValidators([Validators.required]);
+        this.formValue('startTime').setValidators([Validators.required]);
         this.formValue('duration').enable();
         this.formValue('duration').setValidators([Validators.required]);
 
@@ -236,9 +240,9 @@ export class AddEditNotaComponent implements OnInit, OnDestroy {
       noteTypeID: values.noteTypeID
     };
     if(values.allDay === true){
-      const start = new Date(values.startTime);
+      const start = new Date();
       start.setHours(workHours.appStartHour,0);
-      const end = new Date(values.startTime);
+      const end = new Date();
       end.setHours(workHours.appEndHour,0);
       obj.startTime = start.toLocaleString();
       obj.endTime = end.toLocaleString();
